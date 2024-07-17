@@ -42,10 +42,8 @@ class WerewolfPlayer(Player):
         #TODO
         prompt_path = os.path.join(self.prompt_dir_path, "kill")
         prompt = get_prompt(prompt_path, self.get_replacements())
-        response = send_message_xsm(prompt)
-        #find the first number in the response
-        kill = int(re.search(r"\d+", response).group())
-        return kill
+        answer = send_message_xsm(prompt)
+        
         raise NotImplementedError
     
     def _extract_hiddenstate_from_response(self, response):

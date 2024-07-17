@@ -72,7 +72,6 @@ class Werewolf(Player):
         self.role = role
         self.type = "werewolf"
         self.rank = "normal"  # it may change to leader
-        self.werewolf_talks = []
 
     def killing(self, Game):
         target, reason = self.targeting(

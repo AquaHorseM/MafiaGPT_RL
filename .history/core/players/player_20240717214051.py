@@ -102,6 +102,6 @@ class Player:
         self.global_info["alive_players"] = range(self.global_info["player_num"])
         self.global_info["dead_players"] = []
         self.global_info["current_round"] = 0
-        self.private_info["role_specific_info"] = {}
+        self.private_info["role"] = None
         self.history = None
         return

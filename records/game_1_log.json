@@ -1,0 +1,178 @@
+[
+    {
+        "event": "roles",
+        "content": {
+            "player": 0,
+            "role": "werewolf"
+        }
+    },
+    {
+        "event": "roles",
+        "content": {
+            "player": 1,
+            "role": "simple_villager"
+        }
+    },
+    {
+        "event": "roles",
+        "content": {
+            "player": 2,
+            "role": "simple_villager"
+        }
+    },
+    {
+        "event": "roles",
+        "content": {
+            "player": 3,
+            "role": "seer"
+        }
+    },
+    {
+        "event": "roles",
+        "content": {
+            "player": 4,
+            "role": "medic"
+        }
+    },
+    {
+        "event": "roles",
+        "content": {
+            "player": 5,
+            "role": "werewolf"
+        }
+    },
+    {
+        "event": "roles",
+        "content": {
+            "player": 6,
+            "role": "simple_villager"
+        }
+    },
+    {
+        "event": "cycle",
+        "content": "day"
+    },
+    {
+        "event": "speech",
+        "content": {
+            "player": 0,
+            "context": "I have observed player 3 acting suspiciously and believe they may be a werewolf. We should consider eliminating them to protect the village. Let's discuss and make a decision together."
+        }
+    },
+    {
+        "event": "speech",
+        "content": {
+            "player": 1,
+            "context": "Alright, fellow players, let's focus on finding the werewolves among us. I suspect player 4 seems suspicious. Let's discuss and consider our votes wisely. Let's work together to win this game!"
+        }
+    },
+    {
+        "event": "speech",
+        "content": {
+            "player": 2,
+            "context": "Player 5, I have a strong feeling that you are a werewolf. Your actions have been suspicious from the beginning. Let's discuss and vote to eliminate player 5."
+        }
+    },
+    {
+        "event": "speech",
+        "content": {
+            "player": 3,
+            "context": "I have suspicions about player 5. I believe they might be a werewolf. Let's consider our options and discuss before making any decisions. Let's work together to determine the truth."
+        }
+    },
+    {
+        "event": "speech",
+        "content": {
+            "player": 4,
+            "context": "I suspect player 2. Let's focus on gathering evidence and votes against them. Pay attention to their actions and statements. Let's eliminate the werewolves!"
+        }
+    },
+    {
+        "event": "speech",
+        "content": {
+            "player": 5,
+            "context": "Player 2, I suspect you're a Werewolf. I've been observing your behavior and it seems quite suspicious. Let's all consider this and vote to eliminate player 2. Let's work together to root out the true threats among us."
+        }
+    },
+    {
+        "event": "speech",
+        "content": {
+            "player": 6,
+            "context": "Alright, fellow players, let's focus on finding the Werewolves. I have my suspicions about player 3 and player 4. They have been very quiet and not actively participating in discussions. I suggest we keep a close eye on them and consider our next moves. Let's work together to uncover the truth."
+        }
+    },
+    {
+        "event": "vote_start"
+    },
+    {
+        "event": "vote_results",
+        "content": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "event": "vote_end"
+    },
+    {
+        "event": "killed",
+        "content": {
+            "player": 6
+        }
+    },
+    {
+        "event": "end",
+        "winner": "Werewolves"
+    },
+    {
+        "event": "notetaking",
+        "content": {
+            "player": 0,
+            "context": "Player 2 is acting suspicious and trying to lead the discussion, deflecting attention from themselves. Need to target player 2 and shift suspicion towards them to create confusion and protect fellow werewolves. Stick to acting like a villager and gaining trust of others."
+        }
+    },
+    {
+        "event": "notetaking",
+        "content": {
+            "player": 1,
+            "context": "Round 1 notes:\n- Keep a close eye on player 3, their behavior seems suspicious. \n- Trust player 5 as they seem genuinely trying to help the villagers.\n- Observe player 2 and player 4 for any inconsistencies in their statements.\n- Stay low-key and focus on gathering information from others without raising suspicion on myself."
+        }
+    },
+    {
+        "event": "notetaking",
+        "content": {
+            "player": 2,
+            "context": "Notebook:\n- Player 5 is acting suspiciously, need to keep an eye on their behavior.\n- Trust player 1 for being a villager, their reasoning has been solid.\n- Need to observe player 3 closely for any inconsistencies in their actions."
+        }
+    },
+    {
+        "event": "notetaking",
+        "content": {
+            "player": 3,
+            "context": "Player 1 is acting suspiciously, need to observe their behavior closely. Be cautious about revealing my role as the seer, it could make me a target for werewolves. Stick to my strategy of gathering information subtly and influencing the group decision without drawing too much attention to myself."
+        }
+    },
+    {
+        "event": "notetaking",
+        "content": {
+            "player": 4,
+            "context": "Update Notes:\n- Focus on observing player behaviors and inconsistencies in their statements.\n- Be prepared to use my role as a medic strategically to protect key players.\n- Keep track of voting patterns and movements to identify potential Werewolves.\n- Avoid drawing unnecessary suspicion to myself and maintain a trustworthy image as a Villager."
+        }
+    },
+    {
+        "event": "notetaking",
+        "content": {
+            "player": 5,
+            "context": "Notes Update: \n\n- Create confusion among Villagers by subtly supporting suspicions against innocent players.\n- Direct attention towards players that seem trustworthy to gain their trust.\n- Influence Werewolf_Leader's decision in eliminating players by providing strategic advice.\n- Stay vigilant and adapt to the evolving dynamics of the game."
+        }
+    },
+    {
+        "event": "end",
+        "winner": "Werewolves"
+    }
+]

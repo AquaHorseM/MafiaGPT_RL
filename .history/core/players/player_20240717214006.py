@@ -99,9 +99,7 @@ class Player:
         self.is_alive = True
         self.special_actions_log = []
         self.hidden_state = self.HiddenState(self.global_info["player_num"], len(self.global_info["roles_mapping"]))
-        self.global_info["alive_players"] = range(self.global_info["player_num"])
         self.global_info["dead_players"] = []
         self.global_info["current_round"] = 0
-        self.private_info["role_specific_info"] = {}
         self.history = None
         return

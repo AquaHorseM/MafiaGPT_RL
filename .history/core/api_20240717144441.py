@@ -69,7 +69,7 @@ def send_message(
     # returning the response as a string
     return response.choices[0].message.content
 
-def send_message_xsm(messages, agent_config = {}):
+def send_message_new(messages, agent_config = {}):
     '''
     A flexible function to send messages to openai
     Messages should be a tuple or list of tuples
