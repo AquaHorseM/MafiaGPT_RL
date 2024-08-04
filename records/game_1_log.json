@@ -1,178 +1,92 @@
 [
-    {
-        "event": "roles",
-        "content": {
-            "player": 0,
-            "role": "werewolf"
-        }
-    },
-    {
-        "event": "roles",
-        "content": {
-            "player": 1,
-            "role": "simple_villager"
-        }
-    },
-    {
-        "event": "roles",
-        "content": {
-            "player": 2,
-            "role": "simple_villager"
-        }
-    },
-    {
-        "event": "roles",
-        "content": {
-            "player": 3,
-            "role": "seer"
-        }
-    },
-    {
-        "event": "roles",
-        "content": {
-            "player": 4,
-            "role": "medic"
-        }
-    },
-    {
-        "event": "roles",
-        "content": {
-            "player": 5,
-            "role": "werewolf"
-        }
-    },
-    {
-        "event": "roles",
-        "content": {
-            "player": 6,
-            "role": "simple_villager"
-        }
-    },
-    {
-        "event": "cycle",
-        "content": "day"
-    },
-    {
-        "event": "speech",
-        "content": {
-            "player": 0,
-            "context": "I have observed player 3 acting suspiciously and believe they may be a werewolf. We should consider eliminating them to protect the village. Let's discuss and make a decision together."
-        }
-    },
-    {
-        "event": "speech",
-        "content": {
-            "player": 1,
-            "context": "Alright, fellow players, let's focus on finding the werewolves among us. I suspect player 4 seems suspicious. Let's discuss and consider our votes wisely. Let's work together to win this game!"
-        }
-    },
-    {
-        "event": "speech",
-        "content": {
-            "player": 2,
-            "context": "Player 5, I have a strong feeling that you are a werewolf. Your actions have been suspicious from the beginning. Let's discuss and vote to eliminate player 5."
-        }
-    },
-    {
-        "event": "speech",
-        "content": {
-            "player": 3,
-            "context": "I have suspicions about player 5. I believe they might be a werewolf. Let's consider our options and discuss before making any decisions. Let's work together to determine the truth."
-        }
-    },
-    {
-        "event": "speech",
-        "content": {
-            "player": 4,
-            "context": "I suspect player 2. Let's focus on gathering evidence and votes against them. Pay attention to their actions and statements. Let's eliminate the werewolves!"
-        }
-    },
-    {
-        "event": "speech",
-        "content": {
-            "player": 5,
-            "context": "Player 2, I suspect you're a Werewolf. I've been observing your behavior and it seems quite suspicious. Let's all consider this and vote to eliminate player 2. Let's work together to root out the true threats among us."
-        }
-    },
-    {
-        "event": "speech",
-        "content": {
-            "player": 6,
-            "context": "Alright, fellow players, let's focus on finding the Werewolves. I have my suspicions about player 3 and player 4. They have been very quiet and not actively participating in discussions. I suggest we keep a close eye on them and consider our next moves. Let's work together to uncover the truth."
-        }
-    },
-    {
-        "event": "vote_start"
-    },
-    {
-        "event": "vote_results",
-        "content": [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        ]
-    },
-    {
-        "event": "vote_end"
-    },
-    {
-        "event": "killed",
-        "content": {
-            "player": 6
-        }
-    },
-    {
-        "event": "end",
-        "winner": "Werewolves"
-    },
-    {
-        "event": "notetaking",
-        "content": {
-            "player": 0,
-            "context": "Player 2 is acting suspicious and trying to lead the discussion, deflecting attention from themselves. Need to target player 2 and shift suspicion towards them to create confusion and protect fellow werewolves. Stick to acting like a villager and gaining trust of others."
-        }
-    },
-    {
-        "event": "notetaking",
-        "content": {
-            "player": 1,
-            "context": "Round 1 notes:\n- Keep a close eye on player 3, their behavior seems suspicious. \n- Trust player 5 as they seem genuinely trying to help the villagers.\n- Observe player 2 and player 4 for any inconsistencies in their statements.\n- Stay low-key and focus on gathering information from others without raising suspicion on myself."
-        }
-    },
-    {
-        "event": "notetaking",
-        "content": {
-            "player": 2,
-            "context": "Notebook:\n- Player 5 is acting suspiciously, need to keep an eye on their behavior.\n- Trust player 1 for being a villager, their reasoning has been solid.\n- Need to observe player 3 closely for any inconsistencies in their actions."
-        }
-    },
-    {
-        "event": "notetaking",
-        "content": {
-            "player": 3,
-            "context": "Player 1 is acting suspiciously, need to observe their behavior closely. Be cautious about revealing my role as the seer, it could make me a target for werewolves. Stick to my strategy of gathering information subtly and influencing the group decision without drawing too much attention to myself."
-        }
-    },
-    {
-        "event": "notetaking",
-        "content": {
-            "player": 4,
-            "context": "Update Notes:\n- Focus on observing player behaviors and inconsistencies in their statements.\n- Be prepared to use my role as a medic strategically to protect key players.\n- Keep track of voting patterns and movements to identify potential Werewolves.\n- Avoid drawing unnecessary suspicion to myself and maintain a trustworthy image as a Villager."
-        }
-    },
-    {
-        "event": "notetaking",
-        "content": {
-            "player": 5,
-            "context": "Notes Update: \n\n- Create confusion among Villagers by subtly supporting suspicions against innocent players.\n- Direct attention towards players that seem trustworthy to gain their trust.\n- Influence Werewolf_Leader's decision in eliminating players by providing strategic advice.\n- Stay vigilant and adapt to the evolving dynamics of the game."
-        }
-    },
-    {
-        "event": "end",
-        "winner": "Werewolves"
-    }
+    "{Event type:set_player, content:{id:0,role:werewolf,player_type:reflex}, visible:system}",
+    "{Event type:set_player, content:{id:1,role:werewolf,player_type:reflex}, visible:system}",
+    "{Event type:set_player, content:{id:2,role:villager,player_type:baseline}, visible:system}",
+    "{Event type:set_player, content:{id:3,role:villager,player_type:baseline}, visible:system}",
+    "{Event type:set_player, content:{id:4,role:medic,player_type:baseline}, visible:system}",
+    "{Event type:set_player, content:{id:5,role:seer,player_type:baseline}, visible:system}",
+    "{Event type:set_player, content:{id:6,role:villager,player_type:baseline}, visible:system}",
+    "{Event type:cycle, content:night starts, visible:all}",
+    "{Event type:healing, content:{player:4,target:2,reason:send 2}, visible:4}",
+    "{Event type:inquiry, content:{player:5,target:3,is_werewolf:False,reason:I will request to know if player number 3 is a werewolf or not tonight.}, visible:5}",
+    "{Event type:advicing, content:{player:0,target:5,reason:I choose to kill Player 5. My reason is because Player 5 has been actively trying to gather information and seems to be gaining the trust of the other players. By eliminating Player 5, we can create confusion and distrust among the villagers.}, visible:werewolf}",
+    "{Event type:kill, content:{player:1,target:2,reason:I choose to kill Player 2. My reason is because Player 2 has been very vocal in accusing others and trying to lead the discussion. By eliminating Player 2, we can create chaos and make it harder for the villagers to pinpoint the werewolves.}, visible:werewolf}",
+    "{Event type:cycle, content:day starts, visible:all}",
+    "{Event type:no_death, content:Nobody died last night, visible:all}",
+    "{Event type:speech, content:{player:0,context:Hello everyone, \n\nI've been observing the game closely and I think we should focus on analyzing the actions and statements of each player to figure out who the werewolves might be. \n\nPlayer 5 has been very active in trying to gather information and gain trust within the group, which could be a sign of a werewolf trying to blend in. I suggest we keep a close eye on Player 5 and see how they behave in the upcoming rounds.\n\nPlayer 2, on the other hand}, visible:all}",
+    "{Event type:speech, content:{player:1,context:Hello everyone,\n\nI agree with Player 0 that we should carefully analyze the actions and statements of each player to uncover the werewolves among us. Player 5's active initiative in gathering information is definitely something to keep an eye on. We should observe how they interact with others and assess if their behavior raises any suspicions.\n\nAs for Player 2, they have been quite vocal in accusing others and leading the discussion. While it's important to consider all perspectives, we should also be cautious about players}, visible:all}",
+    "{Event type:speech, content:{player:2,context:I have been observing closely and I suspect player 5. Their actions seem suspicious to me. Let's discuss and consider voting them out to protect our village.}, visible:all}",
+    "{Event type:speech, content:{player:3,context:Player 4, I have a strong feeling that you might be a Werewolf. Your actions seem suspicious to me. Let's all consider voting for player 4 to eliminate the potential threat. Let's unite and make a smart move for the village's safety.}, visible:all}",
+    "{Event type:speech, content:{player:4,context:I suspect player 2. Their behavior seems suspicious. Let's consider voting player 2 out for the safety of the village.}, visible:all}",
+    "{Event type:speech, content:{player:5,context:I have suspicions about player 3. I have a feeling they might be a werewolf. Let's discuss and vote to eliminate player 3.}, visible:all}",
+    "{Event type:speech, content:{player:6,context:Listen up everyone, we need to start being more strategic. Player 3 has been too quiet, I suspect they might be a werewolf trying to stay under the radar. I suggest we all focus our suspicions on Player 3 and vote them out. We can't afford to keep a potential threat among us. Let's act decisively.}, visible:all}",
+    "{Event type:vote_star, visible:all}",
+    "{Event type:vote, content:{player:0,target:3}, visible:all}",
+    "{Event type:vote_reason, content:{player:0,target:3,reason:3}, visible:system}",
+    "{Event type:vote, content:{player:1,target:3}, visible:all}",
+    "{Event type:vote_reason, content:{player:1,target:3,reason:3}, visible:system}",
+    "{Event type:vote, content:{player:2,target:3}, visible:all}",
+    "{Event type:vote_reason, content:{player:2,target:3,reason:3}, visible:system}",
+    "{Event type:vote_reason, content:{player:3,target:None,reason:3}, visible:system}",
+    "{Event type:vote_reason, content:{player:4,target:None,reason:3}, visible:system}",
+    "{Event type:vote_reason, content:{player:5,target:None,reason:3}, visible:system}",
+    "{Event type:vote, content:{player:6,target:3}, visible:all}",
+    "{Event type:vote_reason, content:{player:6,target:3,reason:3}, visible:system}",
+    "{Event type:vote_results, content:[0, 0, 0, 4, 0, 0, 0], visible:all}",
+    "{Event type:vote_en, visible:all}",
+    "{Event type:vote_out, content:{player:3}, visible:all}",
+    "{Event type:reflex, content:{player:0,context:None}, visible:0}",
+    "{Event type:reflex, content:{player:1,context:None}, visible:1}",
+    "{Event type:notetaking, content:{player:2,context:- Player 6 voted for Player 3.\n- Alive werewolves: 2\n- Alive Villagers: 2}, visible:2}",
+    "{Event type:notetaking, content:{player:4,context:Player 6 seems suspicious for voting Player 3, maybe trying to take the focus off themselves. Keep an eye on Player 6's actions. Engage with other players to gather information and make informed decisions.}, visible:4}",
+    "{Event type:notetaking, content:{player:5,context:- Player 3 is not a werewolf.\n- Player 6 voted for player 3.}, visible:5}",
+    "{Event type:notetaking, content:{player:6,context:- Player 3 received votes from Player 6\n- 2 werewolves and 2 villagers alive\n- Keep an eye on voting patterns and reactions for clues\n- Stay observant and build trust with other villagers}, visible:6}",
+    "{Event type:cycle, content:night starts, visible:all}",
+    "{Event type:healing, content:{player:4,target:0,reason:Heal player 0 tonight.}, visible:4}",
+    "{Event type:inquiry, content:{player:5,target:6,is_werewolf:False,reason:I would like to know if player 6 is a werewolf or not.}, visible:5}",
+    "{Event type:advicing, content:{player:0,target:2,reason:I choose to kill Player 2. My reason is because Player 2 has been very vocal in accusing others and trying to lead the discussion. By eliminating Player 2, we can create chaos and make it harder for the villagers to pinpoint the werewolves.}, visible:werewolf}",
+    "{Event type:kill, content:{player:1,target:1,reason:I choose to kill Player 1. My reason is because Player 1 has been very vocal in accusing others and trying to lead the discussion. By eliminating Player 1, we can create chaos and make it harder for the villagers to pinpoint the werewolves.}, visible:werewolf}",
+    "{Event type:cycle, content:day starts, visible:all}",
+    "{Event type:die, content:{player:1}, visible:all}",
+    "{Event type:speech, content:{player:0,context:Hello everyone,\n\nI have been closely observing the actions and statements of each player in this game, and I want to share my thoughts. Player 5 has been very active in gathering information and gaining trust within the group, which could be a sign of a werewolf trying to blend in. I suggest we keep a close eye on Player 5 and see how they behave in the upcoming rounds.\n\nAs for Player 2, they have been quite vocal in accusing others and leading the discussion. While it}, visible:all}",
+    "{Event type:speech, content:{player:2,context:I have been observing closely, and I suspect player number 5. Their actions seem suspicious to me. Let's consider voting to eliminate player 5 and protect the village.}, visible:all}",
+    "{Event type:speech, content:{player:4,context:Player 2 and Player 5, I have been observing your actions closely. I suspect one of you might be a Werewolf. Let's discuss and see if we can figure out the truth together.}, visible:all}",
+    "{Event type:speech, content:{player:5,context:I have my suspicions about player 3. I've been observing them closely and I believe they might be a werewolf. Let's discuss this further and consider taking action against them.}, visible:all}",
+    "{Event type:speech, content:{player:6,context:I have my suspicions about player 2. I think we should consider voting them out. Let's discuss and make a decision quickly.}, visible:all}",
+    "{Event type:vote_star, visible:all}",
+    "{Event type:vote, content:{player:0,target:5}, visible:all}",
+    "{Event type:vote_reason, content:{player:0,target:5,reason:As player number 6, I want to vote for player number 2.}, visible:system}",
+    "{Event type:vote_reason, content:{player:2,target:None,reason:As player number 6, I want to vote for player number 2.}, visible:system}",
+    "{Event type:vote_reason, content:{player:4,target:None,reason:As player number 6, I want to vote for player number 2.}, visible:system}",
+    "{Event type:vote_reason, content:{player:5,target:None,reason:As player number 6, I want to vote for player number 2.}, visible:system}",
+    "{Event type:vote, content:{player:6,target:6}, visible:all}",
+    "{Event type:vote_reason, content:{player:6,target:6,reason:As player number 6, I want to vote for player number 2.}, visible:system}",
+    "{Event type:vote_results, content:[0, 0, 0, 0, 0, 1, 1], visible:all}",
+    "{Event type:vote_en, visible:all}",
+    "{Event type:vote_out, content:{player:6}, visible:all}",
+    "{Event type:reflex, content:{player:0,context:None}, visible:0}",
+    "{Event type:notetaking, content:{player:2,context:Round 1 notes: \n- Keep observation on players' behavior and interactions.\n- Be active in discussing and sharing thoughts with others to gain trust.\n- Pay attention to voting patterns and try to identify any suspicious behavior.\n- Be cautious of players trying to manipulate or deceive others. \n- Start building alliances with players I trust. \n\nRound 2 notes:\n- Remember to keep track of players' voting behavior from the previous round.\n- Stay engaged in discussions and try to read between the lines for}, visible:2}",
+    "{Event type:notetaking, content:{player:4,context:- Role: Medic\n- Focus on observing players' behaviors and interactions to identify potential Werewolves.\n- Prioritize protecting players who seem suspiciously targeted by Werewolves.\n- Keep track of voting patterns to detect any inconsistencies.\n- Stay subtle in my actions to avoid drawing unnecessary attention to myself.}, visible:4}",
+    "{Event type:notetaking, content:{player:5,context:NOTES: \n- Player 3 and Player 6 seem suspicious, need to observe their actions closely.\n- Trust Player 1 for now, seems like a genuine villager.\n- Avoid revealing my role as Seer directly, try to subtly hint at information through discussions.\n- Keep track of voting patterns and player interactions.}, visible:5}",
+    "{Event type:cycle, content:night starts, visible:all}",
+    "{Event type:healing, content:{player:4,target:2,reason:I send my message to the moderator: \"I want to heal player number 2.\"}, visible:4}",
+    "{Event type:inquiry, content:{player:5,target:None,is_werewolf:None,reason:I would like to know the role of player number 3 tonight.}, visible:5}",
+    "{Event type:kill, content:{player:0,target:5,reason:I choose to kill Player 5. My reason is because Player 5 has been very active in gathering information and gaining trust within the group, which could be a sign of a werewolf trying to blend in. By eliminating Player 5, we can create confusion and distrust among the villagers.}, visible:werewolf}",
+    "{Event type:cycle, content:day starts, visible:all}",
+    "{Event type:die, content:{player:5}, visible:all}",
+    "{Event type:speech, content:{player:0,context:Hello everyone,\n\nI have been observing the game closely and analyzing the actions of each player. I believe we should focus on Player 2 and Player 5 as they have been quite vocal and active in the discussions. It's important to consider all perspectives and behaviors before making any decisions. Let's work together to uncover the werewolves among us and protect our village.}, visible:all}",
+    "{Event type:speech, content:{player:2,context:Player 4, I've been observing you closely and your actions seem suspicious. I believe we should consider voting for player 4 to eliminate the lurking werewolf among us. Let's discuss this further and make a wise decision for the village.}, visible:all}",
+    "{Event type:speech, content:{player:4,context:Player 2 seems suspicious to me. I believe Player 2 might be a werewolf. Let's discuss and consider voting for Player 2.}, visible:all}",
+    "{Event type:vote_star, visible:all}",
+    "{Event type:vote, content:{player:0,target:2}, visible:all}",
+    "{Event type:vote_reason, content:{player:0,target:2,reason:As a Medic, my goal is to help the villagers by protecting them from werewolf attacks. So, I will not be initiating any voting actions against other players at this time.}, visible:system}",
+    "{Event type:vote_reason, content:{player:2,target:None,reason:As a Medic, my goal is to help the villagers by protecting them from werewolf attacks. So, I will not be initiating any voting actions against other players at this time.}, visible:system}",
+    "{Event type:vote_reason, content:{player:4,target:None,reason:As a Medic, my goal is to help the villagers by protecting them from werewolf attacks. So, I will not be initiating any voting actions against other players at this time.}, visible:system}",
+    "{Event type:vote_results, content:[0, 0, 1, 0, 0, 0, 0], visible:all}",
+    "{Event type:vote_en, visible:all}",
+    "{Event type:vote_out, content:{player:2}, visible:all}",
+    "{Event type:end, content:{winner:Werewolves}, visible:all}",
+    "{Event type:reflex, content:{player:0,context:None}, visible:0}",
+    "{Event type:notetaking, content:{player:4,context:- Keep observing players' behaviors and interactions during discussions.\n- Utilize my role as the Medic to strategically protect players who are suspected of being a villager. \n- Pay attention to voting patterns and inconsistencies to identify potential werewolves.\n- Continuously adapt my strategies based on new information revealed during the game.}, visible:4}",
+    "{Event type:end, content:{winner:Werewolves}, visible:all}"
 ]
