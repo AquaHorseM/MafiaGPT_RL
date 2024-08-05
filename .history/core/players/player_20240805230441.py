@@ -21,7 +21,6 @@ class Player:
         def str_to_tensor(self, belief_str):
             #assume the str is in the format "player i believes player j is role k with probability p \n ..."
             def match(belief_str: str):
-                print(f"belief_str: {belief_str}")
                 #remember that the probablity might be integer which does not have a point
                 pattern = r"player (\d+) believes player (\d+) is role (\d+) with probability (\d+\.?\d*)"
                 match = re.match(pattern, belief_str)
@@ -34,18 +33,14 @@ class Player:
             for line in belief_str.split("\n"):
                 if line == "":
                     continue
-                m = match(line)
-                if m is None:
-                    return None
-                i, j, k, p = m
+                i, j, k, p = match(line)
                 beliefs[i][j][k] = p
                 return beliefs
         
         def update(self, beliefs, confidence = 0.2):
             if isinstance(beliefs, str):
                 beliefs = self.str_to_tensor(beliefs)
-            if beliefs is not None:
-                self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
+            self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
             return
                 
     

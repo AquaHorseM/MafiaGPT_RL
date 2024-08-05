@@ -34,18 +34,14 @@ class Player:
             for line in belief_str.split("\n"):
                 if line == "":
                     continue
-                m = match(line)
-                if m is None:
-                    return None
-                i, j, k, p = m
+                i, j, k, p = match(line)
                 beliefs[i][j][k] = p
                 return beliefs
         
         def update(self, beliefs, confidence = 0.2):
             if isinstance(beliefs, str):
                 beliefs = self.str_to_tensor(beliefs)
-            if beliefs is not None:
-                self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
+            self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
             return
                 
     

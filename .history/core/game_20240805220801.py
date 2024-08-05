@@ -287,11 +287,11 @@ class Game:
     def run_night(self):
         self.werewolves_talks = []
         for medic_id in self.get_alive_medics():
-            action, target, reason = self.all_players[medic_id].healing(self)
+            target, reason = self.all_players[medic_id].healing(self)
             self.add_event({"event": "healing", "content": {"player": medic_id, "target": target, "reason": reason}, "visible": medic_id})
             self.night_info["healed"] = target
         for seer_id in self.get_alive_seers():
-            action, target, reason = self.all_players[seer_id].inquiry(self)
+            target, reason = self.all_players[seer_id].inquiry(self)
             is_werewolf = self.all_players[target].get_role() == "werewolf" if target is not None else None
             self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": target, "is_werewolf": is_werewolf, "reason": reason}, "visible": seer_id})
             if is_werewolf is not None: 

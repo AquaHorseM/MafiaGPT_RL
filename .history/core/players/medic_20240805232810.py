@@ -1,5 +1,5 @@
 from core.players.player import Player
-from core.players.utils import get_prompt, get_target_from_response
+from core.players.utils import get_prompt
 from core.api import send_message_xsm
 from core.event import EventBook
 import os
@@ -45,14 +45,15 @@ class MedicPlayer(Player):
         prompt_path = os.path.join(self.prompt_dir_path, "vote.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = send_message_xsm(prompt)
-        vote = get_target_from_response(response)
+        #find the first number in the response
+        vote = int(re.search(r"\d+", response).group())
         return vote, response
     
     def _heal(self):
         prompt_path = os.path.join(self.prompt_dir_path, "heal.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = send_message_xsm(prompt)
-        heal = get_target_from_response(response)
+        heal = int(re.search(r"\d+", response).group())
         return heal, response
     
     def _speak(self, event_book: EventBook):

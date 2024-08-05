@@ -35,7 +35,7 @@ class Player:
                 if line == "":
                     continue
                 m = match(line)
-                if m is None:
+                if match is None:
                     return None
                 i, j, k, p = m
                 beliefs[i][j][k] = p

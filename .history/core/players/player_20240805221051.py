@@ -12,41 +12,24 @@ class Player:
             self.roles_num = roles_num
         
         def __str__(self) -> str:
-            s = ""
             for i in range(self.player_num):
                 for j in range(self.player_num):
-                    s += f"player {i} believes player {j} is role {np.argmax(self.beliefs[i][j])} with probability {np.max(self.beliefs[i][j])} \n"
-            return s
+                    print("Player", i, "believes Player", j, "is", np.argmax(self.beliefs[i][j]), "with probability", np.max(self.beliefs[i][j]))
                     
         def str_to_tensor(self, belief_str):
-            #assume the str is in the format "player i believes player j is role k with probability p \n ..."
-            def match(belief_str: str):
-                print(f"belief_str: {belief_str}")
-                #remember that the probablity might be integer which does not have a point
-                pattern = r"player (\d+) believes player (\d+) is role (\d+) with probability (\d+\.?\d*)"
-                match = re.match(pattern, belief_str)
-                print(f"match: {match}")
-                if match is None:
-                    return None
-                return tuple(map(int, match.groups()))
-            
+            #assume the str is in the format "play i believes player j is role k with probability p \n ..."
             beliefs = np.zeros((self.player_num, self.player_num, self.roles_num))
             for line in belief_str.split("\n"):
                 if line == "":
                     continue
-                m = match(line)
-                if m is None:
-                    return None
-                i, j, k, p = m
+                i, j, k, p = map(int, re.findall(r"\d+", line))
                 beliefs[i][j][k] = p
                 return beliefs
         
         def update(self, beliefs, confidence = 0.2):
             if isinstance(beliefs, str):
                 beliefs = self.str_to_tensor(beliefs)
-            if beliefs is not None:
-                self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
-            return
+            self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
                 
     
     def get_replacements(self):

@@ -35,7 +35,7 @@ class Player:
                 if line == "":
                     continue
                 m = match(line)
-                if m is None:
+                if match is None:
                     return None
                 i, j, k, p = m
                 beliefs[i][j][k] = p
@@ -44,8 +44,7 @@ class Player:
         def update(self, beliefs, confidence = 0.2):
             if isinstance(beliefs, str):
                 beliefs = self.str_to_tensor(beliefs)
-            if beliefs is not None:
-                self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
+            self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
             return
                 
     
