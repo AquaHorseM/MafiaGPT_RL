@@ -84,12 +84,12 @@ class Game:
         
         init_medic_private_info = {
             "role": "medic",
-            "last_heal": None
+            "heal_history": []
         }
         
         init_seer_private_info = {
             "role": "seer",
-            "known_roles": dict()
+            "inquire_history": []
         }
         
         for i, num in enumerate(shuffled_nums):

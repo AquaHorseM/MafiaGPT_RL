@@ -84,12 +84,12 @@ class Game:
         
         init_medic_private_info = {
             "role": "medic",
-            "last_heal": None
+            "heal_history": []
         }
         
         init_seer_private_info = {
             "role": "seer",
-            "known_roles": dict()
+            "inquire_history": []
         }
         
         for i, num in enumerate(shuffled_nums):
@@ -115,15 +115,9 @@ class Game:
             elif role == "medic":
                 if player_type == "baseline":
                     self.all_players.append(Medic(role="medic", id=i))
-                else:
-                    assert os.path.exists("core/players/prompts/medic"), "Medic prompt directory not found"
-                    self.all_players.append(MedicPlayer(i, init_global_info, init_medic_private_info, "core/players/prompts/medic"))
             elif role == "seer":
                 if player_type == "baseline":
                     self.all_players.append(Seer(role="seer", id=i))
-                else:
-                    assert os.path.exists("core/players/prompts/seer"), "Seer prompt directory not found"
-                    self.all_players.append(SeerPlayer(i, init_global_info, init_seer_private_info, "core/players/prompts/seer"))
 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
 
