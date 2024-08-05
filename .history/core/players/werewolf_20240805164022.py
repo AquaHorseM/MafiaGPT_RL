@@ -20,9 +20,6 @@ class WerewolfPlayer(Player):
         replacements.update({
             "{werewolf_ids}": str(self.private_info["werewolf_ids"])
         })
-        replacements.update({
-            "{hidden_state}": str(self.hidden_state),
-        })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
         replacements.update({"{previous_advices}": self.show_previous_advices()})

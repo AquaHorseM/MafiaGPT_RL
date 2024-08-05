@@ -5,7 +5,7 @@ from core.event import EventBook
 import os
 import re
 
-class WerewolfPlayer(Player):
+class SeerPlayer(Player):
     def __init__(self, id, global_info, private_info, prompt_dir_path):
         super().__init__(id, global_info, private_info)
         self.prompt_dir_path = prompt_dir_path
@@ -19,9 +19,6 @@ class WerewolfPlayer(Player):
         replacements = super().get_replacements()
         replacements.update({
             "{werewolf_ids}": str(self.private_info["werewolf_ids"])
-        })
-        replacements.update({
-            "{hidden_state}": str(self.hidden_state),
         })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
@@ -68,7 +65,7 @@ class WerewolfPlayer(Player):
     
     def _update_hidden_state(self, events):
         #TODO
-        self.event_book.add_event(events)        
+        self.event_book.add_event(events）        
         event_des = ""
         for event in events:
             event_des += str(event)

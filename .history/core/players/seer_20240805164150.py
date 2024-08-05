@@ -5,11 +5,11 @@ from core.event import EventBook
 import os
 import re
 
-class WerewolfPlayer(Player):
+class SeerPlayer(Player):
     def __init__(self, id, global_info, private_info, prompt_dir_path):
         super().__init__(id, global_info, private_info)
         self.prompt_dir_path = prompt_dir_path
-        self.labels = ["all", "werewolf"]
+        self.labels = ["all", "seer"]
         '''
         The event book is temporarily used for debugging purposes.
         '''
@@ -18,10 +18,7 @@ class WerewolfPlayer(Player):
     def get_replacements(self):
         replacements = super().get_replacements()
         replacements.update({
-            "{werewolf_ids}": str(self.private_info["werewolf_ids"])
-        })
-        replacements.update({
-            "{hidden_state}": str(self.hidden_state),
+            "{known_roles}": str(self.private_info["known_roles"]),
         })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
@@ -30,17 +27,16 @@ class WerewolfPlayer(Player):
     
     def init_game(self, global_info, private_info):
         super().init_game(global_info, private_info)
-        for wid in range(self.private_info["werewolf_ids"]):
-            self.hidden_state.set_role(wid, self.global_info["roles_mapping"]["werewolf"])
+        self.private_info["known_roles"] = dict()
         
     def _act(self, event_book: EventBook, available_actions = None):
         self.update_hidden_state(event_book)
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
-        elif "kill" in available_actions:
-            res = self._kill()
-            return ("kill", res[0], res[1])
+        elif "see" in available_actions:
+            res = self._see()
+            return ("see", res[0], res[1])
     
     def _vote(self):
         #TODO
@@ -51,8 +47,8 @@ class WerewolfPlayer(Player):
         vote = int(re.search(r"\d+", response).group())
         return vote, response
     
-    def _kill(self):
-        prompt_path = os.path.join(self.prompt_dir_path, "kill.txt")
+    def _see(self):
+        prompt_path = os.path.join(self.prompt_dir_path, "see.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = send_message_xsm(prompt)
         #find the first number in the response
@@ -82,17 +78,11 @@ class WerewolfPlayer(Player):
         self.hidden_state.update(response, confidence = 0.2)
         return
     
-    def get_alive_werewolf_ids(self):
-        return [wid for wid in self.private_info["werewolf_ids"] if wid in self.global_info["alive_players"]]
+    def receive_inquiry_result(self, target, is_werewolf):
+        self.private_info["known_roles"][target] = 1 if is_werewolf else 0
+        return
     
-    def show_previous_advices(self):
-        #TODO
-        if self.private_info["previous_advices"] == []:
-            s = "No previous advices."
-        else:
-            s = ""
-            for id, target, reason in self.private_info["previous_advices"]:
-                s += f"Player {id} advised to target Player {target} because {reason}\n"
-        if len(self.private_info["previous_advices"]) == len(self.get_alive_werewolf_ids()) - 1:
-            s += "Notice that you are the last werewolf, so your choice determines the final decision."
-        return s
+    def get_known_roles(self):
+        s = ""
+        for player_id, role in self.private_info["known_roles"].items():
+            s += f"Player {player_id} is a {'werewolf' if role == 1 else 'not werewolf'}."
