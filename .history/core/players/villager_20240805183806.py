@@ -5,11 +5,11 @@ from core.event import EventBook
 import os
 import re
 
-class MedicPlayer(Player):
+class VillagerPlayer(Player):
     def __init__(self, id, global_info, private_info, prompt_dir_path):
         super().__init__(id, global_info, private_info)
         self.prompt_dir_path = prompt_dir_path
-        self.labels = ["all", "medic"]
+        self.labels = ["all", "villager"]
         '''
         The event book is temporarily used for debugging purposes.
         '''
@@ -36,7 +36,7 @@ class MedicPlayer(Player):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
-        elif "heal" in available_actions:
+        elif "see" in available_actions:
             res = self._heal()
             return ("heal", res[0], res[1])
     

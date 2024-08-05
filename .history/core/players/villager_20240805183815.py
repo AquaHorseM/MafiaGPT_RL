@@ -5,11 +5,11 @@ from core.event import EventBook
 import os
 import re
 
-class MedicPlayer(Player):
+class VillagerPlayer(Player):
     def __init__(self, id, global_info, private_info, prompt_dir_path):
         super().__init__(id, global_info, private_info)
         self.prompt_dir_path = prompt_dir_path
-        self.labels = ["all", "medic"]
+        self.labels = ["all", "villager"]
         '''
         The event book is temporarily used for debugging purposes.
         '''
@@ -17,9 +17,6 @@ class MedicPlayer(Player):
         
     def get_replacements(self):
         replacements = super().get_replacements()
-        replacements.update({
-            "{last_heal}": self.private_info["last_heal"] if self.private_info["last_heal"] is not None else "Nobody",
-        })
         replacements.update({
             "{hidden_state}": str(self.hidden_state),
         })
@@ -29,14 +26,13 @@ class MedicPlayer(Player):
     
     def init_game(self, global_info, private_info):
         super().init_game(global_info, private_info)
-        self.private_info["last_heal"] = None
-        
+
     def _act(self, event_book: EventBook, available_actions = None):
         self.update_hidden_state(event_book)
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
-        elif "heal" in available_actions:
+        elif "see" in available_actions:
             res = self._heal()
             return ("heal", res[0], res[1])
     
