@@ -3,6 +3,7 @@
         {
             "role": "werewolf",
             "player_type": "reflex" 
+            // baseline or reflex
         },
         {
             "role": "werewolf",
