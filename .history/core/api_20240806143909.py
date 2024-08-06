@@ -10,7 +10,7 @@ import openai, os, time, yaml
 # this is for printing messages in terminal
 DEBUG = False
 
-def load_client(key_path="openai_config.yaml"):
+def load_client(key_path="openai_key.yaml"):
     openai._reset_client()
     key = yaml.safe_load(open(key_path))
     for k, v in key.items():
@@ -18,7 +18,7 @@ def load_client(key_path="openai_config.yaml"):
     return openai._load_client()
 
 # getting open ai api key from the environmental variables
-client = load_client()
+client = openai.OpenAI(api_key = os.getenv("OPENAI_API_KEY"))
 
 # make content in openai wanted format
 def create_message(role, content):
