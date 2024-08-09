@@ -58,7 +58,19 @@ class Game:
             if player_configs[num]["role"].lower() == "werewolf":
                 werewolf_ids.append(num)
         
-        init_global_info = self.get_global_info()
+        init_global_info = {
+            "player_num": player_num,
+            "alive_players": list(range(player_num)),
+            "dead_players": [],
+            "current_round": 0, #0 indicates the game hasn't started
+            "roles_mapping": {
+                "villager": 0,
+                "werewolf": 1,
+                "medic": 2,
+                "seer": 3
+            },
+            "previous_votes": []
+        }
                 
         init_werewolf_private_info = {
             "role": "werewolf",
@@ -342,8 +354,6 @@ class Game:
 
     def save_game_record(self):
         json.dump(self.log, open(f"records/game_{self.id}_log.json", "w"), indent=4)
-        
-    
         
         
         

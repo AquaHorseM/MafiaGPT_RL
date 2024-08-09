@@ -343,7 +343,5 @@ class Game:
     def save_game_record(self):
         json.dump(self.log, open(f"records/game_{self.id}_log.json", "w"), indent=4)
         
-    
-        
         
         
