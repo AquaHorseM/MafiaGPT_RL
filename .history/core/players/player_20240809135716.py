@@ -165,3 +165,9 @@ class Player:
         }
         with open(path, 'wb') as file:
             pickle.dump(info, file)
+            
+    def load_from_checkpoint(self, path):
+        with open(path, 'rb') as file:
+            info = pickle.load(file)
+        role = info["private_info"]["role"]
+        

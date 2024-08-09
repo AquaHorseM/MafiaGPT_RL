@@ -22,7 +22,6 @@ class Game:
         self.player_types = []
         self.event_book = EventBook()
         self.logger = self._configure_logger()
-        self.current_round = 0
         self.night_info = {
             "killed": None,
             "healed": None
@@ -188,7 +187,7 @@ class Game:
             votes_sorted = dict(sorted(votes.items(), key=lambda x: x[1]))
             self.vote_out(list(votes_sorted.keys())[-1])
         if self.is_game_end():  # to check if game is over by votes
-            self.save_game_record()
+            self.save_game()
         return
     
     def check_death_info(self):
@@ -328,32 +327,15 @@ class Game:
             self.add_event({"event": "cycle", "content": "day starts"})
             self.check_death_info() #it is set here so that the death info would be revealed in the day
             if self.is_game_end():
-                self.save_game_record()
+                self.save_game()
                 return
             self.run_day()
             if self.is_game_end():
-                self.save_game_record()
+                self.save_game()
                 return
-            self.current_round += 1
             
-    def get_global_info(self):
-        return {
-            "player_num": len(self.all_players),
-            "alive_players": self.alive_players,
-            "dead_players": self.dead_players,
-            "current_round": self.current_round,
-            "roles_mapping": {
-                "villager": 0,
-                "werewolf": 1,
-                "medic": 2,
-                "seer": 3
-            },
-            "previous_votes": self.votes
-        }
             
 
-    def save_game_record(self):
+    def save_game(self):
         json.dump(self.log, open(f"records/game_{self.id}_log.json", "w"), indent=4)
-        
-        
         

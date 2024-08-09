@@ -22,7 +22,6 @@ class Game:
         self.player_types = []
         self.event_book = EventBook()
         self.logger = self._configure_logger()
-        self.current_round = 0
         self.night_info = {
             "killed": None,
             "healed": None
@@ -334,26 +333,14 @@ class Game:
             if self.is_game_end():
                 self.save_game_record()
                 return
-            self.current_round += 1
             
-    def get_global_info(self):
-        return {
-            "player_num": len(self.all_players),
-            "alive_players": self.alive_players,
-            "dead_players": self.dead_players,
-            "current_round": self.current_round,
-            "roles_mapping": {
-                "villager": 0,
-                "werewolf": 1,
-                "medic": 2,
-                "seer": 3
-            },
-            "previous_votes": self.votes
-        }
             
 
     def save_game_record(self):
         json.dump(self.log, open(f"records/game_{self.id}_log.json", "w"), indent=4)
+        
+    def save_checkpoint(self):
+        
         
         
         

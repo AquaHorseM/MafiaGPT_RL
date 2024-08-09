@@ -2,7 +2,7 @@ import random
 import numpy as np
 from copy import deepcopy
 from core.event import EventBook
-import re, pickle
+import re
         
 class Player:
     class HiddenState:
@@ -163,5 +163,4 @@ class Player:
             "private_info": self.private_info,
             "tick": self.tick
         }
-        with open(path, 'wb') as file:
-            pickle.dump(info, file)
+        

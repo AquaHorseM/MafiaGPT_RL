@@ -2,7 +2,7 @@ import random
 import numpy as np
 from copy import deepcopy
 from core.event import EventBook
-import re, pickle
+import re
         
 class Player:
     class HiddenState:
@@ -65,9 +65,12 @@ class Player:
     def __init__(self, id, global_info, private_info):
         self.is_alive = True
         self.id = id
+        self.special_actions_log = []
         self.hidden_state = self.HiddenState(global_info["player_num"], len(global_info["roles_mapping"]))
         self.global_info = deepcopy(global_info)
         self.private_info = deepcopy(private_info)
+        self.history = None
+        self.last_update_tick = 0
         self.labels = ["all"]
         self.tick = 0
         
@@ -114,11 +117,13 @@ class Player:
 
     def reset(self): #ABORTED
         self.is_alive = True
+        self.special_actions_log = []
         self.hidden_state = self.HiddenState(self.global_info["player_num"], len(self.global_info["roles_mapping"]))
         self.global_info["alive_players"] = range(self.global_info["player_num"])
         self.global_info["dead_players"] = []
         self.global_info["current_round"] = 0
         self.private_info = {}
+        self.history = None
         return
     
     def filter_event_book(self, event_book: EventBook):
@@ -136,12 +141,6 @@ class Player:
     def reflex(self, game):
         return
     
-    def save_checkpoint(self, path):
-        return
-    
-    def init_from_checkpoint(self, path):
-        return
-    
     '''
     The following functions are defined to be consistent with the baseline version.
     DO NOT use them in the future.
@@ -156,12 +155,4 @@ class Player:
     def kill(self, game):
         return self._act(game.event_book, available_actions = ["kill"])
     
-    def save_checkpoint(self, path):
-        info = {
-            "beliefs": self.hidden_state.beliefs,
-            "prompt_dir_path": self.prompt_dir_path,
-            "private_info": self.private_info,
-            "tick": self.tick
-        }
-        with open(path, 'wb') as file:
-            pickle.dump(info, file)
+    

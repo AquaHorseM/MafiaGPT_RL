@@ -349,7 +349,7 @@ class Game:
                 "seer": 3
             },
             "previous_votes": self.votes
-        }
+            
             
 
     def save_game_record(self):

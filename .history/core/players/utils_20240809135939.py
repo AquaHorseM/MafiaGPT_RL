@@ -6,7 +6,6 @@ from core.players.werewolf import WerewolfPlayer
 from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
 from core.players.villager import VillagerPlayer
-from core.game import Game
 
 def get_prompt(prompt_path, replacements):
     if not prompt_path.endswith(".txt"):
@@ -30,14 +29,8 @@ def get_target_from_response(response):
         target = None
     return target
 
-def load_player_from_checkpoint(path, game: Game):
+def load_player_from_checkpoint(path):
     with open(path, 'rb') as file:
         info = pickle.load(file)
     role = info["private_info"]["role"]
-    switcher = {
-        "werewolf": WerewolfPlayer,
-        "medic": MedicPlayer,
-        "seer": SeerPlayer,
-        "villager": VillagerPlayer
-    }
-    return switcher[role](info["id"], info["global_info"], info["private_info"], info["prompt_dir_path"])
+    

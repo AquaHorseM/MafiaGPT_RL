@@ -165,3 +165,11 @@ class Player:
         }
         with open(path, 'wb') as file:
             pickle.dump(info, file)
+
+def load_player_from_checkpoint(path):
+    with open(path, 'rb') as file:
+        info = pickle.load(file)
+    player = Player(info["id"], info["global_info"], info["private_info"])
+    player.hidden_state.update(info["beliefs"])
+    player.tick = info["tick"]
+    return player

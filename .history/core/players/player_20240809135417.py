@@ -2,7 +2,7 @@ import random
 import numpy as np
 from copy import deepcopy
 from core.event import EventBook
-import re, pickle
+import re
         
 class Player:
     class HiddenState:
@@ -156,12 +156,4 @@ class Player:
     def kill(self, game):
         return self._act(game.event_book, available_actions = ["kill"])
     
-    def save_checkpoint(self, path):
-        info = {
-            "beliefs": self.hidden_state.beliefs,
-            "prompt_dir_path": self.prompt_dir_path,
-            "private_info": self.private_info,
-            "tick": self.tick
-        }
-        with open(path, 'wb') as file:
-            pickle.dump(info, file)
+    

@@ -165,3 +165,4 @@ class Player:
         }
         with open(path, 'wb') as file:
             pickle.dump(info, file)
+        
