@@ -190,7 +190,7 @@ class Game:
                 event["visible"] = "all"
             self.add_event(Event(event))
 
-    def run_day(self, reflex=True):
+    def run_day(self, reflex):
         for player_id in self.alive_players:
             if self.player_types[player_id] == "baseline":
                 res = self.all_players[player_id].speak(self, render.speech_command()).replace("\n", " ")
@@ -245,13 +245,12 @@ class Game:
                     )
                     player.notes = res
                 elif self.player_types[player_id] == "reflex":
-                    pass
-                    # res = player.reflex(self)
-                    # self.add_event({
-                    #     "event": "reflex",
-                    #     "content": {"player": player_id, "context": res},
-                    #     "visible": player_id
-                    # })
+                    res = player.reflex(self)
+                    self.add_event({
+                        "event": "reflex",
+                        "content": {"player": player_id, "context": res},
+                        "visible": player_id
+                    })
         return
 
     def run_night(self):
@@ -313,7 +312,7 @@ class Game:
             #self.save_checkpoint(f"checkpoints/game_{self.id}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}")
             
             if self.cur_stage == 2:
-                self.run_day(reflex=reflex)       
+                self.run_day()       
                 if self.is_game_end():
                     self.save_game_record()
                     return

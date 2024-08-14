@@ -64,16 +64,12 @@ class WerewolfPlayer(Player):
         prompt = get_prompt(prompt_path, replacements)
         response = send_message_xsm(prompt)
         #Find the [type] in the response
-        s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
-        s_type = s_type.strip().split(",") #split the types
-        s_type = [s.strip() for s in s_type]
+        s_type = re.search(r"\[(.*?)\]", response).group(1)
         replacements.update({
-            "{speech_type}": str(s_type)
+            "{speech_type}": s_type
         })
-        print(f"I choose to speak {s_type}")
         prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
         prompt = get_prompt(prompt_path, replacements)
-        response = send_message_xsm(prompt)
         return response
     
     def _update_hidden_state(self, events):
@@ -107,7 +103,6 @@ class WerewolfPlayer(Player):
             s += "Notice that you are the last werewolf, so your choice determines the final decision."
         return s
     
-    
     def reflex(self, prev_hstate, next_hstate, pred_hstate):
         def update_note_from_response(response):
             #TODO, temporarily let the response be the new note
@@ -130,4 +125,3 @@ class WerewolfPlayer(Player):
         response = send_message_xsm(prompt)
         update_note_from_response(response)
         return response
-    

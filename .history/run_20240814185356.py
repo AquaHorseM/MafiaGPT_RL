@@ -10,7 +10,7 @@ parser.add_argument("--num_processes", type=int, default=1)
 parser.add_argument("--config_path", type=str, default="configs/player_configs_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
 parser.add_argument("--ckpt_path", type=str, default=None)
-parser.add_argument("--reflex",default=False, action="store_true")
+parser.add_argument("--reflex", type=bool, action=store_false)
 
 def run_game(ipt):
     idx, reflex, player_configs = ipt

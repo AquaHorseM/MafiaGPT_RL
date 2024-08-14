@@ -107,7 +107,7 @@ class WerewolfPlayer(Player):
             s += "Notice that you are the last werewolf, so your choice determines the final decision."
         return s
     
-    
+    '''
     def reflex(self, prev_hstate, next_hstate, pred_hstate):
         def update_note_from_response(response):
             #TODO, temporarily let the response be the new note
@@ -130,4 +130,4 @@ class WerewolfPlayer(Player):
         response = send_message_xsm(prompt)
         update_note_from_response(response)
         return response
-    
+    '''
