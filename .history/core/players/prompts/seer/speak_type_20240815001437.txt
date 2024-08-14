@@ -22,21 +22,23 @@ game logics :
     - forget things about dead players. they are not alive and shouldn't be targeted or ...
 ----------------
 
-You are player {player_id}, and in this game you are a villager.
+You are player {player_id}, and in this game you are a seer.
 It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+These are the results of previous inquiries:
 
-These are all previous events in the current game:
-
-{events}
-
+{known_roles}
 According to the history, this is your conclusion of other people's statuses and beliefs:
 
 {beliefs}
 
-Now, it's time for you to speak. Speeches are categorized into 6 types, each type consists of two components:
+Now, it's your time to decide in which way you should speak. You have to decide:
 1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly
 2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf. 
 
-Your speech should be in types of: {speak_type}. You have to combine these types in your speech.
+Your decision could be a combination of multiple types, i.e. you could choose 'Deceptive statement' and 'Honest protect' at the same time. Even 'Deceptive statement' and 'Honest protect' might co-exist (although you should use it most carefully, or it will easily lead to confusion).
 
-You should try your best not to reveal that you are a werewolf. You should pretend to be a good player. You should directly answer your speech.
+You answer should be in a format of:
+
+I choose [choice1, choice2, ...]. My reason is: ...
+
+Remember to include '[]' in your response or your choices might not be recognized. Each choice should be like 'honest/deceptive statement/protect/challenge', for example 'honest statement'.
