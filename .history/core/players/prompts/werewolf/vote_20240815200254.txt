@@ -22,24 +22,13 @@ game logics :
     - forget things about dead players. they are not alive and shouldn't be targeted or ...
 ----------------
 
-You are player {player_id}, and in this game you are a seer.
-It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
-These are the results of previous inquiries:
-
-{known_roles}
+You are player {id}, and in this game you are a werewolf. All werewolves including you are {werewolf_ids}.
+It is the {current_round} round. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
 
 According to the history, this is your conclusion of other people's statuses and beliefs:
 
-{hidden_state}
+{beliefs}
 
-Now, it's your time to decide in which way you should speak. You have to decide:
-1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly
-2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf. 
+Now, it's time for you to choose a player to vote out. Remember the player voted the most would DIE. Your answer should be in the format of:
 
-Your decision could be a combination of multiple types, i.e. you could choose 'Deceptive statement' and 'Honest protect' at the same time. Even 'Deceptive statement' and 'Honest protect' might co-exist (although you should use it most carefully, or it will easily lead to confusion).
-
-You answer should be in a format of:
-
-I choose [choice1, choice2, ...]. My reason is: ...
-
-Remember to include '[]' in your response or your choices might not be recognized. Each choice should be like 'honest/deceptive statement/protect/challenge', for example 'honest statement'.
+I vote for Player <NUMBER>. My reason is: <REASON>.
