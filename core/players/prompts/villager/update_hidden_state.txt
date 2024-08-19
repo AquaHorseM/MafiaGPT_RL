@@ -27,6 +27,8 @@ It is round {current_round}. All players currently alive are: {alive_players}, w
 
 You don't know any additional information about other players, so you should try to guess or deduce their roles based on their speeches; also you should infer their beliefs on other players from their speeches. Here are some basic instructions, but this only includes some very basic scenarios:
 According to speeches of other players, if a player A says player B has a specific identity, then you can simply assume that the belief of A to B is 100%.
+For other villagers like you, they gain no information during nights, so all their information came from the speech. Hence, if you find that someone seems to have information gained apart from the speech, then you can partly affirm that they are not villagers.
+For non-werewolves, they are unlikely to lie or conceal information by contrast with werewolves, so if you find someone suspicious due to lying, speech contradiction to existing information or concealing, you can increase the belief of him being a werewolf.
 For some player who says that he heals or inquiries someone, he is claiming himself the medic or the seer, respectively. And if nobody else claims the same role, you can belief him as that role with high confidence, except for a self-claimed seer who says that you are a werewolf, whom you should assume as werewolf with extremely high probability.
 And for those players with no special speech, you can temporarily assume them as villagers.
 
