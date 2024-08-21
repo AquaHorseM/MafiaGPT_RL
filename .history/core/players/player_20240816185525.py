@@ -95,7 +95,6 @@ class Player:
         self.labels = ["all"]
         self.tick = 0
         self.event_book = EventBook()
-        self.reflex_tuple = (None, None, None)
         self.prompt_dir_path = prompt_dir_path
         self.reflex_note_path = reflex_note_path if reflex_note_path is not None else os.path.join(prompt_dir_path, "reflex_note.txt")
         self.init_game(global_info, private_info)
@@ -114,7 +113,7 @@ class Player:
         self._update_hidden_state(self.filter_event_book(event_book))
         self.tick = event_book.tick
     
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True): #return (action, target, reason)
+    def _act(self, event_book: EventBook, available_actions = None): #return (action, target, reason)
         if len(available_actions) == 0:
             return (None, None, "No available actions.")
         else:
@@ -178,6 +177,8 @@ class Player:
         prompt_path = os.path.join(self.prompt_dir_path, "update_hidden_state")
         prompt = get_prompt(prompt_path, replacements)
         response = send_message_xsm(prompt)
+        #DEBUG 
+        print(f"Player {self.id} updating hidden state with response: {response}")
         #first line is the confidence, the other lines are the beliefs
         try:
             conf = float(response.split("\n")[0])/10
@@ -194,14 +195,14 @@ class Player:
     DO NOT use them in the future.
     '''
     
-    def healing(self, game, update_hstate=True):
-        return self._act(game.event_book, available_actions = ["heal"], update_hstate = update_hstate)
+    def healing(self, game):
+        return self._act(game.event_book, available_actions = ["heal"])
     
-    def inquiry(self, game, update_hstate=True):
-        return self._act(game.event_book, available_actions = ["see"], update_hstate = update_hstate)
+    def inquiry(self, game):
+        return self._act(game.event_book, available_actions = ["see"])
     
-    def kill(self, game, update_hstate=True):
-        return self._act(game.event_book, available_actions = ["kill"], update_hstate = update_hstate)
+    def kill(self, game):
+        return self._act(game.event_book, available_actions = ["kill"])
     
     '''
     The following functions are defined for saving and loading checkpoints.

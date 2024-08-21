@@ -107,7 +107,7 @@ def send_message_xsm(messages, agent_config = {}):
             time.sleep(10)
             continue
     # returning the response as a string
-    #! debug
+    #debug
     with open("message_history_backup.txt", "a") as f:
         f.write(f"{response.choices[0].message.content}\n\n")
     return response.choices[0].message.content

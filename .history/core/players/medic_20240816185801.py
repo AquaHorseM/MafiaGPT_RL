@@ -7,7 +7,8 @@ import re
 
 class MedicPlayer(Player):
     def __init__(self, id, global_info, private_info, prompt_dir_path, reflex_note_path = None):
-        super().__init__(id, global_info, private_info, prompt_dir_path, reflex_note_path)
+        super().__init__(id, global_info, private_info)
+        self.prompt_dir_path = prompt_dir_path
         self.labels = ["all", "medic"]
         
     def get_replacements(self):
@@ -26,9 +27,8 @@ class MedicPlayer(Player):
         super().init_game(global_info, private_info)
         self.private_info["last_heal"] = None
         
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
+    def _act(self, event_book: EventBook, available_actions = None):
+        self.update_hidden_state(event_book)
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
@@ -51,9 +51,8 @@ class MedicPlayer(Player):
         heal = get_target_from_response(response)
         return heal, response
     
-    def _speak(self, event_book: EventBook, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
+    def _speak(self, event_book: EventBook):
+        self.update_hidden_state(event_book)
         prompt_path = os.path.join(self.prompt_dir_path, "speak_type.txt")
         replacements = self.get_replacements()
         prompt = get_prompt(prompt_path, replacements)

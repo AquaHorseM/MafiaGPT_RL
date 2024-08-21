@@ -52,9 +52,6 @@ class Game:
         shuffled_nums = list(range(self.player_num))
         random.shuffle(shuffled_nums)
         
-        self.alive_players = list(range(self.player_num))
-        self.dead_players = []        
-        
         werewolf_ids = [] 
         for num in range(len(shuffled_nums)):
             if player_configs[shuffled_nums[num]]["role"].lower() == "werewolf":
@@ -105,6 +102,9 @@ class Game:
                     self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
                 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
+
+        self.alive_players = list(range(self.player_num))
+        self.dead_players = []        
             
     def get_player(self, id):
         return self.all_players[id]
@@ -134,8 +134,7 @@ class Game:
         self.all_players[player_id].is_alive = False
         #update for all players
         for player_id in self.alive_players:
-            self.all_players[player_id].global_info["alive_players"] = self.alive_players
-            self.all_players[player_id].global_info["dead_players"] = self.dead_players
+            self.all_players[player_id].hidden_state.set_alive(player_id, False)
     
     def die(self, player_id):
         if player_id not in self.alive_players:
@@ -145,9 +144,6 @@ class Game:
         self.dead_players.append(player_id)
         self.add_event({"event": "die", "content" : {"player": player_id}, "visible": "all"})
         self.all_players[player_id].is_alive = False
-        for player_id in self.alive_players:
-            self.all_players[player_id].global_info["alive_players"] = self.alive_players
-            self.all_players[player_id].global_info["dead_players"] = self.dead_players
         return
 
     def is_game_end(self):

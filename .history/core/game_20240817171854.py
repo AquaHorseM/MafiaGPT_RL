@@ -52,9 +52,6 @@ class Game:
         shuffled_nums = list(range(self.player_num))
         random.shuffle(shuffled_nums)
         
-        self.alive_players = list(range(self.player_num))
-        self.dead_players = []        
-        
         werewolf_ids = [] 
         for num in range(len(shuffled_nums)):
             if player_configs[shuffled_nums[num]]["role"].lower() == "werewolf":
@@ -105,6 +102,9 @@ class Game:
                     self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
                 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
+
+        self.alive_players = list(range(self.player_num))
+        self.dead_players = []        
             
     def get_player(self, id):
         return self.all_players[id]
@@ -132,10 +132,6 @@ class Game:
         self.dead_players.append(player_id)
         self.add_event({"event": "vote_out", "content": {"player": player_id}, "visible": "all"})
         self.all_players[player_id].is_alive = False
-        #update for all players
-        for player_id in self.alive_players:
-            self.all_players[player_id].global_info["alive_players"] = self.alive_players
-            self.all_players[player_id].global_info["dead_players"] = self.dead_players
     
     def die(self, player_id):
         if player_id not in self.alive_players:
@@ -145,9 +141,6 @@ class Game:
         self.dead_players.append(player_id)
         self.add_event({"event": "die", "content" : {"player": player_id}, "visible": "all"})
         self.all_players[player_id].is_alive = False
-        for player_id in self.alive_players:
-            self.all_players[player_id].global_info["alive_players"] = self.alive_players
-            self.all_players[player_id].global_info["dead_players"] = self.dead_players
         return
 
     def is_game_end(self):
@@ -169,6 +162,9 @@ class Game:
         if max(votes) > 1:
             votes_sorted = dict(sorted(votes.items(), key=lambda x: x[1]))
             self.vote_out(list(votes_sorted.keys())[-1])
+        if self.is_game_end():  # to check if game is over by votes
+            self.all_players_reflex()
+            self.save_game_record()
         return
     
     def check_death_info(self):
@@ -309,10 +305,6 @@ class Game:
                 if self.is_game_end():
                     self.all_players_reflex()
                     self.save_game_record()
-                    if train:
-                        self.add_events_to_data(self.temp_events)
-                        self.temp_events = []
-                        self.store_data(f"records/game_{self.id}_data.pkl")
                     return
                 if save_checkpoint:
                     self.save_checkpoint(f"checkpoints/game_{self.id}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}")
@@ -321,10 +313,6 @@ class Game:
             if self.is_game_end():
                 self.all_players_reflex()
                 self.save_game_record()
-                if train:
-                    self.add_events_to_data(self.temp_events)
-                    self.temp_events = []
-                    self.store_data(f"records/game_{self.id}_data.pkl")
                 return
             self.current_round += 1
             self.cur_stage = 0
@@ -446,7 +434,7 @@ class Game:
         return self.all_players[player_id].hidden_state
     
     def get_joint_hstate(self):
-        return np.concatenate([player.hidden_state.beliefs for player in self.all_players], axis = 0)
+        return np.concatenate([player.hidden_state for player in self.all_players], axis = 0)
     
     def add_all_hstate_to_data(self):
         if self.temp_events:
@@ -458,6 +446,6 @@ class Game:
         self.data.append(tuple(events))
 
     
-    def store_data(self, path):
-        with open(path, "wb") as file:
-            pickle.dump(self.data, file)
+    
+    
+    

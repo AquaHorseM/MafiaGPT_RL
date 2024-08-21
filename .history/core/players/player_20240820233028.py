@@ -178,6 +178,8 @@ class Player:
         prompt_path = os.path.join(self.prompt_dir_path, "update_hidden_state")
         prompt = get_prompt(prompt_path, replacements)
         response = send_message_xsm(prompt)
+        #DEBUG 
+        print(f"Player {self.id} updating hidden state with response: {response}")
         #first line is the confidence, the other lines are the beliefs
         try:
             conf = float(response.split("\n")[0])/10

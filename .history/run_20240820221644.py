@@ -29,7 +29,7 @@ if __name__ == "__main__":
     with open(args.config_path, "r") as f:
         player_configs = json.load(f)["players"]
     if args.num_processes == 1:
-        run_game((args.start_idx, args.reflex, player_configs, args.train))
+        run_game((args.start_idx, args.reflex, player_configs))
     else:
         ipt = [(args.start_idx + i, args.reflex, player_configs, args.train) for i in range(args.num_games)]
         if __name__ == "__main__":
