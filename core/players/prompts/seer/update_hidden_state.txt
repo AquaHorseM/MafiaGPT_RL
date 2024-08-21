@@ -34,6 +34,8 @@ For players you have not inquired about, you should try to guess or deduce their
 According to speeches of other players, if a player A says player B has a specific identity, then you can simply assume that the belief of A to B is 100%.
 For some player who says that he heals someone, he is claiming himself the medic.
 And if nobody else claims the same role, you can belief him as that role with high confidence.
+For villagers, they gain no information during nights, so all their information came from the speech. Hence, if you find that someone seems to have information gained apart from the speech, then you can partly affirm that he is the medic or a werewolf.
+For non-werewolves, they are unlikely to lie or conceal information by contrast with werewolves, so if you find someone suspicious due to lying, speech contradiction to existing information or concealing, you can increase the belief of him being a werewolf.
 For some player who says that he inquiries someone, he is claiming himself the seer, which is the role of yours, so you should assume him as werewolf with high probability.
 And for those players with no special speech, you can temporarily assume them as villagers.
 

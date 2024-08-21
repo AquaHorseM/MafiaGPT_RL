@@ -37,3 +37,8 @@ Now, it's time for you to make an inquiry on another player's role, and you will
 I inquiry about Player <NUMBER>. My reason is: <REASON>.
 
 Remember to follow the answer template or your action might not be recognized.
+
+Here's some guidance that you can reference about who to inquiry:
+1. Never inquiry a player that you've inquired before.
+2. You should try to inquiry a player that has less certainty or more information entropy(i.e., in your belief, he has high probability to have different identity).
+3. You should try to inquiry a play that is important(i.e., he has high probability to be the medic or a werewolf).
