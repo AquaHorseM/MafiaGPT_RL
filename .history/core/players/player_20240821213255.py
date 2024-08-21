@@ -97,7 +97,6 @@ class Player:
         self.event_book = EventBook()
         self.reflex_tuple = (None, None, None)
         self.prompt_dir_path = prompt_dir_path
-        self.openai_client = openai_client
         self.reflex_note_path = reflex_note_path if reflex_note_path is not None else os.path.join(prompt_dir_path, "reflex_note.txt")
         self.init_game(global_info, private_info)
         
@@ -178,7 +177,7 @@ class Player:
         replacements.update({"{event_des}": event_des})
         prompt_path = os.path.join(self.prompt_dir_path, "update_hidden_state")
         prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = send_message_xsm(prompt)
         #first line is the confidence, the other lines are the beliefs
         try:
             conf = float(response.split("\n")[0])/10
@@ -237,9 +236,8 @@ class Player:
         })
         prompt_path = os.path.join(self.prompt_dir_path, "reflex.txt")
         prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = send_message_xsm(prompt)
         update_note_from_response(response)
         return response
     
-    def send_message_xsm(self, prompt):
-        return send_message_xsm(prompt, client=self.openai_client)
+    def send_message

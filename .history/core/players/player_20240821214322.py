@@ -241,5 +241,5 @@ class Player:
         update_note_from_response(response)
         return response
     
-    def send_message_xsm(self, prompt):
-        return send_message_xsm(prompt, client=self.openai_client)
+    def self.send_message_xsm(self, prompt):
+        return self.send_message_xsm(prompt, client=self.openai_client)

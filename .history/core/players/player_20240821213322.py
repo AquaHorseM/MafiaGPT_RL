@@ -178,7 +178,7 @@ class Player:
         replacements.update({"{event_des}": event_des})
         prompt_path = os.path.join(self.prompt_dir_path, "update_hidden_state")
         prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = send_message_xsm(prompt)
         #first line is the confidence, the other lines are the beliefs
         try:
             conf = float(response.split("\n")[0])/10
@@ -237,7 +237,7 @@ class Player:
         })
         prompt_path = os.path.join(self.prompt_dir_path, "reflex.txt")
         prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = send_message_xsm(prompt)
         update_note_from_response(response)
         return response
     

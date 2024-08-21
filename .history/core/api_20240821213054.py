@@ -73,6 +73,11 @@ def send_message(
     # returning the response as a string
     return response.choices[0].message.content
 
+def init_client(api_key_path):
+    global client
+    client = load_client(api_key_path)
+    
+
 def send_message_xsm(messages, agent_config = {}, client = None):
     '''
     A flexible function to send messages to openai
@@ -91,7 +96,7 @@ def send_message_xsm(messages, agent_config = {}, client = None):
     # connecting to Openai
     for i in range(max_retries):
         try:
-            response = client.chat.completions.create(
+            response = openai.chat.completions.create(
                 model=model_name, messages=context, temperature=temperature,
                 max_tokens=token_limit, top_p=1
             )

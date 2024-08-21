@@ -2,7 +2,7 @@
 RATE_LIMIT = 20  # sleeping time for openai per minute limitation
 TOKEN_LIMIT = 250  # token limit per message
 TEMPERATURE = 1
-MAX_RETRIES = 1
+MAX_RETRIES = 3
 # MODEL = "gpt-4-turbo"
 MODEL = "gpt-4-turbo" #for debugging, use the cheaper api
 
@@ -11,12 +11,15 @@ import openai, os, time, yaml
 # this is for printing messages in terminal
 DEBUG = False
 
-def load_client(key_path="openai_config_backup.yaml"):
+def load_client(key_path="openai_config.yaml"):
     openai._reset_client()
     key = yaml.safe_load(open(key_path))
     for k, v in key.items():
         setattr(openai, k, v)
     return openai._load_client()
+
+# getting open ai api key from the environmental variables
+client = load_client()
 
 # make content in openai wanted format
 def create_message(role, content):
@@ -73,7 +76,7 @@ def send_message(
     # returning the response as a string
     return response.choices[0].message.content
 
-def send_message_xsm(messages, agent_config = {}, client = None):
+def send_message_xsm(messages, agent_config = {}):
     '''
     A flexible function to send messages to openai
     Messages should be a tuple or list of tuples
@@ -91,7 +94,7 @@ def send_message_xsm(messages, agent_config = {}, client = None):
     # connecting to Openai
     for i in range(max_retries):
         try:
-            response = client.chat.completions.create(
+            response = openai.chat.completions.create(
                 model=model_name, messages=context, temperature=temperature,
                 max_tokens=token_limit, top_p=1
             )
@@ -111,5 +114,4 @@ def send_message_xsm(messages, agent_config = {}, client = None):
 
 if __name__ == "__main__":
     #! debug
-    init_client("openai_config_backup.yaml")
     print(send_message_xsm([("system", "You are a helpful villager"), ("user", "I am a villager"), ("system", "What should I do?")]))

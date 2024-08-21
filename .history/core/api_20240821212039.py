@@ -73,7 +73,12 @@ def send_message(
     # returning the response as a string
     return response.choices[0].message.content
 
-def send_message_xsm(messages, agent_config = {}, client = None):
+def init_client(api_key_path):
+    global client
+    client = load_client(api_key_path)
+    
+
+def send_message_xsm(messages, agent_config = {}):
     '''
     A flexible function to send messages to openai
     Messages should be a tuple or list of tuples
@@ -91,7 +96,7 @@ def send_message_xsm(messages, agent_config = {}, client = None):
     # connecting to Openai
     for i in range(max_retries):
         try:
-            response = client.chat.completions.create(
+            response = openai.chat.completions.create(
                 model=model_name, messages=context, temperature=temperature,
                 max_tokens=token_limit, top_p=1
             )
@@ -111,5 +116,5 @@ def send_message_xsm(messages, agent_config = {}, client = None):
 
 if __name__ == "__main__":
     #! debug
-    init_client("openai_config_backup.yaml")
+    init_client("openai_config.yaml")
     print(send_message_xsm([("system", "You are a helpful villager"), ("user", "I am a villager"), ("system", "What should I do?")]))

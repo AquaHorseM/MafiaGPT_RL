@@ -5,8 +5,8 @@ import os
 import re
 
 class SeerPlayer(Player):
-    def __init__(self, id, global_info, private_info, prompt_dir_path, openai_client = None, reflex_note_path = None):
-        super().__init__(id, global_info, private_info, prompt_dir_path, openai_client, reflex_note_path)
+    def __init__(self, id, global_info, private_info, prompt_dir_path, reflex_note_path = None):
+        super().__init__(id, global_info, private_info, prompt_dir_path, reflex_note_path)
         self.labels = ["all", "seer"]
         
     def get_replacements(self):

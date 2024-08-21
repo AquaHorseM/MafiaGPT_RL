@@ -242,4 +242,4 @@ class Player:
         return response
     
     def send_message_xsm(self, prompt):
-        return send_message_xsm(prompt, client=self.openai_client)
+        return self.send_message_xsm(prompt, client=self.openai_client)

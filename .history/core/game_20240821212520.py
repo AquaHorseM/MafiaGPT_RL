@@ -14,7 +14,7 @@ from core.utils import switcher_players, load_player_from_checkpoint
 
 
 class Game:
-    def __init__(self, id=1,reflex = False, openai_client = None):
+    def __init__(self, id=1,reflex = False):
         self.id = id
         self.all_players = []
         self.alive_players = []
@@ -33,7 +33,6 @@ class Game:
             "healed": None
         }
         self.data = []
-        self.openai_client = openai_client
 
 
     def _configure_logger(self):
@@ -99,7 +98,7 @@ class Game:
             if player_type == "reflex":
                 prompt_dir_path = os.path.join("core/players/prompts", role)
                 assert os.path.exists(prompt_dir_path), "prompt directory not found"
-                self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, self.openai_client))
+                self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path))
             else:
                 self.all_players.append(switcher_players[player_type][role](role=role, id=i))
                 if role == "werewolf":

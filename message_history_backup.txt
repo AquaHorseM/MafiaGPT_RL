@@ -1097,3 +1097,89 @@ player 5 believes player 0 is role villager with probability 1.00
 player 5 believes player 1 is role villager with probability 1.00
 player 5 believes player 4 is role villager with probability 1.00
 
+Hello fellow villager! How can I assist you today? Are you looking for advice on something specific in our village or just wondering about general tasks you can do around here?
+
+As a helpful villager, you might consider taking on various tasks to assist your fellow villagers and improve the community. Here are a few suggestions:
+
+1. **Volunteer**: See if there are any local projects, like cleaning parks, helping at a community garden, or volunteering at a local school or community center.
+
+2. **Assist the Elderly or Disabled**: Offer to help those who might need assistance with daily tasks, such as grocery shopping, or transportation to medical appointments.
+
+3. **Participate in Local Governance**: Attend town or village meetings to stay informed and contribute your voice to the discussions affecting your community.
+
+4. **Organize Events**: Help to organize local events or fundraisers, which can be a fun way to bring people together and support local causes.
+
+5. **Promote Local Businesses**: Support local entrepreneurs by buying local and encouraging others to do the same, and perhaps help them advertise their services within the community.
+
+6. **Educate Yourself and Others**: Learn more about important issues facing your community and educate your neighbors. This could include organizing workshops on topics like sustainability, health, and safety.
+
+Choosing activities that align with your interests and abilities will make your contributions more enjoyable and impactful. What area are you thinking
+
+Hello fellow villager! It¡¯s great to meet someone else in the village. You can take part in many activities around here, like helping with farming, trading goods at the market, or even joining one of the local guilds. What interests you most?
+
+As a villager, you might engage in various activities depending on the context of your village. Are you a part of a historical reenactment, a video game, or a fictional story? Each setting has its unique options, but here are a few general ideas:
+
+1. **Farming**: You could tend to crops and animals, a common task for villagers in many settings.
+
+2. **Crafting**: Engage in crafting useful items, such as pottery, clothing, or tools, depending on the resources available in your village.
+
+3. **Trading**: Exchange goods with other villagers or traveling merchants to get the items you need for daily living or to improve your economic status.
+
+4. **Exploring**: You could explore the surrounding areas to gather resources, discover new lands, or even just to understand your environment better.
+
+5. **Participating in Village Life**: Attend village meetings, help out neighbors, or participate in local festivals and traditions.
+
+6. **Improving Your Home**: Work on your house, making it more comfortable and functional, or helping to improve communal spaces within the village.
+
+What specific activities or roles are you looking for in your village life?
+
+10
+player 6 believes player 0 is role villager with probability 0.25 
+player 6 believes player 1 is role villager with probability 0.25 
+player 6 believes player 2 is role villager with probability 0.25 
+player 6 believes player 3 is role villager with probability 0.25 
+player 6 believes player 4 is role villager with probability 0.25 
+player 6 believes player 5 is role villager with probability 0.25 
+player 6 believes player 6 is role medic with probability 1.00
+
+I heal Player 6. My reason is: As the medic, it is crucial to ensure my own survival to continue protecting other villagers in the subsequent rounds. Self-preservation at this stage helps maintain a defensive resource against werewolves' attacks, thereby giving the villagers a better chance to win.
+
+10
+player 4 believes player 0 is role villager with probability 0.25
+player 4 believes player 1 is role villager with probability 0.25
+player 4 believes player 2 is role villager with probability 0.25
+player 4 believes player 3 is role villager with probability 0.25
+player 4 believes player 4 is role seer with probability 1.00
+player 4 believes player 5 is role villager with probability 0.25
+player 4 believes player 6 is role villager with probability 0.25
+
+I inquiry about Player 6. My reason is: at this early stage of the game, it is important to assess the roles of players who have not yet been under much suspicion or discussion. Player 6 has equal probabilities of being in any role according to the beliefs of all players, indicating a lack of focus on him. Inquiring about Player 6 will help clarify his role and may either confirm a suspicion or establish a trust, which is key for directing future actions and discussions. More importantly, if it turns out Player 6 is a Werewolf, it would be a significant advantage early in the game. If not, it will help in narrowing down potential suspects or confirming trustworthy villagers.
+
+10
+player 2 believes player 0 is role villager with probability 0.25 
+player 2 believes player 1 is role villager with probability 0.25 
+player 2 believes player 2 is role werewolf with probability 1.0 
+player 2 believes player 3 is role villager with probability 0.25 
+player 2 believes player 4 is role villager with probability 0.25 
+player 2 believes player 5 is role werewolf with probability 1.0 
+player 2 believes player 6 is role villager with probability 0.25 
+player 5 believes player 0 is role villager with probability 0.25 
+player 5 believes player 1 is role villager with probability 0.25 
+player 5 believes player 2 is role werewolf with probability 1.0 
+player 5 believes player 3 is role villager with probability 0.25 
+player 5 believes player 4 is role villager with probability 0.25 
+player 5 believes player 5 is role werewolf with probability 1.0 
+player 5 believes player 6 is role villager with probability 
+
+I choose to kill Player 3. My reason is: Analyzing the general perception of all players, it seems that Player 3 is considered a villager by every other player with a consistent probability of 0.25. This pattern of trust makes Player 3 a likely candidate who might be unobjectionable and blend easily as an innocent villager. By removing Player 3, we may disrupt any forming alliances or trust networks among the villagers and sow confusion and doubt. This action also aligns with the general strategy of weakening the villagers' ability to collectively make accurate decisions.
+
+10  
+player 2 believes player 3 is role villager with probability 0.00  
+player 3 believes player 3 is role villager with probability 0.00  
+player 4 believes player 3 is role villager with probability 0.00  
+player 5 believes player 3 is role villager with probability 0.00  
+player 6 believes player 3 is role villager with probability 0.00
+
+I choose to kill Player 0. My reason is: Player 0 has a consistently high probability across all players of being believed to be a villager, which makes them less suspicious and more trusted among the villagers. By removing Player 0, we can disrupt the villagers' trust system and potentially mislead them into suspecting and voting against one another in future rounds. This will aid in creating confusion and maintaining our cover as villagers.
+
+

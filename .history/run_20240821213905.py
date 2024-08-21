@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("--num_games", type=int, default=1)
 parser.add_argument("--num_processes", type=int, default=1)
-parser.add_argument("--openai_config_path", type=str, default="openai_config_backup.yaml")
+parser.add_argument("--openai_config_path", type=str, default="openai_config.yaml")
 parser.add_argument("--config_path", type=str, default="configs/player_configs_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
 parser.add_argument("--ckpt_path", type=str, default=None)
@@ -32,8 +32,7 @@ if __name__ == "__main__":
         with open(args.config_path, "r") as f:
             player_configs = json.load(f)["players"]
         if args.num_processes == 1:
-            for i in range(args.num_games):
-                run_game((args.start_idx, args.reflex, player_configs, args.train, client))
+            run_game((args.start_idx, args.reflex, player_configs, args.train, client))
         else:
             ipt = [(args.start_idx + i, args.reflex, player_configs, args.train, client) for i in range(args.num_games)]
             if __name__ == "__main__":

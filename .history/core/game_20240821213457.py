@@ -33,7 +33,7 @@ class Game:
             "healed": None
         }
         self.data = []
-        self.openai_client = openai_client
+        self.openai_client = 
 
 
     def _configure_logger(self):
@@ -99,7 +99,7 @@ class Game:
             if player_type == "reflex":
                 prompt_dir_path = os.path.join("core/players/prompts", role)
                 assert os.path.exists(prompt_dir_path), "prompt directory not found"
-                self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, self.openai_client))
+                self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path))
             else:
                 self.all_players.append(switcher_players[player_type][role](role=role, id=i))
                 if role == "werewolf":

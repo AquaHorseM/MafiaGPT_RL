@@ -4,15 +4,15 @@ from core.event import EventBook
 import os
 import re
 
-class SeerPlayer(Player):
-    def __init__(self, id, global_info, private_info, prompt_dir_path, openai_client = None, reflex_note_path = None):
-        super().__init__(id, global_info, private_info, prompt_dir_path, openai_client, reflex_note_path)
-        self.labels = ["all", "seer"]
+class MedicPlayer(Player):
+    def __init__(self, id, global_info, private_info, prompt_dir_path, reflex_note_path = None):
+        super().__init__(id, global_info, private_info, prompt_dir_path, reflex_note_path)
+        self.labels = ["all", "medic"]
         
     def get_replacements(self):
         replacements = super().get_replacements()
         replacements.update({
-            "{known_roles}": self.get_known_roles(),
+            "{last_heal}": self.private_info["last_heal"] if self.private_info["last_heal"] is not None else "Nobody",
         })
         replacements.update({
             "{hidden_state}": str(self.hidden_state),
@@ -23,7 +23,7 @@ class SeerPlayer(Player):
     
     def init_game(self, global_info, private_info):
         super().init_game(global_info, private_info)
-        self.private_info["known_roles"] = dict()
+        self.private_info["last_heal"] = None
         
     def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
         if update_hstate:
@@ -31,9 +31,9 @@ class SeerPlayer(Player):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
-        elif "see" in available_actions:
-            res = self._see()
-            return ("see", res[0], res[1])
+        elif "heal" in available_actions:
+            res = self._heal()
+            return ("heal", res[0], res[1])
     
     def _vote(self):
         #TODO
@@ -43,12 +43,12 @@ class SeerPlayer(Player):
         vote = get_target_from_response(response)
         return vote, response
     
-    def _see(self):
-        prompt_path = os.path.join(self.prompt_dir_path, "see.txt")
+    def _heal(self):
+        prompt_path = os.path.join(self.prompt_dir_path, "heal.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = self.send_message_xsm(prompt)
-        see = get_target_from_response(response)
-        return see, response
+        heal = get_target_from_response(response)
+        return heal, response
     
     def _speak(self, event_book: EventBook, update_hstate = True):
         if update_hstate:
@@ -69,17 +69,4 @@ class SeerPlayer(Player):
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
         return response
-    
-    def receive_inquiry_result(self, target, is_werewolf : bool):
-        if target is not None:
-            self.private_info["known_roles"][target] = 1 if is_werewolf else 0
-        return
-    
-    def get_known_roles(self):
-        if self.private_info["known_roles"] == {}:
-            return "You have no previous inquiry."
-        s = ""
-        for player_id, role in self.private_info["known_roles"].items():
-            s += f"Player {player_id}: {'werewolf' if role == 1 else 'not werewolf'}.\n"
-        return s
     
