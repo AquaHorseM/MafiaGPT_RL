@@ -34,7 +34,7 @@ class Game:
             "healed": None
         }
         self.data = []
-        self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
+        self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
         #clear the data file if it exists
         if os.path.exists(self.data_path):
@@ -472,6 +472,7 @@ class Game:
     def add_events_to_data(self, events):
         #convert events to a tuple of strings
         events = [str(event) for event in events]
+        print(f"DEBUG: Adding events to data: {events}")
         #convert to a tuple and add to data as a single element
         self.data.append(tuple(events))
 

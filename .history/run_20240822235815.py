@@ -24,8 +24,7 @@ def run_game_with_client(ipt, client):
     
 if __name__ == "__main__":
     args = parser.parse_args()
-    # client = load_client(args.openai_config_path)
-    client = args.openai_config_path
+    client = load_client(args.openai_config_path)
     if args.ckpt_path is not None:
         game = Game(args.start_idx, args.reflex, openai_client=client)
         game.load_checkpoint(args.ckpt_path)

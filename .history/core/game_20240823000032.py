@@ -472,6 +472,7 @@ class Game:
     def add_events_to_data(self, events):
         #convert events to a tuple of strings
         events = [str(event) for event in events]
+        print(f"DEBUG: Adding events to data: {events}")
         #convert to a tuple and add to data as a single element
         self.data.append(tuple(events))
 

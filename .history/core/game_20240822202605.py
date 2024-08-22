@@ -11,11 +11,10 @@ from core.players.villager import VillagerPlayer
 from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
 from core.utils import switcher_players, load_player_from_checkpoint
-from core.api import load_client
 
 
 class Game:
-    def __init__(self, id=1, train = False, reflex = False, openai_client = None, data_path = None):
+    def __init__(self, id=1,reflex = False, openai_client = None, data_path = None):
         self.id = id
         self.all_players = []
         self.alive_players = []
@@ -34,12 +33,8 @@ class Game:
             "healed": None
         }
         self.data = []
-        self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
+        self.openai_client = openai_client
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
-        #clear the data file if it exists
-        if os.path.exists(self.data_path):
-            os.remove(self.data_path)
-        self.train = train
 
 
     def _configure_logger(self):
@@ -195,8 +190,8 @@ class Game:
             "healed": None
         }
         
-    def add_event(self, event):
-        if self.train:
+    def add_event(self, event, train=False):
+        if train:
             self.temp_events.append(event)
         if isinstance(event, Event):
             self.event_book.add_event(event)
@@ -207,13 +202,13 @@ class Game:
                 event["visible"] = "all"
             self.add_event(Event(event))
 
-    def run_day(self, save_checkpoint = False):
+    def run_day(self, train = False, save_checkpoint = False):
         if self.cur_stage == 2:
             for player_id in self.alive_players:
                 if self.player_types[player_id] == "baseline":
                     res = self.all_players[player_id].speak(self, render.speech_command()).replace("\n", " ")
                 else:
-                    if self.train:
+                    if train:
                         self.update_all_hstates()
                         self.add_all_hstate_to_data()
                         res = self.all_players[player_id]._speak(self.event_book, update_hstate = False)
@@ -233,7 +228,7 @@ class Game:
                 if self.player_types[player_id] == "baseline":
                     target_voted, reason = self.all_players[player_id].vote(self)
                 else:
-                    if self.train:
+                    if train:
                         self.update_all_hstates()
                         self.add_all_hstate_to_data()
                         action, target_voted, reason = self.all_players[player_id]._act(self.event_book, available_actions = ["vote"], update_hstate = False)
@@ -261,12 +256,12 @@ class Game:
             self.cur_stage = max(4, self.cur_stage)
         return
 
-    def run_night(self):
+    def run_night(self, train = False):
         self.werewolves_talks = []
-        if self.train:
+        if train:
             self.update_all_hstates()
             self.add_all_hstate_to_data()
-        update_hstate_for_actions = not self.train
+        update_hstate_for_actions = not train
         for medic_id in self.get_alive_medics():
             action, target, reason = self.all_players[medic_id].healing(self, update_hstate = update_hstate_for_actions)
             self.add_event({"event": "healing", "content": {"player": medic_id, "target": target, "reason": reason}, "visible": medic_id})
@@ -304,11 +299,11 @@ class Game:
                         self.all_players[wid].special_actions_log.append(f"Werewolves attempted to kill player{target}")          
         return
 
-    def run_game(self, save_checkpoint = False):
+    def run_game(self, train=False, save_checkpoint = False):
         while True:
             if self.cur_stage == 0:
                 self.add_event({"event": "cycle", "content": "night starts"})
-                self.run_night()
+                self.run_night(train = train)
             self.cur_stage = max(1, self.cur_stage)
             if self.cur_stage == 1:
                 self.add_event({"event": "cycle", "content": "day starts"})
@@ -316,30 +311,30 @@ class Game:
                 if self.is_game_end():
                     self.all_players_reflex()
                     self.save_game_record()
-                    if self.train:
+                    if train:
                         self.add_events_to_data(self.temp_events)
                         self.temp_events = []
                         self.store_data(f"records/game_{self.id}_data.pkl")
                     return
                 if save_checkpoint:
                     self.save_checkpoint(f"checkpoints/game_{self.id}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}")
-            if self.train:
+            if train:
                 self.add_events_to_data(self.temp_events)
                 self.temp_events = []
                 self.store_data(f"records/game_{self.id}_data.pkl")
             self.cur_stage = max(2, self.cur_stage)
-            self.run_day(save_checkpoint = save_checkpoint)       
+            self.run_day(train = train, save_checkpoint = save_checkpoint)       
             if self.is_game_end():
                 self.all_players_reflex()
                 self.save_game_record()
-                if self.train:
+                if train:
                     self.add_events_to_data(self.temp_events)
                     self.temp_events = []
                     self.store_data(f"records/game_{self.id}_data.pkl")
                 return
             self.current_round += 1
             self.cur_stage = 0
-            if self.train:
+            if train:
                 self.add_events_to_data(self.temp_events)
                 self.temp_events = []
                 self.store_data(f"records/game_{self.id}_data.pkl")

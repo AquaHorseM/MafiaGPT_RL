@@ -11,11 +11,10 @@ from core.players.villager import VillagerPlayer
 from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
 from core.utils import switcher_players, load_player_from_checkpoint
-from core.api import load_client
 
 
 class Game:
-    def __init__(self, id=1, train = False, reflex = False, openai_client = None, data_path = None):
+    def __init__(self, id=1,reflex = False, openai_client = None, data_path = None):
         self.id = id
         self.all_players = []
         self.alive_players = []
@@ -34,12 +33,12 @@ class Game:
             "healed": None
         }
         self.data = []
-        self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
+        self.openai_client = openai_client
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
         #clear the data file if it exists
         if os.path.exists(self.data_path):
             os.remove(self.data_path)
-        self.train = train
+        self.train = False
 
 
     def _configure_logger(self):
@@ -323,23 +322,23 @@ class Game:
                     return
                 if save_checkpoint:
                     self.save_checkpoint(f"checkpoints/game_{self.id}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}")
-            if self.train:
+            if train:
                 self.add_events_to_data(self.temp_events)
                 self.temp_events = []
                 self.store_data(f"records/game_{self.id}_data.pkl")
             self.cur_stage = max(2, self.cur_stage)
-            self.run_day(save_checkpoint = save_checkpoint)       
+            self.run_day(train = train, save_checkpoint = save_checkpoint)       
             if self.is_game_end():
                 self.all_players_reflex()
                 self.save_game_record()
-                if self.train:
+                if train:
                     self.add_events_to_data(self.temp_events)
                     self.temp_events = []
                     self.store_data(f"records/game_{self.id}_data.pkl")
                 return
             self.current_round += 1
             self.cur_stage = 0
-            if self.train:
+            if train:
                 self.add_events_to_data(self.temp_events)
                 self.temp_events = []
                 self.store_data(f"records/game_{self.id}_data.pkl")
@@ -472,6 +471,7 @@ class Game:
     def add_events_to_data(self, events):
         #convert events to a tuple of strings
         events = [str(event) for event in events]
+        print(f"DEBUG: Adding events to data: {events}")
         #convert to a tuple and add to data as a single element
         self.data.append(tuple(events))
 

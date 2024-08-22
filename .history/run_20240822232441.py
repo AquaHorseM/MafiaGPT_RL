@@ -1,4 +1,3 @@
-from functools import partial
 from core.game import Game
 import json
 #run the game with multiple processes
@@ -16,7 +15,8 @@ parser.add_argument("--ckpt_path", type=str, default=None)
 parser.add_argument("--reflex",default=False, action="store_true")
 parser.add_argument("--train",default=False, action="store_true")
 
-def run_game_with_client(ipt, client):
+def run_game(ipt):
+    global client
     idx, reflex, player_configs, train = ipt
     new = Game(idx, train = train, reflex=reflex, openai_client=client)
     new.set_players(player_configs)
@@ -24,21 +24,19 @@ def run_game_with_client(ipt, client):
     
 if __name__ == "__main__":
     args = parser.parse_args()
-    # client = load_client(args.openai_config_path)
-    client = args.openai_config_path
+    client = load_client(args.openai_config_path)
     if args.ckpt_path is not None:
         game = Game(args.start_idx, args.reflex, openai_client=client)
         game.load_checkpoint(args.ckpt_path)
         game.run_game()
     else:
-        run_game = partial(run_game_with_client, client=client)
         with open(args.config_path, "r") as f:
             player_configs = json.load(f)["players"]
         if args.num_processes == 1:
             for i in range(args.num_games):
-                run_game((args.start_idx, args.reflex, player_configs, args.train))
+                run_game((args.start_idx, args.reflex, player_configs, args.train, client))
         else:
-            ipt = [(args.start_idx + i, args.reflex, player_configs, args.train) for i in range(args.num_games)]
+            ipt = [(args.start_idx + i, args.reflex, player_configs, args.train, client) for i in range(args.num_games)]
             if __name__ == "__main__":
                 with multiprocessing.Pool(args.num_processes) as pool:
                     pool.map(run_game, ipt)
