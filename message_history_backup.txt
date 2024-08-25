@@ -7553,3 +7553,1104 @@ The reasoning for these updates is as follows:
 - The slight increase in the belief about player 1 being a werewolf comes from the need to reassess the probabilities due to no deaths last night. Since I am unsure of who the werewolves targeted and who the Medic healed, this is partially a guess but also accounts for possible strategic moves by the werewolves.
 - Other probabilities remain the same due to lack of evidence to make substantial changes. The confidence level is not at the highest because there is a significant amount of uncertainty and the decisions taken are partially based on
 
+10
+player 6 believes player 0 is role villager with probability 0.25
+player 6 believes player 1 is role villager with probability 0.25
+player 6 believes player 2 is role villager with probability 0.25
+player 6 believes player 3 is role villager with probability 0.25
+player 6 believes player 4 is role villager with probability 0.25
+player 6 believes player 5 is role villager with probability 0.25
+player 6 believes player 6 is role medic with probability 1.00
+
+I heal Player 6. My reason is: As a medic, it is vital to protect the players with special abilities, which includes myself. In the early stages of the game, it's important to ensure my own survival so that I can continue to heal other players in subsequent rounds. My self-healing on the first night establishes a safety net and increases the chances of the village team overall. Once my own safety has been secured for this round, I am better positioned to protect others in the future, especially when more information about other players' identities is revealed.
+
+10
+player 1 believes player 0 is role villager with probability 0.25 
+player 1 believes player 1 is role seer with probability 1.00 
+player 1 believes player 2 is role villager with probability 0.25
+player 1 believes player 3 is role villager with probability 0.25
+player 1 believes player 4 is role villager with probability 0.25
+player 1 believes player 5 is role villager with probability 0.25
+player 1 believes player 6 is role villager with probability 0.25
+
+I inquiry about Player 3. My reason is: The probabilities assigned to the roles are indifferent, and there is no strong lead to suspect any particular player more than another. By checking Player 3, I am aiming to reduce the uncertainty in the middle of the player list, where alliance-building might be critical, and gain a better understanding of the distribution of roles, which could be valuable in guiding the village's decisions in future rounds.
+
+10
+player 3 believes player 3 is role werewolf with probability 1.00
+player 5 believes player 5 is role werewolf with probability 1.00
+player 3 believes player 5 is role werewolf with probability 1.00
+player 5 believes player 3 is role werewolf with probability 1.00
+player 0 believes player 3 is role werewolf with probability 0.00
+player 0 believes player 5 is role werewolf with probability 0.00
+player 1 believes player 3 is role werewolf with probability 0.00
+player 1 believes player 5 is role werewolf with probability 0.00
+player 2 believes player 3 is role werewolf with probability 0.00
+player 2 believes player 5 is role werewolf with probability 0.00
+player 4 believes player 3 is role werewolf with probability 0.00
+player 4 believes player 5 is role werewolf with probability 0.00
+player 6 believes player 3 is role werewolf with probability 0.00
+player 6 believes player 5 is role werewolf with probability 
+
+I choose to kill Player 2. My reason is: given the current beliefs, all players have an equal probability of being villagers in the eyes of each other, which does not give us a clear target based on public perception. However, eliminating a player at random could potentially remove a villager with special abilities. Considering the utility functions for my role as a werewolf, it is beneficial to remove players that could pose a significant threat to the werewolves. Since none of the villagers have revealed any suspicions or insights yet that might indicate they are the Seer or Medic, I am making a blind choice. Player 2 is as likely a candidate as any of the other non-werewolves, and if we are lucky, we might eliminate the Seer or Medic early in the game, thus reducing the villagers' chances of identifying us. It's a strategic move given the lack of information at this stage in the game.
+
+10
+player 3 believes player 2 is role villager with probability 1.00
+player 5 believes player 2 is role villager with probability 1.00
+
+I choose to kill Player 2. My reason is: according to the beliefs of the players, especially both werewolves (player 3 and myself), player 2 is considered most likely to be a villager, with a probability of 0.625. Killing player 2 will eliminate someone who is perceived to be a trustworthy villager, thereby causing confusion among the remaining players and potentially leading them to suspect one another. This will help to disguise our identities as werewolves and disrupt the villagers' ability to coordinate effectively. Moreover, there is no clear indication at this time who the Medic or Seer might be, so we do not have a more strategic target based on special roles.
+
+10
+player 0 believes player 0 is role villager with probability 1.00 
+player 0 believes player 1 is role villager with probability 0.25 
+player 0 believes player 3 is role villager with probability 0.25 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role villager with probability 0.25 
+player 1 believes player 0 is role villager with probability 0.25 
+player 1 believes player 1 is role villager with probability 0.25 
+player 1 believes player 3 is role villager with probability 0.25 
+player 1 believes player 4 is role villager with probability 0.25 
+player 1 believes player 5 is role villager with probability 0.25 
+player 1 believes player 6 is role villager with probability 0.25 
+player 3 believes player 0 is role villager with probability 0.25 
+player 3 believes player 1 is role villager with probability 
+
+I choose [honest statement, honest challenge]. My reason is: as a Villager, my primary utility is to identify and eliminate Werewolves while proving my innocence and trustworthiness to my fellow Villagers. By making honest statements, I reinforce my credibility and contribute to building a clear view of the game situation, which is essential for collective decision-making. At the same time, I should be proactive in my approach by honestly challenging individuals who, based on their behavior or the probability assessments available, seem more likely to be Werewolves. This can prompt a response or defense that could reveal more information and push the group towards a consensus. Being deceptive could undermine the team's trust in my intentions and statements, which would hinder our collective goal of identifying the Werewolves.
+
+Fellow villagers, we must be vigilant. Player 2¡¯s untimely demise shows that the werewolves are cunning and dangerous. We need to observe who's acting sketchy or trying to divert attention away from themselves without any logical reasoning. I¡¯ve noticed player 1 has been fairly quiet and hasn't contributed much to our discussions, which seems odd. It could be a tactic to remain under the radar. Player 3 has also been quick to agree with others without providing their own insights, which could be a werewolf trying to blend in. I cannot say for sure who the werewolves are, but we must keep a close eye on these behaviors. Let's discuss and work together to protect our town.
+
+10
+player 1 believes player 0 is role villager with probability 0.75
+player 1 believes player 1 is role seer with probability 1.00
+player 1 believes player 3 is role werewolf with probability 1.00
+player 1 believes player 4 is role villager with probability 0.75
+player 1 believes player 5 is role villager with probability 0.75
+player 1 believes player 6 is role villager with probability 0.75
+
+I choose [honest challenge, deceptive statement]. My reason is: As the Seer, I have verified that player 3 is a werewolf, so it's crucial for the safety of the villagers to challenge player 3 openly. However, revealing my role as the Seer is risky because it would make me a target for the werewolves at night. Instead, I will make a deceptive statement by implying I have been closely noticing player 3's behavior in a way that does not expose my special ability. I'll emphasize inconsistencies in player 3's statements or decisions in the game to justify my challenge, without disclosing the fact that I have actually used my ability to confirm player 3's role. This way, I protect my identity while actively contributing to the goal of the villagers, which is to eliminate a werewolf.
+
+Fellow villagers, it's essential to our survival that we remain alert and analytical. The loss of player 2 intensifies our predicament. Based on my observations of player behavior and active participation, I propose we scrutinize player 3 more closely. Their pattern of agreement without initiating substantive discussion or providing new perspectives is a classic strategy to avoid drawing attention, which could be indicative of a werewolf blending in. We should not take this lightly. Let's reflect on each other's behaviors and contributions critically to safeguard our village.
+
+
+10
+player 0 believes player 1 is role villager with probability 0.25
+player 0 believes player 3 is role villager with probability 0.25
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role werewolf with probability 0.25
+player 0 believes player 6 is role villager with probability 0.25
+player 0 believes player 0 is role seer with probability 0.25
+player 1 believes player 3 is role werewolf with probability 0.50
+player 1 believes player 4 is role villager with probability 0.25
+player 1 believes player 5 is role werewolf with probability 0.25
+player 1 believes player 6 is role villager with probability 0.25
+player 1 believes player 0 is role villager with probability 0.25
+player 1 believes player 1 is role seer with probability 0.25
+player 3 believes player 0 is role villager with probability 0.25
+player 3 believes player 1 is role seer with probability 
+
+I choose [deceptive statement, deceptive protect]. My reason is: as a werewolf, my goal is to sow confusion among the villagers and protect myself and my fellow werewolf from suspicion. I need to deceive the other players into believing that I'm a villager to avoid being eliminated. 
+
+In my deceptive statement, I might allude to 'suspicions' I have about another player's actions or statements that align with typical villager concerns but are actually false leads. Additionally, I'll use deceptive protect to assert confidence in another player's innocence, preferably someone I believe to be a villager, to gain their trust and reinforce my own cover. I must be careful to balance my approach, so I don't draw too much attention to myself or my werewolf partner while steering the group's focus away from us.
+
+Fellow villagers, we face a grave situation with the passing of player 2. I have taken note of the discussions and the suspicions raised by players 0 and 1. While it is necessary to analyze the behavior of all players, we must be cautious about the deductions we make without solid evidence. Player 1 has drawn attention to me based on a perceived lack of initiative, but in these early stages, it's paramount to gather information before making bold claims. I propose that we also consider player 4, who has been rather silent. Silence can be a tactic used by werewolves to avoid scrutiny. Let's continue to discuss and share observations but refrain from hasty conclusions that could lead to the loss of an innocent villager.
+
+7
+
+player 0 believes player 1 is role villager with probability 0.20 
+player 0 believes player 3 is role villager with probability 0.20
+player 1 believes player 3 is role villager with probability 0.20
+player 3 believes player 1 is role villager with probability 0.20
+player 3 believes player 4 is role villager with probability 0.20
+player 4 believes player 0 is role villager with probability 0.20 
+player 4 believes player 1 is role villager with probability 0.20 
+player 4 believes player 3 is role villager with probability 0.20 
+player 4 believes player 4 is role villager with probability 1.00 
+player 4 believes player 5 is role villager with probability 0.25 
+player 4 believes player 6 is role villager with probability 0.25
+
+
+I choose [honest statement, honest challenge]. My reason is: as a villager, being honest will help maintain my credibility with the other players, which is crucial for the villagers' collective success. I believe in using fact-based analysis to make my point, and being deceptive is not in line with the villagers¡¯ objectives. An honest challenge is also essential because I need to voice my suspicions and rally the other villagers against potential werewolves. Making a challenge requires careful consideration, though, to not wrongly accuse a fellow villager. Therefore, my approach will be to present my beliefs about the identity of the werewolves based on the available evidence and the behavior of the other players during the game, while also respecting the collective goal of rooting out the werewolves.
+
+Fellow villagers, the loss of player 2 has indeed put us on high alert. Analysis is key, and I have made careful observations of our behavior thus far. Concerning the suspicions raised, I note that player 0 initially pointed out player 1's quietness and player 3's consent without substance, both of which can be wolf behavior. Yet, player 3's defensive stance includes casting suspicion my way ¡ª while I understand this could be a tactic to shift focus, it's also what a villager would naturally do when provoked. I haven't had a chance to contribute much yet, which may have been mistaken for silence.
+
+Now let's consider logic. If a werewolf were among those speaking up first, wouldn't it be clever to cast doubt on others? Those who steer the narrative initially often do so to shape discussions to their advantage. Thus, I challenge player 0. It raises the question: why was the spotlight thrown quickly upon others, and probabilities assigned so evenly?
+
+Remember, werewolves would want us to mistrust each other without generating too much attention on themselves. We must question not just what is being said but also the underlying strategy. Let's continue this discussion with vigilance and critical thought.
+
+10
+player 0 believes player 0 is role villager with probability 1.0
+player 0 believes player 1 is role seer or medic with probability 0.5
+player 0 believes player 3 is role werewolf with probability 0.0
+player 0 believes player 4 is role villager with probability 0.5
+player 0 believes player 5 is role werewolf with probability 0.0
+player 0 believes player 6 is role villager with probability 0.5
+
+player 1 believes player 0 is role villager with probability 0.5
+player 1 believes player 1 is role villager with probability 1.0
+player 1 believes player 3 is role werewolf with probability 0.0
+player 1 believes player 4 is role villager or seer or medic with probability 0.67
+player 1 believes player 5 is role werewolf with probability 0.0
+player 1 believes player 6 is role villager with probability 0.5
+
+player 3 believes player 4 is role seer or medic with probability 0.5
+player 3 believes player
+
+I choose [deceptive statement, deceptive challenge]. My reason is: as a werewolf, my utility is to sow confusion among the villagers and mimic their behavior while casting suspicion elsewhere. With the information at hand, I can create deceptive statements to make myself appear more trustworthy to the villagers. At the same time, I can issue a deceptive challenge targeting a player that the villagers are less sure of, consequently guiding the suspicion away from myself and my fellow werewolf. Given that no one is highly suspected by a majority and the probabilities are fairly even, the current environment is ripe for introducing misinformation without drawing too much attention to myself. My deceptive statements will align with the general uncertainty of roles and my deceptive challenge will be against a player with a lower villager probability based on others' beliefs, such as player 1 or player 4. This keeps the real villagers from being sure about who to vote out, thereby protecting myself and my werewolf teammate.
+
+Fellow villagers, turbulent times have indeed befallen us with player 2¡¯s departure. We must employ our wits and collective insights to uncover the lurking danger amongst us. During our discourse, I've observed player 1 maintaining a strangely measured silence on critical exchanges. History has told us that wolves often wear a cloak of passivity to escape the keen eye of justice. Thus, my suspicion tilts toward player 1's careful avoidance of the limelight. 
+
+Concurrently, I feel it is vital to shield player 4 from undue skepticism. The logic player 4 presented resonates with caution and coherent reasoning, signifying the insight of a concerned villager. These are trying circumstances, and the veil of deceit must be lifted with prudence. Let us proceed with discernment and not haste, questioning the unnervingly quiet and defending the voice of reason among us.
+
+10
+player 6 believes player 0 is role villager with probability 0.25
+player 6 believes player 1 is role werewolf with probability 0.40
+player 6 believes player 3 is role villager with probability 0.25
+player 6 believes player 4 is role villager with probability 0.35
+player 6 believes player 5 is role villager with probability 0.35
+player 6 believes player 6 is role medic with probability 0.90
+
+Players 1, 3, and 4 have suspicion cast upon them. Player 1 has two accusations and their behavior aligns with my knowledge of possible werewolf tactics. Player 4's defense seems logical and is vouched for by player 5. So the highest suspicion should be on player 1, and I've only slightly adjusted the probabilities for the others since no concrete evidence has emerged. My own role probability is adjusted to be more confident.
+
+I choose [honest protect, deceptive statement]. My reason is: as the medic, my primary utility is to protect the villagers and maintain my cover, so I must come across as trustworthy to other players. My decision to 'honest protect' encourages the notion that I am genuine and allows me to build rapport with others, which is critical for a medic to survive and effectively protect the village. At the same time, I choose 'deceptive statement' because while I want to protect others, I need to hide my medic role to avoid being targeted by werewolves. By being slightly deceptive about my statements, I can mislead the werewolves about my identity without compromising the villagers' trust in me. This may include creating suspicion on others subtly (without a direct challenge) or guiding the conversation away from myself strategically.
+
+Fellow villagers, as we navigate these troubling times, clarity and cooperation are our greatest allies. It is essential that we scrutinize the actions and words of all. Player 1's silence on certain matters raises suspicion. A werewolf might employ such tactics to remain unnoticed. Meanwhile, despite the seeds of doubt sown towards player 4, their logic seems firm and rooted in a genuine concern for the village.
+
+We must also consider the subtle behaviors that have unfolded. While it is too early to issue conclusive judgments, we should be wary of those who quickly cast aspersions with scant evidence or those who have yet to contribute substantially to our deliberations. I urge everyone to reflect deeply on all that has been said, and let us approach our next moves with wisdom and collective insight. My instincts suggest keeping an eye on player 1, as their approach feels more guarded than others, which could be indicative of a hidden agenda. Let us proceed with caution and not haste, questioning the unnervingly quiet and upholding the village's unity and safety above all else.
+
+10
+player 0 believes player 0 is role villager with probability 0.75
+player 0 believes player 1 is role villager with probability 0.15
+player 0 believes player 1 is role werewolf with probability 0.85
+player 0 believes player 3 is role villager with probability 0.20
+player 0 believes player 3 is role werewolf with probability 0.80
+player 0 believes player 4 is role villager with probability 0.40
+player 0 believes player 5 is role villager with probability 0.35
+player 0 believes player 6 is role villager with probability 0.35
+
+I vote for Player 1. My reason is: my observations and logic deduced from prior game events suggest that Player 1 has the highest probability of being a werewolf among the other players, with a probability of 0.55. By eliminating the suspected werewolf, I am fulfilling the objective of helping the villagers to win the game.
+
+10
+player 1 believes player 0 is role villager with probability 0.50
+player 1 believes player 1 is role seer with probability 1.00
+player 1 believes player 3 is role werewolf with probability 1.00
+player 1 believes player 4 is role villager with probability 0.50
+player 1 believes player 5 is role villager with probability 0.50
+player 1 believes player 6 is role villager with probability 0.50
+player 3 believes player 1 is role villager with probability 0.25
+player 4 believes player 1 is role werewolf with probability 0.25
+player 5 believes player 1 is role werewolf with probability 0.75
+player 6 believes player 1 is role werewolf with probability 0.75
+
+I vote for Player 3. My reason is: My seer abilities have revealed to me that Player 3 is a werewolf. We need to reduce the threat posed by the werewolves to protect the village, and removing a confirmed werewolf is the most effective action we can take right now. For the safety of our village, I urge my fellow villagers to trust in my judgment and vote alongside me to eliminate this danger.
+
+10
+player 0 believes player 0 is role villager with probability 0.25 
+player 0 believes player 1 is role villager with probability 0.25 
+player 0 believes player 3 is role villager with probability 0.25 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role villager with probability 0.25 
+player 1 believes player 0 is role villager with probability 0.25 
+player 1 believes player 1 is role villager with probability 0.25 
+player 1 believes player 3 is role werewolf with probability 0.31 
+player 1 believes player 4 is role villager with probability 0.25 
+player 1 believes player 5 is role villager with probability 0.25 
+player 1 believes player 6 is role villager with probability 0.25 
+player 3 believes player 0 is role villager with probability 0.25 
+player 3 believes player 1 is role villager with probability 
+
+I vote for Player 1. My reason is: Based on the shared beliefs, Player 1 seems to suspect that player 3 (a fellow werewolf) is a werewolf slightly more than the others, indicating that they may be paying closer attention or are potentially the Seer deducing roles. As a werewolf, it is in my best interest to remove individuals who are more likely to identify werewolves to protect myself and my teammate. By voting out Player 1, I am attempting to eliminate a potentially significant threat to the werewolves, especially if they are indeed the Seer who could identify us with certainty in future rounds.
+
+7
+player 4 believes player 0 is role werewolf with probability 0.30
+player 4 believes player 1 is role werewolf with probability 0.55
+player 4 believes player 3 is role werewolf with probability 0.30
+player 4 believes player 4 is role villager with probability 0.65
+player 4 believes player 5 is role villager with probability 0.35
+player 4 believes player 6 is role werewolf with probability 0.25
+
+player 5 believes player 1 is role werewolf with probability 0.45
+player 5 believes player 4 is role villager with probability 0.65
+
+player 6 believes player 1 is role werewolf with probability 0.50
+player 6 believes player 4 is role villager with probability 0.65
+
+I vote for Player 1. My reason is: after analyzing the beliefs and probabilities provided by the other players, it is noticeable that Player 1 is suspected to be a werewolf by three different players: Player 3, Player 5, and Player 6, with respective probabilities of 0.25, 0.35, and 0.375. Player 3's suspicions are aligned with mine to an extent, as I have a higher probability belief that Player 1 is a werewolf at 0.4. Combining these suspicions and the information from other players, it seems reasonable to target Player 1 given the collective distrust and the highest aggregated suspicion among the living players.
+
+10
+player 1 believes player 1 is role villager with probability 0.625
+player 5 believes player 1 is role werewolf with probability 0.50
+player 5 believes player 4 is role villager with probability 0.75
+player 6 believes player 1 is role werewolf with probability 0.50
+player 6 believes player 4 is role villager with probability 0.75
+
+I vote for Player 1. My reason is: Observing the current beliefs and suspicions, I have deduced that player 1 has mutual suspicion between player 5 and player 6, both of whom believe that player 1 could possibly be a werewolf. Aligning my vote with theirs could instigate a bandwagon effect, drawing less suspicion towards myself and player 5, who is indeed my fellow werewolf. Additionally, by avoiding casting suspicion on those who have a lower perceived probability of being a villager, I minimize the risk of deflecting attention towards us werewolves. As a result, player 1 is a strategic choice to obfuscate my true role and to eliminate a player who is already under scrutiny.
+
+8
+player 6 believes player 0 is role villager with probability 0.25
+player 6 believes player 1 is role werewolf with probability 0.55
+player 6 believes player 3 is role villager with probability 0.25
+player 6 believes player 4 is role villager with probability 0.30
+player 6 believes player 5 is role villager with probability 0.30
+player 6 believes player 6 is role medic with probability 0.90
+
+I vote for Player 1. My reason is: As a medic, my utility is to protect the villagers and identify the werewolves. Based on the history and my intuition, I have the highest suspicion towards Player 1 being a werewolf with a probability of 0.4375, which is significantly higher than my suspicion towards any other players. Since my primary goal is to eliminate threats to the villagers, voting for Player 1 is the most rational decision to ensure the safety of the village.
+
+10
+player 6 believes player 1 is role werewolf with probability 0.93
+player 6 believes player 0 is role villager with probability 0.25
+player 6 believes player 2 is role villager with probability 0.25
+player 6 believes player 3 is role villager with probability 0.25
+player 6 believes player 4 is role villager with probability 0.3
+player 6 believes player 5 is role villager with probability 0.3
+player 6 believes player 6 is role medic with probability 1.00
+
+Explanation:
+- Given that everyone voted for player 1 and player 1 was voted out, and the belief prior to this was that player 1 is likely a werewolf, the increased probability reflects the confirmation of these beliefs by the group's actions.
+- Since player 6 is me and I am the medic, the probability is 1.
+- All other probabilities remain the same as no additional information has been provided to alter these beliefs.
+
+I heal Player 6. My reason is: Based on available information, as player 6, I know my own role to be that of the medic with a high probability of 0.915625. Healing myself ensures that I can continue to protect others in subsequent nights, which could be critical for the village's survival. Being able to prevent a kill in later rounds increases the villagers' chances of identifying and eliminating the werewolves.
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.00
+player 0 believes player 2 is role villager with probability 0.00
+player 0 believes player 3 is role werewolf with probability 1.00
+player 0 believes player 4 is role villager with probability 0.50
+player 0 believes player 5 is role werewolf with probability 1.00
+player 0 believes player 6 is role villager with probability 0.50
+player 3 believes player 4 is role villager with probability 0.50
+player 3 believes player 6 is role villager with probability 0.50
+player 5 believes player 4 is role villager with probability 0.50
+player 5 believes player 6 is role villager with probability 0.50
+
+I choose to kill Player 4. My reason is: According to the beliefs of other players, Player 4 is most commonly believed to be a villager, with multiple players assigning a probability of 0.25 or higher to this belief, and no other player has a significant suspicion of being a werewolf according to Player 0, the player with the most developed beliefs. Targeting Player 4 means removing a player who is under little suspicion, which could help sow more confusion among the remaining villagers. Furthermore, since I do not have enough information about the specific identities of the Medic or the Seer, I must base my decision on who the majority of players perceive as innocent, and Player 4 is seen as a villager by all players who expressed a belief about them.
+
+10
+player 0 believes player 1 is role villager with probability 0.00
+player 1 believes player 1 is role villager with probability 0.00
+player 2 believes player 1 is role villager with probability 0.00
+player 3 believes player 1 is role villager with probability 0.00
+player 4 believes player 1 is role villager with probability 0.00
+player 5 believes player 1 is role werewolf with probability 0.00
+player 6 believes player 1 is role werewolf with probability 0.00
+player 0 believes player 3 is role werewolf with probability 0.25
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role werewolf with probability 0.25
+player 0 believes player 6 is role villager with probability 0.25
+player 1 believes player 3 is role werewolf with probability 0.25
+player 1 believes player 4 is role villager with probability 0.25
+player 1 believes player 5 is role werewolf with probability 
+
+I choose to kill Player 0. My reason is: Player 0 seems to be regarded by the other players as a villager with the highest probability out of all the remaining players. This choice could potentially remove suspicion from myself and my fellow werewolf because if Player 0 is considered a believable villager and is killed, the villagers may suspect one another rather than looking at us. Furthermore, Player 0 has no one suspecting them of being the Seer, which could inadvertently lead to the actual Seer being more exposed and thus easier to target in subsequent rounds. By removing Player 0, we reduce the coordination of the villagers since Player 0 might be playing a strong villager role based on their perceived trustworthiness.
+
+10
+player 0 believes player 0 is role villager with probability 1.00
+player 1 believes player 1 is role villager with probability 1.00
+player 2 believes player 2 is role villager with probability 1.00
+player 3 believes player 3 is role villager with probability 1.00
+player 4 believes player 4 is role villager with probability 1.00
+player 5 believes player 5 is role villager with probability 1.00
+player 6 believes player 6 is role villager with probability 1.00
+
+1
+
+Since the event that has occurred is simply "night starts" and there have been no other events that provide any new information about any player's role, there are no changes to the beliefs of any player about any other player's role. We maintain the initial probabilities as there is no basis for any updates or changes to our beliefs. Therefore, no probabilities will be modified at this point.
+
+10
+player 0 believes player 0 is role villager with probability 0.25 
+player 0 believes player 1 is role villager with probability 0.25 
+player 0 believes player 2 is role villager with probability 0.25 
+player 0 believes player 3 is role villager with probability 0.25 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role villager with probability 0.25 
+player 1 believes player 0 is role villager with probability 0.25 
+player 1 believes player 1 is role villager with probability 0.25 
+player 1 believes player 2 is role villager with probability 0.25 
+player 1 believes player 3 is role villager with probability 0.25 
+player 1 believes player 4 is role villager with probability 0.25 
+player 1 believes player 5 is role villager with probability 0.25 
+player 1 believes player 6 is role villager with probability 
+
+10
+player 3 believes player 3 is role werewolf with probability 1.0
+player 6 believes player 6 is role werewolf with probability 1.0
+
+10
+player 4 believes player 4 is role medic with probability 1.00
+
+10
+player 5 believes player 0 is role villager with probability 0.25 
+player 5 believes player 1 is role villager with probability 0.25 
+player 5 believes player 2 is role villager with probability 0.25 
+player 5 believes player 3 is role villager with probability 0.25 
+player 5 believes player 4 is role villager with probability 0.25 
+player 5 believes player 5 is role seer with probability 1.00 
+player 5 believes player 6 is role villager with probability 0.25 
+
+
+10
+player 3 believes player 3 is role werewolf with probability 1.00
+player 6 believes player 6 is role werewolf with probability 1.00
+
+I heal Player 4. My reason is: Since I am player 4 and I know that I am the medic, by healing myself, I ensure the preservation of a known village role, which can be crucial for protecting other villagers in subsequent rounds.
+
+I inquiry about Player 6. My reason is: Based on the initial round of inquiries, each player is equally suspected of being a villager with a probability of 0.25. Player 6 has not been evaluated with any significant differentiation from the rest of the players. Inquiry into Player 6 may help reveal their true role within the game, and whether I can trust them or not going forward. Given the lack of distinctive evidence pointing to any player's role, my selection seeks to demystify one more player's allegiance and inform future strategic decisions.
+
+I choose to kill Player 4. My reason is: Since all the players have equally distributed beliefs about each other's roles at this point in the game, with each player presuming every other player has a 0.25 probability of being a villager and no concrete beliefs or suspicions have been established yet, I do not have enough information to strategically select a specific player who is believed to be the Seer or Medic. Therefore, I will make a random choice among the villagers to minimize patterns and avoid suspicion. Player 4 is my arbitrary choice to remove a potential threat without drawing attention to my teammate or myself.
+
+I choose to kill Player 4. My reason is: Given that no players have a particularly high probability of being the medic or seer based on the available information and everyone is suspected equally of being a villager, I have chosen to target a player randomly among those who are not suspected to be werewolves. This will help to avoid drawing suspicion to myself and player 3 while removing a villager from the game. Player 4 is as likely as any villager to have a special role, given the equal probabilities, and therefore is a reasonable initial target.
+
+10
+player 0 believes player 0 is role villager with probability 1.00 
+player 0 believes player 1 is role villager with probability 0.25
+player 0 believes player 2 is role villager with probability 0.25 
+player 0 believes player 3 is role villager with probability 0.25 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role villager with probability 0.25 
+
+Given that nobody died last night, it is more likely that either the medic successfully protected a target the werewolves attacked, or that the werewolves decided to not kill anyone to confuse the villagers. Since this is an unusual situation and the medic would know if they successfully protected someone, there may be information coming from that person if they are not a werewolf and choose to disclose it. However, with no new information, I must maintain a uniform distribution of suspicion among all players other than myself. My confidence that I am a villager is absolute because I know my own role.
+
+10
+player 1 believes player 0 is role villager with probability 0.29 
+player 1 believes player 1 is role villager with probability 1.00 
+player 1 believes player 2 is role villager with probability 0.29 
+player 1 believes player 3 is role villager with probability 0.29 
+player 1 believes player 4 is role villager with probability 0.29 
+player 1 believes player 5 is role werewolf with probability 0.29 
+player 1 believes player 6 is role werewolf with probability 0.29
+
+10
+player 0 believes player 0 is role villager with probability 1.00 
+player 0 believes player 1 is role villager with probability 0.25 
+player 0 believes player 2 is role villager with probability 0.25 
+player 0 believes player 3 is role villager with probability 0.25 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role villager with probability 0.25 
+player 1 believes player 0 is role villager with probability 0.25 
+player 1 believes player 1 is role villager with probability 1.00 
+player 1 believes player 2 is role villager with probability 0.25 
+player 1 believes player 3 is role villager with probability 0.25 
+player 1 believes player 4 is role villager with probability 0.25 
+player 1 believes player 5 is role villager with probability 0.25 
+player 1 believes player 6 is role villager with probability 
+
+10
+player 0 believes player 4 is role villager with probability 0.00
+player 1 believes player 4 is role villager with probability 0.00
+player 2 believes player 4 is role villager with probability 0.00
+player 3 believes player 4 is role villager with probability 0.00
+player 5 believes player 4 is role villager with probability 0.00
+player 6 believes player 4 is role villager with probability 0.00
+player 0 believes player 0 is role werewolf with probability 1.00
+player 1 believes player 3 is role werewolf with probability 0.50
+player 1 believes player 6 is role werewolf with probability 0.50
+player 2 believes player 3 is role werewolf with probability 0.50
+player 2 believes player 6 is role werewolf with probability 0.50
+player 5 believes player 3 is role werewolf with probability 0.50
+player 5 believes player 6 is role werewolf with probability 0.50
+
+10
+player 4 believes player 0 is role villager with probability 0.25
+player 4 believes player 1 is role villager with probability 0.25
+player 4 believes player 2 is role villager with probability 0.25
+player 4 believes player 3 is role villager with probability 0.25
+player 4 believes player 4 is role medic with probability 1.00
+player 4 believes player 5 is role villager with probability 0.25
+player 4 believes player 6 is role villager with probability 0.25
+
+10
+player 5 believes player 6 is role werewolf with probability 1.00
+player 5 believes player 5 is role seer with probability 1.00
+player 5 believes player 0 is role villager with probability 0.20
+player 5 believes player 1 is role villager with probability 0.20
+player 5 believes player 2 is role villager with probability 0.20
+player 5 believes player 3 is role villager with probability 0.20
+player 5 believes player 4 is role villager with probability 0.20
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.67
+player 0 believes player 2 is role villager with probability 0.67
+player 0 believes player 3 is role werewolf with probability 1.00
+player 0 believes player 4 is role villager with probability 0.67
+player 0 believes player 5 is role villager with probability 0.67
+player 0 believes player 6 is role werewolf with probability 1.00
+player 1 believes player 0 is role villager with probability 0.67
+player 1 believes player 1 is role villager with probability 0.67
+player 1 believes player 2 is role villager with probability 0.67
+player 1 believes player 3 is role werewolf with probability 1.00
+player 1 believes player 4 is role villager with probability 0.67
+player 1 believes player 5 is role villager with probability 0.67
+player 1 believes player 6 is role werewolf with probability 
+
+I choose [honest statement, honest challenge]. My reason is: As a villager, my primary goal is to identify and eliminate the werewolves while maintaining the trust of the other villagers. By making an honest statement, I can share my observations and suspicions based on the probabilities without spreading misinformation that could harm the villagers' chances. Since the probabilities suggest that each player believes they themselves are a villager with a higher probability than they believe of others, and all players are equally suspicious of each other, with no one yet standing out as exceptionally trustworthy or suspicious, this round is still very much about gathering information and forming alliances.
+
+Yet, the nature of the game calls for proactive measures; therefore, I will also issue an honest challenge. Considering that everybody is equally suspicious with a probability of 0.25, a challenge might provoke reactions that could expose inconsistencies or deceptive behavior. Challenging someone may also encourage the real Seer or Medic to subtly defend a player if they have information to that effect, without revealing their own roles prematurely. Remember, the goal is not to randomly accuse, but to encourage discourse that might reveal slips or cues from the werewolves.
+
+Given that I am a villager and nobody died last night, my primary goal right now is to display trustworthiness to my fellow villagers and to gather more information. Because the game has just begun and there's limited information, my statement will be focused on encouraging cooperation and observation. 
+
+"Good day everyone. It's a relief to see that we all survived the night. This unusual circumstance gives us a unique opportunity to observe each other without the grief of loss. I urge everyone to share their suspicions and opinions so we can start to figure out who among us might be deceiving the group. Let's keep a close eye on the behavior of our peers during these discussions. It is too early to make concrete accusations, but vigilance from this point onward will lead us to discover the werewolves among us." 
+
+By taking this approach, I am making a statement (honest/statements) that encourages a collaborative effort to gather information, which aligns with the villagers' utility of finding the werewolves without making any premature accusations.
+
+10
+player 0 believes player 0 is role villager with probability 1.00 
+player 0 believes player 1 is role villager with probability 0.25 
+player 0 believes player 2 is role villager with probability 0.25 
+player 0 believes player 3 is role villager with probability 0.25 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role villager with probability 0.25 
+player 1 believes player 0 is role villager with probability 0.25 
+player 1 believes player 1 is role villager with probability 0.62 
+player 1 believes player 2 is role villager with probability 0.25 
+player 1 believes player 3 is role villager with probability 0.25 
+player 1 believes player 4 is role villager with probability 0.25 
+player 1 believes player 5 is role villager with probability 0.25 
+player 1 believes player 6 is role villager with probability 
+
+8
+player 1 believes player 0 is role villager with probability 0.30
+player 1 believes player 1 is role villager with probability 0.63
+player 1 believes player 2 is role villager with probability 0.27
+player 1 believes player 3 is role villager with probability 0.27
+player 1 believes player 4 is role villager with probability 0.27
+player 1 believes player 5 is role werewolf with probability 0.27
+player 1 believes player 6 is role werewolf with probability 0.27
+
+10
+player 2 believes player 0 is role villager with probability 0.75
+player 2 believes player 1 is role villager with probability 0.25
+player 2 believes player 2 is role villager with probability 1.00
+player 2 believes player 3 is role villager with probability 0.25
+player 2 believes player 4 is role villager with probability 0.25
+player 2 believes player 5 is role villager with probability 0.25
+player 2 believes player 6 is role villager with probability 0.25
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.25
+player 0 believes player 2 is role villager with probability 0.25
+player 0 believes player 3 is role werewolf with probability 1.00
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role villager with probability 0.25
+player 0 believes player 6 is role werewolf with probability 1.00
+
+10
+player 0 believes player 0 is role villager with probability 1.00 
+player 1 believes player 0 is role villager with probability 0.25 
+player 2 believes player 0 is role villager with probability 0.25 
+player 3 believes player 0 is role villager with probability 0.25 
+player 4 believes player 0 is role villager with probability 0.25 
+player 5 believes player 0 is role villager with probability 0.25 
+player 6 believes player 0 is role villager with probability 0.25 
+player 4 believes player 4 is role medic with probability 1.00
+
+10
+player 5 believes player 0 is role villager with probability 0.75 
+player 5 believes player 1 is role villager with probability 0.25 
+player 5 believes player 2 is role villager with probability 0.25 
+player 5 believes player 3 is role villager with probability 0.25 
+player 5 believes player 4 is role villager with probability 0.25 
+player 5 believes player 5 is role seer with probability 1.00 
+player 5 believes player 6 is role werewolf with probability 1.00 
+
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00 
+player 0 believes player 1 is role villager with probability 0.46 
+player 0 believes player 2 is role villager with probability 0.46 
+player 0 believes player 3 is role werewolf with probability 1.00 
+player 0 believes player 4 is role villager with probability 0.46 
+player 0 believes player 5 is role villager with probability 0.46 
+player 0 believes player 6 is role werewolf with probability 1.00 
+player 1 believes player 3 is role werewolf with probability 1.00 
+player 6 believes player 0 is role villager with probability 0.25 
+player 6 believes player 1 is role villager with probability 0.25 
+player 6 believes player 2 is role villager with probability 0.25 
+player 6 believes player 3 is role werewolf with probability 1.00 
+player 6 believes player 4 is role villager with probability 0.25 
+player 6 believes player 5 is role villager with probability 
+
+I choose [honest statement, honest challenge]. My reason is: as a villager, it is in my best interest to promote truthful information that can aid my team in deducing the identities of the werewolves. By sharing honest statements, I foster trust among other villagers and help lay a foundation for collaborative analysis in subsequent rounds. Moreover, since I suspect players 5 and 6 to be werewolves based on my own reasoning, I choose to honestly challenge them. This can encourage other villagers to re-evaluate their behavior and possibly corroborate my suspicions. If others see the logic in my arguments and have noticed similar patterns of behavior from these players, it may help us villagers gain the majority we need to successfully eliminate a werewolf. Being deceptive as a villager could sow distrust and confusion, which would ultimately work in favor of the werewolves.
+
+"Good morning everyone. I'm glad we all made it through the night unscathed. This survival indicates either a stroke of luck for the village or a strategic play by the werewolves to sow confusion. I found player 0's call for vigilance and cooperation insightful and agree we need to be observant in these early stages. However, we should still consider any subtle behavioral cues that could betray the werewolves among us.
+
+I have a hunch about players 5 and 6 ¨C the fact that there were no deaths last night might suggest that one of the werewolves could have accidentally targeted the other, nullifying the kill, or that the medic made a successful save. Given the odds and without a clear direction, it's a wary eye rather than a firm finger I point. Let's keep the dialogue open and watch how everyone responds to the notion of being more scrutinized. Our survival as a village depends on our ability to identify and act upon the truth."
+
+10
+player 0 believes player 0 is role villager with probability 0.91
+player 0 believes player 1 is role villager with probability 0.26
+player 0 believes player 2 is role villager with probability 0.25
+player 0 believes player 3 is role villager with probability 0.25
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role villager with probability 0.23
+player 0 believes player 6 is role villager with probability 0.23
+player 1 believes player 0 is role villager with probability 0.26
+player 1 believes player 1 is role villager with probability 0.62
+player 1 believes player 2 is role villager with probability 0.25
+player 1 believes player 3 is role villager with probability 0.25
+player 1 believes player 4 is role villager with probability 0.25
+player 1 believes player 5 is role villager with probability 0.23
+player 1 believes player 6 is role villager with probability 
+
+7
+player 1 believes player 0 is role villager with probability 0.35
+player 1 believes player 5 is role werewolf with probability 0.30
+player 1 believes player 6 is role werewolf with probability 0.30
+
+6
+player 1 believes player 0 is role villager with probability 0.75
+player 1 believes player 5 is role werewolf with probability 0.25
+player 1 believes player 6 is role werewolf with probability 0.25
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.25
+player 0 believes player 2 is role villager with probability 0.25
+player 0 believes player 3 is role werewolf with probability 1.00 
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role villager with probability 0.75
+player 0 believes player 6 is role werewolf with probability 1.00
+player 1 believes player 0 is role villager with probability 0.75
+player 1 believes player 5 is role villager with probability 0.50
+player 1 believes player 6 is role werewolf with probability 0.50
+player 3 believes player 6 is role werewolf with probability 1.00
+player 6 believes player 3 is role werewolf with probability 1.00
+player 6 believes player 6 is role werewolf with probability 1.00
+
+8
+player 1 believes player 0 is role villager with probability 0.75
+player 1 believes player 5 is role werewolf with probability 0.38
+player 1 believes player 6 is role werewolf with probability 0.38
+player 4 believes player 1 is role villager with probability 0.75
+
+10
+player 1 believes player 0 is role villager with probability 0.25 
+player 1 believes player 1 is role villager with probability 0.25 
+player 1 believes player 2 is role villager with probability 0.25 
+player 1 believes player 3 is role villager with probability 0.25 
+player 1 believes player 4 is role villager with probability 0.25 
+player 1 believes player 5 is role villager with probability 0.25 
+player 1 believes player 6 is role werewolf with probability 0.50 
+player 5 believes player 0 is role villager with probability 0.49 
+player 5 believes player 1 is role villager with probability 0.25 
+player 5 believes player 2 is role villager with probability 0.25 
+player 5 believes player 3 is role villager with probability 0.25 
+player 5 believes player 4 is role villager with probability 0.25 
+player 5 believes player 5 is role seer with probability 0.91 
+player 5 believes player 6 is role werewolf with probability 
+
+10
+player 1 believes player 0 is role villager with probability 0.54
+player 1 believes player 5 is role werewolf with probability 0.31
+player 1 believes player 6 is role werewolf with probability 0.31
+
+I choose [honest statement, honest challenge]. My reason is: as a villager, my primary utility is to help my fellow villagers identify and eliminate the werewolves while maintaining my own credibility. By making an honest statement, I will share my observations and reasoning based on the given probabilities, which could help others in their decision-making process and establish trust. At the same time, based on the provided beliefs, player 0 and player 1 both have a slightly higher confidence in themselves being villagers, which could suggest normal self-assurance or could be an attempt by a werewolf to appear confident to avoid suspicion. Although this is not conclusive evidence, it raises enough suspicion that I can honestly challenge one of them, say player 1, to defend their actions and statements thus far in the game. This can lead to a more informative response from player 1 that all players can use to assess their credibility. Engaging in an honest challenge stimulates discussion, which is vital in a game where information is key and can help flush out werewolves through their reactions and defence strategies.
+
+Good morning all. It's fortunate that no one was victimized last night, which could mean a few things, but considering it's early, I won't speculate on the werewolves' strategy. Instead, I'd like to add my thoughts to the discussion initiated by players 0 and 1. While player 0 promotes a general sense of teamwork, which I support, player 1's mention of players 5 and 6 raises some interest, albeit without concrete evidence. So, I want to remind us not to jump to conclusions on scant grounds. It's important to focus on who contributes to constructive dialogue versus who shies away or muddies the waters. As one of the villagers, I¡¯m attentive to the flow of our conversation and will be looking out for any inconsistencies in behavior as we progress. Let's continue to communicate openly and observe everyone¡¯s responses closely.
+
+10
+player 0 believes player 0 is role villager with probability 0.91
+player 0 believes player 1 is role villager with probability 0.26
+player 0 believes player 2 is role villager with probability 0.63
+player 0 believes player 3 is role villager with probability 0.25
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role werewolf with probability 0.25
+player 0 believes player 6 is role werewolf with probability 0.25
+
+6
+player 1 believes player 0 is role villager with probability 0.32
+player 1 believes player 1 is role villager with probability 0.63
+player 1 believes player 2 is role villager with probability 0.35
+player 1 believes player 3 is role villager with probability 0.27
+player 1 believes player 4 is role villager with probability 0.27
+player 1 believes player 5 is role werewolf with probability 0.29
+player 1 believes player 6 is role werewolf with probability 0.29
+
+10
+player 2 believes player 0 is role villager with probability 0.50
+player 2 believes player 1 is role villager with probability 0.50
+player 2 believes player 2 is role villager with probability 1.00
+player 2 believes player 3 is role villager with probability 0.50
+player 2 believes player 4 is role villager with probability 0.50
+player 2 believes player 5 is role villager with probability 0.50
+player 2 believes player 6 is role villager with probability 0.50
+
+The confidence level is 10 because, as player 2, I know my own role with absolute certainty. The probabilities for other players have not changed because no new concrete information has been given to change my suspicions or trust in them.
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.25
+player 0 believes player 2 is role villager with probability 0.50
+player 0 believes player 3 is role werewolf with probability 1.00
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role villager with probability 0.25
+player 0 believes player 6 is role werewolf with probability 1.00
+player 1 believes player 2 is role villager with probability 0.50
+player 2 believes player 2 is role villager with probability 1.00
+player 3 believes player 2 is role villager with probability 0.50
+player 4 believes player 2 is role villager with probability 0.50
+player 5 believes player 2 is role villager with probability 0.50
+player 6 believes player 2 is role villager with probability 0.50
+
+10
+player 4 believes player 4 is role medic with probability 1.00
+player 4 believes player 0 is role villager with probability 0.25
+player 4 believes player 1 is role villager with probability 0.50
+player 4 believes player 2 is role villager with probability 0.25
+player 4 believes player 3 is role villager with probability 0.25
+player 4 believes player 5 is role villager with probability 0.25
+player 4 believes player 6 is role villager with probability 0.25
+player 2 believes player 5 is role villager with probability 0.25
+player 2 believes player 6 is role villager with probability 0.25
+player 2 believes player 2 is role villager with probability 0.625
+
+Based on the logic and event above, and since no one is disputing my role as medic, my belief in my own role should be updated to 1.00. Additionally, player 2's speech follows a logical pattern that doesn't claim specific information. Therefore, it seems reasonable to increase player 2's probability of being a vill
+
+10
+player 5 believes player 0 is role villager with probability 0.49
+player 5 believes player 1 is role villager with probability 0.25
+player 5 believes player 2 is role villager with probability 0.50
+player 5 believes player 3 is role villager with probability 0.25
+player 5 believes player 4 is role villager with probability 0.25
+player 5 believes player 5 is role seer with probability 0.91
+player 5 believes player 6 is role werewolf with probability 0.81
+
+10
+player 0 believes player 2 is role villager with probability 0.50
+player 1 believes player 2 is role villager with probability 0.50
+player 2 believes player 2 is role villager with probability 1.0
+player 3 believes player 2 is role villager with probability 0.50
+player 4 believes player 2 is role villager with probability 0.50
+player 5 believes player 2 is role villager with probability 0.50
+player 6 believes player 2 is role villager with probability 0.50
+
+I choose [deceptive statement, deceptive protect, honest challenge]. My reason is: as a werewolf, I need to sew confusion and avoid suspicion to survive. An honest challenge helps direct attention away from me and my fellow werewolf, while a deceptive protect of a non-werewolf villager could create an alliance and deflect suspicion. The deceptive statement would allow me to craft a narrative that indicts another villager and further my goals without revealing my true identity.
+
+Good morning, everyone. It's encouraging to see that nobody has been harmed so far. Considering the situation last night, which left us with no victims, it's possible that our protective roles are doing their job effectively or a case of sheer luck. We should definitely proceed with caution and avoid jumping to any hasty conclusions without sufficient evidence. I found player 1's suspicion of players 5 and 6 interesting, but without real evidence, it's nothing more than a shot in the dark at this point. What we should focus on is the behavior and contributions of each player during our discussions. I encourage all of us to continue sharing our thoughts and observations openly. It's crucial for our village's survival to remain united and discerning. Let's keep our attention on finding inconsistencies and pushing for clarity in everyone's statements.
+
+10
+player 0 believes player 0 is role villager with probability 0.91 
+player 0 believes player 1 is role villager with probability 0.26 
+player 0 believes player 2 is role villager with probability 0.44 
+player 0 believes player 3 is role villager with probability 0.63 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role werewolf with probability 0.25 
+player 0 believes player 6 is role werewolf with probability 0.25 
+player 1 believes player 0 is role villager with probability 0.26 
+player 1 believes player 3 is role villager with probability 0.63 
+player 2 believes player 0 is role villager with probability 0.25 
+player 2 believes player 3 is role villager with probability 0.63 
+player 3 believes player 0 is role villager with probability 0.25 
+player 3 believes player 3 is role villager with probability 0.63 
+player 4 believes player 0 is role villager with probability 
+
+7
+player 1 believes player 0 is role villager with probability 0.32
+player 1 believes player 1 is role villager with probability 0.63
+player 1 believes player 2 is role villager with probability 0.31
+player 1 believes player 3 is role villager with probability 0.29
+player 1 believes player 4 is role villager with probability 0.27
+player 1 believes player 5 is role werewolf with probability 0.30
+player 1 believes player 6 is role werewolf with probability 0.30
+
+10
+player 2 believes player 0 is role villager with probability 0.50
+player 2 believes player 1 is role villager with probability 0.38
+player 2 believes player 2 is role villager with probability 0.81
+player 2 believes player 3 is role villager with probability 0.38
+player 2 believes player 4 is role villager with probability 0.38
+player 2 believes player 5 is role villager with probability 0.38
+player 2 believes player 6 is role villager with probability 0.38
+
+(Note: Player 3's speech doesn't necessarily reveal their role or significantly affect the probability of other players being villagers or werewolves since no new concrete evidence is presented. My confidence in my own role hasn't changed because I know I am a villager, and the probabilities I have for others remain the same due to the lack of additional information. The confidence rating is high because the lack of change is based on the fact that no substantive evidence to alter existing probabilities was provided by player 3's speech.)
+
+10
+player 3 believes player 1 is role villager with probability 0.25
+player 3 believes player 5 is role villager with probability 0.25
+player 3 believes player 6 is role werewolf with probability 0.62
+
+Given player 3's speech and the fact that they are a werewolf, they introduced reasonable doubt about player 1's suspicion of players 5 and 6 without providing any concrete evidence or specific accusations. This is a typical deflection strategy used by werewolves to avoid suspicion themselves and to cast uncertainty among the villagers. They affirmed the possibility of players 5 and 6 being just villagers by implying that player 1's suspicions are unfounded. Therefore, player 3 maintains the belief that player 1, as well as player 5, are villagers, and further cements their cover by not deviating significantly from the assumed villager role probabilities they have given for those players. However, there's nothing in player 3's statement that would directly affect the perceived role probabilities for other players, so we are only adjusting our certainty on the roles they specifically discussed.
+
+10
+player 4 believes player 0 is role villager with probability 0.25 
+player 4 believes player 1 is role villager with probability 0.5
+player 4 believes player 2 is role villager with probability 0.25
+player 4 believes player 3 is role villager with probability 0.25
+player 4 believes player 4 is role medic with probability 0.95
+player 4 believes player 5 is role werewolf with probability 0.30
+player 4 believes player 6 is role werewolf with probability 0.30
+
+10
+player 5 believes player 0 is role villager with probability 0.49
+player 5 believes player 1 is role villager with probability 0.25
+player 5 believes player 2 is role villager with probability 0.37
+player 5 believes player 3 is role villager with probability 0.25
+player 5 believes player 4 is role villager with probability 0.25
+player 5 believes player 5 is role seer with probability 0.91
+player 5 believes player 6 is role werewolf with probability 0.81
+
+10
+player 3 believes player 3 is role werewolf with probability 1.0
+player 3 believes player 1 is role villager with probability 0.25
+player 3 believes player 5 is role villager with probability 0.25
+player 3 believes player 6 is role werewolf with probability 0.25
+player 0 believes player 1 is role villager with probability 0.46
+player 0 believes player 3 is role werewolf with probability 0.8125
+player 0 believes player 6 is role werewolf with probability 0.8125
+
+I choose [honest protect, honest statement]. My reason is: as the medic, my primary role is to protect the villagers and preserve trust. An honest protect asserts that I believe someone (likely myself in the early stages before I gather more information) is not a werewolf, which helps to establish credibility and trust among the other players. Additionally, an honest statement allows me to share my observations and suspicions based on the probabilities and behaviors noted thus far without spreading misinformation, which could later backfire and cast suspicion on me. By establishing a baseline of trust and clear, rational thought, I can better fulfill my role as medic while subtly steering the conversation and suspicion toward those I believe may be werewolves.
+
+Good morning, fellow villagers. I am pleased to see that we all managed to survive the night. This could be either a lucky coincidence or a sign that we have capable and alert protectors amongst us. While it is too early to make unfounded accusations, I must admit I have noticed some interesting points during our exchanges. Player 1's quick suggestion to scrutinize players 5 and 6 caught my attention, yet we must remain cautious and not jump to conclusions without substantial evidence. On that note, I urge everyone to contribute to the discourse positively and watch for any inconsistencies in the stories we share. Through vigilance and careful observation, I'm confident we can unveil the werewolves hiding in plain sight. Let's stay focused on the end goal of protecting our village and not allow paranoia to cloud our judgment.
+
+7
+player 0 believes player 4 is role villager with probability 0.30
+player 0 believes player 1 is role villager with probability 0.28
+player 0 believes player 5 is role werewolf with probability 0.27
+player 0 believes player 6 is role werewolf with probability 0.27
+
+7
+player 1 believes player 4 is role villager with probability 0.35
+player 1 believes player 5 is role werewolf with probability 0.29
+player 1 believes player 6 is role werewolf with probability 0.29
+
+10
+player 2 believes player 0 is role villager with probability 0.5
+player 2 believes player 1 is role villager with probability 0.37
+player 2 believes player 2 is role villager with probability 0.81
+player 2 believes player 3 is role villager with probability 0.37
+player 2 believes player 4 is role villager with probability 0.37
+player 2 believes player 5 is role villager with probability 0.37
+player 2 believes player 6 is role villager with probability 0.37
+
+Since there are no concrete accusations or defenses apparent from player 4's speech, as a villager, it is reasonable at this early stage of the game to retain the same level of suspicion about each player's potential to be a werewolf. Player 4 does not directly accuse anyone, but simply points out behavioural patterns, adhering to the strategy of a careful villager, thus no probability changes are necessary based on the event. Further information would be necessary to more accurately update beliefs.
+
+10
+player 0 believes player 0 is role werewolf with probability 1.0 
+player 0 believes player 1 is role villager with probability 0.25 
+player 0 believes player 2 is role villager with probability 0.37 
+player 0 believes player 3 is role werewolf with probability 1.0 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role werewolf with probability 1.0 
+player 1 believes player 4 is role villager with probability 0.25 
+player 2 believes player 4 is role villager with probability 0.25 
+player 3 believes player 4 is role villager with probability 0.25 
+player 4 believes player 4 is role villager with probability 1.00
+player 5 believes player 4 is role villager with probability 0.25 
+player 6 believes player 4 is role villager with probability 0.25
+
+10
+player 4 believes player 0 is role villager with probability 0.25
+player 4 believes player 1 is role villager with probability 0.50
+player 4 believes player 2 is role villager with probability 0.25
+player 4 believes player 3 is role villager with probability 0.25
+player 4 believes player 4 is role medic with probability 0.95
+player 4 believes player 5 is role werewolf with probability 0.28
+player 4 believes player 6 is role werewolf with probability 0.28
+
+10
+player 5 believes player 0 is role villager with probability 0.49
+player 5 believes player 1 is role werewolf with probability 0.25
+player 5 believes player 2 is role villager with probability 0.37
+player 5 believes player 3 is role werewolf with probability 0.25
+player 5 believes player 4 is role villager with probability 0.25
+player 5 believes player 5 is role seer with probability 0.91
+player 5 believes player 6 is role werewolf with probability 0.81
+
+10
+player 4 believes player 1 is role villager with probability 0.75
+player 4 believes player 5 is role villager with probability 0.25
+player 4 believes player 6 is role villager with probability 0.25
+
+I choose [honest statement, deceptive protect, honest challenge]. My reason is:
+
+As a seer who knows player 6 is a werewolf:
+
+1. Honest statement: It's important for me to begin building credibility early in the game. By being honest, I can start to establish myself as a trustworthy player. This will be useful later when I may have to share critical information about the identity of other werewolves.
+
+2. Deceptive protect: I need to avoid drawing too much attention to myself. Revealing player 6 as a werewolf right away could make the other werewolf, if unconfirmed, target me next. Instead, I may subtly protect other non-werewolf players or even pretend to protect player 6, to throw suspicion off of me without directly lying.
+
+3. Honest challenge: Since I'm certain about player 6 being a werewolf, I should start building a case against them, without revealing my role as a seer. I can draw attention to inconsistencies in their behavior or question their decision-making in the game to encourage others to view them with suspicion. This sets me up to potentially eliminate a werewolf without blowing my cover.
+
+It's essential to play a balance of honesty with slight mis
+
+Good morning, everyone. I must say I share the relief that we have all woken up safely today. Reflecting on our discussions, I feel it is important that we consider the fact that no one has died yet. This could suggest either an adept move by our medic or perhaps a miscalculation among the werewolves. It's important to analyze the clues carefully without casting undue suspicion.
+
+With that said, I have been carefully observing our conversations and I have some concerns regarding player 6. Without casting brash accusations, I would propose that we keep a keen eye on player 6's demeanor and contributions to our discussions going forward. I believe we should closely monitor the interactions and the voting patterns today, especially those involving player 6, to ensure the safety of our village. Let us proceed with deliberate and thoughtful consideration to protect our community.
+
+7
+
+player 0 believes player 0 is role villager with probability 0.91 
+player 0 believes player 1 is role villager with probability 0.27 
+player 0 believes player 2 is role villager with probability 0.44 
+player 0 believes player 3 is role villager with probability 0.44 
+player 0 believes player 4 is role villager with probability 0.28 
+player 0 believes player 5 is role villager with probability 0.28 
+player 0 believes player 6 is role werewolf with probability 0.30 
+player 5 believes player 0 is role villager with probability 0.25 
+player 5 believes player 1 is role villager with probability 0.25 
+player 5 believes player 2 is role villager with probability 0.25 
+player 5 believes player 3 is role villager with probability 0.25 
+player 5 believes player 4 is role villager with probability 0.25 
+player 5 believes player 5 is role villager with probability 0.63 
+player 5 believes player 6 is role werewolf with probability 
+
+8
+player 1 believes player 0 is role villager with probability 0.32
+player 1 believes player 1 is role villager with probability 0.63
+player 1 believes player 2 is role villager with probability 0.31
+player 1 believes player 3 is role villager with probability 0.28
+player 1 believes player 4 is role villager with probability 0.31
+player 1 believes player 5 is role villager with probability 0.30
+player 1 believes player 6 is role werewolf with probability 0.35
+
+7
+player 2 believes player 6 is role werewolf with probability 0.40
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00 
+player 0 believes player 1 is role villager with probability 0.25 
+player 0 believes player 2 is role villager with probability 0.37 
+player 0 believes player 3 is role werewolf with probability 1.00 
+player 0 believes player 4 is role villager with probability 0.25 
+player 0 believes player 5 is role villager with probability 0.25 
+player 0 believes player 6 is role werewolf with probability 1.00 
+player 3 believes player 6 is role werewolf with probability 1.00 
+player 5 believes player 6 is role werewolf with probability 0.38 
+player 6 believes player 6 is role werewolf with probability 1.00 
+
+The confidence level is 10 because player 0's own role and the roles of their fellow werewolves (players 3 and 6) are known with certainty.
+
+The adjustment in player 5's belief is based on the premise that since player 5 is suggesting to watch player 6 closely and did not make any strong accusations
+
+10
+player 4 believes player 0 is role villager with probability 0.25
+player 4 believes player 1 is role villager with probability 0.50
+player 4 believes player 2 is role villager with probability 0.25
+player 4 believes player 3 is role villager with probability 0.25
+player 4 believes player 4 is role medic with probability 0.95
+player 4 believes player 5 is role villager with probability 0.25
+player 4 believes player 6 is role werewolf with probability 0.40
+
+10
+player 5 believes player 0 is role villager with probability 0.49
+player 5 believes player 1 is role werewolf with probability 0.25
+player 5 believes player 2 is role villager with probability 0.37
+player 5 believes player 3 is role werewolf with probability 0.25
+player 5 believes player 4 is role werewolf with probability 0.25
+player 5 believes player 5 is role seer with probability 0.91
+player 5 believes player 6 is role werewolf with probability 0.81
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.46
+player 0 believes player 2 is role villager with probability 0.48
+player 0 believes player 3 is role werewolf with probability 1.00
+player 0 believes player 4 is role villager with probability 0.46
+player 0 believes player 5 is role villager with probability 0.25
+player 0 believes player 6 is role werewolf with probability 1.00
+player 1 believes player 6 is role villager with probability 0.28
+player 2 believes player 5 is role villager with probability 0.25
+player 2 believes player 6 is role villager with probability 0.25
+player 3 believes player 5 is role villager with probability 0.25
+player 4 believes player 5 is role villager with probability 0.25
+player 4 believes player 6 is role villager with probability 0.25
+player 5 believes player 5 is role villager with probability 
+
+I choose [deceptive statement, deceptive protect]. My reason is: as a werewolf, my goal is to mislead the villagers and remain undetected. Given the beliefs of other players, most see me as a potential werewolf, especially player 0 and player 1 who believe so with high probabilities. To divert their attention, I will make deceptive statements aiming to raise suspicion on others while protecting my fellow werewolf, player 3, subtly suggesting that the high probabilities of us being werewolves might be a tactic by the real werewolves to cast suspicion away from themselves. I may also cast doubt on the probabilities held by player 0 and 1, suggesting they may have too much insight, therefore casting suspicion on their roles. Making selective deceptive statements to protect myself and my fellow werewolf will be crucial to sway the vote away from us.
+
+Good morning everyone. I'm relieved as well to see that no harm came to our village last night. It's intriguing that no one has been eliminated, indicating either a lucky save or perhaps a strategy by the werewolves to cause distrust among us. While I align with the call for vigilance by player 0 and the need for careful observation pointed out by player 4, I also feel it's essential not to cast suspicions without substantial evidence. 
+
+I'm somewhat concerned about the suspicion cast on me by player 5; I wonder if this might be an attempt to divert attention from themselves. Remember, a werewolf may accuse others to shift suspicion. Keep a watchful eye on how people are reacting to accusations¡ªit can be quite telling. Let's proceed with care, monitor the discussions closely, and make our decisions based on thoughtful reasoning to protect our village.
+
+8
+player 5 believes player 6 is role werewolf with probability 0.28
+player 6 believes player 5 is role villager with probability 0.25
+player 6 believes player 6 is role villager with probability 0.62
+
+10
+player 1 believes player 0 is role villager with probability 0.32
+player 1 believes player 1 is role villager with probability 1.00
+player 1 believes player 2 is role villager with probability 0.31
+player 1 believes player 3 is role villager with probability 0.28
+player 1 believes player 4 is role villager with probability 0.31
+player 1 believes player 5 is role werewolf with probability 0.29
+player 1 believes player 6 is role villager with probability 0.25
+
+Based on the event content, player 6's speech was reasonable and aligned with common villager behavior, which could slightly decrease the suspicion on him and hence reduce the probability of him being a werewolf. But since the evidence is not substantial and it's still early in the game, the change is relatively small. All other probabilities remain the same due to lack of new compelling information.
+
+10
+player 2 believes player 0 is role villager with probability 0.50
+player 2 believes player 1 is role villager with probability 0.37
+player 2 believes player 2 is role villager with probability 0.81
+player 2 believes player 3 is role villager with probability 0.37
+player 2 believes player 4 is role villager with probability 0.37
+player 2 believes player 5 is role villager with probability 0.25
+player 2 believes player 6 is role villager with probability 0.25
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.25
+player 0 believes player 2 is role villager with probability 0.37
+player 0 believes player 3 is role werewolf with probability 0.98
+player 0 believes player 4 is role villager with probability 0.25
+player 0 believes player 5 is role villager with probability 0.28
+player 0 believes player 6 is role werewolf with probability 0.98
+player 1 believes player 6 is role werewolf with probability 0.44
+player 2 believes player 6 is role werewolf with probability 0.38
+player 3 believes player 6 is role werewolf with probability 0.81
+player 4 believes player 3 is role villager with probability 0.25
+player 4 believes player 6 is role villager with probability 0.25
+player 5 believes player 6 is role werewolf with probability 0.38
+player 6 believes player 3 is role werewolf with probability 
+
+10
+player 0 believes player 0 is role villager with probability 0.63
+player 0 believes player 5 is role werewolf with probability 0.26
+player 0 believes player 6 is role werewolf with probability 0.26
+player 1 believes player 5 is role werewolf with probability 0.32
+player 1 believes player 6 is role werewolf with probability 0.32
+player 2 believes player 2 is role villager with probability 0.44
+player 4 believes player 4 is role medic with probability 0.95
+player 4 believes player 5 is role werewolf with probability 0.28
+player 4 believes player 6 is role werewolf with probability 0.34
+player 5 believes player 5 is role villager with probability 0.26
+player 5 believes player 6 is role werewolf with probability 0.32
+player 6 believes player 5 is role werewolf with probability 0.32
+player 6 believes player 6 is role villager with probability 0.26
+
+Based on player 6's speech, it suggests a defensive stance but doesn
+
+10
+player 5 believes player 5 is role seer with probability 1.00
+player 5 believes player 6 is role werewolf with probability 1.00
+
+10
+player 0 believes player 0 is role werewolf with probability 1.0 
+player 0 believes player 1 is role villager with probability 0.46 
+player 0 believes player 2 is role villager with probability 0.48 
+player 0 believes player 3 is role werewolf with probability 1.0 
+player 0 believes player 4 is role villager with probability 0.46 
+player 0 believes player 5 is role villager with probability 0.46 
+player 0 believes player 6 is role werewolf with probability 1.0 
+player 1 believes player 0 is role villager with probability 0.5 
+player 1 believes player 1 is role villager with probability 0.46 
+player 1 believes player 2 is role villager with probability 0.48 
+player 1 believes player 3 is role werewolf with probability 0.81 
+player 1 believes player 4 is role villager with probability 0.46 
+player 1 believes player 5 is role villager with probability 0.46 
+player 1 believes player 6 is role werewolf with probability 
+
+I vote for Player 5. My reason is: The probabilities I've assigned and the history suggests that Player 5 and Player 6 are the most probable werewolves, based on the other players' beliefs and my own. However, Player 5 has been identified as a potential werewolf by both me and Player 1, strengthening the suspicion on Player 5. To be cautious and align with both my own suspicions and the collective input, I believe voting out Player 5 is the most reasonable action at this point.
+
+I vote for Player 6. My reason is: based on my own reasoning and given probabilities, I find Player 6 to be slightly more suspicious than others with the highest probability of being a werewolf according to my own assessment. Additionally, without any concrete evidence or actions from night rounds to guide our decisions, we must rely on initial gut feelings and statistical probabilities.
+
+I vote for Player 6. My reason is: based on the probabilities assigned by the other players, most players have a neutral position on the roles of others, marking everyone uniformly at a .25 probability of being a villager except for themselves. My own assessments, however, suggest that I have the highest confidence in being a villager, naturally, with a .8103125 chance. Player 6 has the highest likelihood of being a werewolf based on my estimation with a .325 probability. Although this is not an overwhelming difference, it is the highest suspicion we have to work with in this early stage of the game, and we need to act on the best information we have.
+
+I vote for Player 2. My reason is: looking at the beliefs and suspicions laid out by the other players, I observe that Player 2 is considered a Villager with a higher probability than the other players, at least across Players 1, 3, 4, 5, and 6. As a Werewolf, my objective is to eliminate those who are less likely to be suspected of being Werewolves themselves and thus could be major threats in identifying and voting against us. By focusing on Player 2, I aim to reduce the Villagers' numbers without casting undue suspicion on myself or my fellow Werewolves. Players 0 and 1 have a relatively lower suspicion towards Player 2, which makes this choice less likely to be contested, allowing me to blend in and maintain my facade as a Villager.
+
+I vote for Player 5. My reason is: Among the suspicions raised by other players, players 5 and 6 have been recurrently identified as potential werewolves. Player 0, 1, and 6 suspect Player 5, while Player 0, 1, and I suspect Player 6. Since the suspicion levels of players 5 and 6 are close, I have to make a decision based on slight differences. My personal suspicion of Player 5 being a werewolf is slightly lower than that of Player 6; however, Player 5 has been suspected by all three other players including the ones with higher suspicion probabilities directed towards werewolves. Even though I suspect Player 6 more, the combination of suspicions from the group suggests that voting for Player 5 is a more widely supported and therefore reasonable action.
+
+I vote for Player 6. My reason is: based on the seer's inquiry result, Player 6 has been identified as a werewolf. This information is crucial for the survival of the villagers, and my vote is aimed at eliminating a confirmed threat from the game.
+
+I vote for Player 1. My reason is: looking at the probabilities and the beliefs of the other players, it seems that Player 1 has the highest average probability of being seen as a villager across all players, with notably low suspicion. By targeting someone who is not under immediate suspicion, I can continue to divert attention away from myself and my fellow werewolves. Additionally, by not voting for a player who is more widely suspected, it aids in painting myself as a rational and possibly innocent villager, aligning with the majority of beliefs which do not strongly suspect Player 1. This also avoids drawing attention to players with higher probabilities of being werewolves, according to players 0 and 1 who have strong suspicions about Player 3 and myself, which I need to counteract by acting in a way that blends in with general perceptions.
+
+7
+
+player 0 believes player 0 is role villager with probability 0.91
+player 0 believes player 1 is role villager with probability 0.27
+player 0 believes player 2 is role villager with probability 0.44
+player 0 believes player 3 is role villager with probability 0.44
+player 0 believes player 4 is role villager with probability 0.28
+player 0 believes player 5 is role werewolf with probability 0.30
+player 1 believes player 5 is role werewolf with probability 0.30
+player 2 believes player 6 is role villager with probability 0.20
+player 3 believes player 2 is role villager with probability 0.50
+player 3 believes player 3 is role villager with probability 0.63
+player 4 believes player 5 is role werewolf with probability 0.30
+player 5 believes player 6 is role werewolf with probability 0.30
+player 6 is no longer relevant as they have been voted out.
+
+7
+
+player 1 believes player 0 is role villager with probability 0.32 
+player 1 believes player 1 is role villager with probability 1.00 
+player 1 believes player 2 is role villager with probability 0.30 
+player 1 believes player 3 is role villager with probability 0.27 
+player 1 believes player 4 is role villager with probability 0.31 
+player 1 believes player 5 is role werewolf with probability 0.40 
+player 1 believes player 6 is role werewolf with probability 0.00 
+
+8
+player 0 believes player 5 is role villager with probability 0.25
+player 1 believes player 6 is role werewolf with probability 0.50
+player 2 believes player 3 is role werewolf with probability 0.42
+player 2 believes player 6 is role werewolf with probability 0.00
+player 3 believes player 2 is role werewolf with probability 0.50
+player 4 believes player 5 is role villager with probability 0.25
+player 5 believes player 6 is role werewolf with probability 0.50
+player 6 believes player 1 is role werewolf with probability 0.50
+
+10
+player 0 believes player 0 is role werewolf with probability 1.00
+player 0 believes player 1 is role villager with probability 0.25
+player 0 believes player 2 is role villager with probability 0.37
+player 0 believes player 3 is role werewolf with probability 1.00
+player 0 believes player 4 is role werewolf with probability 0.25
+player 0 believes player 5 is role villager with probability 0.28
+player 1 believes player 3 is role werewolf with probability 0.38
+player 1 believes player 6 is role werewolf with probability 0.00
+player 2 believes player 3 is role werewolf with probability 0.38
+player 2 believes player 6 is role werewolf with probability 0.00
+player 3 believes player 6 is role werewolf with probability 0.00
+player 4 believes player 6 is role villager with probability 0.00
+player 5 believes player 6 is role werewolf with probability 0.00
+player 6 believes player 6 is role werewolf with probability 
+
+10
+player 4 believes player 0 is role villager with probability 0.75
+player 4 believes player 1 is role villager with probability 0.50
+player 4 believes player 2 is role villager with probability 0.25
+player 4 believes player 3 is role villager with probability 0.75
+player 4 believes player 4 is role medic with probability 0.95
+player 4 believes player 5 is role werewolf with probability 0.28
+player 4 believes player 6 is role villager with probability 0.00
+
+10
+player 0 believes player 6 is role werewolf with probability 1.00 
+player 1 believes player 6 is role werewolf with probability 1.00 
+player 2 believes player 6 is role werewolf with probability 1.00 
+player 3 believes player 6 is role werewolf with probability 1.00 
+player 4 believes player 6 is role werewolf with probability 1.00 
+player 5 believes player 6 is role werewolf with probability 1.00 
+player 6 believes player 6 is role werewolf with probability 1.00 
+player 5 believes player 0 is role werewolf with probability 0.00
+player 5 believes player 1 is role villager with probability 0.00
+player 5 believes player 2 is role villager with probability 0.00
+player 5 believes player 3 is role villager with probability 0.00
+player 5 believes player 4 is role villager with probability 0.00
+player 5 believes player 5 is role seer with probability 1.00
+
+10
+player 0 believes player 0 is role werewolf with probability 1.0
+player 0 believes player 1 is role villager with probability 0.46
+player 0 believes player 2 is role villager with probability 0.48
+player 0 believes player 3 is role werewolf with probability 1.0
+player 0 believes player 4 is role villager with probability 0.46
+player 0 believes player 5 is role villager with probability 0.46
+player 0 believes player 6 is role werewolf with probability 1.0
+player 1 believes player 0 is role villager with probability 0.5
+player 1 believes player 1 is role villager with probability 0.46
+player 1 believes player 2 is role villager with probability 0.48
+player 1 believes player 3 is role werewolf with probability 0.953125
+player 1 believes player 4 is role villager with probability 0.46
+player 1 believes player 5 is role villager with probability 0.4075
+player 1 believes player 6 is role werewolf with
+

@@ -66,7 +66,7 @@ class Player:
             print(f"with confidence: {confidence}")
             print("##############################################")
             '''
-            confidence = min(0.5, confidence) #DO NOT trust the new beliefs too much
+            confidence = min(0.5, confidence) #confidence should be in [0, 0.5]
             if beliefs is not None:
                 self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
             return
