@@ -258,7 +258,6 @@ class Player:
         max_id = max(reflex_note.keys())
         for action in operations:
             operation, value1, value2 = action
-            print(f"player {self.id} is updating the reflex note with operation {operation} {value1} {value2}")
             if operation == "UPVOTE": #value1 is the id, value2 should be None
                 reflex_note[value1][1] = min(10, reflex_note[value1][1] + 1)
             elif operation == "DOWNVOTE": #value1 is the id, value2 should be None

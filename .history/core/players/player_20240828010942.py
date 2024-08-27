@@ -243,11 +243,10 @@ class Player:
         reflex_data = parse_data(data, self.id, alpha)
         reflex_data = random.sample(reflex_data, sample_num)
         for d in reflex_data:
-            print(f"player {self.id} is reflexing")
             prev_hstate, events, pred_hstate, next_hstate = d
             pred_hstate = self.hidden_state.beliefs[self.id]
             response = self.reflex_single_pair(prev_hstate, events, next_hstate, pred_hstate)
-            self.update_note_from_response(response)
+            self.hidden_state.update(response)
         return
     
     def update_note_from_response(self, response):
@@ -258,17 +257,16 @@ class Player:
         max_id = max(reflex_note.keys())
         for action in operations:
             operation, value1, value2 = action
-            print(f"player {self.id} is updating the reflex note with operation {operation} {value1} {value2}")
-            if operation == "UPVOTE": #value1 is the id, value2 should be None
-                reflex_note[value1][1] = min(10, reflex_note[value1][1] + 1)
-            elif operation == "DOWNVOTE": #value1 is the id, value2 should be None
-                reflex_note[value1][1] -= 1
-                if reflex_note[value1][1] <= 0:
-                    reflex_note.pop(value1)
-            elif operation == "CREATE": #value1 is the new rule, value2 should be None
-                reflex_note[max_id + 1] = [value1, 1]
-            elif operation == "REPLACE": #value1 is the id, value2 is the new rule
-                reflex_note[value1][0] = value2
+        if operation == "UPVOTE": #value1 is the id, value2 should be None
+            reflex_note[value1][1] = min(10, reflex_note[value1][1] + 1)
+        elif operation == "DOWNVOTE": #value1 is the id, value2 should be None
+            reflex_note[value1][1] -= 1
+            if reflex_note[value1][1] <= 0:
+                reflex_note.pop(value1)
+        elif operation == "CREATE": #value1 is the new rule, value2 should be None
+            reflex_note[max_id + 1] = [value1, 1]
+        elif operation == "REPLACE": #value1 is the id, value2 is the new rule
+            reflex_note[value1][0] = value2
         
         #Sort the rules by the votes and give them new ids
         reflex_note = dict(sorted(reflex_note.items(), key=lambda x: x[1][1], reverse=True))
