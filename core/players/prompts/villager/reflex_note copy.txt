@@ -1,0 +1,6 @@
+1 I am a villager. 10
+2 If someone says I am a werewolf without enough supportive evidence, he is likely a werewolf. 9
+3 If a player A claims he/she is a medic/seer, everyone's belief that A is medic/seer should be 100% if no one else claims to be the same role. 9
+4 If a player A says another player B is a role, the belief of A that B is the role should be 100%. 7
+5 If a player A is extremely aggressive towards another player without any convincing evidence, A is most probably a werewolf. 5
+6 If a player A protects a player B who I think is likely to be good, then A is likely to be a villager, too. 4
