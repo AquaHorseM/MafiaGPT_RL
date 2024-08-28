@@ -92,8 +92,6 @@ def parse_reflex_actions(reflex_actions):
             elif len(s) == 3:
                 operation, id, value = s
                 if operation == "REPLACE":
-                    if value.endswith("."):
-                        value = value[:-1]
                     #check if id is a number
                     try:
                         id = int(id)
