@@ -272,11 +272,8 @@ class Player:
         
         #Sort the rules by the votes and give them new ids
         reflex_note = dict(sorted(reflex_note.items(), key=lambda x: x[1][1], reverse=True))
-        new_reflex_note = {}
         for i, key in enumerate(reflex_note.keys()):
-            new_reflex_note[i] = reflex_note[key]
-        reflex_note = deepcopy(new_reflex_note)
-        
+            reflex_note[i] = reflex_note.pop(key)
         with open(self.reflex_note_path, "w") as f:
             for key, value in reflex_note.items():
                 f.write(f"{key} {value[0]} {value[1]}\n")

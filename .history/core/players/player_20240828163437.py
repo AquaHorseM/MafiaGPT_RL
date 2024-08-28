@@ -275,7 +275,6 @@ class Player:
         new_reflex_note = {}
         for i, key in enumerate(reflex_note.keys()):
             new_reflex_note[i] = reflex_note[key]
-        reflex_note = deepcopy(new_reflex_note)
         
         with open(self.reflex_note_path, "w") as f:
             for key, value in reflex_note.items():
