@@ -265,12 +265,9 @@ class Player:
                 else:
                     reflex_note[value1][1] = min(10, reflex_note[value1][1] + 1)
             elif operation == "DOWNVOTE": #value1 is the id, value2 should be None
-                if reflex_note.get(value1) is None:
-                    pass
-                else:
-                    reflex_note[value1][1] -= 1
-                    if reflex_note[value1][1] <= 0:
-                        reflex_note.pop(value1)
+                reflex_note[value1][1] -= 1
+                if reflex_note[value1][1] <= 0:
+                    reflex_note.pop(value1)
             elif operation == "CREATE": #value1 is the new rule, value2 should be None
                 reflex_note[max_id + 1] = [value1, 1]
             elif operation == "REPLACE": #value1 is the id, value2 is the new rule
