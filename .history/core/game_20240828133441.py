@@ -406,6 +406,8 @@ class Game:
         return hstate
 
     def all_players_reflex(self):
+        if not self.reflex:
+            return
         for player_id in self.alive_players:
             player = self.all_players[player_id]
             if self.player_types[player_id] == "baseline":
