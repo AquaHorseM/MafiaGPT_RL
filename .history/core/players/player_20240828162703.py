@@ -225,10 +225,10 @@ class Player:
     def reflex_single_pair(self, prev_hstate, new_events, next_hstate, pred_hstate):
         replacements = self.get_replacements()
         replacements.update({
-            "{prev_hstate}": str(prev_hstate),
+            "{prev_hstate}": prev_hstate,
             "{new_events}": new_events,
-            "{next_hstate}": str(next_hstate),
-            "{pred_hstate}": str(pred_hstate),
+            "{next_hstate}": next_hstate,
+            "{pred_hstate}": pred_hstate,
         })
         prompt_path = os.path.join(self.prompt_dir_path, "reflex.txt")
         prompt = get_prompt(prompt_path, replacements)
