@@ -76,8 +76,10 @@ def parse_reflex_actions(reflex_actions):
                 values = re.findall(r"\[.*?\]", value)
                 assert len(values) == 2, "Only support two values for now!"
                 id = values[0].strip()[1:-1].strip()
-                value = values[1].strip()[1:-1].strip()
+                value = values[1].strip()
                 if operation == "REPLACE":
+                    if value.endswith("."):
+                        value = value[:-1]
                     #check if id is a number
                     try:
                         id = int(id)
@@ -91,6 +93,8 @@ def parse_reflex_actions(reflex_actions):
                 operation = operation.strip().upper()
                 if operation == "UPVOTE" or operation == "DOWNVOTE":
                     #check if value is a number
+                    if value.endswith("."):
+                        value = value[:-1]
                     try:
                         value = int(value)
                     except:

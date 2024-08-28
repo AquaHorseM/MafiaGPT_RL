@@ -91,6 +91,8 @@ def parse_reflex_actions(reflex_actions):
                 operation = operation.strip().upper()
                 if operation == "UPVOTE" or operation == "DOWNVOTE":
                     #check if value is a number
+                    if value.endswith("."):
+                        value = value[:-1]
                     try:
                         value = int(value)
                     except:
