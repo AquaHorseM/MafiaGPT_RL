@@ -270,8 +270,7 @@ class Player:
             elif operation == "REPLACE": #value1 is the id, value2 is the new rule
                 if reflex_note.get(value1) is None:
                     reflex_note[value1] = [value2, 3]
-                else:
-                    reflex_note[value1][0] = value2
+                reflex_note[value1][0] = value2
         
         #Sort the rules by the votes and give them new ids
         reflex_note = dict(sorted(reflex_note.items(), key=lambda x: x[1][1], reverse=True))
