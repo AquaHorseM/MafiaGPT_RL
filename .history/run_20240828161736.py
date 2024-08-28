@@ -14,7 +14,7 @@ parser.add_argument("--config_path", type=str, default="configs/player_configs_v
 parser.add_argument("--start_idx", type=int, default=0)
 parser.add_argument("--ckpt_path", type=str, default=None)
 parser.add_argument("--reflex-only",default=False, action="store_true")
-parser.add_argument("--data-path", type=str, default=None)
+parser.add_argument("--data_path", type=str, default=None)
 parser.add_argument("--train",default=False, action="store_true")
 
 def run_game_with_client(ipt, client):

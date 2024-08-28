@@ -1,0 +1,1 @@
+python run.py --reflex-only --data-path game_0_data.pkl --train

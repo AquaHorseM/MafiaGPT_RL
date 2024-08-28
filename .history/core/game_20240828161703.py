@@ -430,7 +430,6 @@ class Game:
         for player_id in range(len(self.all_players)):
             self.all_players[player_id].reflex_from_data_path(data_path)
         self.logger.info("All players reflexed successfully")
-        return
     
     def act(self, player_id, actions, update_hstate = True):
         return self.all_players[player_id]._act(self.event_book, 

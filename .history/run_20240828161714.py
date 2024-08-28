@@ -1,6 +1,6 @@
 from functools import partial
 from core.game import Game
-import json, sys
+import json
 #run the game with multiple processes
 import multiprocessing
 from core.api import load_client
@@ -14,7 +14,7 @@ parser.add_argument("--config_path", type=str, default="configs/player_configs_v
 parser.add_argument("--start_idx", type=int, default=0)
 parser.add_argument("--ckpt_path", type=str, default=None)
 parser.add_argument("--reflex-only",default=False, action="store_true")
-parser.add_argument("--data-path", type=str, default=None)
+parser.add_argument("--data_path", type=str, default=None)
 parser.add_argument("--train",default=False, action="store_true")
 
 def run_game_with_client(ipt, client):
@@ -34,7 +34,6 @@ if __name__ == "__main__":
         game = Game(args.start_idx, args.reflex, openai_client=client)
         game.set_players(player_configs)
         game.all_players_reflex_from_data_path(args.data_path)
-        sys.exit(0)
         
     
     if args.ckpt_path is not None:
