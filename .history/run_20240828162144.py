@@ -38,7 +38,7 @@ if __name__ == "__main__":
         
     
     if args.ckpt_path is not None:
-        game = Game(args.start_idx, args.train, openai_client=client)
+        game = Game(args.start_idx, args.reflex, openai_client=client)
         game.load_checkpoint(args.ckpt_path)
         game.run_game()
     else:
@@ -47,9 +47,9 @@ if __name__ == "__main__":
             player_configs = json.load(f)["players"]
         if args.num_processes == 1:
             for i in range(args.num_games):
-                run_game((args.start_idx, player_configs, args.train))
+                run_game((args.start_idx, args.reflex, player_configs, args.train))
         else:
-            ipt = [(args.start_idx + i, player_configs, args.train) for i in range(args.num_games)]
+            ipt = [(args.start_idx + i, args.reflex, player_configs, args.train) for i in range(args.num_games)]
             if __name__ == "__main__":
                 with multiprocessing.Pool(args.num_processes) as pool:
                     pool.map(run_game, ipt)
