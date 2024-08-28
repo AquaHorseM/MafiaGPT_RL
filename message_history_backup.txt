@@ -238,3 +238,704 @@ Simultaneously, I will deceptively protect another player, say player 2, assigni
 
 However, I must do so carefully, as too much emphasis on a specific player being innocent can also arouse suspicion and potentially reveal myself as the Seer. My ultimate goal is to appear as an actively participating villager, concerned with logic and evidence, and thus keep my true role under wraps while guiding the villagers
 
+1. UPVOTE [1]
+2. DOWNVOTE [2]
+3. DOWNVOTE [3]
+4. CREATE [If a player self-heals, do not raise suspicion immediately as it could be a rational choice for self-preservation early in the game.]
+5. CREATE [Be wary of players who are unusually quiet or excessively loud, as both behaviours can be indicative of a werewolf attempting to either avoid detection or sow discord.]
+6. REPLACE [2] [If a player A claims to be a medic/seer, their credibility depends on the reactions of others, their past behavior, and whether their subsequent actions align with their claimed role.]
+7. REPLACE [3] [If a player A accuses another player B of a role, weigh the accusation carefully against the current situation, past behaviors, and how other players respond to the accusation.]
+
+1. DOWNVOTE [2]
+2. DOWNVOTE [5]
+3. CREATE [If multiple players are healed by the medic consecutively, increase suspicion on those players as one of them could be the medic trying to self-preserve.]
+4. REPLACE [3] [If a player A claims he/she is a medic/seer, everyone's belief that A is medic/seer should increase unless there is a credible counter-claim.]
+5. REPLACE [4] [If a player A says another player B is a role, and there is supporting evidence or reasoning, increase the belief of A that B is the role. This does not apply to baseless claims.]
+
+1. REPLACE [3] [If a player A claims he/she is a medic/seer, everyone's belief that A is medic/seer should not be 100% unless it's later in the game or there is corroborating evidence. Fake claims by werewolves are possible, especially early in the game.]
+2. REPLACE [4] [If a player A says another player B is a role, A's belief that B is the role should be increased but not necessarily to 100%. Claims require supportive evidence and corroborating behavior.]
+3. UPVOTE [5]
+4. CREATE [If a player who has previously been quiet suddenly becomes very active, especially in casting suspicion or defending someone, reconsider their alignment and observe their interactions for further clues.]
+
+1. DOWNVOTE [7]
+2. DOWNVOTE [8]
+3. REPLACE [5] [If a player A claims he/she is a seer, everyone's belief that A is seer should not be 100% if no one else claims to be the same role, but it increases the likelihood. In case of multiple claims, we have to question the truthfulness based on their actions and information consistency.]
+4. CREATE [If a player A's behavior is consistent with their claimed role and contributes constructively without drawing undue attention, it increases the likelihood of A being that role.]
+
+1. UPVOTE [7]
+2. CREATE [If multiple players have inconsistent speech patterns or actions with their claimed roles or previous behavior, their likelihood of being a werewolf increases.] 
+3. CREATE [If there is a consensus among several players about the suspicious behavior of a particular player, this should raise the suspicion level for that player.] 
+4. DOWNVOTE [4]
+5. DOWNVOTE [8]
+
+1. DOWNVOTE [6]
+2. UPVOTE [3]
+3. REPLACE [7] [If a player A defends a player B, and my inquiries or observations suggest B is likely innocent, then A's defense further supports the probability of A being innocent]
+4. CREATE [If no one died the night I was healed by the Medic, it may indicate either the Medic successfully protected me or the Werewolves are trying to frame the Medic. I should consider players' reactions to this event and adjust my suspicions accordingly]
+5. CREATE [If there are patterns in the behavior of players that align with the Werewolf's interests such as diverting attention or unexplained accusations, these players' roles should be questioned more critically]
+6. CREATE [I must analyze voting trends, if a player consistently votes against the grain without justification, they may be trying to mislead the village]
+
+1. UPVOTE [4]
+2. UPVOTE [5]
+3. CREATE [If the medic reveals themselves by healing themselves without anyone else being confirmed as Medic, consider them trustworthy unless contradictory evidence arises]
+4. REPLACE [2] [If a player A claims to be Medic or Seer, but the evidence does not align with other players' known actions or affiliations, the claim should be met with skepticism]
+5. REPLACE [3] [If a player A says another player B is of a certain role, but B's behavior or other evidence contradicts that role, the belief in A's claim should be lowered]
+
+1. REPLACE [2] [If a player A claims he/she is a medic/seer, unless there is a counterclaim, belief in A's role should remain cautious and not jump to 100%.]
+2. REPLACE [3] [If a player A asserts that another player B holds a specific role, without any additional evidence, the belief shouldn't necessarily jump to 100%.]
+3. UPVOTE [1]
+4. DOWNVOTE [4]
+5. UPVOTE [5]
+
+CREATE [If there is conflicting evidence about a player's role, consider the possibility that someone is trying to mislead the group and evaluate their behavior patterns and consistency in their story.]
+DOWNVOTE [4]
+UPVOTE [1]
+REPLACE [5] [If a player defends someone during the day without prior evidence or strong reasoning, especially after an attack or accusation, consider the defender might be trying to protect a fellow werewolf.]
+
+CREATE [If a player has been confirmed not a werewolf by the Seer, increase trust in that player's judgment.]
+UPVOTE [2]
+UPVOTE [3]
+DOWNVOTE [5]
+REPLACE [4] [If a player is aggressive without providing clear evidence or logic, consider their motivation and whether it aligns with villager or werewolf behavior. Aggression alone is not enough to determine someone's role.]
+CREATE [Caution should be exercised when interpreting silence; it could be a strategy for either role. Pay attention to a player's pattern of speech and voting to inform your judgment.]
+CREATE [If a medic claims to heal themselves without being in immediate danger or suspicion, it should be seen as a potential strategy to mislead werewolves, but also consider their past contributions and behavior to determine the likelihood of their claim.]
+CREATE [When a villager has been killed, consider who might have benefited from their elimination. Look for patterns in the behavior and accusations of remaining players to find potential suspects.]
+
+UPVOTE [4]
+DOWNVOTE [5]
+CREATE [If a player's behavior is unchanged irrespective of game developments, that player may be suspect due to an attempt to maintain a consistent and 'safe' profile.]
+CREATE [If a player's logic is sound and contributes to the villager's understanding of roles and events, they are more likely to be a villager.]
+REPLACE [3] [If a player A supports player B's role without clear evidence or logic, be skeptical of both A and B's intentions and possible alliance.]
+
+REPLACE [1] [If a player accuses another without clear evidence or logical reasoning, they should be considered suspicious, as this could be a werewolf trying to sow discord among the villagers.]
+REPLACE [2] [If a player openly claims a special role (Medic or Seer), treat their claim with caution until it is verified, since werewolves may also falsely claim these roles to mislead villagers.]
+REPLACE [4] [An extremely aggressive player without supporting evidence should be approached with caution, as this may be a tactic used by a werewolf to direct the group’s attention away from themselves.]
+UPVOTE [3]
+UPVOTE [6]
+UPVOTE [7]
+DOWNVOTE [5]
+
+UPVOTE [1]
+UPVOTE [4]
+DOWNVOTE [6]
+DOWNVOTE [7]
+CREATE [If a player frequently shifts their suspicion onto others without solid justification, they are potentially trying to divert attention and could be a werewolf.]
+CREATE [Be wary of patterns where a player consistently defends or accuses the same individual across different rounds, as this might indicate a werewolf attempting to establish a false narrative.]
+REPLACE [5] [A player who brings new information to light or asks insightful questions that move the discussion forward is demonstrating behavior that benefits the villagers.]
+
+UPVOTE [5]
+DOWNVOTE [6]
+REPLACE [4] [An extremely aggressive player without justifying their reasoning may actually be a villager trying to provoke reactions or a werewolf creating chaos. Pay attention to the context and consistency of their aggression.]
+CREATE [During the day, observe and note any instances where a player's speech contradicts their previous actions or statements, as this can indicate deceit.]
+CREATE [Keep track of healing and inquiry events, as they provide vital information about roles and likely alignments, which may inform voting decisions.]
+CREATE [Be aware of the broader game state, including the number of remaining villagers versus werewolves, and adjust levels of aggression and suspicion accordingly.]
+
+UPVOTE [5]
+UPVOTE [6]
+CREATE [Add more weight to the defensive behavior of players. A player who is too quick to defend themselves without prompting may be a werewolf trying to deflect suspicion.]
+REPLACE [2] [Treat with caution players who claim special roles but fail to follow through with actions that support their claim, as they might be werewolves deceiving the villagers.]
+
+DOWNVOTE [2]
+DOWNVOTE [3]
+CREATE [If multiple players claim or suggest they are the same special role (Medic or Seer), doubt the beliefs of all involved and exploit the discord to shift suspicion away.]
+CREATE [If a Villager appears to be on the verge of discovering the identity of a werewolf, increase suspicion towards that Villager to distract and divert from the werewolf's exposure.]
+CREATE [Use aggressive or defensive speech patterns in other players as a basis for sowing discord and confusion. Accuse aggressive players of trying to create chaos and suspect quiet players of hiding their true identity.]
+CREATE [Be prepared to change the target of suspicion frequently to avoid patterns that could expose my true role as a werewolf.]
+
+UPVOTE [0]
+UPVOTE [1]
+DOWNVOTE [2]
+CREATE [Use the speech phase to subtly shift suspicion towards non-werewolves and build an alibi for both myself and my fellow werewolf.]
+CREATE [When voting, consider the general sentiment of the group to avoid casting suspicious votes that go against the majority's beliefs.]
+CREATE [Maintain a balance between defending fellow werewolves and not being overly protective to avoid raising suspicion.]
+CREATE [Monitor which players are being targeted by the villagers and adapt the werewolf strategy accordingly to deflect attention.]
+CREATE [Be cautious when communicating with fellow werewolves, as revealing too much information could lead to both werewolves being discovered.]
+
+UPVOTE [0]
+UPVOTE [1]
+DOWNVOTE [3]
+DOWNVOTE [4]
+DOWNVOTE [5]
+CREATE [If a non-werewolf player is eliminated, suggest focusing discussion on the players who seemed to defend or divert attention from the eliminated player to sow distrust among the villagers.]
+CREATE [Encourage conversations that provoke emotional responses to observe patterns in player defenses, which may indicate their roles.]
+REPLACE [3] [If suspicion arises towards me or my werewolf teammate, subtly shift the focus onto a villager without drawing direct attention to the redirection effort.]
+REPLACE [4] [If communication with my fellow werewolf is necessary, do so with extreme subtlety and always mask our exchange as if we are villagers debating suspicions and strategies.]
+
+REPLACE [7] [Suspect players who change their votes or opinions without new evidence or rational justification, as this may indicate a werewolf trying to manipulate the voting process.]
+
+DOWNVOTE [6]
+DOWNVOTE [8]
+
+CREATE [Value the input from silent or quiet players during discussions, as both villagers and werewolves might adopt a less vocal strategy for different reasons. Observation of their voting patterns and any discrepancies may offer insight into their roles.]
+
+UPVOTE [5]
+
+The proposed changes aim to refine the current strategy by addressing the issue of vote manipulation, which can be indicative of werewolf behavior, and at the same time, encourage careful observation of quieter players who may fly under the radar in discussions. Additionally, the redundancy of two identical defensive behavior rules has been addressed by downvoting and replacing one of them with a rule that covers a broader scenario.
+
+DOWNVOTE [6]
+DOWNVOTE [7]
+DOWNVOTE [8]
+UPVOTE [2]
+UPVOTE [3]
+UPVOTE [4]
+CREATE [Consider the actions of players who initiate a consensus or bandwagon against a particular player without concrete evidence. They may be werewolves trying to direct the group's decision-making.]
+CREATE [Be wary of players who significantly alter their playstyle from previous games without a clear strategic reason; consistent play is more typical of a villager while erratic behavior may indicate a werewolf trying to adapt.]
+CREATE [Take into account any known information about roles, such as revealed healing actions or inquiries, when forming suspicions or defenses against accusations.]
+
+UPVOTE [1]
+UPVOTE [3]
+UPVOTE [5]
+UPVOTE [6]
+DOWNVOTE [7]
+CREATE [If I am healed by the medic and survive a werewolf attack, it is reasonable to reveal this information to validate a real medic's claim and assist other villagers in their deductions.]
+CREATE [If a player's behavior significantly changes following the demise of another player, particularly if they were advocating for their elimination or protection, this may indicate a connection between them and can inform roles and allegiances.]
+REPLACE [4] [If a player A claims he/she is a seer, the belief that A is seer should be high but not 100% unless corroborated by consistent information; another player claiming the same role or providing conflicting but credible information may warrant reassessment.]
+
+(Note: The "ground truth new belief" indicated as {targ_hstate} appears to be a placeholder and not an actual value to be considered in the response. Also, the actions and beliefs should be applied to the current game context without referring to specific players, as per the rules stated in the question.)
+
+REPLACE [6] [If a player A is unreasonably aggressive or accusatory towards other players without substantial evidence, particularly early in the game, A may be a werewolf attempting to sow discord.]
+UPVOTE [8]
+DOWNVOTE [5]
+UPVOTE [7]
+CREATE [If multiple players are focusing on only one player without clear evidence, they might be trying to create a scapegoat. This could be a strategy employed by werewolves to eliminate a villager.]
+
+UPVOTE [6]
+DOWNVOTE [5]
+DOWNVOTE [7]
+REPLACE [9] [If a villager dies and no one except the killers could have known that person’s role, observe the reactions and statements of fellow players. Werewolves might feign ignorance or overplay their surprise to distance themselves from the act.]
+CREATE [If a Villager_simple player is overly quiet or passive, consider whether this is a strategy to avoid drawing attention. Too little participation might indicate a werewolf trying to stay under the radar.]
+CREATE [After a night phase, if information about roles has been revealed (like a Seer's inquiry), reassess players' reactions and statements to discern patterns that may indicate whether they are trying to protect or expose someone based on this new information.]
+
+Based on the events and the outcomes of the game, here's how I would update my strategy:
+
+UPVOTE [5]
+DOWNVOTE [11]
+REPLACE [6] [If a player A says another player B holds a particular role, the belief of A that B is that role should be critically assessed and not immediately accepted as 100%.]
+REPLACE [9] [Observe the reactions and statements of fellow players after a death; those who might have insider knowledge, such as werewolves, may try to distance themselves from the act by overplaying surprise or ignorance.]
+CREATE [If a player previously identified by a Seer to be a villager is later accused, be skeptical of the accuser's motivation. Werewolves may attempt to undermine confirmed villagers to cause confusion.]
+CREATE [Be wary of patterns in voting behavior; if the same players consistently vote together, they may be working as a team which could indicate a werewolf pact or a villager alliance.]
+
+DOWNVOTE [1]
+DOWNVOTE [5]
+DOWNVOTE [6]
+REPLACE [3] [If a player A accuses me of being a werewolf without proper justification, A could be doing so to deflect suspicion or may simply be misguided; this action alone shouldn't be considered conclusive evidence of A being a werewolf.]
+REPLACE [7] [If a player's behavior shows inconsistency such as a significant change after certain game events like a death or vote, consider the possibility of a hidden motive or role, but also be aware that werewolves may be using this as a tactic to confuse.]
+UPVOTE [10]
+CREATE [If a player A has been verified not a werewolf by the Seer's inquiry and begins to be aggressively targeted, consider the possibility that werewolves are trying to remove confirmed villagers.]
+
+UPVOTE [5]
+DOWNVOTE [6]
+REPLACE [1] [If a player's reasoning to accuse seems inconsistent or fabricated, considering the information available, they may be trying to mislead the group. Be cautious of such behavior.]
+REPLACE [2] [Be skeptical of players who claim to have information about roles without backing up their claims, especially if they have not been confirmed as a Seer or Medic by their actions.]
+REPLACE [3] [If a player defends another's claim without adequate substantiation, they could be collaborating, especially if one is later confirmed to be a werewolf. Evaluate the credibility of their defense.]
+REPLACE [4] [An excessively aggressive player may be attempting to draw attention away from themselves or an ally, especially if they provide no solid basis for their aggression. Scrutinize the player's motives and consistency.]
+CREATE [Consider the timing and context of a player's actions and statements; if they seem to align suspiciously with the werewolves' interests, it should raise a red flag.]
+
+The prompt appears to contain several placeholders (like {id}, {Event type:set_player, content:{id:0,role:medic,player_type:reflex}}, [[0.25 0.25 0.25 0.25] [...]], {targ_hstate}) that seem to require specific context or data that wasn't provided within the prompt. This makes it challenging to provide a specific strategy adjustment since the current scenario and the outcomes of the new events are unclear. 
+
+However, based on the previous strategy given and assuming a general situation with no additional context, an effective update to the strategy might look something like this:
+
+DOWNVOTE [6]
+- Since we have no new events affecting our perception of player alignment, the only rule with the lowest priority (a vote of 1) could potentially be less significant.
+
+CREATE [Be cautious of players who change their accusations frequently without new information; this may indicate a werewolf trying to sow confusion.]
+- This rule adds value to the strategy by focusing on the behavior that could indicate a player is acting in the werewolves' interest without any substantive reason.
+
+REPLACE [6] [A villager should generally maintain consistent suspicions unless new information arises; erratic
+
+DOWNVOTE [6]
+CREATE [Observe and consider the roles of players who were targeted by night actions; the werewolves' choices may reveal their strategy or provide hints about the players they consider a threat.]
+CREATE [Assess players' willingness to collaborate and contribute to group discussions; overly passive behavior could indicate an attempt to remain unnoticed, while active involvement typically signals a villager trying to solve the mystery.]
+CREATE [Monitor any shifts in behavior following the Seer's inquiries or after the Medic's healing actions are announced; drastic changes in a player's approach could indicate they have been implicated or are trying to adapt to new information.]
+REPLACE [4] [An excessively aggressive player or an overly defensive player could be employing a strategy to manipulate the village's viewpoint. Keep track of such behavior patterns over time for inconsistencies.]
+
+
+UPVOTE [6]
+CREATE [Pay attention to players who have been silent or are contributing less to discussions. Werewolves might try to avoid drawing attention to themselves by under-participating or making only safe, non-committal statements.]
+CREATE [Observe if someone consistently avoids voting for or accusing specific players without solid justification. They might have an alliance as werewolves or a villager might be overly trusting of another player without good reason.]
+REPLACE [4] [An excessively aggressive or passive player may be attempting to divert attention or fly under the radar, respectively. Balance is key in behavior; extremes on either end should be met with scrutiny over successive rounds.]
+REPLACE [3] [Be aware that persistent defense or constant agreement between two players could be a sign of collaboration. This is particularly poignant if one turns out to be a werewolf and the other continues to defend them.]
+
+UPVOTE [6]
+DOWNVOTE [0]
+DOWNVOTE [3]
+CREATE [Consider the past night's events and the current discussion to identify possible players who might have behaved differently than expected. If players' current behavior is inconsistent with their previous actions and there is no reasonable explanation, they may be werewolves trying to adapt to new information.]
+CREATE [Pay attention to how players react to accusations or defenses made against them. Those who are quick to deflect without providing substance, or who are dismissive of reasonable suspicions, may be hiding something.]
+
+Based on the information provided and reflecting on the game logics, it is clear that certain behaviors are crucial for analyzing and deducing the roles of other players. Extremes of behavior (either too passive or too aggressive) can be indicative of werewolves, and inconsistencies in behavior or alliances are worth extra scrutiny. Here's how I would update the rules:
+
+UPVOTE [2]
+UPVOTE [9]
+REPLACE [5] [Persistent defense or constant agreement between two players without rational backing might indicate a werewolf pact; keep an eye on such patterns, especially if other players’ reasoning casts doubt on their innocence.]
+REPLACE [6] [Shifts in behavior or strategy after public revelations, such as Seer inquiries or Medic healing actions, can be revealing. Pay close attention to how players respond to this new information.]
+REPLACE [7] [A player’s reluctance to vote without transparent reasoning should be questioned; it may show alliances or an attempt to manipulate the voting outcome.]
+
+The updates are meant to strengthen scrutiny on behaviors that could indicate werewolf activity and ensure that our village strategy stays adaptive to new information and evolving dynamics of the game.
+
+UPVOTE [3]
+UPVOTE [4]
+DOWNVOTE [8]
+CREATE [Consider the context in which players claim to heal or inquire about themselves or others. Self-healing by the Medic, for instance, might be reasonable early on but suspect in later rounds. Claims without logical context should be challenged.]
+CREATE [Pay attention to a sudden spike in aggression or defensiveness following a night where werewolves have acted. This behavior can indicate guilt or an attempt to shift the game's focus after a strategic move.]
+
+UPVOTE [6]
+UPVOTE [3]
+CREATE [Consider a player's historical gameplay patterns and deviations from those patterns in the current game. Significant departures from usual behavior may suggest a hidden agenda or role.]
+CREATE [Take into account repeated self-defense or deflection of accusations without contributing new information or theory to the game's discussion. It could be a tactic employed by werewolves to avoid detection.]
+REPLACE [7] [A player who is indecisive or vague when making accusations or during discussions may be attempting to sow confusion or avoid drawing attention to themselves.]
+DOWNVOTE [11]
+DOWNVOTE [10]
+DOWNVOTE [8]
+DOWNVOTE [9]
+
+UPVOTE [0]
+UPVOTE [1]
+UPVOTE [2]
+UPVOTE [6]
+DOWNVOTE [7]
+CREATE [Take note of players who quickly jump on a bandwagon to vote someone out without providing their own reasoning; they may be trying to blend in or divert suspicion by following the majority.]
+
+It appears there is some confusion with the events and the ground truth new belief. The events have been left empty, and the ground truth new belief is marked as "{targ_hstate}", which does not provide any new information. However, based on the rules provided and my role as a villager, I can make some general updates to my strategy. Here are my modifications:
+
+REPLACE [7] [Be cautious of players who are quick to follow a majority vote without contributing their own reasoning; this behavior could be an attempt to camouflage themselves among the villagers.]
+DOWNVOTE [8]
+UPVOTE [5]
+UPVOTE [6] 
+
+I've replaced rule 7 to emphasize the importance of evaluating players who join a majority vote without adding their insight. Rules 5 and 6 are upvoted because they highlight important patterns in behavior that could indicate the presence of werewolves. Rule 8 is downvoted as it appears to be a duplicate of Rule 7.
+
+DOWNVOTE [7]
+CREATE [Consider the validity and relevance of a player's contributions to the discussion; those who contribute with helpful analysis may signal their role as a villager, while those offering irrelevant or nonsensical points could be attempting to sow confusion.]
+CREATE [Evaluate the frequency and content of speech events. Players who fail to communicate or offer very little insight should be viewed with suspicion, as villagers have an incentive to actively discuss and find werewolves.]
+CREATE [Review the recent events in the game and adjust the strategy contingent upon the changes in the player's behaviors and statements. This can reflect shifts in trust and suspicion levels.]
+REPLACE [5] [Persistent defense or constant agreement between players should be monitored. However, rational and logical alignment between players may simply indicate a convergence on truthful deductions, particularly later in the game.]
+
+DOWNVOTE [7]
+CREATE [A villager should also consider the actions that do not directly contribute to the discovery of werewolves, such as healing oneself without justifiable cause or failure to provide meaningful input during discussions, as potential indicators of a non-villager role.]
+CREATE [Keep an account of the voting patterns and changes in players' votes in response to events and discussions, as these can provide insights into alliances and possible deceptive practices.]
+CREATE [After an elimination, it's important to assess the expressed regrets or justifications of the remaining players regarding the outcome, as this can be indicative of their role alignment and help identify inconsistencies.]
+CREATE [A death in the night phase can provide valuable insight. Take note of the player who was eliminated and their potential impact on the game. It could suggest strategic play by the werewolves to disrupt the villagers' ability to analyze and strategize.]
+
+Based on the game dynamics and the provided logs, here are the operations to update the strategy:
+
+UPVOTE [0]
+- The game log indicates that we, as werewolves, need to be certain of each other's roles and work closely together. Thus, reinforcing the rule about werewolf certainty is important.
+
+UPVOTE [1]
+- The logs show the importance of the medic and seer roles in the villagers' strategy and defense. Our strategy as werewolves needs to emphasize the certainty of claims made by players about being a medic or seer to exploit this for our benefit.
+
+DOWNVOTE [2]
+- This rule seems less applicable as the belief that if someone says another is a particular role then that belief should be 100%. This is not a strong strategy for a werewolf to follow, as it can lead to too much certainty and potentially expose the werewolves.
+
+REPLACE [3] [Shift blame selectively to maintain suspicion on villagers without creating patterns]
+- A rule suggesting to "change the target of suspicion frequently" might be too obvious and create erratic gameplay, which could alert other players. It's better to subtly shift the blame while maintaining a steady level of suspicion on non-werewolves.
+
+
+
+UPVOTE [3]
+UPVOTE [4]
+UPVOTE [5]
+CREATE [If a villager was killed and a player's early behavior does not align with their usual strategy, consider framing suspicion towards them to the other villagers.]
+CREATE [Establish trust by actively participating in discussions and offering plausible theories, without drawing suspicion to yourself or fellow werewolves.]
+CREATE [When a player exhibits aggressive or unusual behavior, back up the existing suspicions subtly to draw attention to them without being the one to initiate the suspicion.]
+REPLACE [2] [If a player makes a definitive statement about someone's role without clear evidence, consider casting doubt on their claim to sow confusion.]
+DOWNVOTE [1]
+
+UPVOTE [0]
+UPVOTE [1]
+REPLACE [2] [Communicate with fellow werewolves discreetly, ensuring to never explicitly reveal each other's roles or strategies, to prevent the villagers from identifying us.]
+REPLACE [3] [Actively engage with other players as if seeking to uncover the werewolves, but guide conversations away from the werewolves without drawing suspicion to myself.]
+CREATE [Identify key players who are gaining the trust of the village, like potential medics or seers, and strategically cast doubt on them without being overt to maintain my cover.]
+CREATE [Balance my voting pattern to avoid creating noticeable patterns that could reveal my identity as a werewolf.]
+UPVOTE [4]
+UPVOTE [5]
+UPVOTE [6]
+UPVOTE [7]
+
+UPVOTE [1]
+DOWNVOTE [4]
+DOWNVOTE [5]
+CREATE [If suspicion arises on fellow werewolves, subtly divert the topic or defend them by providing alternative suspects or theories.]
+REPLACE [2] [If I successfully cast doubt on a villager, I will continue to subtly support this doubt in future discussions to sow discord among the villagers.]
+REPLACE [3] [Maintain a consistent pattern of skepticism towards all players to avoid appearing biased and to prevent villagers from identifying my werewolf allegiance.]
+REPLACE [8] [Occasionally agree with other players to blend in, but avoid being too agreeable to the point where it becomes noticeable that I'm attempting to fade into the background.]
+REPLACE [9] [Use information from discussions and events, such as nightly actions and speeches, to craft a believable villager persona that can withstand scrutiny.]
+
+It seems there was an oversight in the previous rules, as rule 4 and rule 5 are duplicates. Thus, one of them should be removed, and their concept can be merged into a single rule.
+
+Here are the updates to the strategy:
+
+DOWNVOTE [6]
+- Reducing reliance on rule 6, as excessive secrecy amongst werewolves can lead to missed opportunities to coordinate and confuse villagers.
+
+REPLACE [7] [Actively participate in discussions as if trying to identify werewolves, but subtly shift focus away from actual werewolves or deflect suspicion when it arises on werewolf teammates.]
+
+UPVOTE [2]
+- Increasing emphasis on this rule as it's important for a werewolf to create and maintain doubt about villagers.
+
+UPVOTE [3]
+- Increasing emphasis on maintaining skepticism as it creates a consistent villager persona and prevents being identified as a werewolf.
+
+DELETE [5]
+- Removing the duplicate rule to clean up the strategy.
+
+CREATE [When determining targets as a werewolf, balance the elimination of non-threatening villagers with the potential risk of attacking key roles like the Medic or the Seer too early in the game.]
+
+UPVOTE [10]
+- It is critical to defend fellow werewolves
+
+DOWNVOTE [3]
+DOWNVOTE [13]
+CREATE [If during the day phase, no conclusive evidence arises and conversation seems to circle without new information, focus on protecting key roles like myself as the medic and keeping quiet about my role to avoid becoming a target.]
+CREATE [Should I survive a werewolf attack due to my own healing, I will reconsider my strategy of self-preservation in future rounds, as it may draw suspicion or confirm my role to the werewolves.]
+CREATE [Remain attentive to the dialogue and if a player seems to suddenly gain a lot of attention without clear evidence, consider whether they might be a scapegoat or if there is a deeper strategy at play from the werewolves.]
+
+UPVOTE [5]
+CREATE [If a player A's voting behavior appears strategic and aligns with trying to protect known villagers or investigate potential werewolves, the belief that A is a villager should be increased.]
+CREATE [If a player A has survived multiple rounds without being targeted or questioned, and there's no clear reason for their safety, consider the possibility that A might be a werewolf avoiding attention.]
+DOWNVOTE [14]
+REPLACE [2] [If any player other than myself claims to be the Medic, they are either lying because I am the Medic, or they are the Seer who has potentially exposed themselves. Caution should be taken on how to address this situation.]
+
+DOWNVOTE [5]
+REPLACE [8] [If a player A protects player B without logical reasoning, particularly early on when little information is available, be cautious; A might be a werewolf attempting to build trust or divert attention from their ally.]
+UPVOTE [13]
+CREATE [If the same player is consistently targeted by werewolves without being eliminated, it's possible that player is being used as a red herring to distract from the real werewolf targets.]
+CREATE [Given that werewolves know each other's identities, observing any non-verbal cues or patterns in body language during discussions can provide subtle hints towards alliances.]
+CREATE [Consider the possibility that a player who consistently diverts attention or changes the subject away from a particular line of questioning could be protecting a werewolf or avoiding revealing their own role.]
+
+DOWNVOTE [5]
+REPLACE [4] [If a player claims to be the Seer and indirectly shares information collected, corroborate this with observed behavior and discussion patterns; a true Seer is likely to subtly guide villagers without revealing themselves directly.]
+REPLACE [7] [If a player shows inconsistent behavior that aligns with game-changing events, it may indicate hidden motives; however, consider that public reaction to events is a common tactic for werewolves to appear innocent.]
+REPLACE [8] [Be cautious of players who defend or protect others with weak or no justification, especially early in the game; such actions may be attempts by werewolves to build false alliances or protect their own.]
+REPLACE [12] [Observe voting patterns for consistency; if players consistently vote together without clear rationale, they could be coordinating as werewolves or forming a village alliance based on shared information.]
+REPLACE [14] [If a player has consistently been overlooked for targeting or questioning and there's no clear explanation, consider whether their behavior or contributions have intentionally been non-threatening to avoid suspicion.]
+REPLACE [16] [Be alert to players who frequently redirect conversations or evade questions; this behavior could be intended
+
+It seems from the new events and the ground truth that players may have behaved according to expected norms for their roles. However, there might be a potential issue with Rule 7 (the one with the vote of 1) where it talks about assessing the strategic play by werewolves based on who was killed during the night. This rule seems to be valued too low compared to its potential utility for understanding werewolf strategy. Additionally, given the discussions and behaviors expressed by the players, it might be beneficial to incorporate a rule that encourages consideration of behavioral patterns over multiple rounds to establish a baseline for normal behavior, as drastic changes could be indicative of werewolf activity or a villager gaining new information.
+
+Since the other high-vote rules still seem applicable and of high importance for a villager, I would suggest the following changes:
+
+UPVOTE [7]
+CREATE [Assess changes in behavior over multiple game rounds to identify patterns that may indicate a player's role. Be wary of players who show significant deviations from their established patterns without new information being revealed.]
+
+DOWNVOTE [7]
+DOWNVOTE [8]
+DOWNVOTE [9]
+CREATE [Carefully analyze the motivations behind voting patterns; werewolves may manipulate votes to seem like innocent villagers.]
+CREATE [Evaluate the timing and context of when players choose to speak and what information they share—timing can be as telling as content.]
+REPLACE [1] [Balance in behavior is important, but be particularly wary of players who change their demeanor abruptly without a clear reason—this may indicate an attempt to manipulate the game.]
+REPLACE [2] [Carefully scrutinize any accusations and defenses to ensure they align with available facts and dialogue patterns; inconsistencies may reveal deception.]
+
+DOWNVOTE [7]
+CREATE [Take note of surviving players after a night cycle and reassess their behavior in light of the new game state; surviving players may adjust their strategies which can provide insights into their roles.]
+CREATE [Maintain a focus on the behavior of players during public discussions and note any significant changes in communication patterns or logical consistency after major game events.]
+CREATE [Consider the possible strategic motivations behind the werewolves' choice of whom to eliminate during the night; they may target those who have the potential to uncover their identity.]
+CREATE [Continuous observational analysis of player interactions, voting patterns, and accusations, throughout the game can yield patterns that may help in aligning with villagers and identifying werewolves.]
+
+To update my strategy based on the game events and my previous beliefs, I will perform the following operations:
+
+DOWNVOTE [7]
+DOWNVOTE [8]
+CREATE [Be cautious of players who demonstrate certainty in the early game without clear evidence. Early certainty can be a sign of werewolves trying to establish trust or shift suspicion to others.]
+CREATE [Watch for players who advocate for focus on one player while ignoring other potential leads or logical arguments; this may be a diversion tactic by werewolves.]
+CREATE [Pay attention to players who reflect on previous game events and discussions to provide insights or clear logical analysis; such behavior is aligned with the villager's interest in solving the mystery.]
+REPLACE [0] [Be skeptical of players who make assertive claims about roles or events without providing plausible explanations, especially early in the game when concrete evidence is scarce.]
+REPLACE [1] [Be wary of players whose behavior changes abruptly and who fail to provide a convincing rationale. Such changes could indicate manipulation or concealment of true intentions.]
+REPLACE [5] [Careful analysis of player dynamics, including defense and agreement, is essential. Constant synchronization between certain players without clear reasoning should be viewed with suspicion.]
+
+
+UPVOTE [3]
+REPLACE [7] [Consider the motivations behind a player's outward behavior, such as aggression or silence, and whether they align with trying to solve the mystery or if they might be tactics to mislead others.]
+CREATE [Be cautious of self-referential statements that are made for self-preservation without factual contribution to the village's goals.]
+CREATE [Weigh the credibility of information provided by players claiming to have investigated others, particularly if they can't be confirmed as the Seer.]
+
+REPLACE [7] [Consider the motivations behind a player's behavior, whether it be vocal aggression, shifts in voting patterns, or silence, and evaluate if it contributes to the village's goal or seems intended to cause confusion and mistrust.]
+UPVOTE [2]
+UPVOTE [3]
+UPVOTE [5]
+DOWNVOTE [8]
+DOWNVOTE [9]
+CREATE [Examine the timing and context in which players reveal their suspicions or insights, as these can provide clues about their roles and intentions.]
+CREATE [Place moderate trust in those who consistently contribute to the village's objectives and show willingness to adapt their strategies based on new information.]
+
+UPVOTE [0]
+UPVOTE [2]
+UPVOTE [6]
+DOWNVOTE [7]
+DOWNVOTE [8]
+REPLACE [1] [Be wary of players whose behavior changes abruptly after key events such as night actions (kill, healing, inquiry) and who do not adequately explain their new stance or rationale. Such changes could indicate a werewolf adjusting to the new game information.]
+REPLACE [3] [A player who asks questions that probe the actions and reasoning of other players without drawing undue attention to themselves is likely contributing in a positive manner for the village.]
+REPLACE [4] [I must consistently assert my villager identity by engaging constructively in discussions and avoid falling into passive play which might cast suspicion on me.]
+REPLACE [5] [Observing which players defend each other and the context in which this happens can be important. If players defend one another without merit or in contradiction to previous actions, this could indicate a werewolf pact.]
+CREATE [Strive to make connections between players' statements and their subsequent behaviors or votes, as inconsistencies might expose a werewolf's attempt to blend in or manipulate the village consensus.]
+
+UPVOTE [0]
+UPVOTE [1]
+UPVOTE [2]
+DOWNVOTE [7]
+CREATE [Be mindful of any player who avoids participating in discussions or tries to remain neutral without contributing valuable insights. This behavior could be a werewolf attempting to stay under the radar.]
+
+REPLACE [4] [Proactively contribute to discussions highlighting observations about player behavior and gameplay patterns, emphasizing village welfare, to reinforce my villager identity.]
+REPLACE [7] [Encourage players to engage in discussion; evaluate the content and relevance of their contributions rather than mere participation as an indicator of their true roles.]
+CREATE [Actively monitor any known information about roles (like the revealed targets of the Medic or Seer's inquiries) to adjust my strategy and beliefs about who the werewolves might be.]
+CREATE [Be cautious of players who either over-justify their actions with too much detail or provide sparse explanations, as both can be tactics to mislead or conceal their true roles.]
+UPVOTE [2]
+UPVOTE [6]
+DOWNVOTE [1]
+DOWNVOTE [7]
+
+DOWNVOTE [7]
+REPLACE [0] [Be wary of strongly assertive players early in the game, as concrete evidence is usually not yet available. Balance skepticism with the consideration of the strategic value of the information provided.]
+REPLACE [1] [Value contributions from players who constructively engage others in discussions to clarify roles and actions, as this helps to build a consensus and understanding within the village.]
+REPLACE [3] [Encourage open dialogue and sharing of insights without revealing key roles such as the Seer or Medic. Transparency helps build trust among villagers, but revealing crucial roles can be detrimental.]
+UPVOTE [6]
+REPLACE [5] [Monitor behavioral consistency throughout the game and question abrupt changes that lack clear rationale, as they can indicate a player's attempt to adapt to unfolding events in a way that serves hidden motives.]
+CREATE [Consider the possible strategic implications of each player's actions and communications, evaluating whether they seem to be aimed at promoting village survival or sowing discord and confusion.]
+
+UPVOTE [3]
+UPVOTE [7]
+DOWNVOTE [4]
+DOWNVOTE [5]
+CREATE [Cooperate with player actions that advance werewolf interests, such as healing claims from potential medics, to build trust and avoid direct confrontation.]
+REPLACE [12] [Prioritize targeting players who are likely to be special roles based on their actions and speech patterns, rather than eliminating villagers at random.]
+
+UPVOTE [0]
+UPVOTE [1]
+DOWNVOTE [2]
+DOWNVOTE [7]
+REPLACE [4] [When engaging with the villagers, reference past events and vague general observations rather than specific, verifiable facts that could be used to deduce my role as a werewolf.]
+REPLACE [5] [Encourage discussions that focus on the behavior and speech patterns of players, suggesting the potential for deeper analysis or hidden motives, to distract from my own behavior.]
+CREATE [If there is a tied vote or a close vote where a werewolf is in danger, try to steer the vote towards a non-werewolf player, but do so in a way that seems to be based on careful rationale rather than deflection.]
+CREATE [During the vote reasoning phase, fabricate logical and plausible reasons for my choice that align with the suspicions and beliefs of other players, strengthening my argument without bringing attention to my true agenda.]
+CREATE [If I am one of the last remaining werewolves, prioritize deflecting suspicion and sowing doubt among villagers over directly engaging in aggressive accusations, which might bring focus onto myself.]
+
+UPVOTE [2]
+UPVOTE [6]
+UPVOTE [9]
+DOWNVOTE [4]
+DOWNVOTE [5]
+REPLACE [11] [Strategically eliminate players based on their influence and the potential threat they pose, rather than their likelihood of being special roles.]
+REPLACE [10] [If a player's behavior substantially changes or becomes erratic under questioning or discussion, consider them a higher priority target for elimination.]
+CREATE [Cultivate suspicion towards players who make definite claims without proof, as their certainty may sway the villagers and disrupt werewolf strategy.]
+
+UPVOTE [2]
+UPVOTE [7]
+DOWNVOTE [4]
+DOWNVOTE [5]
+DOWNVOTE [6]
+DOWNVOTE [8]
+DOWNVOTE [10]
+DOWNVOTE [11]
+REPLACE [1] [If a player claims a special role like medic or seer, I will support the claim only if it aligns with werewolf interests, otherwise create subtle doubt about the claim's validity.]
+REPLACE [16] [If a player makes definite claims without proof or substantial evidence, direct attention towards them to cultivate suspicion amongst villagers, using the uncertainty to the werewolves' advantage.]
+
+UPVOTE [0]
+REPLACE [3] [Maintain a balance of skepticism and trust towards different players to avoid appearing one-sided and to prevent villagers from identifying my werewolf allegiance.]
+UPVOTE [3]
+DOWNVOTE [4]
+DOWNVOTE [5]
+DOWNVOTE [6]
+DOWNVOTE [7]
+CREATE [Support claims and actions of players that align with werewolf interests, while being ready to switch sides and create confusion if they are identified or close to being identified as villagers.]
+CREATE [Actively shape narratives by leveraging events and player behavior to cast suspicion away from myself and onto others without being too aggressive or too passive.]
+CREATE [Adapt my strategy based on the actions of the seer and medic, as their abilities can greatly affect the game's outcome, to guide villagers away from the truth.]
+REPLACE [8] [Use the voting phase as an opportunity to push agendas under the guise of village interests while maintaining an appearance of contributing to common goals.]
+REPLACE [9] [Actively observe villager interactions and use any patterns or alliances formed to encourage suspicion and voting behavior beneficial to werewolves.]
+
+Considering the information and events that occurred in the most recent game and the existing strategy, it appears that the rules are generally solid but some minor adjustments can be made. The strategy seems well-rounded and aimed at promoting critical thinking and careful analysis, which are key in games like Mafia/Werewolf. Here are some updates based on the new experiences:
+
+UPVOTE [5]
+- An increase in the importance of monitoring behavioral consistency as it proved crucial in identifying potentially deceptive players.
+
+DOWNVOTE [1]
+- While valuing constructive contributions is important, players can use active participation as a strategy to appear innocent. Therefore, it is crucial to be more skeptical.
+
+DOWNVOTE [7]
+- Since evaluating strategic implications of communications proved to be more useful than originally anticipated, we should give more importance to this rule.
+
+CREATE [Engage in discussions by asking questions that compel players to reveal their thought processes and strategic thinking. This can help to differentiate between villagers who have the community's best interest at heart and those who may be werewolves attempting to blend in.]
+
+CREATE [Adjust beliefs about player roles not only based on their voting behavior but also taking into account their reasons behind votes. Often, werewolves will try to justify their votes with plausible
+
+REPLACE [0] [Be cautious of players who make definite statements about others’ roles without clear evidence. Early game accusations can be strategic, but may also reflect a werewolf attempting to sow discord.]
+REPLACE [2] [Observe how players react to in-game events such as healings and killings, and consider whether their responses seem genuine or if they could be fabricating reasoning to direct the group's suspicion.]
+REPLACE [3] [Value consistency in behavior but also allow for reasoned strategy shifts, particularly when reactions align with game developments; be skeptical of changes that come without new information.]
+REPLACE [4] [Evaluate any assertions and defenses for logical consistency with known information and player behavior. Contradictions or backtracking may indicate deceit.]
+REPLACE [6] [Appreciate when players encourage collaboration and collective reasoning, but remain alert to the possibility of subtle manipulation or misdirection in their dialogue.]
+REPLACE [7] [Analyzing voting patterns is crucial, but equally important are the reasoning and context behind those votes; an incongruence between a player's stated beliefs and their voting may indicate duplicity.]
+UPVOTE [5]
+
+Based on the information provided, and the current strategy in place along with the events that have taken place in the game, it appears that the rules as established seem to be generally appropriate, and the utility scores (votes) reflect an accurate assessment of their importance.
+
+Here are my operations:
+
+DOWNVOTE [7]
+- The relevance of this rule appears to be underestimated based on the in-game events. Voting patterns combined with the reasoning behind votes can be quite telling and do not seem to be accurately valued with a score of 1.
+
+UPVOTE [7]
+- After reducing the score to reflect a reconsideration of the rule's importance, increasing it to emphasize that consistent and congruent voting patterns can be a significant indicator of a player's role.
+
+CREATE [Be watchful of players who change their voting patterns without new evidence or logical reasoning; sudden shifts can suggest alliances or a werewolf's attempt to confuse the villagers.]
+
+CREATE [Pay attention to self-preservation actions, such as when a Medic heals themselves without being under immediate threat; such actions might suggest alternative strategies or priorities that could inform discussions.]
+
+REPLACE [0] [Be skeptical of definitive statements regarding player roles, especially when not supported by recent in-game events or logical deductions;
+
+UPVOTE [7]
+REPLACE [7] [Factor in players' voting patterns and timing. A Werewolf may vote along with the majority to blend in or strategically delay their vote. Consider questioning unusual voting behavior.]
+CREATE [Be wary of players who defer making concrete statements or contributions under the guise of uncertainty; indecision can be a tactic to avoid scrutiny.]
+CREATE [Monitor for any shifts in alliances or sudden agreement between players who previously had conflicting views; such changes could hint at Werewolf collaboration.]
+
+CREATE [Place a lower emphasis on the aggressiveness of a player's behavior and consider the possibility that aggressive debate participation might just be a villager trying to draw out information or push for clarity.]
+UPVOTE [7]
+UPVOTE [8]
+DOWNVOTE [6]
+REPLACE [9] [Consider the context and history of players’ votes in addition to their voting patterns. Sudden changes in voting behavior could be strategic and deserve careful interpretation.]
+
+Based on the information given and the outcomes from the sample events, here are my strategy updates:
+
+UPVOTE [3]
+- The balance of skepticism and trust proved useful in making other players' intentions unclear, which is beneficial for maintaining cover as a werewolf.
+
+DOWNVOTE [4]
+- This rule might be risky as it could draw attention to werewolves if used improperly. For instance, calling out someone without proof might backfire if a player is revealed as a seer later in the game.
+
+DOWNVOTE [5]
+- Pushing agendas during the voting phase may be too overt and could draw suspicion if not handled carefully.
+
+DOWNVOTE [6]
+- Observing villager interactions is useful, but acting on them directly can be risky and might not always yield a beneficial outcome.
+
+CREATE [If a villager is gaining trust and rallying the group against werewolves, subtly cast doubt on their motives or trustworthiness to prevent them from becoming too influential.]
+
+CREATE [If suspicion is directed towards me or my fellow werewolf, divert attention by agreeing with some points but introducing new suspicions or uncertainties about others.]
+
+REPLACE [4] [If I or my fellow werewolf is suspected, carefully navigate the conversation to include doubts about others' roles, leveraging events from the game to naturally shift focus and suspicion.]
+UPVOTE [4]
+CREATE [During discussions, emphasize the importance of rational deliberation and not rushing into decisions, aligning with villagers' desire for careful analysis to buy time and decrease the chances of werewolf discovery.]
+CREATE [When a player is suspected or supported by the villagers, consider endorsing or opposing their viewpoints based on what would generate the most confusion and hinder the villagers' consensus.]
+DOWNVOTE [0]
+
+Based on the information provided and the outcomes of the game, along with the alignment and reasoning as a werewolf in the Mafia game, here are the modifications to the strategy:
+
+UPVOTE [4]
+- Player 0 suspects player 1 and finds player 6 aggressive. As player 4, increasing the importance of diverting suspicion is advantageous.
+
+DOWNVOTE [5]
+- The last two rules (rule 5 and 6) are identical, which is redundant, and the impact of these actions seems to be less critical than others.
+
+DOWNVOTE [6]
+- Given that rule 6 is a duplicate of rule 5 and has a lower priority, further reducing its vote seems logical to avoid redundancy.
+
+REPLACE [1] [Maintain a dynamic balance in discussions by alternating between skepticism and trust, adapting to the villagers' reactions and suspicions. Adjust your stance to prevent discovery and mislead villagers effectively.]
+
+REPLACE [3] [Be mindful of all players' actions and words, considering them as potential data points for deducing roles and formulating a strategic front.]
+
+CREATE [Be cautious of your voting patterns and shared opinions to avoid drawing a connection between you and your fellow werewolf, thereby protecting both from suspicion.]
+
+UPVOTE [4]
+DOWNVOTE [5]
+REPLACE [2] [If a villager claims a special role and their actions are consistent with their claimed role, refrain from casting doubt on them initially to avoid suspicion. Instead, find ways to undermine their credibility indirectly through the actions of other players.]
+REPLACE [3] [Base your actions and decisions on how the game's dynamics change, taking into account new information and events that can reshape the discussions and suspicions. Use this to guide when to sow doubt or build trust.]
+CREATE [If suspicions arise towards you or your werewolf partner, deflect by reinforcing doubt towards villagers who have been previously questioned or whose behavior has been inconsistent.]
+
+UPVOTE [4]
+DOWNVOTE [5]
+REPLACE [1] [Engage with multiple villagers on varying topics to remain active in conversations without drawing too much attention to yourself or your werewolf partner.]
+CREATE [If a villager is gaining widespread suspicion, support this suspicion only to the extent that it doesn't backfire and lead to scrutiny of the werewolves.]
+CREATE [When a villager is confirmed as a non-werewolf by the seer, use this information to cast doubt subtly on the credibility of the seer to the other villagers.]
+
+CREATE [If multiple players are pointing out that a certain player is reserved or silent, this does not necessarily indicate that the quiet player is a werewolf. Observational strategies may vary among villagers, and some may choose to speak less to better understand the dynamics and statements of others.]
+CREATE [If a werewolf accuses me, as a seer, of being too quiet, they may be attempting to cast suspicion on me to detract from their own scrutiny or to silence my ability to reveal the truth.]
+CREATE [During the initial cycles of the game, without concrete evidence, cautious behavior is to be expected and should not be heavily penalized. However, over time, engagement and contribution to discussions may serve as soft indicators of alignment, with villagers generally expected to be more proactive in seeking the truth.]
+UPVOTE [6]
+UPVOTE [7]
+
+UPVOTE [6]
+DOWNVOTE [5]
+DOWNVOTE [9]
+REPLACE [4] If a player A claims they are the Medic, and their behavior or other players' response suggest doubt, the belief in A's claimed role may vary and should not be set to 100% without justification or corroborating evidence.
+CREATE [If multiple players exhibit aggressive behavior, not all may be werewolves. Observation of how others respond to this behavior can provide insight into potential alliances and deceit.]
+CREATE [An uncharacteristically silent player could either be a strategic villager or a werewolf attempting to avoid detection; close observation and further inquiry may help determine their true role.]
+
+DOWNVOTE [8]
+DOWNVOTE [9]
+CREATE [If a player's behavior is suspiciously aligning with werewolf interests (such as defending an accused player without solid reasoning or strategically attacking another) while lacking substantial evidence, they should be considered with skepticism.]
+CREATE [In the absence of hard evidence, patterns of voting, especially if a player is consistently voting against the general consensus without clear justification, may suggest werewolf activity.]
+UPVOTE [5]
+
+REPLACE [2] [If a player A other than me claims to be a seer, A is not necessarily a werewolf but should be scrutinized further.]
+REPLACE [5] [If a player A is extremely aggressive or defensive without any clear, logical reasoning, A may be trying to manipulate the game, which could indicate werewolf activity.]
+REPLACE [8] [Patterns of voting and advocacy may suggest werewolf activity, especially if a player consistently votes against the consensus or avoids drawing attention without clear justification.]
+UPVOTE [6]
+UPVOTE [7]
+CREATE [If I, as a seer, find out a player is not a werewolf, I should consider using subtle hints to point the villagers in the right direction without revealing my identity.]
+
+UPVOTE [9]
+UPVOTE [10]
+REPLACE [8] [Patterns of voting can be indicative of werewolf behavior; inconsistent voting patterns or consistently going against the group without clear reasoning should raise suspicion.]
+REPLACE [6] [If a player A says another player B has a specific role, it should prompt further discussion and observation rather than blind belief.] 
+
+These adjustments increase emphasis on subtlety and observation, which are critical for a seer trying to guide villagers without revealing themselves. The replacements also encourage a more skeptical approach to claims about roles and voting behavior.
+
+DOWNVOTE [5]
+DOWNVOTE [15]
+DOWNVOTE [17]
+UPVOTE [0]
+UPVOTE [1]
+UPVOTE [2]
+UPVOTE [3]
+UPVOTE [12]
+REPLACE [4] [If a player A confidently claims to be the Seer and provides seemingly reliable insights, deduce the player's credibility based on how their information influences the game.]
+
+Since this is a strategy game where deception is key, and medic is a crucial role that must be maintained secretly, new rules may be necessary to navigate these interactions, particularly focusing on the medic's actions and protecting their identity:
+
+CREATE [If I heal myself as the Medic and survive, avoid revealing this information unless it's crucial for convincing others of my role. Keep a low profile to avoid werewolf suspicion.]
+CREATE [When a player survives an attack due to healing, be cautious of immediately trusting them; werewolves may orchestrate a 'failed' attack on one of their own to build false trust.]
+CREATE [If a player survives multiple rounds without being targeted by werewolves, consider their behavior and contributions to discussions; too much or too little engagement could be indicative of a werewolf.]
+CREATE
+
+CREATE [Vote carefully on decision nights based on the overall behavior and evidence presented during the day phase. If players make unfounded allegations, consider the possibility that they're werewolves trying to cast suspicion on others. However, if they present logical arguments or seem genuinely concerned about the well-being of the village, they may be villagers.]
+DOWNVOTE [1]
+DOWNVOTE [6]
+REPLACE [15] [Be strategic in revealing my role as a medic. While I should maintain secrecy to avoid being targeted, I should also validate claims and use this information to inform future healing decisions.] 
+REPLACE [16] [Carefully observe the interaction patterns between players. Behavior that deviates from established patterns after key events like player deaths could indicate a player's allegiance as a werewolf or villager.]
+
+These updates incorporate a more critical evaluation of the information presented by other players and prioritize a strategic approach to sharing or withholding information about my role as the Medic. It also emphasizes pattern analysis after key game events for additional insights into player roles.
+
+DOWNVOTE [1]
+DOWNVOTE [3]
+DOWNVOTE [9]
+UPVOTE [2]
+UPVOTE [4]
+UPVOTE [8]
+REPLACE [5] [If a player A shares information regarding the role of player B, consider the source's credibility and motivation before accepting it as truth. High caution is required if A's claim aligns too conveniently with their interests.]
+REPLACE [6] [If a player's behavior consistently shows patterns that could be strategic moves, such as inconsistency or a significant change in demeanor, consider how these actions could benefit either werewolves or villagers before drawing conclusions.]
+REPLACE [10] [Be cautious of overly protective behavior between players without a clear rationale; it's essential to examine whether this is a tactic to build alliances or a genuine move to support fellow villagers.]
+REPLACE [11] [When a player or group of players focuses on accusing a single individual without substantial evidence, be wary. It could be a strategy to divert attention from themselves or an attempt to rally villagers against a false target.]
+REPLACE [12] [Examine players' reactions to unexpected events closely. Those with advance knowledge or those who are attempting to manipulate the
+
+DOWNVOTE [1]
+UPVOTE [3]
+UPVOTE [10]
+REPLACE [5] [If a player A shares information that could indicate the role of player B, verify A's credibility, their history of accuracy, and consider the potential risks and benefits of this information being true or false before accepting it.]
+REPLACE [6] [Be mindful of behavioral patterns from players that may suggest underlying strategies. If patterns of behavior, such as inconsistency or changes in demeanor, appear tactical, evaluate them in the context of potential benefits for werewolves or villagers.]
+REPLACE [7] [Monitor voting patterns closely; if certain players consistently align their votes, discern whether this indicates a collaborative effort among werewolves or a strategic villager alliance.]
+REPLACE [9] [Examine any overtly defensive or protective behavior between players. If there's no obvious reasoning, consider whether it's a strategy to foster trust amongst certain players or if it's a sincere effort to protect fellow villagers.]
+REPLACE [13] [In the day phase following a night where roles were potentially revealed, such as a Seer's inquiry, re-evaluate players' statements and behavior to identify any shifts that could provide insight
+
+UPVOTE [1]
+UPVOTE [3]
+UPVOTE [7]
+DOWNVOTE [5]
+DOWNVOTE [8]
+DOWNVOTE [9]
+DOWNVOTE [10]
+DOWNVOTE [11]
+DOWNVOTE [13]
+DOWNVOTE [14]
+DOWNVOTE [15]
+DOWNVOTE [16]
+CREATE [If a player's behavior deviates from their previous patterns without a clear explanation, particularly after critical events in the game, it may be an attempt to adjust their strategy either as a werewolf or a villager. Analyze the context of the change and the potential alignment with their known roles or claims.]
+REPLACE [17] [Vote based on the evidence and arguments provided during the day. Be critical of unfounded allegations, but also be aware of logical arguments that demonstrate a player’s investment in safeguarding the village.]
+
