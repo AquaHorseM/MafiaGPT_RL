@@ -104,6 +104,21 @@ def parse_reflex_actions(reflex_actions):
                 else:
                     print(f"Operation not recognized! {line}")
                     continue
+            elif len(s) == 3:
+                operation, id, value = s
+                if operation == "REPLACE":
+                    if value.endswith("."):
+                        value = value[:-1]
+                    #check if id is a number
+                    try:
+                        id = int(id)
+                    except:
+                        raise ValueError("ID should be an integer!")
+                    res.append((operation, id, value))
+                else:
+                    print(f"Operation not recognized! {line}")
+            else:
+                print(f"Operation not recognized! {line}")
     return res
 
 def parse_reflex_note(reflex_note):
