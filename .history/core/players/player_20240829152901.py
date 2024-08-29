@@ -239,7 +239,7 @@ class Player:
     def send_message_xsm(self, prompt):
         return send_message_xsm(prompt, client=self.openai_client)
     
-    def reflex(self, data, sample_num = 5, alpha = 0.5): #! sample num defined here
+    def reflex(self, data, sample_num = 5, alpha = 0.5): #!
         reflex_data = parse_data(data, self.id, alpha)
         reflex_data = random.sample(reflex_data, sample_num) if len(reflex_data) > sample_num else reflex_data
         for d in reflex_data:
