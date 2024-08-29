@@ -1,8 +1,15 @@
-1 I am a medic. 10
-2 If I try to heal a player A at night and no one dies, A should be good. 10
-3 If a player A other than me claims to be a medic, A should be a werewolf. 10
-4 If a player A claims that I am a werewolf, A is likely a werewolf. 9
-5 If a player A claims he/she is a seer, everyone's belief that A is seer should be 100% if no one else claims to be the same role. 9
-6 If a player A says another player B is a role, the belief of A that B is the role should be 100%. 7
-7 If a player A is extremely aggressive towards another player without any convincing evidence, A is most probably a werewolf. 5
-8 If a player A pretects a player B who I think is likely to be good, then A is likely to be good, too. 4
+0 Take into account a player's contributions to discussions and logical coherence; lack of evidence or inconsistent logic may suggest a werewolf attempting to appear as an ally. 10
+1 When players defend others, assess the context of their defense; consider if their defense stems from a rational argument based on previous game events or if it's a baseless and quick defense, which may suggest an ulterior motive. 10
+2 In voting conflicts, observe overall trends and shifts, particularly if they diverge from prior patterns; such changes can reveal strategic werewolf influence or villagers reassessing their stance based on new information. 10
+3 If a player aggressively accuses others without reasonable evidence and a pattern of this behavior emerges, consider if the aggression is a calculated tactic rather than a genuine suspicion, as werewolves might use consistent attacks as a deflection. 10
+4 If I, as a medic, heal a player at night and no one dies, it suggests a werewolf attack was thwarted on that player, increasing the likelihood but not guaranteeing that the player is a villager. 10
+5 While evaluating agreements in discussions, consider the possibility that consistent, unswerving agreement might be a tactic used by werewolves to gain trust; scrutinize the substance of the agreement and the history of the agreeing players. 10
+6 Be cautious with accusations that lack evidence but take into account the player's overall contribution to village strategy. Avoid quick judgment and analyze the context of their overall game behavior. 9
+7 If a player survives a night when a kill was highly likely due to being healed or for other reasons, their behavior in the following day should be critically analyzed for consistency with villager behavior. 9
+8 As a medic, I must carefully balance the need to protect key village contributors with the importance of preserving the element of surprise. This requires strategic healing based on players' logical argumentation and historical participation in village affairs while considering the potential risk of exposing my role. 9
+9 Exercise caution when players provide unsolicited defenses, and also be wary of those who frequently change their opinions as if to adapt to the prevailing sentiment; their inconsistency may be an attempt to blend in and avert suspicion. 8
+10 While evaluating agreements in discussions, consider the possibility that consistent, unswerving agreement might be a tactic used by werewolves to gain trust; scrutinize the substance of the agreement and the history of the agreeing players. 8
+11 As a medic, I must carefully balance the need to protect key village contributors with the importance of preserving the element of surprise. This requires strategic healing based on players' logical argumentation and historical participation in village affairs while considering the potential risk of exposing my role. 8
+12 Prioritize healing players who have previously contributed to uncovering werewolves or who have been convincingly cleared by reliable information, while maintaining a critical view to avoid manipulation by werewolves. 8
+13 When no werewolf attacks occur on a night where the medic has healed a player, critically assess individuals who have not been targeted throughout the game as potential werewolves, but keep an open mind as clever werewolves might target their own to avoid suspicion. 1
+14 Be mindful of the potential for werewolves to manipulate healing decisions by creating false patterns of targeting. Regularly reevaluate players' behaviors and past contributions to the village discourse when deciding on a healing target. 1

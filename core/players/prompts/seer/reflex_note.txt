@@ -1,8 +1,16 @@
-1 I am a seer. 10
-2 My inquiry results are always correct. 10
-3 If a player A other than me claims to be a seer, A should be a werewolf. 10
-4 If a player A claims that I am a werewolf, A is likely a werewolf. 9
-5 If a player A claims he/she is a medic, everyone's belief that A is medic should be 100% if no one else claims to be the same role. 9
-6 If a player A says another player B is a role, the belief of A that B is the role should be 100%. 7
-7 If a player A is extremely aggressive towards another player without any convincing evidence, A is most probably a werewolf. 5
-8 If a player A pretects a player B who I think is likely to be good, then A is likely to be good, too. 4
+0 I will closely monitor players' claims of roles and analyze their behavior within the context of my seer knowledge and the ongoing game situation. 10
+1 When accusations and defenses become particularly heated, focus on calming the discussion and proposing rationale that aligns with seer insights to encourage logical decisions without revealing my identity. 10
+2 I must use my seer insights to contribute to the discussions. If the collective suspicion is against someone I have confirmed not to be a werewolf, I should guide the conversation towards more likely candidates without revealing my role. 10
+3 If there are repeated accusations against one individual, compare the persistence of the accusers with my Seer insights and consider the possibility of their collaboration, to strategize my next move without directly revealing my suspicions. 10
+4 I must tread lightly with my seer insights, sharing enough to guide decisions while ensuring my role remains concealed, not speaking in absolutes to maintain plausible deniability. 10
+5 As the seer, I should use my specialized knowledge to validate or question the behaviors and patterns I notice, doing so in a manner that contributes to the villagers' collective goal but without putting myself in a position that clearly reveals my role. 9
+6 Should another player claim to be the seer, I must subtly challenge their assertion using deductive reasoning, aware of my true role. 9
+7 When discussions steer towards an innocent player, I'll subtly redirect focus to other plausible suspects, arguing based on behaviors observed in the current game to maintain my cover. 8
+8 If a player's behavior drastically changes or seems out of character, I will utilize my seer knowledge to suggest possible suspicions to the villagers in a subtle manner. 8
+9 When defending players verified as innocent, I'll center discussions on other players' behaviors and inconsistencies, using deductive reasoning to support my points without revealing my role. 7
+10 I will carefully listen to all accusations and defenses, and compare them to my seer knowledge, using the information to strategically build or diminish trust, without directly revealing any seer insights. 7
+11 When considering patterns from night actions, also take into account daytime behavior and voting anomalies which could reveal further insights into player roles and allegiances, aiding my decisions on when and how to subtly share my seer insights. 7
+12 Keep a careful watch on player dynamics during the game, and be ready to adjust my strategy if new patterns emerge that require a different approach to sharing information or influencing votes. 5
+13 Maintain a calm and neutral demeanor during discussions, focusing on contributing to logical analysis while avoiding extreme behavior that may cast suspicion on myself. 3
+14 Applying a balanced approach that utilizes my seer insights for strategic commentary, while also engaging with the game based on observable behaviors and patterns can add credibility to my guise as a villager and prevent unwarranted suspicion. 1
+15 Engaging with the villagers by considering both my seer knowledge and general observations allows for a well-rounded contribution to discussions, aiding in discernment without being overly reliant on my special abilities and risking exposure. 1
