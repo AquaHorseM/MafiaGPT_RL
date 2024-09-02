@@ -1,6 +1,6 @@
 from functools import partial
 from core.game import Game
-import json, sys, os
+import json, sys
 #run the game with multiple processes
 import multiprocessing
 from core.api import load_client
@@ -12,7 +12,7 @@ parser.add_argument("--num_processes", type=int, default=1)
 parser.add_argument("--openai_config_path", type=str, default="openai_config.yaml")
 parser.add_argument("--config_path", type=str, default="configs/player_configs_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
-parser.add_argument("--ckpt_path", type=str, default=None)
+parser.add_argument("--data_folder", type=str, default=None)
 parser.add_argument("--reflex-only",default=False, action="store_true")
 parser.add_argument("--data-path", type=str, default=None)
 parser.add_argument("--train",default=False, action="store_true")
@@ -31,16 +31,9 @@ if __name__ == "__main__":
     if args.reflex_only:
         assert args.data_path is not None, "Data path must be provided when running reflex only mode"
         player_configs = json.load(open(args.config_path, "r"))["players"]
-        game = Game(999, train = True, openai_client=client)
+        game = Game(args.start_idx, train = args.train, openai_client=client)
         game.set_players(player_configs)
-        if os.path.isdir(args.data_path):
-            data_paths = [os.path.join(args.data_path, x) for x in os.listdir(args.data_path) if x.endswith(".pkl")]
-            for data_path in data_paths:
-                game.all_players_reflex_from_data_path(data_path)
-        elif os.path.isfile(args.data_path):
-            game.all_players_reflex_from_data_path(args.data_path)
-        else:
-            raise ValueError("Data path must be a file or a directory")
+        game.all_players_reflex_from_data_path(args.data_path)
         sys.exit(0)
         
     

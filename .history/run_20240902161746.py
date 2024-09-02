@@ -31,7 +31,7 @@ if __name__ == "__main__":
     if args.reflex_only:
         assert args.data_path is not None, "Data path must be provided when running reflex only mode"
         player_configs = json.load(open(args.config_path, "r"))["players"]
-        game = Game(999, train = True, openai_client=client)
+        game = Game(args.start_idx, train = args.train, openai_client=client)
         game.set_players(player_configs)
         if os.path.isdir(args.data_path):
             data_paths = [os.path.join(args.data_path, x) for x in os.listdir(args.data_path) if x.endswith(".pkl")]
