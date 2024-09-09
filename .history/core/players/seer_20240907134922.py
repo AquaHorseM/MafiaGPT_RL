@@ -23,8 +23,7 @@ class SeerPlayer(Player):
     
     def init_game(self, global_info, private_info):
         super().init_game(global_info, private_info)
-        if "known_roles" not in self.private_info:
-            self.private_info["known_roles"] = dict()
+        self.private_info["known_roles"] = dict()
         
     def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
         if update_hstate:
