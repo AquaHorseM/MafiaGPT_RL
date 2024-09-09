@@ -641,12 +641,14 @@ class WerewolfGameEnv:
     
     def get_actions_from_reflex_player(self, player_id, available_actions):
         player_avail_actions = self._convert_available_actions_to_description(available_actions[player_id])
+        print(f"Player id: {player_id}, available_actions: {player_avail_actions}")
         if len(player_avail_actions) == 0:
             return 0 #Will not be checked, so return whatever action
         else:
             return self.all_players[player_id]._act(self.event_book, player_avail_actions, update_hstate = False)
 
     def get_actions_reflex(self, available_actions):
+        print(f"available_actions: {available_actions}")
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
 
     def sim_game_for_reflex_players(self):
