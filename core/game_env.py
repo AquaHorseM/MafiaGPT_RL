@@ -636,7 +636,7 @@ class WerewolfGameEnv:
             return self.all_players[player_id]._act(self.event_book, player_avail_actions, update_hstate = False)
 
     def get_actions_reflex(self, available_actions):
-        return self._repeat(partial(self.get_actions_from_player, available_actions = available_actions))
+        return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
 
     def sim_game_for_reflex_players(self):
         self.logger.info("Simulating games for reflex players")
