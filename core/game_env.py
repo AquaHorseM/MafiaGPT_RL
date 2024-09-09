@@ -581,13 +581,19 @@ class WerewolfGameEnv:
     def discretify(self, actions, player_id):
         if isinstance(actions, list):
             avail = [0] * self.get_action_space_size(player_id)
-        assert isinstance(actions, str), "actions must be a string or a list of strings"
-        if actions == "speak":
-            return [1] * self.n_speak + [0] * (self.get_action_space_size(player_id) - self.n_speak)
-        elif actions == "vote":
-            return [0] * self.n_speak + [1] * self.n_vote + [0] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
-        else: #night actions
-            return [0] * self.n_speak + [0] * self.n_vote + [1] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+            for action in actions:
+                _avail_ = self.discretify(action, player_id)
+                assert len(_avail_) == len(avail), "actions must have the same length"
+                avail = [avail[i] or _avail_[i] for i in range(len(avail))]
+            return avail
+        else:
+            assert isinstance(actions, str), "actions must be a string or a list of strings"
+            if actions == "speak":
+                return [1] * self.n_speak + [0] * (self.get_action_space_size(player_id) - self.n_speak)
+            elif actions == "vote":
+                return [0] * self.n_speak + [1] * self.n_vote + [0] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+            else: #night actions
+                return [0] * self.n_speak + [0] * self.n_vote + [1] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
         
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
