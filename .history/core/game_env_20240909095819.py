@@ -638,7 +638,7 @@ class WerewolfGameEnv:
             for i in range(self.player_num):
                 self.all_players[i].update_hidden_state(self.event_book)
         self.logger.info("Games simulated successfully")
-
+        
         
     
             

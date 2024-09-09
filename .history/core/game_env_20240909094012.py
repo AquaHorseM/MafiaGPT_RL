@@ -624,23 +624,10 @@ class WerewolfGameEnv:
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_player, available_actions = available_actions))
 
-    def sim_game_for_reflex_players(self):
+    def sim_games_for_reflex_players(self):
         self.logger.info("Simulating games for reflex players")
-        avail_actions = self.get_available_actions()
-        while True:
-            actions = self.get_actions_reflex(avail_actions)
-            obs, state, rewards, dones, info, avail_actions = self.step(actions)
-            self.logger.info(f"Round {self.current_round} completed")
-            if info is not None:
-                self.logger.info(str(info))
-            if all(dones):
-                break
-            for i in range(self.player_num):
-                self.all_players[i].update_hidden_state(self.event_book)
+        for player_id in range(self.player_num):
+            self.all_players[player_id].simulate_game(self)
         self.logger.info("Games simulated successfully")
-
-        
-    
-            
-            
+        return
         
