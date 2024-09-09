@@ -17,6 +17,25 @@ from core.api import load_client
 import gym
 import inspect
 
+def count_adjustable_params(func):    
+    # Get the signature of the function
+    sig = inspect.signature(func)
+    params = sig.parameters
+    
+    # Determine if it's a method (by checking if 'self' or 'cls' is the first parameter)
+    is_method = inspect.ismethod(func) or (inspect.isfunction(func) and 'self' in params)
+
+    count = 0
+    for i, param in enumerate(params.values()):
+        print(f"param: {param}")
+        # Skip 'self' or 'cls' for methods
+        if is_method and i == 0 and param.name in ('self', 'cls'):
+            continue
+        # Count only adjustable (non-default) parameters
+        if param.default == param.empty and param.kind in (param.POSITIONAL_OR_KEYWORD, param.POSITIONAL_ONLY, param.KEYWORD_ONLY):
+            count += 1
+    return count
+
 
 class WerewolfGameEnv:
     def __init__(self, id=1, train = False, openai_client = None, data_path = None):
@@ -307,15 +326,7 @@ class WerewolfGameEnv:
     def _repeat(self, a):
         #if a is a function, return a(i) for i in range(self.player_num)
         if callable(a):
-            # Get the signature of the function/method
-            sig = inspect.signature(a)
-            params = list(sig.parameters.values())
-
-            # Check if 'self' is the first parameter (indicating it's a method)
-            is_method = params and params[0].name == 'self'
-
-            # Count the number of parameters excluding 'self' if it's a method
-            param_count = len(params) - (1 if is_method else 0)
+            param_count = count_adjustable_params(a)
             if param_count == 1:
                 return [a(i) for i in range(self.player_num)]
             else:
