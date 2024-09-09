@@ -32,7 +32,7 @@ class MedicPlayer(Player):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
-        elif "heal" in available_actions:
+        elif "heal" in available_actions or "night" in available_actions:
             res = self._heal()
             return ("heal", res[0], res[1])
     

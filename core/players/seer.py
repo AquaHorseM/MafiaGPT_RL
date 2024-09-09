@@ -33,7 +33,7 @@ class SeerPlayer(Player):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
-        elif "see" in available_actions:
+        elif "see" in available_actions or "night" in available_actions:
             res = self._see()
             return ("see", res[0], res[1])
         elif "speak" in available_actions:

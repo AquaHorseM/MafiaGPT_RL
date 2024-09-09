@@ -34,7 +34,7 @@ class WerewolfPlayer(Player):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
-        elif "kill" in available_actions:
+        elif "kill" in available_actions or "night" in available_actions:
             res = self._kill()
             return ("kill", res[0], res[1])
     
