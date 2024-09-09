@@ -8,6 +8,7 @@ class MedicPlayer(Player):
     def __init__(self, id, global_info, private_info, prompt_dir_path, openai_client = None, reflex_note_path = None):
         super().__init__(id, global_info, private_info, prompt_dir_path, openai_client, reflex_note_path)
         self.labels = ["all", "medic"]
+        self.role = "medic"
         
     def get_replacements(self):
         replacements = super().get_replacements()
