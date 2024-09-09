@@ -338,16 +338,16 @@ class WerewolfGameEnv:
         return list(filter(lambda player: self.all_players[player].get_role() == role, self.alive_players))
 
     def get_alive_werewolves(self):
-        return partial(self._get_alive_players_for_role, "werewolf")
+        return self._get_alive_players_for_role("werewolf")
 
     def get_alive_villagers(self):
-        return partial(self._get_alive_players_for_role, "villager")
-
+        return self._get_alive_players_for_role("villager")
+    
     def get_alive_medics(self):
-        return partial(self._get_alive_players_for_role, "medic")
+        return self._get_alive_players_for_role("medic")
     
     def get_alive_seers(self):
-        return partial(self._get_alive_players_for_role, "seer")
+        return self._get_alive_players_for_role("seer")
         
     def vote_out(self, player_id):
         if player_id not in self.alive_players:
