@@ -15,6 +15,7 @@ from core.players.seer import SeerPlayer
 from core.utils import switcher_players, load_player_from_checkpoint
 from core.api import load_client
 import gym
+import inspect
 
 
 class WerewolfGameEnv:
@@ -306,12 +307,19 @@ class WerewolfGameEnv:
     def _repeat(self, a):
         #if a is a function, return a(i) for i in range(self.player_num)
         if callable(a):
-            if a.__code__.co_argcount == 1:
-                return [a(i) for i in range(self.player_num)]   
-            elif a.__code__.co_argcount == 0:
-                return [a() for _ in range(self.player_num)]
+            # Get the signature of the function/method
+            sig = inspect.signature(a)
+            params = list(sig.parameters.values())
+
+            # Check if 'self' is the first parameter (indicating it's a method)
+            is_method = params and params[0].name == 'self'
+
+            # Count the number of parameters excluding 'self' if it's a method
+            param_count = len(params) - (1 if is_method else 0)
+            if param_count == 1:
+                return [a(i) for i in range(self.player_num)]
             else:
-                raise ValueError(f"Function must have at most one argument to be repeated, but got {a.__code__.co_argcount}")
+                return [a()] * self.player_num
         else:
             return [a for _ in range(self.player_num)]
     
