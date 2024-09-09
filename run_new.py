@@ -22,7 +22,7 @@ def run_game_with_client(ipt, client):
     new = Game(idx, train = train, openai_client=client)
     new.set_players(player_configs)
     new.init_env()
-    new.run_game()
+    new.sim_game_for_reflex_players()
     
 if __name__ == "__main__":
     args = parser.parse_args()

@@ -649,7 +649,6 @@ class WerewolfGameEnv:
                 self.all_players[i].update_hidden_state(self.event_book)
         self.logger.info("Game simulated successfully")
         
-    
-            
-
-        
+    def reset(self):
+        #TODO
+        pass
