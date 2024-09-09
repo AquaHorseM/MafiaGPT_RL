@@ -29,6 +29,12 @@ class VillagerPlayer(Player):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
+        elif "speak" in available_actions:
+            res = self._speak(event_book, update_hstate=False)
+            return ("speak", None, res)
+        elif "speak_type" in available_actions:
+            res = self._get_speak_type(event_book, update_hstate=False)
+            return ("speak_type", res, None)
         else:
             return (None, None, None)
 
@@ -42,7 +48,7 @@ class VillagerPlayer(Player):
         vote = int(re.search(r"\d+", response).group())
         return vote, response
     
-    def _speak(self, event_book: EventBook, update_hstate = True):
+    def _get_speak_type(self, event_book: EventBook, update_hstate = True):
         if update_hstate:
             self.update_hidden_state(event_book)
         prompt_path = os.path.join(self.prompt_dir_path, "speak_type.txt")
@@ -53,6 +59,11 @@ class VillagerPlayer(Player):
         s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
         s_type = s_type.strip().split(",") #split the types
         s_type = [s.strip() for s in s_type]
+        return s_type
+    
+    def _speak(self, event_book: EventBook, update_hstate = True):
+        s_type = self._get_speak_type(event_book, update_hstate)
+        replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
         })
@@ -61,9 +72,4 @@ class VillagerPlayer(Player):
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
         return response
-
-    def show_prompt(self, file_name = 'vote.txt'):
-        prompt_path = os.path.join(self.prompt_dir_path, file_name)
-        prompt = get_prompt(prompt_path, self.get_replacements())
-        return prompt
     

@@ -69,6 +69,7 @@ class WerewolfGameEnv:
             "start_speaking_player": None,
             "winner": None
         }
+        self.inquiry_result = []
         #The action space and observation space should be set after the players are set using the 'init_env' method
         self.action_space = []
         self.observation_space = None
@@ -169,6 +170,7 @@ class WerewolfGameEnv:
                 "belief": get_belief(),
                 "role": gym.spaces.Discrete(1),
                 "last_heal": gym.spaces.Discrete(1),
+                "inquiry_result": gym.spaces.Tuple([gym.spaces.Discrete(1), gym.spaces.Binary()])
             })
         else: #villager
             return gym.spaces.Dict({
@@ -199,10 +201,13 @@ class WerewolfGameEnv:
                 "known_roles": np.array([self.all_players[player_id].get_known_roles().get(i, 0) for i in range(self.player_num)]),
             }
         elif self.all_players[player_id].role == "medic":
+            inquiry_result = self.inquiry_result if self.inquiry_result else (-1, False)
+            self.inquiry_result = None
             return {
                 "belief": self.all_players[player_id].hidden_state.beliefs,
                 "role": 2,
                 "last_heal": self.all_players[player_id].last_heal,
+                "inquiry_result": inquiry_result
             }
         else: #vilager
             return {
@@ -250,6 +255,7 @@ class WerewolfGameEnv:
             heal_target = get_action_target(actions[medic_id])
             seer_target = get_action_target(actions[seer_id])
             is_werewolf = self.all_players[seer_target].get_role() == "werewolf"
+            self.inquiry_result = (seer_target, is_werewolf)
             kill_target = get_action_target(actions[werewolf_ids[-1]])
             advice_target = get_action_target(actions[werewolf_ids[0]])
             self.night_info["killed"] = kill_target
@@ -270,8 +276,7 @@ class WerewolfGameEnv:
             self.add_event({"event": "speak_type", "content": {"player": speaking_player, "speak_type": speak_type, "reason": None}, "visible": speaking_player})
             speech = self.all_players[speaking_player].speak_with_type(speak_type)
             self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": speech, "reason": None}, "visible": "all"})
-            #Find the next player to speak
-            while True:
+            while True: #Find the next player to speak
                 speaking_player = (speaking_player + 1) % self.player_num
                 if speaking_player == self.game_status["start_speaking_player"]:
                     self.game_status["cur_stage"] = "vote"
@@ -631,7 +636,7 @@ class WerewolfGameEnv:
         avail_des = []
         #check if the first self.n_speak actions in available_actions are 1
         if all(available_actions[:self.n_speak]):
-            avail_des.append("speak")
+            avail_des.append("speak_type")
         elif all(available_actions[self.n_speak: self.n_speak + self.n_vote]):
             avail_des.append("vote")
         elif all(available_actions[self.n_speak + self.n_vote:]):
@@ -645,10 +650,12 @@ class WerewolfGameEnv:
         if len(player_avail_actions) == 0:
             return 0 #Will not be checked, so return whatever action
         else:
-            return self.all_players[player_id]._act(self.event_book, player_avail_actions, update_hstate = False)
+            action = self.all_players[player_id]._act(self.event_book, player_avail_actions, update_hstate = False)
+            if isinstance(action, tuple):
+                action = action[1] #(action_type, action_target, reason) by default
+            return action
 
     def get_actions_reflex(self, available_actions):
-        print(f"available_actions: {available_actions}")
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
 
     def sim_game_for_reflex_players(self):
@@ -657,6 +664,7 @@ class WerewolfGameEnv:
         collect_rewards = [0 for _ in range(self.player_num)]
         while True:
             actions = self.get_actions_reflex(avail_actions)
+            self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
             collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]
             self.logger.info(f"Round {self.current_round} completed")

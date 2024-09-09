@@ -37,8 +37,11 @@ class SeerPlayer(Player):
             res = self._see()
             return ("see", res[0], res[1])
         elif "speak" in available_actions:
-            res = self._speak(event_book, update_hstate)
+            res = self._speak(event_book, update_hstate=False)
             return ("speak", None, res)
+        elif "speak_type" in available_actions:
+            res = self._get_speak_type(event_book, update_hstate=False)
+            return ("speak_type", res, None)
     
     def _vote(self):
         #TODO
@@ -55,7 +58,7 @@ class SeerPlayer(Player):
         see = get_target_from_response(response)
         return see, response
     
-    def _speak(self, event_book: EventBook, update_hstate = True):
+    def _get_speak_type(self, event_book: EventBook, update_hstate = True):
         if update_hstate:
             self.update_hidden_state(event_book)
         prompt_path = os.path.join(self.prompt_dir_path, "speak_type.txt")
@@ -66,6 +69,11 @@ class SeerPlayer(Player):
         s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
         s_type = s_type.strip().split(",") #split the types
         s_type = [s.strip() for s in s_type]
+        return s_type
+    
+    def _speak(self, event_book: EventBook, update_hstate = True):
+        s_type = self._get_speak_type(event_book, update_hstate)
+        replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
         })

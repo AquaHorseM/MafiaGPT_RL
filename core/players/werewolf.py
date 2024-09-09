@@ -29,14 +29,18 @@ class WerewolfPlayer(Player):
             self.hidden_state.set_role(wid, self.global_info["roles_mapping"]["werewolf"])
         
     def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
         elif "kill" in available_actions or "night" in available_actions:
             res = self._kill()
             return ("kill", res[0], res[1])
+        elif "speak" in available_actions:
+            res = self._speak(event_book, update_hstate)
+            return ("speak", None, res)
+        elif "speak_type" in available_actions:
+            res = self._get_speak_type(event_book, update_hstate)
+            return ("speak_type", res, None)
     
     def _vote(self):
         #TODO
@@ -53,7 +57,7 @@ class WerewolfPlayer(Player):
         kill = get_target_from_response(response)
         return kill, response
     
-    def _speak(self, event_book: EventBook, update_hstate = True):
+    def _get_speak_type(self, event_book: EventBook, update_hstate = True):
         if update_hstate:
             self.update_hidden_state(event_book)
         prompt_path = os.path.join(self.prompt_dir_path, "speak_type.txt")
@@ -64,6 +68,12 @@ class WerewolfPlayer(Player):
         s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
         s_type = s_type.strip().split(",") #split the types
         s_type = [s.strip() for s in s_type]
+        return s_type
+        
+    
+    def _speak(self, event_book: EventBook, update_hstate = True):
+        s_type = self._get_speak_type(event_book, update_hstate)
+        replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
         })
