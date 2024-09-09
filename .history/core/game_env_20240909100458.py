@@ -627,11 +627,9 @@ class WerewolfGameEnv:
     def sim_game_for_reflex_players(self):
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
-        collect_rewards = [0 for _ in range(self.player_num)]
         while True:
             actions = self.get_actions_reflex(avail_actions)
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
-            collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]
             self.logger.info(f"Round {self.current_round} completed")
             if info is not None:
                 self.logger.info(str(info))
@@ -643,5 +641,5 @@ class WerewolfGameEnv:
         
     
             
-
+            
         

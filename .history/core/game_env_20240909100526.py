@@ -631,7 +631,6 @@ class WerewolfGameEnv:
         while True:
             actions = self.get_actions_reflex(avail_actions)
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
-            collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]
             self.logger.info(f"Round {self.current_round} completed")
             if info is not None:
                 self.logger.info(str(info))
@@ -643,5 +642,5 @@ class WerewolfGameEnv:
         
     
             
-
+            
         
