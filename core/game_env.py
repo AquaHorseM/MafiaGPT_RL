@@ -311,7 +311,7 @@ class WerewolfGameEnv:
             elif a.__code__.co_argcount == 0:
                 return [a() for _ in range(self.player_num)]
             else:
-                raise ValueError("Function must have at most one argument to be repeated")
+                raise ValueError(f"Function must have at most one argument to be repeated, but got {a.__code__.co_argcount}")
         else:
             return [a for _ in range(self.player_num)]
     
@@ -600,7 +600,7 @@ class WerewolfGameEnv:
             return ["vote"]
         
     def get_available_actions(self):
-        return [self.get_available_actions_single_player(player_id) for player_id in range(self.player_num)]
+        return self._repeat(self.discretify(self.get_available_actions_single_player))
 
     def _convert_available_actions_to_description(self, available_actions):
         avail_des = []
