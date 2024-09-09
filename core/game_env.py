@@ -608,7 +608,7 @@ class WerewolfGameEnv:
             return ["vote"]
         
     def get_available_actions(self):
-        return self._repeat(self.discretify(self.get_available_actions_single_player))
+        return self._repeat(lambda id: self.discretify(self.get_available_actions_single_player(id), id))
 
     def _convert_available_actions_to_description(self, available_actions):
         avail_des = []
