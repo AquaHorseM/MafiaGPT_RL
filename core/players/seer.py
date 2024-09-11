@@ -71,6 +71,17 @@ class SeerPlayer(Player):
         s_type = [s.strip() for s in s_type]
         return s_type
     
+    def speak_with_type(self, s_type):
+        prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
+        replacements = self.get_replacements()
+        replacements.update({
+            "{speech_type}": str(s_type)
+        })
+        prompt = get_prompt(prompt_path, replacements)
+        response = self.send_message_xsm(prompt)
+        return response
+        
+    
     def _speak(self, event_book: EventBook, update_hstate = True):
         s_type = self._get_speak_type(event_book, update_hstate)
         replacements = self.get_replacements()
