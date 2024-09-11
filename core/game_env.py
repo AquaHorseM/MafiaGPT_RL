@@ -652,8 +652,15 @@ class WerewolfGameEnv:
         else:
             action = self.all_players[player_id]._act(self.event_book, player_avail_actions, update_hstate = False)
             if isinstance(action, tuple):
-                action = action[1] #(action_type, action_target, reason) by default
-            return action
+                if action[0] == "speak_type":
+                    return action[1]
+                elif action[0] == "vote":
+                    return self.n_speak + action[1]
+                else:
+                    return self.n_speak + self.n_vote + action[1]
+            else:
+                self.logger.warning(f"Invalid action {action} returned by player {player_id}: action must be a tuple")
+                return action
 
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
