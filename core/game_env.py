@@ -192,7 +192,7 @@ class WerewolfGameEnv:
                 "belief": self.all_players[player_id].hidden_state.beliefs,
                 "role": 1,
                 "companions": np.array([1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]),
-                "last_killing_target": self.all_players[player_id].last_killing_target, 
+                "last_killing_target": self.night_info["killed"] 
             }
         elif self.all_players[player_id].role == "seer":
             return {
@@ -206,8 +206,7 @@ class WerewolfGameEnv:
             return {
                 "belief": self.all_players[player_id].hidden_state.beliefs,
                 "role": 2,
-                "last_heal": self.all_players[player_id].last_heal,
-                "inquiry_result": inquiry_result
+                "last_heal": self.night_info["healed"],
             }
         else: #vilager
             return {
