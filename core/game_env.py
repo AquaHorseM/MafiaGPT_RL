@@ -657,8 +657,10 @@ class WerewolfGameEnv:
                     return action[1]
                 elif action[0] == "vote":
                     return self.n_speak + action[1]
-                else:
+                elif action[0] is not None:
                     return self.n_speak + self.n_vote + action[1]
+                else:
+                    return 0 #Will not be checked, so return whatever action
             else:
                 self.logger.warning(f"Invalid action {action} returned by player {player_id}: action must be a tuple")
                 return action
