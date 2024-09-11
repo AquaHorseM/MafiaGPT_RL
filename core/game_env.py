@@ -642,7 +642,7 @@ class WerewolfGameEnv:
             avail_des.append("speak_type")
         elif all(available_actions[self.n_speak: self.n_speak + self.n_vote]):
             avail_des.append("vote")
-        elif all(available_actions[self.n_speak + self.n_vote:]):
+        elif len(available_actions) != self.n_speak + self.n_vote and all(available_actions[self.n_speak + self.n_vote:]):
             avail_des.append("night")
         return avail_des
             
