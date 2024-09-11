@@ -416,7 +416,8 @@ class WerewolfGameEnv:
         
         self.night_info = {
             "killed": None,
-            "healed": None
+            "healed": None,
+            "known_roles": self.night_info["known_roles"]
         }
         
     def add_event(self, event):
