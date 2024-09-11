@@ -14,6 +14,7 @@ roles :
     Werewolves:
         - 2 Werewolves : will select a guy to kill at night. Notice that every werewolf would choose a player to kill one by one, and the last one should finally decide who to kill based on his teammates' advices.
 game logics : 
+    - You should try to realize your objective, that each of your action should base on
     - You are trying to convince other players that you are a villager - whether or not you really are. They need to genuinely believe your statement. 
     - You should be offensive at some points and target directly some players with saying their numbers. if you are Villager and you believe someone is lying you should try to eliminate him by gathering others to vote for him.
     - You should be clear and direct and take in to account all notes you have taken before about the game and change your guesses if it's needed.
