@@ -10,5 +10,5 @@ for role in roles:
     if os.path.exists(os.path.join(role_dir, "reflex_note.txt")):
         shutil.copy(os.path.join(role_dir, "reflex_note.txt"), os.path.join(backup_dir, f"{role}_reflex_note.txt"))
         os.remove(os.path.join(role_dir, "reflex_note.txt"))
-        shutil.copy(os.path.join(role_dir, "reflex_note_backup.txt"), os.path.join(role_dir, "reflex_note.txt"))
+    shutil.copy(os.path.join(role_dir, "reflex_note_backup.txt"), os.path.join(role_dir, "reflex_note.txt"))
     
