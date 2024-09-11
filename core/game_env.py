@@ -53,7 +53,8 @@ class WerewolfGameEnv:
         self.temp_events = []
         self.night_info = {
             "killed": None,
-            "healed": None
+            "healed": None,
+            "known_roles": dict()
         }
         self.data = []
         self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
@@ -198,7 +199,7 @@ class WerewolfGameEnv:
             return {
                 "belief": self.all_players[player_id].hidden_state.beliefs,
                 "role": 3,
-                "known_roles": np.array([self.all_players[player_id].get_known_roles().get(i, 0) for i in range(self.player_num)]),
+                "known_roles": np.array([self.night_info["known_roles"].get(i, -1) for i in range(self.player_num)]),
             }
         elif self.all_players[player_id].role == "medic":
             inquiry_result = self.inquiry_result if self.inquiry_result else (-1, False)
@@ -259,6 +260,7 @@ class WerewolfGameEnv:
             advice_target = get_action_target(actions[werewolf_ids[0]])
             self.night_info["killed"] = kill_target
             self.night_info["healed"] = heal_target
+            self.night_info["known_roles"][seer_target] = is_werewolf
             #add the events separately to the event book
             self.add_event({"event": "heal", "content": {"player": medic_id, "target": heal_target, "reason": None}, "visible": "medic"})
             self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": seer_target, "is_werewolf": is_werewolf, "reason": None}, "visible": seer_id})
