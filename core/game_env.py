@@ -663,7 +663,7 @@ class WerewolfGameEnv:
                     else:
                         s_type = s_type[0] #TODO: multiple speech types
                         if speak_type_mapping.get(s_type) is not None:
-                            return speak_type_mapping[s_type] + 1 #Leave 0 for no speak type
+                            return speak_type_mapping[s_type]  
                         else:
                             self.logger.warning(f"Invalid speak type {s_type} returned by player {player_id}")
                             return 0
