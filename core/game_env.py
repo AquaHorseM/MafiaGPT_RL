@@ -170,7 +170,7 @@ class WerewolfGameEnv:
                 "belief": get_belief(),
                 "role": gym.spaces.Discrete(1),
                 "last_heal": gym.spaces.Discrete(1),
-                "inquiry_result": gym.spaces.Tuple([gym.spaces.Discrete(1), gym.spaces.Binary()])
+                "inquiry_result": gym.spaces.Tuple([gym.spaces.Discrete(1), gym.spaces.Discrete(1)])
             })
         else: #villager
             return gym.spaces.Dict({
