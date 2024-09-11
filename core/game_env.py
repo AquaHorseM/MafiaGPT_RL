@@ -16,6 +16,7 @@ from core.utils import switcher_players, load_player_from_checkpoint
 from core.api import load_client
 import gym
 import inspect
+from core.common import *
 
 def count_adjustable_params(func):    
     # Get the signature of the function
@@ -246,7 +247,7 @@ class WerewolfGameEnv:
         def get_vote_target(action):
             return action - self.n_speak
         def get_speech_type(action):
-            return action
+            return speak_type_id_to_str[action]
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
             medic_id = self.get_alive_medics()[0]
@@ -270,7 +271,6 @@ class WerewolfGameEnv:
             self.game_status["cur_stage"] = "day"
             self.game_status["start_speaking_player"] = random.choice(self.alive_players)
             self.game_status["speaking_player"] = self.game_status["start_speaking_player"]
-            self.update_all_hstates()
         elif self.game_status["cur_stage"] == "day":
             speaking_player = self.game_status["speaking_player"]
             speak_type = get_speech_type(actions[speaking_player])
@@ -285,7 +285,6 @@ class WerewolfGameEnv:
                 elif speaking_player in self.alive_players:
                     self.game_status["speaking_player"] = speaking_player
                     break
-            self.update_all_hstates()
         else: #vote stage
             votes = [get_vote_target(actions[i]) for i in range(self.player_num)]
             self.votes.append(votes)
@@ -293,7 +292,7 @@ class WerewolfGameEnv:
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
             self.game_status["cur_round"] += 1
-            self.update_all_hstates()
+        self.update_all_hstates()
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
@@ -317,11 +316,11 @@ class WerewolfGameEnv:
             
     def init_env(self):
         assert self.player_num != 0 and len(self.all_players) == self.player_num, "Players must be set before initializing the environment"
-        self.n_speak = 6 #Temporarily set to 6 as the number of speak types
+        self.n_speak = n_speak_actions 
         self.n_kill = self.player_num #Werewolves can kill any player including themselves
         self.n_see = self.player_num #Seer can see any player including himself, though it is not useful
         self.n_heal = self.player_num #Medic can heal any player including himself
-        self.n_vote = self.player_num #Any player can vote any player including himself
+        self.n_vote = self.player_num + 1 #Any player can vote any player including himself
         self.action_space = self._repeat(self.get_action_space)
         self.observation_space = self._repeat(self.get_observation_space_single_player)
         self.shared_observation_space = gym.spaces.Dict({
@@ -658,8 +657,19 @@ class WerewolfGameEnv:
             print(f"Debug: action is {action}")
             if isinstance(action, tuple):
                 if action[0] == "speak_type":
-                    return action[1]
+                    s_type = action[1]
+                    if s_type is None:
+                        return 0 #Use 0 to indicate that no speak type is chosen
+                    else:
+                        s_type = s_type[0] #TODO: multiple speech types
+                        if speak_type_mapping.get(s_type) is not None:
+                            return speak_type_mapping[s_type] + 1 #Leave 0 for no speak type
+                        else:
+                            self.logger.warning(f"Invalid speak type {s_type} returned by player {player_id}")
+                            return 0
                 elif action[0] == "vote":
+                    if action[1] is None:
+                        return self.n_speak + player_id #Vote for oneself if no vote target is chosen
                     return self.n_speak + action[1]
                 elif action[0] is not None:
                     return self.n_speak + self.n_vote + action[1]
