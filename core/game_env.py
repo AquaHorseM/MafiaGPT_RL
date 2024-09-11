@@ -298,6 +298,8 @@ class WerewolfGameEnv:
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
             self.end()
+        else:
+            rewards = [0 for _ in range(self.player_num)]
         return self._repeat(self.get_observation_single_player), self._repeat(self.get_state()), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
     
     def get_action_space(self, player_id):
