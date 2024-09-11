@@ -1,5 +1,5 @@
 from core.players.player import Player
-from core.players.utils import get_prompt
+from core.players.utils import get_prompt, get_target_from_response
 from core.event import EventBook
 import os
 import re
@@ -44,8 +44,7 @@ class VillagerPlayer(Player):
         prompt_path = os.path.join(self.prompt_dir_path, "vote.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = self.send_message_xsm(prompt)
-        #find the first number in the response
-        vote = int(re.search(r"\d+", response).group())
+        vote = get_target_from_response(response)
         return vote, response
     
     def _get_speak_type(self, event_book: EventBook, update_hstate = True):
