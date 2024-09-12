@@ -286,7 +286,7 @@ class WerewolfGameEnv:
                     self.game_status["speaking_player"] = speaking_player
                     break
         else: #vote stage
-            votes = [get_vote_target(actions[i]) for i in range(self.player_num)]
+            votes = {i : get_vote_target(actions[i]) for i in range(self.player_num)}
             self.votes.append(votes)
             self.check_votes()
             self.current_round += 1
