@@ -538,6 +538,9 @@ class WerewolfGameEnv:
     def update_all_hstates(self):
         for player in self.all_players:
             player.update_hidden_state(self.event_book)
+        self.add_events_to_data(self.temp_events)
+        self.temp_events = []
+        self.add_all_hstate_to_data()
         return
     
     def act_and_collect_hstate(self, player_id, actions):
@@ -583,9 +586,9 @@ class WerewolfGameEnv:
         if self.train:
             self.add_events_to_data(self.temp_events)
             self.temp_events = []
+            self.store_data(f"records/game_{self.id}_data.pkl")
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
-            self.store_data(f"records/game_{self.id}_data.pkl")
             
     def get_action_space_size(self, player_id):
         if self.all_players[player_id].role == "werewolf":
