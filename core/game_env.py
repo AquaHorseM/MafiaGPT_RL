@@ -248,7 +248,7 @@ class WerewolfGameEnv:
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
             alive_medics = self.get_alive_medics()
-            if alive_medics:
+            if len(alive_medics) != 0:
                 medic_id = alive_medics[0]
                 heal_target = get_action_target(actions[medic_id])
                 self.add_event({"event": "heal", "content": {"player": medic_id, "target": heal_target, "reason": None}, "visible": "medic"})
@@ -256,19 +256,26 @@ class WerewolfGameEnv:
             else:
                 self.night_info["healed"] = None
             alive_seers = self.get_alive_seers()
-            if alive_seers:
-                seer_id = self.get_alive_seers()[0]
+            if len(alive_seers) != 0:
+                seer_id = alive_seers[0]
                 seer_target = get_action_target(actions[seer_id])
                 is_werewolf = self.all_players[seer_target].get_role() == "werewolf"
                 self.night_info["known_roles"][seer_target] = is_werewolf  
                 self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": seer_target, "is_werewolf": is_werewolf, "reason": None}, "visible": seer_id})
             werewolf_ids= self.get_alive_werewolves()
             assert len(werewolf_ids) > 0, "There must be at least one werewolf alive"
-            kill_target = get_action_target(actions[werewolf_ids[-1]])
-            advice_target = get_action_target(actions[werewolf_ids[0]])
+            kill_target_1 = get_action_target(actions[werewolf_ids[0]])
+            kill_target_2 = get_action_target(actions[werewolf_ids[1]])
+            if kill_target_1 == kill_target_2:
+                kill_target = kill_target_1
+            else:
+                #randomly choose
+                kill_decider = random.choice(0, 1)
+                kill_target = kill_target_1 if kill_decider == 0 else kill_target_2
             self.night_info["killed"] = kill_target
-            self.add_event({"event": "advicing", "content": {"player": werewolf_ids[0], "target": advice_target, "reason": None}, "visible": "werewolf"})
-            self.add_event({"event": "kill", "content": {"player": werewolf_ids[-1], "target": kill_target, "reason": None}, "visible": "werewolf"})
+            self.add_event({"event": "advicing", "content": {"player": werewolf_ids[0], "target": kill_target_1, "reason": None}, "visible": "werewolf"})
+            self.add_event({"event": "advicing", "content": {"player": werewolf_ids[1], "target": kill_target_2, "reason": None}, "visible": "werewolf"})
+            self.add_event({"event": "kill", "content": {"player": werewolf_ids[kill_decider], "target": kill_target, "reason": None}, "visible": "werewolf"})
             self.check_death_info()
             self.game_status["cur_stage"] = "day"
             self.game_status["start_speaking_player"] = random.choice(self.alive_players)
