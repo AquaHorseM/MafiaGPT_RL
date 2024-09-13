@@ -296,8 +296,11 @@ class WerewolfGameEnv:
                     self.game_status["speaking_player"] = speaking_player
                     break
         else: #vote stage
-            votes = {i : get_vote_target(actions[i]) for i in range(self.player_num)}
+            votes = {i : get_vote_target(actions[i]) for i in self.alive_players}
             self.votes.append(votes)
+            for player_id in self.alive_players:
+                self.all_players[player_id].global_info["last_vote"] = votes[player_id]
+                self.add_event({"event": "vote", "content": {"player": player_id, "target": votes[player_id], "reason": None}, "visible": player_id})
             self.check_votes()
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
@@ -306,7 +309,6 @@ class WerewolfGameEnv:
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
-            
             self.end()
         else:
             rewards = [0 for _ in range(self.player_num)]
@@ -551,6 +553,7 @@ class WerewolfGameEnv:
     def update_all_hstates(self):
         for player in self.all_players:
             player.update_hidden_state(self.event_book)
+        self.logger.info("All hidden states updated successfully")
         self.add_events_to_data(self.temp_events)
         self.temp_events = []
         self.add_all_hstate_to_data()
@@ -595,14 +598,15 @@ class WerewolfGameEnv:
         self.logger.info(f"Data stored successfully to {path}")
         
     def end(self):
+        self.logger.info("Game ended")
         self.save_game_record()
+        self.add_events_to_data(self.temp_events)
+        self.temp_events = []
+        self.store_data(f"data/game_{self.id}_data.pkl")
         if self.train:
-            self.add_events_to_data(self.temp_events)
-            self.temp_events = []
-            self.store_data(f"records/game_{self.id}_data.pkl")
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
-            
+                
     def get_action_space_size(self, player_id):
         if self.all_players[player_id].role == "werewolf":
             return self.n_speak + self.n_vote + self.n_kill
@@ -707,7 +711,6 @@ class WerewolfGameEnv:
             self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
             collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]
-            self.logger.info(f"Round {self.current_round} completed")
             if info is not None:
                 self.logger.info(str(info))
             if all(dones):
