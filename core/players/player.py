@@ -294,3 +294,6 @@ class Player:
         data = pickle.load(open(data_path, "rb"))
         self.reflex(data)
         return
+    
+    def reset(self):
+        self.hidden_state = self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"])

@@ -71,7 +71,6 @@ class WerewolfGameEnv:
             "start_speaking_player": None,
             "winner": None
         }
-        self.inquiry_result = []
         #The action space and observation space should be set after the players are set using the 'init_env' method
         self.action_space = []
         self.observation_space = None
@@ -203,8 +202,6 @@ class WerewolfGameEnv:
                 "known_roles": np.array([self.night_info["known_roles"].get(i, -1) for i in range(self.player_num)]),
             }
         elif self.all_players[player_id].role == "medic":
-            inquiry_result = self.inquiry_result if self.inquiry_result else (-1, False)
-            self.inquiry_result = None
             return {
                 "belief": self.all_players[player_id].hidden_state.beliefs,
                 "role": 2,
@@ -250,21 +247,26 @@ class WerewolfGameEnv:
             return speak_type_id_to_str[action]
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
-            medic_id = self.get_alive_medics()[0]
-            seer_id = self.get_alive_seers()[0]
+            alive_medics = self.get_alive_medics()
+            if alive_medics:
+                medic_id = alive_medics[0]
+                heal_target = get_action_target(actions[medic_id])
+                self.add_event({"event": "heal", "content": {"player": medic_id, "target": heal_target, "reason": None}, "visible": "medic"})
+                self.night_info["healed"] = heal_target
+            else:
+                self.night_info["healed"] = None
+            alive_seers = self.get_alive_seers()
+            if alive_seers:
+                seer_id = self.get_alive_seers()[0]
+                seer_target = get_action_target(actions[seer_id])
+                is_werewolf = self.all_players[seer_target].get_role() == "werewolf"
+                self.night_info["known_roles"][seer_target] = is_werewolf  
+                self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": seer_target, "is_werewolf": is_werewolf, "reason": None}, "visible": seer_id})
             werewolf_ids= self.get_alive_werewolves()
-            heal_target = get_action_target(actions[medic_id])
-            seer_target = get_action_target(actions[seer_id])
-            is_werewolf = self.all_players[seer_target].get_role() == "werewolf"
-            self.inquiry_result = (seer_target, is_werewolf)
+            assert len(werewolf_ids) > 0, "There must be at least one werewolf alive"
             kill_target = get_action_target(actions[werewolf_ids[-1]])
             advice_target = get_action_target(actions[werewolf_ids[0]])
             self.night_info["killed"] = kill_target
-            self.night_info["healed"] = heal_target
-            self.night_info["known_roles"][seer_target] = is_werewolf
-            #add the events separately to the event book
-            self.add_event({"event": "heal", "content": {"player": medic_id, "target": heal_target, "reason": None}, "visible": "medic"})
-            self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": seer_target, "is_werewolf": is_werewolf, "reason": None}, "visible": seer_id})
             self.add_event({"event": "advicing", "content": {"player": werewolf_ids[0], "target": advice_target, "reason": None}, "visible": "werewolf"})
             self.add_event({"event": "kill", "content": {"player": werewolf_ids[-1], "target": kill_target, "reason": None}, "visible": "werewolf"})
             self.check_death_info()
@@ -296,10 +298,11 @@ class WerewolfGameEnv:
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
+            
             self.end()
         else:
             rewards = [0 for _ in range(self.player_num)]
-        return self._repeat(self.get_observation_single_player), self._repeat(self.get_state()), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
+        return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
     
     def get_action_space(self, player_id):
         #switch case for different roles
@@ -389,9 +392,11 @@ class WerewolfGameEnv:
         werewolves = self.get_alive_werewolves()
         if len(werewolves) >= len(self.alive_players) / 2:
             self.add_event({"event": "end", "content": {"winner": "Werewolves"}})
+            self.game_status["winner"] = "werewolf"
             return True
         if len(werewolves) == 0:
             self.add_event({"event": "end", "content": {"winner": "Villagers"}})
+            self.game_status["winner"] = "villager"
             return True
         return False
 
@@ -704,5 +709,28 @@ class WerewolfGameEnv:
         self.logger.info("Game simulated successfully")
         
     def reset(self):
-        #TODO
-        pass
+        #reset hidden state
+        for player in self.all_players:
+            player.reset()
+        self.event_book = EventBook()
+        self.current_round = 0
+        self.game_status = {
+            "cur_stage": "night", #night, day, vote
+            "cur_round": 0,
+            "speaking_player": None, 
+            "start_speaking_player": None,
+            "winner": None
+        }
+        self.alive_players = list(range(self.player_num))
+        self.dead_players = []
+        self.votes = []
+        self.temp_events = []
+        self.night_info = {
+            "killed": None,
+            "healed": None,
+            "known_roles": dict()
+        }
+        self.data = []
+        self.logger.info("Game reset successfully")
+        #return obs, state, available_actions
+        return self._repeat(self.get_observation_single_player), self.get_state(), self.get_available_actions()
