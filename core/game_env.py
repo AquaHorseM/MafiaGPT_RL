@@ -271,7 +271,7 @@ class WerewolfGameEnv:
                 kill_decider = (werewolf_ids[0], werewolf_ids[1])
             else:
                 #randomly choose
-                kill_decider = random.choice(0, 1)
+                kill_decider = random.choice([0, 1])
                 kill_target = kill_target_1 if kill_decider == 0 else kill_target_2
             self.night_info["killed"] = kill_target
             self.add_event({"event": "advicing", "content": {"player": werewolf_ids[0], "target": kill_target_1, "reason": None}, "visible": "werewolf"})
