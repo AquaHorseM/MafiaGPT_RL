@@ -232,8 +232,8 @@ class WerewolfGameEnv:
         }
         
     
-    def get_observation_single_player(self, player_id):
-        return self.get_unique_observation_single_player(player_id).update(self.get_shared_observation())
+    # def get_observation_single_player(self, player_id):
+    #     return self.get_unique_observation_single_player(player_id).update(self.get_shared_observation())
     
     def check_done(self, player_id):
         return 1 if self.game_status["winner"] or not self.all_players[player_id].is_alive else 0
@@ -312,7 +312,7 @@ class WerewolfGameEnv:
             self.end()
         else:
             rewards = [0 for _ in range(self.player_num)]
-        return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
+        return self._repeat(self.get_unique_observation_single_player), self._repeat(self.get_shared_observation()), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
     
     def get_action_space(self, player_id):
         #switch case for different roles
@@ -342,6 +342,9 @@ class WerewolfGameEnv:
             "current_round": gym.spaces.Discrete(1),
             "last_vote": gym.spaces.Discrete(self.player_num),
         })
+        
+    def seed(self, seed):
+        random.seed(seed)
     
     def _repeat(self, a):
         #if a is a function, return a(i) for i in range(self.player_num)
