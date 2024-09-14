@@ -343,13 +343,14 @@ class WerewolfGameEnv:
         self.n_heal = self.player_num #Medic can heal any player including himself
         self.n_vote = self.player_num + 1 #Any player can vote any player including himself
         self.action_space = self._repeat(self.get_action_space)
-        self.observation_space = self._repeat(self.get_observation_space_single_player)
         self.shared_observation_space = gym.spaces.Dict({
             "player_num": gym.spaces.Discrete(1),
             "alive_players": gym.spaces.MultiBinary(self.player_num),
             "current_round": gym.spaces.Discrete(1),
             "last_vote": gym.spaces.Discrete(self.player_num),
         })
+        self.observation_space = self._repeat(self.get_observation_space_single_player)
+        
         
     def seed(self, seed):
         random.seed(seed)
