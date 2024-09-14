@@ -314,7 +314,7 @@ class WerewolfGameEnv:
             self.end()
         else:
             rewards = [0 for _ in range(self.player_num)]
-        return self._repeat(self.get_unique_observation_single_player), self._repeat(self.get_shared_observation()), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
+        return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
     
     def get_action_space(self, player_id):
         #switch case for different roles
