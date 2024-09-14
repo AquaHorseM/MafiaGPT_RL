@@ -140,7 +140,9 @@ class WerewolfGameEnv:
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
             if player_type == "reflex":
-                prompt_dir_path = os.path.join("core/players/prompts", role)
+                prompt_dir_path = os.path.join("players/prompts", role)
+                #join it with the current file directory
+                prompt_dir_path = os.path.join(os.path.dirname(__file__), prompt_dir_path)
                 assert os.path.exists(prompt_dir_path), "prompt directory not found"
                 self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, self.openai_client))
             else:
