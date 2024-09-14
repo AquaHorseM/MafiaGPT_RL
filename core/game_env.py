@@ -152,7 +152,7 @@ class WerewolfGameEnv:
                 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
     
-    def get_observation_space_single_player(self, player_id):
+    def get_unique_observation_space_single_player(self, player_id):
         def get_belief():
             return gym.spaces.Box(low = 0, high = 1, shape = (self.player_num * self.player_num * 4,), dtype = np.float32)
         if self.all_players[player_id].role == "werewolf":
@@ -180,6 +180,12 @@ class WerewolfGameEnv:
                 "belief": get_belief(),
                 "role": gym.spaces.Discrete(1),
             })
+            
+    def get_observation_space_single_player(self, player_id):
+        return gym.spaces.Dict({
+            "unique": self.get_unique_observation_space_single_player(player_id),
+            "shared": self.shared_observation_space
+        })
     
     def win_or_not(self, player_id):
         if self.game_status["winner"] == None:
@@ -234,8 +240,8 @@ class WerewolfGameEnv:
         }
         
     
-    # def get_observation_single_player(self, player_id):
-    #     return self.get_unique_observation_single_player(player_id).update(self.get_shared_observation())
+    def get_observation_single_player(self, player_id):
+        return self.get_unique_observation_single_player(player_id).update(self.get_shared_observation())
     
     def check_done(self, player_id):
         return 1 if self.game_status["winner"] or not self.all_players[player_id].is_alive else 0
