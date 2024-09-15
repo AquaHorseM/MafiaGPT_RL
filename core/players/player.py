@@ -78,7 +78,7 @@ class Player:
                 
     
     def get_replacements(self):
-        with open(self.reflex_note_path, "r") as f:
+        with open(self.reflex_note_path_belief, "r") as f:
             reflex_note = f.read()
         return {
             "{player_id}": str(self.id),
@@ -93,7 +93,7 @@ class Player:
         }
             
                         
-    def __init__(self, id, global_info, private_info, prompt_dir_path, openai_client = None, reflex_note_path=None):
+    def __init__(self, id, global_info, private_info, prompt_dir_path, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
         self.is_alive = True
         self.id = id
         self.labels = ["all"]
@@ -102,7 +102,8 @@ class Player:
         self.reflex_tuple = (None, None, None)
         self.prompt_dir_path = prompt_dir_path
         self.openai_client = openai_client
-        self.reflex_note_path = reflex_note_path if reflex_note_path is not None else os.path.join(prompt_dir_path, "reflex_note.txt")
+        self.reflex_note_path_belief = reflex_note_path_belief if reflex_note_path_belief is not None else os.path.join(prompt_dir_path, "reflex_note_belief.txt")
+        self.reflex_note_path_policy = reflex_note_path_policy if reflex_note_path_policy is not None else os.path.join(prompt_dir_path, "reflex_note_policy.txt")
         self.init_game(global_info, private_info)
         
     def init_game(self, global_info, private_info):
@@ -167,9 +168,6 @@ class Player:
     def get_gt_hiddenstate(self):
         return self.hidden_state.beliefs[self.id]
     
-    def reflex(self, game):
-        return
-    
     def _update_hidden_state(self, events):
         #TODO
         self.event_book.add_event(events)        
@@ -222,7 +220,7 @@ class Player:
         with open(path, 'wb') as file:
             pickle.dump(info, file)
 
-    def reflex_single_pair(self, prev_hstate, new_events, next_hstate, pred_hstate):
+    def reflex_single_pair(self, prev_hstate, new_events, next_hstate, pred_hstate, note_type = "belief"):
         replacements = self.get_replacements()
         replacements.update({
             "{prev_hstate}": str(prev_hstate),
@@ -230,28 +228,50 @@ class Player:
             "{next_hstate}": str(next_hstate),
             "{pred_hstate}": str(pred_hstate),
         })
-        prompt_path = os.path.join(self.prompt_dir_path, "reflex.txt")
+        if note_type == "belief":
+            prompt_path = os.path.join(self.prompt_dir_path, "reflex_belief.txt")
+        elif note_type == "policy":
+            prompt_path = os.path.join(self.prompt_dir_path, "reflex_policy.txt")
+        else:
+            raise ValueError("Note type must be either 'belief' or 'policy'")
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
-        self.update_note_from_response(response)
+        self.update_note_from_response(response, note_type=note_type)
         return response
     
     def send_message_xsm(self, prompt):
         return send_message_xsm(prompt, client=self.openai_client)
     
     def reflex(self, data, sample_num = 6, alpha = 0.5): #! sample num defined here
-        reflex_data = parse_data(data, self.id, alpha)
-        reflex_data = random.sample(reflex_data, sample_num) if len(reflex_data) > sample_num else reflex_data
-        for d in reflex_data:
-            print(f"player {self.id} is reflexing")
+        reflex_data_belief = parse_data(data, self.id, alpha)
+        reflex_data_belief = random.sample(reflex_data_belief, sample_num) if len(reflex_data_belief) > sample_num else reflex_data_belief
+        reflex_data_policy = parse_data(data, self.id, alpha, check_event_include_player = True)
+        reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
+        print(f"player {self.id} is reflexing")
+        for d in reflex_data_belief:
             prev_hstate, events, pred_hstate, next_hstate = d
             pred_hstate = self.hidden_state.beliefs[self.id]
-            response = self.reflex_single_pair(prev_hstate, events, next_hstate, pred_hstate)
+            response = self.reflex_single_pair(prev_hstate, events, next_hstate, pred_hstate, note_type = "belief")
             self.update_note_from_response(response)
+        print(f"player {self.id} has reflexed for belief model, now starting policy model reflexing")
+        for d in reflex_data_policy:
+            prev_hstate, events, pred_hstate, next_hstate = d
+            pred_hstate = self.hidden_state.beliefs[self.id]
+            response = self.reflex_single_pair(prev_hstate, events, next_hstate, pred_hstate, note_type = "policy")
+            self.update_note_from_response(response, note_type = "policy")
+        print(f"player {self.id} has reflexed for policy model. Reflexing finished.")
         return
     
-    def update_note_from_response(self, response):
-        with open(self.reflex_note_path, "r") as f:
+    
+    
+    def update_note_from_response(self, response, note_type = "belief"): #note type: ["belief", "policy"]
+        if note_type == "belief":
+            reflex_note_path = self.reflex_note_path_belief
+        elif note_type == "policy":
+            reflex_note_path = self.reflex_note_path_policy
+        else:
+            raise ValueError("Note type must be either 'belief' or 'policy'")
+        with open(reflex_note_path, "r") as f:
             reflex_note = f.read()
         operations = parse_reflex_actions(response)
         reflex_note = parse_reflex_note(reflex_note)
@@ -286,7 +306,7 @@ class Player:
             new_reflex_note[i] = reflex_note[key]
         reflex_note = deepcopy(new_reflex_note)
         
-        with open(self.reflex_note_path, "w") as f:
+        with open(self.reflex_note_path_belief, "w") as f:
             for key, value in reflex_note.items():
                 f.write(f"{key} {value[0]} {value[1]}\n")
                 

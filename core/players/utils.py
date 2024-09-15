@@ -2,6 +2,16 @@ import os
 import re, pickle
 import numpy as np
 
+def events_include_player(event, player_id):
+    #check if the event includes the player
+    #find 'player: player_id' in the event
+    #There could be multiple spaces between : and player_id
+    match = re.search(r"player\s*:\s*" + str(player_id), event)
+    if match is not None:
+        return True
+    else:
+        return False
+
 def get_prompt(prompt_path, replacements):
     if not prompt_path.endswith(".txt"):
         prompt_path = prompt_path + ".txt"
@@ -45,7 +55,7 @@ def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_j
     targ_hstate = alpha * new_gt_hstate + (1-alpha) * new_hstate
     return (prev_hstate, merged_events, new_hstate, targ_hstate)
 
-def parse_data(data, player_id, alpha = 0.5):
+def parse_data(data, player_id, alpha = 0.5, check_event_include_player = False):
     #data should be a list in the form of [hidden_state, tuple_of_events * n, hidden_state, tuple_of_events * n, ...]
     #return a list of tuples in the form of [(hidden_state, tuple_of_events (merged), new_hidden_state), ...]
     #hidden state should be np tensor
@@ -57,10 +67,18 @@ def parse_data(data, player_id, alpha = 0.5):
             events.append(data[i])
         else:
             merged_events = sum(events, ())
+            if check_event_include_player:
+                if not any(events_include_player(event, player_id) for event in merged_events):
+                    #skip this data
+                    prev_hstate_index = i
+                    continue
             res.append(get_player_reflex_info_from_raw_data(data[prev_hstate_index], merged_events, data[i], player_id, alpha))
             prev_hstate_index = i
     return res
 
+    
+    
+    
 def parse_reflex_actions(reflex_actions):
     #parse all lines in the reflex note. Each line should be in the format of "OPERATION [VALUE]"
     #return a list of tuples in the form of [(OPERATION, VALUE), ...]
