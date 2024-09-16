@@ -34,23 +34,20 @@ def get_target_from_response(response):
         target = None
     return target
 
-def get_gt_hstate_from_joint_hstate(joint_hstate):
-    #joint_hstate is a np tensor that concatenates the hidden states of all players in axis 0, which is N*N*N*R
-    #Extract each player's beliefs of himself (N*R) and concatenate them in axis 0
-    #return a np tensor
-    N = joint_hstate.shape[0]
-    for i in range(N):
-        if i == 0:
-            gt_hstate = joint_hstate[i, i]
-        else:
-            gt_hstate = np.concatenate((gt_hstate, joint_hstate[i, i]), axis=0)
-    return gt_hstate
-
 def get_gt_hstate_from_joint(joint_hstate):
-    self_hstates = [joint_hstate[i, i] for i in range(joint_hstate.shape[0])]
+    if isinstance(joint_hstate, tuple) or isinstance(joint_hstate, list):
+        print("Warning: joint_hstate is a tuple or list, try to convert it to np array")
+        self_hstates = [joint_hstate[i][i] for i in range(len(joint_hstate))]
+    else:
+        self_hstates = [joint_hstate[i, i] for i in range(joint_hstate.shape[0])]
     return np.concatenate(self_hstates, axis=0)
 
-def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_joint_hstate, player_id, alpha = 0.5):
+def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_joint_hstate, player_id, alpha = 1):
+    #xsm debug
+    with open("debug.out", "a") as f:
+        f.write(f"prev_joint_hstate: {prev_joint_hstate}\n \n")
+        f.write(f"merged_events: {merged_events}\n \n")
+        f.write(f"new_joint_hstate: {new_joint_hstate}\n \n")
     prev_hstate = prev_joint_hstate[player_id]
     prev_gt_hstate = get_gt_hstate_from_joint(prev_joint_hstate)
     new_hstate = new_joint_hstate[player_id]
@@ -60,7 +57,7 @@ def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_j
     targ_hstate = alpha * new_gt_hstate + (1-alpha) * new_hstate
     return (prev_hstate, prev_gt_hstate, merged_events, new_hstate, targ_hstate)
 
-def parse_data(data, player_id, alpha = 0.5, check_event_include_player = False):
+def parse_data(data, player_id, alpha = 1, check_event_include_player = False):
     #data should be a list in the form of [hidden_state, tuple_of_events * n, hidden_state, tuple_of_events * n, ...]
     #return a list of tuples in the form of [(hidden_state, tuple_of_events (merged), new_hidden_state), ...]
     #hidden state should be np tensor
@@ -72,11 +69,10 @@ def parse_data(data, player_id, alpha = 0.5, check_event_include_player = False)
             events.append(data[i])
         else:
             merged_events = sum(events, ())
-            if check_event_include_player:
-                if not any(events_include_player(event, player_id) for event in merged_events):
-                    #skip this data
-                    prev_hstate_index = i
-                    continue
+            if check_event_include_player and not any(events_include_player(event, player_id) for event in merged_events):
+                #skip this data
+                prev_hstate_index = i
+                continue
             res.append(get_player_reflex_info_from_raw_data(data[prev_hstate_index], merged_events, data[i], player_id, alpha))
             prev_hstate_index = i
     return res

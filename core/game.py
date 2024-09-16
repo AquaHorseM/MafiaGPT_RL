@@ -484,6 +484,6 @@ class Game:
         if self.train:
             self.add_events_to_data(self.temp_events)
             self.temp_events = []
+            self.store_data(f"records/game_{self.id}_data.pkl")
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
-            self.store_data(f"records/game_{self.id}_data.pkl")

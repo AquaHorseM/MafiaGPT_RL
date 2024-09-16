@@ -79,7 +79,9 @@ class Player:
     
     def get_replacements(self):
         with open(self.reflex_note_path_belief, "r") as f:
-            reflex_note = f.read()
+            reflex_note_belief = f.read()
+        with open(self.reflex_note_path_policy, "r") as f:
+            reflex_note_policy = f.read()
         return {
             "{player_id}": str(self.id),
             "{player_num}": str(self.global_info["player_num"]),
@@ -89,7 +91,8 @@ class Player:
             "{roles_mapping}": str(self.global_info["roles_mapping"]),
             "{role}": str(self.private_info["role"]),
             "{previous_votes}": str(self.global_info["previous_votes"]),
-            "{reflex_note}": str(reflex_note)
+            "{reflex_note_belief}": str(reflex_note_belief),
+            "{reflex_note_policy}": str(reflex_note_policy)
         }
             
                         
