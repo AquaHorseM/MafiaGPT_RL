@@ -30,6 +30,11 @@ According to the history, this is your conclusion of other people's statuses and
 
 {hidden_state}
 
+Now you are going to see your original strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] ([vote])". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+You should ABSOLUTELY follow your strategy even if you think some of them are not necessarily correct. You will have a chance to update your strategy later.
+
+{reflex_note_policy}
+
 Now, it's your time to decide in which way you should speak. You have to decide:
 1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly
 2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf, including yourself. 

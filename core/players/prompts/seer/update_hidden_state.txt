@@ -32,7 +32,7 @@ First of all, you should totally believe in your previous inquiry results, which
 Now you are going to see your belief-updating strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] ([vote])". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
 You should ABSOLUTELY follow your strategy even if you think some of them are not necessarily correct. You will have a chance to update your strategy later.
 
-{reflex_note}
+{reflex_note_belief}
 
 Now, based on the above instructions, you should answer your updated belief. The first line of your answer should be an integer ranging from 1 to 10 denoting your confidence, 1 denoting that you are totally not sure about your modification (e.g. your modification is totally based on guessing without evidence), and 10 denotes that you are very sure this is the fact (which should be the case that this is the only possibility in the game).
 
