@@ -250,6 +250,7 @@ class Player:
         reflex_data_belief = parse_data(data, self.id, alpha)
         reflex_data_belief = random.sample(reflex_data_belief, sample_num) if len(reflex_data_belief) > sample_num else reflex_data_belief
         reflex_data_policy = parse_data(data, self.id, alpha, check_event_include_player = True)
+        print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
         reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
         print(f"player {self.id} is reflexing")
         for d in reflex_data_belief:
