@@ -6,10 +6,12 @@ def events_include_player(event, player_id):
     #check if the event includes the player
     #find 'player: player_id' in the event
     #There could be multiple spaces between : and player_id
-    match = re.search(r"player\s*:\s*" + str(player_id), event)
+    match = re.search(r"player\s*:\s*" + str(player_id), event.lower())
     if match is not None:
         return True
     else:
+        with open("debug.out", "a") as f:
+            f.write(f"Event not include player {player_id}: {event}\n")
         return False
 
 def get_prompt(prompt_path, replacements):
