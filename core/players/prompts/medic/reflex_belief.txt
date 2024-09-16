@@ -62,6 +62,9 @@ CREATE [rule]
 REPLACE [id] [rule]
     -This should be used if you wish to replace a rule with a new one. This is encouraged as you may often find some rules not exact enough, and this operation does not increase the amount of rules in your strategy. You may combine it with upvote or downvote.
 
-The id and rule should be actually wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
+You should focus on how you updated your belief based on the happening events. Is your prediction of the beliefs closer to the ground truth compared to your previous one? How can it be closer? What can you learn from this experience?
+Based on these considerations, you should modify your notes by the above operations.
+
+The id and rule should be actually wrapped within "[]" to be recognized. Please make sure ALL your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
 Your modification should be GENERAL and does not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it).
 Please answer your operations.

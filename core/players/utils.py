@@ -46,14 +46,19 @@ def get_gt_hstate_from_joint_hstate(joint_hstate):
             gt_hstate = np.concatenate((gt_hstate, joint_hstate[i, i]), axis=0)
     return gt_hstate
 
+def get_gt_hstate_from_joint(joint_hstate):
+    self_hstates = [joint_hstate[i, i] for i in range(joint_hstate.shape[0])]
+    return np.concatenate(self_hstates, axis=0)
+
 def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_joint_hstate, player_id, alpha = 0.5):
     prev_hstate = prev_joint_hstate[player_id]
+    prev_gt_hstate = get_gt_hstate_from_joint(prev_joint_hstate)
     new_hstate = new_joint_hstate[player_id]
-    new_gt_hstate = new_joint_hstate[player_id, player_id]
+    new_gt_hstate = get_gt_hstate_from_joint(new_joint_hstate)
     #! Temp
     #Use alpha to blend the gt with the new hidden state, so that the model won't directly access the entire gt
     targ_hstate = alpha * new_gt_hstate + (1-alpha) * new_hstate
-    return (prev_hstate, merged_events, new_hstate, targ_hstate)
+    return (prev_hstate, prev_gt_hstate, merged_events, new_hstate, targ_hstate)
 
 def parse_data(data, player_id, alpha = 0.5, check_event_include_player = False):
     #data should be a list in the form of [hidden_state, tuple_of_events * n, hidden_state, tuple_of_events * n, ...]

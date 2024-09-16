@@ -23,24 +23,20 @@ game logics :
     - forget things about dead players. they are not alive and shouldn't be targeted or ...
 ----------------
 
-You are player {id}, and in this game you are a villager.
+You are player {player_id}, and in this game you are a seer.
 
 You are using the information you gathered from a previous game to update your strategy. More specifically: you are given some events, your belief before the events, your belief after the events, and the ground truth after the events.
 You will also see your previous strategy and decide how to modify it based on your experience.
 
-You previous belief was:
+The previous beliefs were:
 
-{prev_hstate}
+{prev_gt_hstate}
 
 These new events happened:
 
 {new_events}
 
-Your new belief was:
-
-{pred_hstate}
-
-The ground truth new belief is:
+The new beliefs are:
 
 {targ_hstate}
 
@@ -62,7 +58,7 @@ CREATE [rule]
 REPLACE [id] [rule]
     -This should be used if you wish to replace a rule with a new one. This is encouraged as you may often find some rules not exact enough, and this operation does not increase the amount of rules in your strategy. You may combine it with upvote or downvote.
 
-You should focus on how you updated your belief based on the happening events. Is your prediction of the beliefs closer to the ground truth compared to your previous one? How can it be closer? What can you learn from this experience?
+You should first recognize your action in the events, then consider the impact of your action. Is the new beliefs of other players better or worse than their previous ones for you? Does your action contribute to the change? If you find the result satisfactory, how did you achieve this? If not, how could you potentially improve your action?
 Based on these considerations, you should modify your notes by the above operations.
 
 The id and rule should be actually wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.

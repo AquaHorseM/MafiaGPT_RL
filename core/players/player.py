@@ -220,10 +220,11 @@ class Player:
         with open(path, 'wb') as file:
             pickle.dump(info, file)
 
-    def reflex_single_pair(self, prev_hstate, new_events, next_hstate, pred_hstate, note_type = "belief"):
+    def reflex_single_pair(self, prev_hstate, prev_gt_hstate, new_events, next_hstate, pred_hstate, note_type = "belief"):
         replacements = self.get_replacements()
         replacements.update({
             "{prev_hstate}": str(prev_hstate),
+            "{prev_gt_hstate}": str(prev_gt_hstate),
             "{new_events}": str(new_events),
             "{next_hstate}": str(next_hstate),
             "{pred_hstate}": str(pred_hstate),
@@ -249,15 +250,13 @@ class Player:
         reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
         print(f"player {self.id} is reflexing")
         for d in reflex_data_belief:
-            prev_hstate, events, pred_hstate, next_hstate = d
-            pred_hstate = self.hidden_state.beliefs[self.id]
-            response = self.reflex_single_pair(prev_hstate, events, next_hstate, pred_hstate, note_type = "belief")
+            prev_hstate, prev_gt_hstate, events, pred_hstate, next_hstate = d
+            response = self.reflex_single_pair(prev_hstate, prev_gt_hstate, events, next_hstate, pred_hstate, note_type = "belief")
             self.update_note_from_response(response)
         print(f"player {self.id} has reflexed for belief model, now starting policy model reflexing")
         for d in reflex_data_policy:
             prev_hstate, events, pred_hstate, next_hstate = d
-            pred_hstate = self.hidden_state.beliefs[self.id]
-            response = self.reflex_single_pair(prev_hstate, events, next_hstate, pred_hstate, note_type = "policy")
+            response = self.reflex_single_pair(prev_hstate, prev_gt_hstate, events, next_hstate, pred_hstate, note_type = "policy")
             self.update_note_from_response(response, note_type = "policy")
         print(f"player {self.id} has reflexed for policy model. Reflexing finished.")
         return
