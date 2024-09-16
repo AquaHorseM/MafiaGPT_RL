@@ -10,6 +10,8 @@ def events_include_player(event, player_id):
     if match is not None:
         return True
     else:
+        with open("debug.out", "a") as f:
+            f.write(f"Event not include player {player_id}: {event}\n")
         return False
 
 def get_prompt(prompt_path, replacements):
