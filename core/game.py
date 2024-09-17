@@ -476,7 +476,6 @@ class Game:
             dat = self.data
         with open(path, "wb") as file:
             pickle.dump(dat, file)
-        self.data = []
         self.logger.info(f"Data stored successfully to {path}")
         
     def end(self):
@@ -487,3 +486,5 @@ class Game:
             self.store_data(f"records/game_{self.id}_data.pkl")
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
+            self.logger.info("All players reflexed successfully")
+            self.data = []
