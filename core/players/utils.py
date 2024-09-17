@@ -1,6 +1,7 @@
 import os
 import re, pickle
 import numpy as np
+import einops
 
 def events_include_player(event, player_id):
     #check if the event includes the player
@@ -42,7 +43,15 @@ def get_gt_hstate_from_joint(joint_hstate):
         self_hstates = [joint_hstate[i][i] for i in range(len(joint_hstate))]
     else:
         print(f"joint_hstate shape: {joint_hstate.shape}")
-        self_hstates = [joint_hstate[i, i] for i in range(joint_hstate.shape[0])]
+        if len(joint_hstate.shape) == 4:
+            assert joint_hstate.shape[1] == joint_hstate.shape[2], \
+                f"joint_hstate shape {joint_hstate.shape} is not recognized!"
+            self_hstates = [joint_hstate[i, i] for i in range(joint_hstate.shape[0])]
+        elif len(joint_hstate.shape) == 3:
+            assert joint_hstate.shape[0] == joint_hstate.shape[1] ** 2, \
+                f"joint_hstate shape {joint_hstate.shape} is not recognized!"
+            joint_hstate = einops.rearrange(joint_hstate, 'b*b, b, h -> b, b, b, h')
+            self_hstates = [joint_hstate[i] for i in range(joint_hstate.shape[0])]
     return np.concatenate(self_hstates, axis=0)
 
 def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_joint_hstate, player_id, alpha = 1):
