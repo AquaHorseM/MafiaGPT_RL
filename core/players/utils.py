@@ -39,6 +39,7 @@ def get_target_from_response(response):
 def get_gt_hstate_from_joint(joint_hstate):
     if isinstance(joint_hstate, tuple) or isinstance(joint_hstate, list):
         print("Warning: joint_hstate is a tuple or list, try to convert it to np array")
+        print(f"joint_hstate: {joint_hstate}")
         self_hstates = [joint_hstate[i][i] for i in range(len(joint_hstate))]
     else:
         self_hstates = [joint_hstate[i, i] for i in range(joint_hstate.shape[0])]
