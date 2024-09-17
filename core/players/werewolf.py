@@ -64,6 +64,7 @@ class WerewolfPlayer(Player):
         replacements = self.get_replacements()
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
+        assert isinstance(response, str), f"response is not a string: {response}"
         #Find the [type] in the response
         s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
         s_type = s_type.strip().split(",") #split the types
