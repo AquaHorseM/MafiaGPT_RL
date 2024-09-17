@@ -86,6 +86,7 @@ def parse_data(data, player_id, alpha = 1, check_event_include_player = False):
                 continue
             if prev_hstate_index == 0 and isinstance(data[0], tuple):
                 #error data; skip
+                prev_hstate_index = i
                 continue
             else:
                 res.append(get_player_reflex_info_from_raw_data(data[prev_hstate_index], merged_events, data[i], player_id, alpha))
