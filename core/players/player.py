@@ -259,7 +259,7 @@ class Player:
             self.update_note_from_response(response)
         print(f"player {self.id} has reflexed for belief model, now starting policy model reflexing")
         for d in reflex_data_policy:
-            prev_hstate, events, pred_hstate, next_hstate = d
+            prev_hstate, prev_gt_hstate, events, pred_hstate, next_hstate = d
             response = self.reflex_single_pair(prev_hstate, prev_gt_hstate, events, next_hstate, pred_hstate, note_type = "policy")
             self.update_note_from_response(response, note_type = "policy")
         print(f"player {self.id} has reflexed for policy model. Reflexing finished.")
