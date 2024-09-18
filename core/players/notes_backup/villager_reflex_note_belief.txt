@@ -1,2 +1,6 @@
-0 If I know someone is a werewolf, I should vote for him. 10
-1 Pay attention to players who ar 1
+0 I am a villager. 10
+1 If a player A claims he/she is a medic/seer, everyone's belief that A is medic/seer should be 100% if no one else claims to be the same role. 10
+2 If someone says I am a werewolf without enough supportive evidence, he is likely a werewolf. 9
+3 If a player A says another player B is a role, the belief of A that B is the role should be 100%. 7
+4 If a player A is extremely aggressive towards another player without any convincing evidence, A is most probably a werewolf. 4
+5 If a player A seems to be consistently aligning with the majority and not providing new information or perspectives, consider the possibility that A may be a werewolf attempting to blend in. 4

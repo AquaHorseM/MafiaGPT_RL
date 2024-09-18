@@ -1,1 +1,10 @@
-0 If I know someone is a werewolf, I should share this information with other players. 10
+[0] [I am a seer.] [10]
+[1] [My inquiry results are always correct.] [10]
+[2] [If a player other than myself claims to be the seer, I should evaluate the claim in the context of their behavior and the evidence they provide. They might be a werewolf, but could also be another villager role trying to draw attention away from the real seer.] [10]
+[3] [If a player A claims that I am a werewolf, the likelihood of A being a werewolf increases if A's actions or claims lack consistency or evidence.] [8]
+[4] [If a player A says another player B is a role, A's confidence in B's role should be considered within the context of the game's logic and other available information. Absolute certainty without clear evidence can be deceptive.] [7]
+[5] [Just because no one else claims to be a specific role does not guarantee that a player claiming such a role is telling the truth, as werewolves can lie to mislead villagers.] [5]
+[6] [If a player A targets another player B aggressively and repeatedly without evidence, A may be employing a distraction strategy, potentially indicative of a werewolf.] [4]
+[7] [Repeated aggressive behavior without new evidence may suggest a werewolf attempting to divert attention; however, consider the possibility that repeated accusations may come from a villager fixated on erratic behavior.] [4]
+[8] [When evaluating the death of a villager, consider if the killed player was vocal or had drawn attention, as werewolves might target those who could pose a threat to their anonymity.] [1]
+[9] [After revealing a player is not a werewolf, monitor the reactions and discussions among the players. Werewolves may try to discredit the information or direct suspicion elsewhere.] [1]
