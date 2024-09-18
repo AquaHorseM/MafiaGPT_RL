@@ -54,11 +54,6 @@ def get_gt_hstate_from_joint(joint_hstate):
     return np.concatenate(self_hstates, axis=0)
 
 def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_joint_hstate, player_id, alpha = 1):
-    #xsm debug
-    with open("debug.out", "a") as f:
-        f.write(f"prev_joint_hstate: {prev_joint_hstate}\n \n")
-        f.write(f"merged_events: {merged_events}\n \n")
-        f.write(f"new_joint_hstate: {new_joint_hstate}\n \n")
     prev_hstate = prev_joint_hstate[player_id]
     prev_gt_hstate = get_gt_hstate_from_joint(prev_joint_hstate)
     new_hstate = new_joint_hstate[player_id]
