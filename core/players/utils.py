@@ -149,9 +149,9 @@ def parse_reflex_note(reflex_note):
         if line != "":
             values = re.findall(r"\[.*?\]", line)
             try:
-                id = int(values[0])
-                rule = values[1]
-                vote = int(values[2])
+                id = int(values[0][1:-1])
+                rule = values[1][1:-1]
+                vote = int(values[2][1:-1])
             except:
                 print(f"Line in reflex note not recognized! {line}")
                 continue
