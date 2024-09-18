@@ -312,7 +312,7 @@ class Player:
         
         with open(reflex_note_path, "w") as f:
             for key, value in reflex_note.items():
-                f.write(f"{key} {value[0]} {value[1]}\n")
+                f.write(f"[{key}] [{value[0]}] [{value[1]}]\n")
                 
     def reflex_from_data_path(self, data_path):
         data = pickle.load(open(data_path, "rb"))
