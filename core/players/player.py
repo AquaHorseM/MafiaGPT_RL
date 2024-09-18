@@ -279,6 +279,9 @@ class Player:
             reflex_note = f.read()
         operations = parse_reflex_actions(response)
         reflex_note = parse_reflex_note(reflex_note)
+        with open("debug.out", "a") as f:
+            f.write(f"player {self.id} is updating the reflex note with operations: {operations}\n")
+            f.write(f"previous reflex note: {reflex_note}\n")
         max_id = max(reflex_note.keys())
         for action in operations:
             operation, value1, value2 = action
@@ -293,22 +296,26 @@ class Player:
                     pass
                 else:
                     reflex_note[value1][1] -= 1
-                    if reflex_note[value1][1] <= 0:
+                    if reflex_note[value1][1] <= 1:
                         reflex_note.pop(value1)
             elif operation == "CREATE": #value1 is the new rule, value2 should be None
-                reflex_note[max_id + 1] = [value1, 1]
+                reflex_note[max_id + 1] = [value1, 4]
+                max_id += 1
             elif operation == "REPLACE": #value1 is the id, value2 is the new rule
                 if reflex_note.get(value1) is None:
-                    reflex_note[value1] = [value2, 3]
+                    reflex_note[value1] = [value2, 4]
                 else:
                     reflex_note[value1][0] = value2
         
         #Sort the rules by the votes and give them new ids
+        
         reflex_note = dict(sorted(reflex_note.items(), key=lambda x: x[1][1], reverse=True))
         new_reflex_note = {}
         for i, key in enumerate(reflex_note.keys()):
             new_reflex_note[i] = reflex_note[key]
         reflex_note = deepcopy(new_reflex_note)
+        with open("debug.out", "a") as f:
+            f.write(f"new reflex note: {reflex_note}\n")
         
         with open(reflex_note_path, "w") as f:
             for key, value in reflex_note.items():
