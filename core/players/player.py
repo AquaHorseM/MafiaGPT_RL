@@ -246,17 +246,18 @@ class Player:
     def send_message_xsm(self, prompt):
         return send_message_xsm(prompt, client=self.openai_client)
     
-    def reflex(self, data, sample_num = 6, alpha = 0.5): #! sample num defined here
+    def reflex(self, data, sample_num = 6, alpha = 1): #! sample num defined here
         reflex_data_belief = parse_data(data, self.id, alpha)
         reflex_data_belief = random.sample(reflex_data_belief, sample_num) if len(reflex_data_belief) > sample_num else reflex_data_belief
         reflex_data_policy = parse_data(data, self.id, alpha, check_event_include_player = True)
+        reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
         reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
         print(f"player {self.id} is reflexing")
         for d in reflex_data_belief:
             prev_hstate, prev_gt_hstate, events, pred_hstate, next_hstate = d
             response = self.reflex_single_pair(prev_hstate, prev_gt_hstate, events, next_hstate, pred_hstate, note_type = "belief")
-            self.update_note_from_response(response)
+            self.update_note_from_response(response, note_type = "belief")
         print(f"player {self.id} has reflexed for belief model, now starting policy model reflexing")
         for d in reflex_data_policy:
             prev_hstate, prev_gt_hstate, events, pred_hstate, next_hstate = d
@@ -309,7 +310,7 @@ class Player:
             new_reflex_note[i] = reflex_note[key]
         reflex_note = deepcopy(new_reflex_note)
         
-        with open(self.reflex_note_path_belief, "w") as f:
+        with open(reflex_note_path, "w") as f:
             for key, value in reflex_note.items():
                 f.write(f"{key} {value[0]} {value[1]}\n")
                 

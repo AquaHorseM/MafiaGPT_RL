@@ -59,8 +59,17 @@ REPLACE [id] [rule]
     -This should be used if you wish to replace a rule with a new one. This is encouraged as you may often find some rules not exact enough, and this operation does not increase the amount of rules in your strategy. You may combine it with upvote or downvote.
 
 You should first recognize your action in the events, then consider the impact of your action. Is the new beliefs of other players better or worse than their previous ones for you? Does your action contribute to the change? If you find the result satisfactory, how did you achieve this? If not, how could you potentially improve your action?
-Based on these considerations, you should modify your notes by the above operations.
+Based on these considerations, you should modify your notes by the above operations. This note is specifically for your own role (as a simple villager).
 
-The id and rule should be actually wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
-Your modification should be GENERAL and does not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it).
+Some example responses are:
+
+UPVOTE [3]
+DOWNVOTE [6]
+CREATE [This is an example rule.]
+REPLACE [2] [I want to replace this rule.]
+
+The id and rule should be wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
+
+Your modification should be GENERAL and does not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it, as it is not generalizable).
+
 Please answer your operations.
