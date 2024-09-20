@@ -43,7 +43,7 @@ class Player:
         def str_to_tensor(self, belief_str):
             #assume the str is in the format "player i believes player j is role k with probability p \n ..."
             beliefs = np.ones((self.player_num, self.player_num, self.roles_num)) / self.roles_num
-            cur_player_id = None
+            cur_player_id = self.id
             for line in belief_str.split("\n"):
                 belief_player_matches = re.search(r"player (\d+) believes", line)
                 if belief_player_matches is not None:
