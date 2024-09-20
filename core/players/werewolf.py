@@ -12,14 +12,15 @@ class WerewolfPlayer(Player):
         
     def get_replacements(self):
         replacements = super().get_replacements()
+        werewolf_ids = str(self.private_info["werewolf_ids"])
         replacements.update({
-            "{werewolf_ids}": str(self.private_info["werewolf_ids"])
+            "{werewolf_ids}": werewolf_ids,
         })
         replacements.update({
             "{hidden_state}": str(self.hidden_state),
         })
         replacements.update({
-            "{private}": f"All werewolves including you are {str(self.private_info["werewolf_ids"])}. Remember that you should work together to hide from other players and eliminate them."
+            "{private}": f"All werewolves including you are {werewolf_ids}. Remember that you should work together to hide from other players and eliminate them."
         })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
