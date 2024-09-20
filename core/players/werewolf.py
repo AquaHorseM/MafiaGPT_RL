@@ -19,7 +19,7 @@ class WerewolfPlayer(Player):
             "{hidden_state}": str(self.hidden_state),
         })
         replacements.update({
-            "{private}": f"All werewolves including you are {self.private_info["werewolf_ids"]}. Remember that you should work together to hide from other players and eliminate them."
+            "{private}": f"All werewolves including you are {str(self.private_info["werewolf_ids"])}. Remember that you should work together to hide from other players and eliminate them."
         })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
