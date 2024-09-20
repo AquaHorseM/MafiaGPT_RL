@@ -40,10 +40,10 @@ class Player:
                         s += f"player {j} is {self.inverse_role_mapping[k]} with probability {self.prob_approx(self.beliefs[i][j][k])}\n"
             return s
             
-        def str_to_tensor(self, belief_str):
+        def str_to_tensor(self, belief_str, id):
             #assume the str is in the format "player i believes player j is role k with probability p \n ..."
             beliefs = np.ones((self.player_num, self.player_num, self.roles_num)) / self.roles_num
-            cur_player_id = self.id
+            cur_player_id = id
             for line in belief_str.split("\n"):
                 belief_player_matches = re.search(r"player (\d+) believes", line)
                 if belief_player_matches is not None:
@@ -68,9 +68,9 @@ class Player:
                             beliefs[cur_player_id][j][k] = p
             return beliefs
         
-        def update(self, beliefs, confidence = 0.2):
+        def update(self, beliefs, id, confidence = 0.2):
             if isinstance(beliefs, str):
-                beliefs = self.str_to_tensor(beliefs)
+                beliefs = self.str_to_tensor(beliefs, id)
             confidence = min(0.5, confidence) #DO NOT trust the new beliefs too much
             if beliefs is not None:
                 self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
@@ -198,7 +198,7 @@ class Player:
             conf = 0.2 
             beliefs = response
 
-        self.hidden_state.update(beliefs, confidence = conf)
+        self.hidden_state.update(beliefs, self.id, confidence = conf)
         return
 
     '''
