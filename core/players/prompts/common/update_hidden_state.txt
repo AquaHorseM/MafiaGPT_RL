@@ -22,21 +22,45 @@ game logics :
     - forget things about dead players. they are not alive and shouldn't be targeted or ...
 ----------------
 
-You are player {player_id}, and in this game you are a villager.
+You are player {player_id}, and in this game you are a {role}.
 It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+{private}
 
-These are all previous events in the current game:
-
-{events}
-
-According to the history, this is your conclusion of other people's statuses and beliefs:
+Your previous beliefs after your last update were:
 
 {hidden_state}
 
-Now, it's time for you to speak. Speeches are categorized into 6 types, each type consists of two components:
-1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly
-2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf. 
+These are the new events which happened after your last update:
 
-Your speech should be in types of: {speak_type}. You have to combine these types in your speech, i.e. your should give a single speech which cover all these aspects, and you should NOT reveal your speech type. You should answer briefly and directly, for example, 'I believe player xxx is a werewolf, because he claimed that...' or 'I am the seer and last night I inquired about player xxx, knowing that he is not a werewolf...' Try to make your answer as brief as possible without any tedious expressions. You may try to find a balance between revealing more information and protecting yourself. 
+{event_des}
 
-You should DIRECTLY answer your speech, and anything you reply will be directly shown to other players. 
+Now you are going to see your belief-updating strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+You should ABSOLUTELY follow your strategy even if you think some of them are not necessarily correct. You will have a chance to update your strategy later.
+
+{reflex_note_belief}
+
+Now, based on the above instructions, you should answer your updated belief. The first line of your answer should be an integer ranging from 1 to 10 denoting your confidence, 1 denoting that you are totally not sure about your modification (e.g. your modification is totally based on guessing without evidence), and 10 denotes that you are very sure this is the fact (which should be the case that this is the only possibility in the game).
+
+After that, all following lines should be in the format of:
+You should first write down your own belief, where each line should be: player {i} is role ... with probability {p}.
+After that, you should write "player {i} believes:" to switch to another player's belief.
+The probability {p} should be a number ranging from 0 to 1, kept to the second decimal place.
+If you don't want to modify a specific probability for players i and j, you may omit it.
+
+An example of your response could be:
+
+'''
+7
+player 1 is role medic with probability 0.7
+player 3 is role werewolf with probability 0.8
+player 1 believes:
+player 2 is role werewolf with probability 0.5
+player 6 is role villager with probability 0.8
+player 2 believes:
+player 3 is role seer with probability 0.2
+...
+'''
+
+This is only an example of the response format. All numbers and roles in it are unrelated to your current game. 
+
+Now you should answer your response. Don't output anything unnecessary or your answer may not be recognized.

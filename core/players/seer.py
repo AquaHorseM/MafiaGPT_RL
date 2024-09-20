@@ -18,6 +18,9 @@ class SeerPlayer(Player):
         replacements.update({
             "{hidden_state}": str(self.hidden_state),
         })
+        replacements.update({
+            "{private}": f"These are your previous inquiry results, which should be the key information for you and other good players to win: \n {self.get_known_roles()}"
+        })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
         return replacements
@@ -45,14 +48,14 @@ class SeerPlayer(Player):
     
     def _vote(self):
         #TODO
-        prompt_path = os.path.join(self.prompt_dir_path, "vote.txt")
+        prompt_path = self.get_prompt_path("vote.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = self.send_message_xsm(prompt)
         vote = get_target_from_response(response)
         return vote, response
     
     def _see(self):
-        prompt_path = os.path.join(self.prompt_dir_path, "see.txt")
+        prompt_path = self.get_prompt_path("see.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = self.send_message_xsm(prompt)
         see = get_target_from_response(response)
@@ -61,7 +64,7 @@ class SeerPlayer(Player):
     def _get_speak_type(self, event_book: EventBook, update_hstate = True):
         if update_hstate:
             self.update_hidden_state(event_book)
-        prompt_path = os.path.join(self.prompt_dir_path, "speak_type.txt")
+        prompt_path = self.get_prompt_path("speak_type.txt")
         replacements = self.get_replacements()
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
@@ -73,7 +76,7 @@ class SeerPlayer(Player):
         return s_type
     
     def speak_with_type(self, s_type):
-        prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
+        prompt_path = self.get_prompt_path(f"speak.txt")
         replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
@@ -90,7 +93,7 @@ class SeerPlayer(Player):
             "{speech_type}": str(s_type)
         })
         print(f"I am player {self.id}, I choose to speak {s_type}")
-        prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
+        prompt_path = self.get_prompt_path(f"speak.txt")
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
         return response

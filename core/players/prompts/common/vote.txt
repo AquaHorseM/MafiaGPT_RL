@@ -22,14 +22,15 @@ game logics :
     - forget things about dead players. they are not alive and shouldn't be targeted or ...
 ----------------
 
-You are player {id}, and in this game you are a werewolf. All werewolves including you are {werewolf_ids}.
-It is the {current_round} round. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+You are player {player_id}, and in this game you are a {role}.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+{private}
 
 According to the history, this is your conclusion of other people's statuses and beliefs:
 
 {hidden_state}
 
-Now you are going to see your original strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] ([vote])". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+Now you are going to see your original strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
 You should ABSOLUTELY follow your strategy even if you think some of them are not necessarily correct. You will have a chance to update your strategy later.
 
 {reflex_note_policy}
@@ -37,3 +38,5 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 Now, it's time for you to choose a player to vote out. Remember the player voted the most would DIE. Your answer should be in the format of:
 
 I vote for Player <NUMBER>. My reason is: <REASON>.
+
+Remember to follow the answer template or your action might not be recognized.

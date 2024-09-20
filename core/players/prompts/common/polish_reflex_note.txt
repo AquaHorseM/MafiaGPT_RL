@@ -14,6 +14,7 @@ roles :
     Werewolves:
         - 2 Werewolves : will select a guy to kill at night. Notice that every werewolf would choose a player to kill one by one, and the last one should finally decide who to kill based on his teammates' advices.
 game logics : 
+    - You should try to realize your objective, that each of your action should base on
     - You are trying to convince other players that you are a villager - whether or not you really are. They need to genuinely believe your statement. 
     - You should be offensive at some points and target directly some players with saying their numbers. if you are Villager and you believe someone is lying you should try to eliminate him by gathering others to vote for him.
     - You should be clear and direct and take in to account all notes you have taken before about the game and change your guesses if it's needed.
@@ -22,24 +23,21 @@ game logics :
     - forget things about dead players. they are not alive and shouldn't be targeted or ...
 ----------------
 
-You are player {player_id}, and in this game you are a medic.
-It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
-You tried to heal player {last_heal} last night.
+You are player {player_id}, and in this game you are a {role}.
 
-These are all previous events in the current game:
+These are some notes you've collected in the previous games. 
+The note should consist of multiple lines. Each line should be in the format of: "[id]: [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
 
-{events}
+{reflex_note}
 
-According to the history, this is your conclusion of other people's statuses and beliefs:
+You are going to give me a new version of the note that:
+1. chooses a subset of these rules that 
+    a) avoid repeated rules (or rules with similar meanings)
+    b) avoid ungeneralizable rules (especially rules related to a specific player id, for example "player 3 is probably a werewolf" is a rule that can not be generalized to other games.)
+2. summarize each rule to make it briefer and more direct. Recommended formats for each rule are:
+    a) I should (not) ...
+    b) If ..., I should (not) ...
+    c) If another player A ..., he/she ...
 
-{hidden_state}
-
-
-
-Now, it's time for you to speak. Speeches are categorized into 6 types, each type consists of two components:
-1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly
-2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf. 
-
-Your speech should be in types of: {speak_type}. You have to combine these types in your speech, i.e. your should give a single speech which cover all these aspects, and you should NOT reveal your speech type. You should answer briefly and directly, for example, 'I believe player xxx is a werewolf, because he claimed that...' or 'I am the seer and last night I inquired about player xxx, knowing that he is not a werewolf...' Try to make your answer as brief as possible without any tedious expressions. You may try to find a balance between revealing more information and protecting yourself. 
-
-You should DIRECTLY answer your speech, and anything you reply will be directly shown to other players. 
+Your response should also follow the format of the note, i.e. each line should be in the format of "[id]: [rule] [vote]". Also try to: sort the rules in descending votes, and relabel them into continuous ascending ids.
+Don't answer anything irrelevant and make sure each line satisfies the format (don't forget the '[]'), or your response would not be recognized.

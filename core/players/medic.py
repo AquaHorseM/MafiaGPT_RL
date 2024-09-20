@@ -18,6 +18,10 @@ class MedicPlayer(Player):
         replacements.update({
             "{hidden_state}": str(self.hidden_state),
         })
+        replacements.update({
+            "{private}": f"You tried to heal player {self.private_info['last_heal']} last night." if self.private_info["last_heal"] is not None else "You haven't tried to heal anyone yet."
+        })
+        
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
         return replacements
@@ -44,14 +48,14 @@ class MedicPlayer(Player):
     
     def _vote(self):
         #TODO
-        prompt_path = os.path.join(self.prompt_dir_path, "vote.txt")
+        prompt_path = self.get_prompt_path("vote.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = self.send_message_xsm(prompt)
         vote = get_target_from_response(response)
         return vote, response
     
     def _heal(self):
-        prompt_path = os.path.join(self.prompt_dir_path, "heal.txt")
+        prompt_path = self.get_prompt_path("heal.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
         response = self.send_message_xsm(prompt)
         heal = get_target_from_response(response)
@@ -60,7 +64,7 @@ class MedicPlayer(Player):
     def _get_speak_type(self, event_book: EventBook, update_hstate = True):
         if update_hstate:
             self.update_hidden_state(event_book)
-        prompt_path = os.path.join(self.prompt_dir_path, "speak_type.txt")
+        prompt_path = self.get_prompt_path("speak_type.txt")
         replacements = self.get_replacements()
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
@@ -72,7 +76,7 @@ class MedicPlayer(Player):
         return s_type
     
     def speak_with_type(self, s_type):
-        prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
+        prompt_path = self.get_prompt_path("speak_with_type.txt")
         replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
@@ -83,14 +87,13 @@ class MedicPlayer(Player):
         
         
     
-    def _speak(self, event_book: EventBook, update_hstate = True):
+    def _speak(self, event_book: EventBook, update_hstate = True): #TODO
         s_type = self._get_speak_type(event_book, update_hstate)
         replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
         })
-        print(f"I am player {self.id}, I choose to speak {s_type}")
-        prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
+        prompt_path = self.get_prompt_path("speak_with_type.txt")
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
         return response
