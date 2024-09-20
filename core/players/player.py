@@ -52,20 +52,16 @@ class Player:
                     assert cur_player_id is not None, "Invalid belief string"
                     self_role_matches = re.search(r"player (\d+) is (.*) with probability (\d+.\d+)", line)
                     if self_role_matches is not None:
-                        j = int(self_role_matches.group(1))
-                        k = self.inverse_role_mapping[self_role_matches.group(2).strip()]
-                        p = float(self_role_matches.group(3))
-                        beliefs[cur_player_id][j][k] = p
-                    else:
-                        belief_matches = re.search(r"player (\d+) is (.*) with probability (\d+.\d+)", line)
-                        if belief_matches is None:
+                        try:
+                            j = int(self_role_matches.group(1))
+                            k = self.role_mapping[self_role_matches.group(2).strip()]
+                            p = float(self_role_matches.group(3))
+                            beliefs[cur_player_id][j][k] = p
+                        except:
                             print(f"Invalid line: {line}")
                             continue
-                        else:
-                            j = int(belief_matches.group(1))
-                            k = self.inverse_role_mapping[belief_matches.group(2).strip()]
-                            p = float(belief_matches.group(3))
-                            beliefs[cur_player_id][j][k] = p
+                    else:
+                        print(f"Invalid line: {line}")
             return beliefs
         
         def update(self, beliefs, id, confidence = 0.2):
