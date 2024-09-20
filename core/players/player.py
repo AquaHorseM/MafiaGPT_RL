@@ -50,14 +50,14 @@ class Player:
                     cur_player_id = int(belief_player_matches.group(1))
                 else:
                     assert cur_player_id is not None, "Invalid belief string"
-                    self_role_matches = re.search(r"player (\d+) is role (\d+) with probability (\d+.\d+)", line)
+                    self_role_matches = re.search(r"player (\d+) is (.*) with probability (\d+.\d+)", line)
                     if self_role_matches is not None:
                         j = int(self_role_matches.group(1))
                         k = int(self_role_matches.group(2))
                         p = float(self_role_matches.group(3))
                         beliefs[cur_player_id][j][k] = p
                     else:
-                        belief_matches = re.search(r"player (\d+) is role (\d+) with probability (\d+.\d+)", line)
+                        belief_matches = re.search(r"player (\d+) is (.*) with probability (\d+.\d+)", line)
                         if belief_matches is None:
                             print(f"Invalid line: {line}")
                             continue

@@ -42,8 +42,8 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 Now, based on the above instructions, you should answer your updated belief. The first line of your answer should be an integer ranging from 1 to 10 denoting your confidence, 1 denoting that you are totally not sure about your modification (e.g. your modification is totally based on guessing without evidence), and 10 denotes that you are very sure this is the fact (which should be the case that this is the only possibility in the game).
 
 After that, all following lines should be in the format of:
-You should first write down your own belief, where each line should be: player {i} is role ... with probability {p}.
-After that, you should write "player {i} believes:" to switch to another player's belief.
+You should first write down your own belief, where each line should be: player {i} is ... with probability {p}.
+After that, you should write "player {i} believes:" to switch to another player's belief, then write down his/her belief similarly, and then switch to another player...
 The probability {p} should be a number ranging from 0 to 1, kept to the second decimal place.
 If you don't want to modify a specific probability for players i and j, you may omit it.
 
@@ -51,14 +51,15 @@ An example of your response could be:
 
 '''
 7
-player 1 is role medic with probability 0.7
-player 3 is role werewolf with probability 0.8
+player 1 is medic with probability 0.7
+player 3 is werewolf with probability 0.8
 player 1 believes:
-player 2 is role werewolf with probability 0.5
-player 6 is role villager with probability 0.8
+player 2 is werewolf with probability 0.5
+player 6 is villager with probability 0.8
 player 2 believes:
-player 3 is role seer with probability 0.2
+player 3 is seer with probability 0.2
 ...
+
 '''
 
 This is only an example of the response format. All numbers and roles in it are unrelated to your current game. 
