@@ -101,7 +101,7 @@ class Player:
         }
             
                         
-    def __init__(self, id, global_info, private_info, prompt_dir_path, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None, common_prompt_dir = None):
+    def __init__(self, id, global_info, private_info, prompt_dir_path, common_prompt_dir = None, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
         self.is_alive = True
         self.id = id
         self.labels = ["all"]
