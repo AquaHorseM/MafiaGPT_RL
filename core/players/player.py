@@ -53,7 +53,7 @@ class Player:
                     self_role_matches = re.search(r"player (\d+) is (.*) with probability (\d+.\d+)", line)
                     if self_role_matches is not None:
                         j = int(self_role_matches.group(1))
-                        k = self.inverse_role_mapping(self_role_matches.group(2).strip())
+                        k = self.inverse_role_mapping[self_role_matches.group(2).strip()]
                         p = float(self_role_matches.group(3))
                         beliefs[cur_player_id][j][k] = p
                     else:
@@ -63,7 +63,7 @@ class Player:
                             continue
                         else:
                             j = int(belief_matches.group(1))
-                            k = self.inverse_role_mapping(belief_matches.group(2).strip())
+                            k = self.inverse_role_mapping[belief_matches.group(2).strip()]
                             p = float(belief_matches.group(3))
                             beliefs[cur_player_id][j][k] = p
             return beliefs
