@@ -6,7 +6,7 @@ from core.api import send_message_xsm
 from core.event import EventBook
 import re, pickle
 
-from core.players.utils import get_prompt, parse_data, parse_reflex_note, parse_reflex_actions
+from core.players.utils import get_prompt, parse_data, parse_reflex_note, parse_reflex_actions, get_target_from_response
         
 class Player:
     class HiddenState:
