@@ -332,19 +332,17 @@ class Player:
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
         original_note = parse_reflex_note(open(reflex_note_path, "r").read())
-        try:
-            with open(reflex_note_path, "w") as f:
-                for line in response.split("\n"):
+        with open(reflex_note_path, "w") as f:
+            for line in response.split("\n"):
+                if len(line.strip()) <= 5:
+                    continue
+                try:
                     id, rule, vote = re.search(r"\[(\d+)\] \[(.*)\] \[(\d+)\]", line).groups()
                     id = int(id)
                     vote = int(vote)
                     f.write(f"[{id}] [{rule}] [{vote}]\n")
-        except:
-            print(f"player {self.id} failed to polish the reflex note")
-            with open("debug.out", "a") as f:
-                f.write(f"player {self.id} failed to polish the reflex note\n")
-                f.write(f"original note: {original_note}\n")
-                f.write(f"response: {response}\n")
+                except:
+                    print(f"Unable to process line {line}")
         return
         
     def polish_reflex_notes(self):
