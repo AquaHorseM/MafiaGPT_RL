@@ -51,7 +51,7 @@ def get_gt_hstate_from_joint(joint_hstate):
                 f"joint_hstate shape {joint_hstate.shape} is not recognized!"
             joint_hstate = np.reshape(joint_hstate, (int(joint_hstate.shape[0] ** 0.5), int(joint_hstate.shape[0] ** 0.5), joint_hstate.shape[1], joint_hstate.shape[2]))
             self_hstates = [joint_hstate[i] for i in range(joint_hstate.shape[0])]
-    return np.concatenate(self_hstates, axis=0)
+    return np.concatenate(np.expand_dims(self_hstates, axis=0), axis=0)
 
 def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_joint_hstate, player_id, alpha = 1):
     prev_hstate = prev_joint_hstate[player_id]

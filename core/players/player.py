@@ -45,6 +45,8 @@ class Player:
             beliefs = np.ones((self.player_num, self.player_num, self.roles_num)) / self.roles_num
             cur_player_id = id
             for line in belief_str.split("\n"):
+                if line == "":
+                    continue
                 belief_player_matches = re.search(r"player (\d+) believes", line)
                 if belief_player_matches is not None:
                     cur_player_id = int(belief_player_matches.group(1))
