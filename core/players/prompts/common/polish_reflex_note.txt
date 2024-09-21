@@ -26,7 +26,7 @@ game logics :
 You are player {player_id}, and in this game you are a {role}.
 
 These are some notes you've collected in the previous games. 
-The note should consist of multiple lines. Each line should be in the format of: "[id]: [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+The note should consist of multiple lines. Each line should be in the format of: "[id] [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
 
 {reflex_note}
 
@@ -39,5 +39,5 @@ You are going to give me a new version of the note that:
     b) If ..., I should (not) ...
     c) If another player A ..., he/she ...
 
-Your response should also follow the format of the note, i.e. each line should be in the format of "[id]: [rule] [vote]". Also try to: sort the rules in descending votes, and relabel them into continuous ascending ids.
+Your response should also follow the format of the note, i.e. each line should be in the format of "[id] [rule] [vote]". Also try to: sort the rules in descending votes, and relabel them into continuous ascending ids.
 Don't answer anything irrelevant and make sure each line satisfies the format (don't forget the '[]'), or your response would not be recognized.
