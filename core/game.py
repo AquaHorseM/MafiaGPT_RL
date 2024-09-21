@@ -451,7 +451,7 @@ class Game:
         return self.all_players[player_id].hidden_state
     
     def get_joint_hstate(self):
-        return np.concatenate([player.hidden_state.beliefs.unsqueeze(0) for player in self.all_players], axis = 0)
+        return np.concatenate([np.expand_dims(player.hidden_state.beliefs, axis = 0) for player in self.all_players], axis = 0)
     
     def add_all_hstate_to_data(self):
         if self.temp_events:
