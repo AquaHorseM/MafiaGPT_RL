@@ -134,14 +134,49 @@ class Player:
             reason = "I am the baseline player and I do things randomly."
             return (action, target, reason)
         
-    def vote(self, Game): #to be consistent with the baseline version
-        return self.act(Game.event_book, available_actions = ["vote"])[1:]
+    def _vote(self):
+        prompt_path = self.get_prompt_path("vote.txt")
+        prompt = get_prompt(prompt_path, self.get_replacements())
+        response = self.send_message_xsm(prompt)
+        vote = get_target_from_response(response)
+        return vote, response
     
-    def _speak(self, event_book: EventBook):
-        return "I am the baseline player and I don't have anything to say."
+    def _get_speak_type(self, event_book: EventBook, update_hstate = True):
+        if update_hstate:
+            self.update_hidden_state(event_book)
+        prompt_path = self.get_prompt_path("speak_type.txt")
+        replacements = self.get_replacements()
+        prompt = get_prompt(prompt_path, replacements)
+        response = self.send_message_xsm(prompt)
+        assert isinstance(response, str), f"response is not a string: {response}"
+        #Find the [type] in the response
+        s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
+        s_type = s_type.strip().split(",") #split the types
+        s_type = [s.strip() for s in s_type]
+        return s_type
     
-    def speak(self, Game, command): #to be consistent with the baseline version
-        return self._speak(Game.event_book)
+    def speak_with_type(self, s_type):
+        prompt_path = self.get_prompt_path("speak_with_type.txt")
+        replacements = self.get_replacements()
+        replacements.update({
+            "{speech_type}": str(s_type)
+        })
+        prompt = get_prompt(prompt_path, replacements)
+        response = self.send_message_xsm(prompt)
+        return response
+        
+        
+    
+    def _speak(self, event_book: EventBook, update_hstate = True): #TODO
+        s_type = self._get_speak_type(event_book, update_hstate)
+        replacements = self.get_replacements()
+        replacements.update({
+            "{speech_type}": str(s_type)
+        })
+        prompt_path = self.get_prompt_path("speak_with_type.txt")
+        prompt = get_prompt(prompt_path, replacements)
+        response = self.send_message_xsm(prompt)
+        return response
             
     def train_obs(self, batch):
         return None

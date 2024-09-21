@@ -42,9 +42,10 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 Now, based on the above instructions, you should answer your updated belief. The first line of your answer should be an integer ranging from 1 to 10 denoting your confidence, 1 denoting that you are totally not sure about your modification (e.g. your modification is totally based on guessing without evidence), and 10 denotes that you are very sure this is the fact (which should be the case that this is the only possibility in the game).
 
 After that, all following lines should be in the format of:
-You should first write down your own belief, where each line should be: player {i} is ... with probability {p}.
+You should first write down your own belief, where each line should be: player {i} is {r} with probability {p}.
 After that, you should write "player {i} believes:" to switch to another player's belief, then write down his/her belief similarly, and then switch to another player...
 The probability {p} should be a number ranging from 0 to 1, kept to the second decimal place.
+The role {r} should be a role chosen from villager/medic/seer/werewolf. Anything other than these 4 roles will not be recognized.
 If you don't want to modify a specific probability for players i and j, you may omit it.
 
 An example of your response could be:

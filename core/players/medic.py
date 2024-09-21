@@ -46,14 +46,6 @@ class MedicPlayer(Player):
             res = self._get_speak_type(event_book, update_hstate=False)
             return ("speak_type", res, None)
     
-    def _vote(self):
-        #TODO
-        prompt_path = self.get_prompt_path("vote.txt")
-        prompt = get_prompt(prompt_path, self.get_replacements())
-        response = self.send_message_xsm(prompt)
-        vote = get_target_from_response(response)
-        return vote, response
-    
     def _heal(self):
         prompt_path = self.get_prompt_path("heal.txt")
         prompt = get_prompt(prompt_path, self.get_replacements())
@@ -61,40 +53,5 @@ class MedicPlayer(Player):
         heal = get_target_from_response(response)
         return heal, response
     
-    def _get_speak_type(self, event_book: EventBook, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
-        prompt_path = self.get_prompt_path("speak_type.txt")
-        replacements = self.get_replacements()
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
-        assert isinstance(response, str), f"response is not a string: {response}"
-        #Find the [type] in the response
-        s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
-        s_type = s_type.strip().split(",") #split the types
-        s_type = [s.strip() for s in s_type]
-        return s_type
     
-    def speak_with_type(self, s_type):
-        prompt_path = self.get_prompt_path("speak_with_type.txt")
-        replacements = self.get_replacements()
-        replacements.update({
-            "{speech_type}": str(s_type)
-        })
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
-        return response
-        
-        
-    
-    def _speak(self, event_book: EventBook, update_hstate = True): #TODO
-        s_type = self._get_speak_type(event_book, update_hstate)
-        replacements = self.get_replacements()
-        replacements.update({
-            "{speech_type}": str(s_type)
-        })
-        prompt_path = self.get_prompt_path("speak_with_type.txt")
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
-        return response
     
