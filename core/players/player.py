@@ -334,6 +334,7 @@ class Player:
         original_note = parse_reflex_note(open(reflex_note_path, "r").read())
         with open(reflex_note_path, "w") as f:
             for line in response.split("\n"):
+                print(f"line: {line}")
                 if len(line.strip()) <= 5:
                     continue
                 try:
