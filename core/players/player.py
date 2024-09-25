@@ -85,12 +85,13 @@ class Player:
             reflex_note_belief = f.read()
         with open(self.reflex_note_path_policy, "r") as f:
             reflex_note_policy = f.read()
+        current_round = self.global_info["current_round"] if self.global_info.get("current_round") is not None else self.global_info["game_status"]["current_round"]
         return {
             "{player_id}": str(self.id),
             "{player_num}": str(self.global_info["player_num"]),
             "{alive_players}": str(list(self.global_info["alive_players"])),
             "{dead_players}": str(self.global_info["dead_players"]) if len(self.global_info["dead_players"]) > 0 else "Nobody",
-            "{current_round}": str(self.global_info["current_round"] + 1), #! notice the +1 here
+            "{current_round}": str(current_round + 1), #! notice the +1 here
             "{roles_mapping}": str(self.global_info["roles_mapping"]),
             "{role}": str(self.private_info["role"]),
             "{previous_votes}": str(self.global_info["previous_votes"]),
