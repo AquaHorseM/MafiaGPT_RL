@@ -278,7 +278,7 @@ class WerewolfGameEnv:
             kill_target_2 = get_action_target(actions[werewolf_ids[1]])
             if kill_target_1 == kill_target_2:
                 kill_target = kill_target_1
-                kill_decider = werewolf_ids[0]
+                kill_decider = 0
             else:
                 #randomly choose
                 kill_decider = random.choice([0, 1])
