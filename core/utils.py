@@ -5,7 +5,7 @@ from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
 from core.players.villager import VillagerPlayer
 from core.baseline_players import Werewolf, Medic, Seer, Villager
-import pickle
+import pickle, os
 def load_player_from_checkpoint(path, game, player_id):
     with open(path, 'rb') as file:
         info = pickle.load(file)
@@ -19,7 +19,8 @@ def load_player_from_info(private_info, global_info, player_id):
         "seer": SeerPlayer,
         "villager": VillagerPlayer
     }
-    p = switcher[role](player_id, global_info, private_info, private_info["prompt_dir_path"])
+    prompt_dir_path = os.path.join("core/players/prompts", role) #TODO
+    p = switcher[role](player_id, global_info, private_info, prompt_dir_path)
     return p
 
 switcher_players = {

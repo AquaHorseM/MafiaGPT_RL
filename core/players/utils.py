@@ -178,18 +178,17 @@ def load_config(config_path):
     with open(config_path, 'r') as file:
         return json.load(file)
 
-def send_dialogue(folder_path, config_path):
+def send_dialogue(folder_path, background_path, replacements, config_path = None):
     prompts = load_prompts_from_folder(folder_path)
-    config = load_config(config_path)
+    config = load_config(config_path) if config_path is not None else load_config(os.path.join(folder_path, "config.json"))
     
     conversation_history = []
+    conversation_history.append({"role": "system", "content": get_prompt(background_path, replacements)})
     
     for prompt_name in config['prompt_order']:
         if prompt_name in prompts:
             prompt_path = os.path.join(folder_path, prompt_name)
-            with open(prompt_path, 'r') as file:
-                prompt = file.read()
-            
+            prompt = get_prompt(prompt_path, replacements)
             # Send the current message to GPT
             conversation_history.append({"role": "user", "content": prompt})
             response = send_message_xsm(conversation_history)  # Assuming this function handles the request
@@ -200,5 +199,10 @@ def send_dialogue(folder_path, config_path):
     # Return the final response from the last assistant message
     return conversation_history[-1]["content"]
 
-# Example usage
-# final_response = send_dialogue("path_to_prompts_folder", "path_to_config.json")
+def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements):
+    common_folder = os.path.join(common_dir_path, prompt_name)
+    if os.path.exists(common_folder):
+        return send_dialogue(common_folder, replacements)
+    common_file = os.path.join(common_dir_path, prompt_name + ".txt")
+    if os.path.exists(common_file):
+        return send_message_xsm(common_file)
