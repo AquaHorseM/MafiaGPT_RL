@@ -595,11 +595,11 @@ class WerewolfGameEnv:
         else:
             assert isinstance(actions, str), "actions must be a string or a list of strings"
             if actions == "speak":
-                return [0] + [1] * self.n_speak + [0] * (self.get_action_space_size(player_id) - self.n_speak)
+                return [1] * self.n_speak + [0] * (self.get_action_space_size(player_id) - self.n_speak)
             elif actions == "vote":
-                return [0] + [0] * self.n_speak + [1] * self.n_vote + [0] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+                return [0] * self.n_speak + [1] * self.n_vote + [0] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
             else: #night actions
-                return [0] + [0] * self.n_speak + [0] * self.n_vote + [1] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+                return [0] * self.n_speak + [0] * self.n_vote + [1] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
         
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
