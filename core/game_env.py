@@ -478,7 +478,7 @@ class WerewolfGameEnv:
                 
     
     def parse_global_info(self, global_info: dict):
-        self.current_round = global_info["cur_round"]
+        self.current_round = global_info["game_status"]["cur_round"]
         self.alive_players = global_info["alive_players"]
         self.dead_players = global_info["dead_players"]
         self.votes = global_info["previous_votes"]

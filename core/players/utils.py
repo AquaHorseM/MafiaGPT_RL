@@ -168,45 +168,37 @@ def parse_reflex_note(reflex_note):
             res[id] = [rule, vote]
     return res
 
-def process_prompts(folder_path: str, config: List[Dict[str, str]], replacements: Dict) -> str:
-    conversation_history = []  # List of tuples (speaker, message)
+import os
+import json
+
+def load_prompts_from_folder(folder_path):
+    return sorted(os.listdir(folder_path))
+
+def load_config(config_path):
+    with open(config_path, 'r') as file:
+        return json.load(file)
+
+def send_dialogue(folder_path, config_path):
+    prompts = load_prompts_from_folder(folder_path)
+    config = load_config(config_path)
     
-    context = None
+    conversation_history = []
     
-    for item in config:
-        prompt_file = item["prompt"]
-        condition = item["condition"]
-        extraction_pattern = item.get("extraction")
-        send_history = item.get("send_history", False)
-
-        # Check the condition if it's defined
-        if condition and (not context or not re.search(condition, context)):
-            continue  # Skip this prompt if condition is not met
-
-        # Load the prompt
-        prompt_path = os.path.join(folder_path, prompt_file)
-        prompt = get_prompt(prompt_path, replacements)
-
-        # Perform extraction if extraction pattern is provided
-        if extraction_pattern:
-            match = re.search(extraction_pattern, str(context))
-            if match:
-                replacements = match.groups()
-                # Update context or replacements as needed
-                # Example: context['extracted_value'] = replacements[0]  # Modify as needed
-
-        # Determine whether to send the entire conversation history or just the prompt
-        if send_history:
-            messages_to_send = get_context(conversation_history) + get_context([("user", prompt)])
-        else:
-            messages_to_send = get_context([("user", prompt)])
-        
-        # Send the messages to the GPT model
-        response = send_message_xsm(messages_to_send)
-
-        # Update conversation history with speaker info
-        conversation_history.append(("user", prompt))
-        conversation_history.append(("assistant", response))
+    for prompt_name in config['prompt_order']:
+        if prompt_name in prompts:
+            prompt_path = os.path.join(folder_path, prompt_name)
+            with open(prompt_path, 'r') as file:
+                prompt = file.read()
+            
+            # Send the current message to GPT
+            conversation_history.append({"role": "user", "content": prompt})
+            response = send_message_xsm(conversation_history)  # Assuming this function handles the request
+            
+            # Add the response to conversation history
+            conversation_history.append({"role": "assistant", "content": response})
     
-    # Return the final response from the last prompt processed
-    return conversation_history[-1][1]  # Return only the response message
+    # Return the final response from the last assistant message
+    return conversation_history[-1]["content"]
+
+# Example usage
+# final_response = send_dialogue("path_to_prompts_folder", "path_to_config.json")
