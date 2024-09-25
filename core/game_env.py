@@ -530,7 +530,7 @@ class WerewolfGameEnv:
     def update_data(self):
        self.data.add_edge_and_node(
             events=self.temp_events,
-            info = self.get_state()
+            state = self.get_state()
         )
        self.temp_events = []
     
