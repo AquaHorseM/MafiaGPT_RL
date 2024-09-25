@@ -1,4 +1,5 @@
 from core.event import Event
+from typing import List
 class StateNode:
     def __init__(self, id: int, parent_id: int, state):
         self.id = id
@@ -26,7 +27,7 @@ class DataTree:
     def __init__(self):
         self.nodes: list[StateNode] = []
         self.edges: list[EventsEdge] = []
-        root_node = StateNode(0, -1, None, None)
+        root_node = StateNode(0, -1, None)
         self.nodes.append(root_node)
         self.cur_id = 0
     
@@ -36,7 +37,7 @@ class DataTree:
         self.nodes.append(new_node)
         return node_id
     
-    def _add_edge(self, node1_id: int, node2_id: int, events: list[Event]|Event):
+    def _add_edge(self, node1_id: int, node2_id: int, events: List[Event]|Event):
         if isinstance(events, Event):
             events = [events]
         edge_id = len(self.edges)
