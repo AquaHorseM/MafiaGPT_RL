@@ -725,3 +725,4 @@ class WerewolfGameEnv:
         info = recover_info["state"]
         events = recover_info["events"]
         self.load_state(info, events)
+        print(f"current game status: {self.game_status}")
