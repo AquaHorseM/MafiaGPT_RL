@@ -1,5 +1,5 @@
 from core.players.player import Player
-from core.players.utils import get_prompt, get_target_from_response
+from core.players.utils import get_target_from_response
 from core.event import EventBook
 import os
 import re

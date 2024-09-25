@@ -42,7 +42,7 @@ class MedicPlayer(Player):
             return ("speak_type", res, None)
     
     def _heal(self):
-        response = get_response()
+        response = self.get_response("heal")
         heal = get_target_from_response(response)
         return heal, response
     

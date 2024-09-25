@@ -1,5 +1,5 @@
 from core.players.player import Player
-from core.players.utils import get_prompt, get_target_from_response
+from core.players.utils import get_target_from_response
 from core.event import EventBook
 import os
 import re
@@ -46,9 +46,7 @@ class SeerPlayer(Player):
     
     
     def _see(self):
-        prompt_path = self.get_prompt_path("see.txt")
-        prompt = get_prompt(prompt_path, self.get_replacements())
-        response = self.send_message_xsm(prompt)
+        response = self.get_response("see")
         see = get_target_from_response(response)
         return see, response
     

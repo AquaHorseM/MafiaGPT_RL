@@ -2,12 +2,11 @@ import os
 import random
 import numpy as np
 from copy import deepcopy
-from core.api import send_message_xsm
 from core.event import EventBook
 from core.players.utils import get_response
 import re, pickle
 
-from core.players.utils import get_prompt, parse_data, parse_reflex_note, parse_reflex_actions, get_target_from_response
+from core.players.utils import parse_data, parse_reflex_note, parse_reflex_actions, get_target_from_response
         
 class Player:
     class HiddenState:
@@ -120,14 +119,6 @@ class Player:
     def __str__(self):
         return f"Player {self.id}"
     
-    def get_prompt(self, prompt_name: str, replacements = None):
-        if not prompt_name.endswith(".txt"):
-            prompt_name = prompt_name + ".txt"
-        background_file_name = "background.txt"
-        if replacements is None:
-            replacements = self.get_replacements()
-        return get_prompt(self.get_prompt_path(prompt_name), replacements, background_path=self.get_prompt_path(background_file_name))
-
     def update_hidden_state(self, event_book: EventBook):
         if event_book.tick == self.tick:
             return
@@ -144,17 +135,12 @@ class Player:
             return (action, target, reason)
         
     def _vote(self):
-        prompt_path = self.get_prompt_path("vote.txt")
-        prompt = get_prompt(prompt_path, self.get_replacements())
-        response = self.send_message_xsm(prompt)
+        response = self.get_response("vote")
         vote = get_target_from_response(response)
         return vote, response
     
     def _get_speak_type(self):
-        prompt_path = self.get_prompt_path("speak_type.txt")
-        replacements = self.get_replacements()
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = self.get_response("speak_type")
         assert isinstance(response, str), f"response is not a string: {response}"
         #Find the [type] in the response
         s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
@@ -163,24 +149,17 @@ class Player:
         return s_type
     
     def speak_with_type(self, s_type):
-        prompt_path = self.get_prompt_path("speak_with_type.txt")
         replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
         })
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = self.get_response("speak_with_type", replacements)
         return response
     
     def _speak(self): #TODO
         s_type = self._get_speak_type()
         replacements = self.get_replacements()
-        replacements.update({
-            "{speech_type}": str(s_type)
-        })
-        prompt_path = self.get_prompt_path("speak_with_type.txt")
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = self.speak_with_type(s_type, replacements)
         return response
             
     def train_obs(self, batch):
@@ -223,9 +202,7 @@ class Player:
             
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
-        prompt_path = self.get_prompt_path("update_hidden_state.txt")
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = self.get_response("update_hidden_state")
         #first line is the confidence, the other lines are the beliefs
         try:
             conf = float(response.split("\n")[0])/10
@@ -275,28 +252,14 @@ class Player:
             "{pred_hstate}": str(pred_hstate),
         })
         if note_type == "belief":
-            prompt_path = self.get_prompt_path("reflex_belief.txt")
+            prompt_name = "reflex_belief"
         elif note_type == "policy":
-            prompt_path = self.get_prompt_path("reflex_policy.txt")
+            prompt_name = "reflex_policy"
         else:
             raise ValueError("Note type must be either 'belief' or 'policy'")
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = self.get_response(prompt_name)
         self.update_note_from_response(response, note_type=note_type)
         return response
-    
-    def get_prompt_path(self, prompt_name):
-        if self.common_prompt_dir is not None:
-            prompt_path = os.path.join(self.common_prompt_dir, prompt_name)
-            if os.path.exists(prompt_path):
-                return prompt_path
-        prompt_path = os.path.join(self.prompt_dir_path, prompt_name)
-        if os.path.exists(prompt_path):
-            return prompt_path
-        raise ValueError(f"Prompt {prompt_name} not found in both common prompt dir and player prompt dir")
-    
-    def send_message_xsm(self, prompt):
-        return send_message_xsm(prompt, client=self.openai_client)
     
     def reflex(self, data, sample_num = 6, alpha = 1): #! sample num defined here
         reflex_data_belief = parse_data(data, self.id, alpha)
@@ -331,9 +294,7 @@ class Player:
             "{reflex_note}": open(reflex_note_path, "r").read(),
             "{note_type}": note_type
         })
-        prompt_path = self.get_prompt_path("polish_reflex_note.txt")
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
+        response = self.get_response("polish_reflex_note")
         original_note = parse_reflex_note(open(reflex_note_path, "r").read())
         with open(reflex_note_path, "w") as f:
             for line in response.split("\n"):
@@ -425,7 +386,7 @@ class Player:
         if private_info is not None:
             self.private_info = deepcopy(private_info)
     
-    def get_reponse(self, prompt_name, replacements = None):
+    def get_response(self, prompt_name, replacements = None):
         if replacements is None:
             replacements = self.get_replacements()
         return get_response(self.prompt_dir_path, self.common_prompt_dir, prompt_name, replacements)

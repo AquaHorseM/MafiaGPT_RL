@@ -1,5 +1,5 @@
 from core.players.player import Player
-from core.players.utils import get_prompt, get_target_from_response
+from core.players.utils import get_target_from_response
 from core.event import EventBook
 import os
 import re
@@ -44,9 +44,7 @@ class WerewolfPlayer(Player):
             return ("speak_type", res, None)
     
     def _kill(self):
-        prompt_path = self.get_prompt_path("kill.txt")
-        prompt = get_prompt(prompt_path, self.get_replacements())
-        response = self.send_message_xsm(prompt)
+        response = self.get_response("kill")
         kill = get_target_from_response(response)
         return kill, response
 
