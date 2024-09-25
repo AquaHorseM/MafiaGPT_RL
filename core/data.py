@@ -61,6 +61,7 @@ class DataTree:
             parent_node = self.nodes[cur_node].parent_id
             edge_id = [e for e in self.nodes[parent_node].edges if self.edges[e].end_id == cur_node][0]
             edges.append(edge_id)
+            cur_node = parent_node
         for edge_id in reversed(edges):
             events.extend(self.edges[edge_id].events)
         return events
