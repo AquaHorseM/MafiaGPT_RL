@@ -20,7 +20,7 @@ def load_player_from_info(private_info, global_info, player_id, openai_client):
         "villager": VillagerPlayer
     }
     prompt_dir_path = os.path.join("core/players/prompts", role) #TODO
-    common_prompt_dir = os.path.join("core/player/prompts", "common")
+    common_prompt_dir = os.path.join("core/players/prompts", "common")
     p = switcher[role](player_id, global_info, private_info, prompt_dir_path, common_prompt_dir, openai_client)
     return p
 
