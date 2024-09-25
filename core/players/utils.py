@@ -1,6 +1,24 @@
 import os
 import re, pickle
 import numpy as np
+from typing import List, Dict, Tuple
+
+from core.api import send_message_xsm
+
+def create_message(role, content):
+    return {"role": role, "content": content}
+
+def get_context(messages):
+    if isinstance(messages, list) and isinstance(messages[0], dict):
+        return messages
+    context = []
+    if isinstance(messages, tuple):
+        messages = [messages]
+    elif isinstance(messages, str):
+        messages = [("user", messages)]
+    for role, content in messages:
+        context.append(create_message(role, content))
+    return context
 
 def events_include_player(event, player_id):
     #check if the event includes the player
@@ -86,10 +104,7 @@ def parse_data(data, player_id, alpha = 1, check_event_include_player = False):
             else:
                 res.append(get_player_reflex_info_from_raw_data(data[prev_hstate_index], merged_events, data[i], player_id, alpha))
             prev_hstate_index = i
-    return res
-
-    
-    
+    return res    
     
 def parse_reflex_actions(reflex_actions):
     #parse all lines in the reflex note. Each line should be in the format of "OPERATION [VALUE]"
@@ -152,3 +167,46 @@ def parse_reflex_note(reflex_note):
                 continue
             res[id] = [rule, vote]
     return res
+
+def process_prompts(folder_path: str, config: List[Dict[str, str]], replacements: Dict) -> str:
+    conversation_history = []  # List of tuples (speaker, message)
+    
+    context = None
+    
+    for item in config:
+        prompt_file = item["prompt"]
+        condition = item["condition"]
+        extraction_pattern = item.get("extraction")
+        send_history = item.get("send_history", False)
+
+        # Check the condition if it's defined
+        if condition and (not context or not re.search(condition, context)):
+            continue  # Skip this prompt if condition is not met
+
+        # Load the prompt
+        prompt_path = os.path.join(folder_path, prompt_file)
+        prompt = get_prompt(prompt_path, replacements)
+
+        # Perform extraction if extraction pattern is provided
+        if extraction_pattern:
+            match = re.search(extraction_pattern, str(context))
+            if match:
+                replacements = match.groups()
+                # Update context or replacements as needed
+                # Example: context['extracted_value'] = replacements[0]  # Modify as needed
+
+        # Determine whether to send the entire conversation history or just the prompt
+        if send_history:
+            messages_to_send = get_context(conversation_history) + get_context([("user", prompt)])
+        else:
+            messages_to_send = get_context([("user", prompt)])
+        
+        # Send the messages to the GPT model
+        response = send_message_xsm(messages_to_send)
+
+        # Update conversation history with speaker info
+        conversation_history.append(("user", prompt))
+        conversation_history.append(("assistant", response))
+    
+    # Return the final response from the last prompt processed
+    return conversation_history[-1][1]  # Return only the response message

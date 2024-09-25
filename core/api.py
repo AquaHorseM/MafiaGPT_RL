@@ -7,6 +7,7 @@ MAX_RETRIES = 1
 MODEL = "gpt-4-turbo" #for debugging, use the cheaper api
 
 import openai, os, time, yaml
+import re
 
 # this is for printing messages in terminal
 DEBUG = False
@@ -108,3 +109,6 @@ def send_message_xsm(messages, agent_config = {}, client = None):
     with open("message_history_backup.txt", "a") as f:
         f.write(f"{response.choices[0].message.content}\n\n")
     return response.choices[0].message.content
+
+
+
