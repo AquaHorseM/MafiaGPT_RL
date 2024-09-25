@@ -188,21 +188,27 @@ def send_dialogue(folder_path, background_path, replacements, config_path = None
     for prompt_name in config['prompt_order']:
         if prompt_name in prompts:
             prompt_path = os.path.join(folder_path, prompt_name)
-            prompt = get_prompt(prompt_path, replacements)
-            # Send the current message to GPT
+            prompt = get_prompt(prompt_path, replacements, background_path=None)
             conversation_history.append({"role": "user", "content": prompt})
-            response = send_message_xsm(conversation_history)  # Assuming this function handles the request
-            
-            # Add the response to conversation history
+            response = send_message_xsm(conversation_history) #?
             conversation_history.append({"role": "assistant", "content": response})
-    
     # Return the final response from the last assistant message
     return conversation_history[-1]["content"]
 
 def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements):
+    background_path = os.path.join(common_dir_path, "background.txt")
     common_folder = os.path.join(common_dir_path, prompt_name)
     if os.path.exists(common_folder):
-        return send_dialogue(common_folder, replacements)
+        return send_dialogue(common_folder, background_path, replacements)
     common_file = os.path.join(common_dir_path, prompt_name + ".txt")
     if os.path.exists(common_file):
-        return send_message_xsm(common_file)
+        prompt = get_prompt(common_file, replacements, background_path)
+        return send_message_xsm(prompt)
+    role_folder = os.path.join(prompt_dir_path, prompt_name)
+    if os.path.exists(role_folder):
+        return send_dialogue(role_folder, background_path, replacements)
+    role_file = os.path.join(prompt_dir_path, prompt_name + ".txt")
+    if os.path.exists(role_file):
+        prompt = get_prompt(role_file, replacements, background_path)
+        return send_message_xsm(prompt)
+    raise ValueError(f"Prompt Not found for {prompt_name}")

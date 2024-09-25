@@ -493,7 +493,7 @@ class WerewolfGameEnv:
         self.event_book.add_event(events)
         self.all_players = []
         for i in range(global_info["player_num"]):
-            player: Player = load_player_from_info(state["private_infos"][i], global_info, i)
+            player: Player = load_player_from_info(state["private_infos"][i], global_info, i, self.openai_client)
             player.hidden_state = deepcopy(state["hstate"][i])
             player.event_book.add_event(self.event_book.filter(
                 end_tick = player.tick,

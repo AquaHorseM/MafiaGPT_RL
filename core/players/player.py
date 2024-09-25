@@ -4,6 +4,7 @@ import numpy as np
 from copy import deepcopy
 from core.api import send_message_xsm
 from core.event import EventBook
+from core.players.utils import get_response
 import re, pickle
 
 from core.players.utils import get_prompt, parse_data, parse_reflex_note, parse_reflex_actions, get_target_from_response
@@ -423,3 +424,8 @@ class Player:
             self.global_info = deepcopy(global_info)
         if private_info is not None:
             self.private_info = deepcopy(private_info)
+    
+    def get_reponse(self, prompt_name, replacements = None):
+        if replacements is None:
+            replacements = self.get_replacements()
+        return get_response(self.prompt_dir_path, self.common_prompt_dir, prompt_name, replacements)

@@ -11,7 +11,7 @@ def load_player_from_checkpoint(path, game, player_id):
         info = pickle.load(file)
     return load_player_from_info(info, game, player_id)
 
-def load_player_from_info(private_info, global_info, player_id):
+def load_player_from_info(private_info, global_info, player_id, openai_client):
     role = private_info["role"]
     switcher = {
         "werewolf": WerewolfPlayer,
@@ -20,7 +20,8 @@ def load_player_from_info(private_info, global_info, player_id):
         "villager": VillagerPlayer
     }
     prompt_dir_path = os.path.join("core/players/prompts", role) #TODO
-    p = switcher[role](player_id, global_info, private_info, prompt_dir_path)
+    common_prompt_dir = os.path.join("core/player/prompts", "common")
+    p = switcher[role](player_id, global_info, private_info, prompt_dir_path, common_prompt_dir, openai_client)
     return p
 
 switcher_players = {
