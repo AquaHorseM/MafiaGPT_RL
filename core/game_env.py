@@ -546,7 +546,7 @@ class WerewolfGameEnv:
         return
 
     def get_joint_hstate(self):
-        return np.concatenate([player.hidden_state.beliefs for player in self.all_players], axis = 0)
+        return np.concatenate([np.expand_dims(player.hidden_state.beliefs, axis = 0) for player in self.all_players], axis = 0)
     
     
     def store_data(self, path):
