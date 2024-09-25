@@ -2,6 +2,7 @@ import os
 import random
 import numpy as np
 from copy import deepcopy
+from core.data import DataTree
 from core.event import EventBook
 from core.players.utils import get_response
 import re, pickle
@@ -261,13 +262,12 @@ class Player:
         self.update_note_from_response(response, note_type=note_type)
         return response
     
-    def reflex(self, data, sample_num = 6, alpha = 1): #! sample num defined here
+    def reflex_old(self, data, sample_num = 6, alpha = 1): #! outdated
         reflex_data_belief = parse_data(data, self.id, alpha)
         reflex_data_belief = random.sample(reflex_data_belief, sample_num) if len(reflex_data_belief) > sample_num else reflex_data_belief
         reflex_data_policy = parse_data(data, self.id, alpha, check_event_include_player = True)
         reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
-        reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
         print(f"player {self.id} is reflexing")
         for d in reflex_data_belief:
             prev_hstate, prev_gt_hstate, events, pred_hstate, next_hstate = d
@@ -281,6 +281,22 @@ class Player:
         print(f"player {self.id} has reflexed for policy model. Now polishing the reflex notes.")
         self.polish_reflex_notes()
         return
+    
+    def reflex(self, data : DataTree, sample_num = 6):
+        reflex_data_belief = data.sample(self.id, sample_num = sample_num)
+        reflex_data_policy = data.sample(self.id, filter_node = True, sample_num = sample_num)
+        print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
+        for d in reflex_data_belief:
+            dat = data.parse(d)
+            state, prev_events, outcomes = dat["state"], dat["prev_events"], dat["outcomes"]
+            self.reflex_single_pair_new(state, prev_events, outcomes)
+        self.polish_reflex_notes()
+        return
+    
+    def reflex_single_pair_new(self, state, prev_events, outcomes):
+        #TODO
+        pass
+        
     
     def polish_reflex_note(self, note_type = "belief"):
         if note_type == "belief":

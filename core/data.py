@@ -1,5 +1,7 @@
+import random
 from core.event import Event
 from typing import List, Union
+import numpy as np
 
 class StateNode:
     def __init__(self, id: int, parent_id: int, state):
@@ -15,11 +17,12 @@ class StateNode:
         return f"Node({self.id})" if self.id != 0 else "Root Node"
 
 class EventsEdge:
-    def __init__(self, id: int, node1_id: int, node2_id: int, events):
+    def __init__(self, id: int, node1_id: int, node2_id: int, events, actions: List[int]):
         self.id = id
         self.start_id = node1_id
         self.end_id = node2_id
         self.events = events
+        self.actions = actions
     
     def __repr__(self):
         return f"Edge({self.start_id} --> {self.end_id})"
@@ -38,19 +41,19 @@ class DataTree:
         self.nodes.append(new_node)
         return node_id
     
-    def _add_edge(self, node1_id: int, node2_id: int, events: Union[List[Event], Event]):
+    def _add_edge(self, node1_id: int, node2_id: int, events: Union[List[Event], Event], actions: List[int]):
         if isinstance(events, Event):
             events = [events]
         edge_id = len(self.edges)
-        edge = EventsEdge(edge_id, node1_id, node2_id, events)
+        edge = EventsEdge(edge_id, node1_id, node2_id, events, actions)
         self.nodes[node1_id].add_edge(edge_id)
         self.edges.append(edge)
         return edge_id
         
-    def add_edge_and_node(self, events, state):
+    def add_edge_and_node(self, events, actions, state):
         start_id = self.cur_id
         node_id = self._add_node(start_id, state)
-        self._add_edge(start_id, node_id, events)
+        self._add_edge(start_id, node_id, events, actions)
         self.cur_id = node_id
         
     def get_events(self, node_id: int):
@@ -90,5 +93,59 @@ class DataTree:
             "events": self.get_events(node_id)
         }
         
+    def filter_node(self, node_id: int, player_id: int):
+        return any(self.filter_edge(e, player_id) for e in self.nodes[node_id].edges)
+        
+    def filter_edge(self, edge_id: int, player_id: int):
+        return True if self.edges[edge_id].actions[player_id] != 0 else False
+        
+    def parse(self, node_id: int, player_id: int = None, filter_action = False):
+        #RETURN state, events, [(action1, events1, state1), ...]
+        return {
+            "state": self.nodes[node_id].state,
+            "prev_events": self.get_events(node_id),
+            "outcomes": [
+                (self.edges[e].actions, self.edges[e].events, self.nodes[self.edges[e].end_id].state) for e in self.nodes[node_id].edges if not filter_action or (player_id and self.filter_action(e, player_id))
+            ]
+        }
+        
+    def sample_single(self, player_id = None, filter_node = False, sampling_method = "sqrt"): #sampling method from 'uniform', 'log' and 'sqrt'
+        #TODO find a better sampling method
+        if filter_node:
+            node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id)]
+            if len(node_ids) == 0:
+                print(f"No action done by player {player_id} in the data.")
+                return None
+        else:
+            node_ids = self.nodes
+        if sampling_method == "sqrt":
+            weights = [np.sqrt(len(self.nodes[node_id].edges)) for node_id in node_ids]
+        elif sampling_method == "log":
+            weights = [np.log2(len(self.nodes[node_id].edges)) for node_id in node_ids]
+        elif sampling_method == "uniform":
+            weights = [1] * len(self.nodes)
+        else:
+            raise ValueError(f"Sampling Method {sampling_method} not recognized")
+        return random.choices(node_ids, weights=weights)[0]
+
+    def sample(self, player_id = None, filter_node = False, sampling_method = "sqrt", sample_num = 1):
+        if filter_node:
+            node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id)]
+            if len(node_ids) == 0:
+                print(f"No action done by player {player_id} in the data.")
+                return []
+            elif len(node_ids) <= sample_num:
+                if len(node_ids < sample_num):
+                    print(f"Warning: Only {len(node_ids)} valid samples in data, but {sample_num} is required.")
+                return node_ids
+        samples = []
+        while len(samples) < sample_num:
+            node_id = self.sample_single(player_id, filter_node, sampling_method)
+            if node_id not in samples:
+                samples.append(node_id)
+        return samples
+
     def __repr__(self):
         return f"Tree(Nodes: {self.nodes}, Edges: {self.edges})"
+    
+    

@@ -211,5 +211,4 @@ def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, cl
     if os.path.exists(role_file):
         prompt = get_prompt(role_file, replacements, background_path)
         return send_message_xsm(prompt, client = client)
-    print(f"prompt dir path is {prompt_dir_path}, common dir path is {common_dir_path}")
     raise ValueError(f"Prompt Not found for {prompt_name}")

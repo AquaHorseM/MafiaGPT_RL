@@ -54,6 +54,7 @@ class WerewolfGameEnv:
         self.cur_stage = 0
         self.player_num = 0
         self.temp_events = []
+        self.latest_actions = None
         self.night_info = {
             "killed": None,
             "healed": None,
@@ -250,7 +251,7 @@ class WerewolfGameEnv:
         
     def step(self, actions):
         def get_action_target(action):
-            return action - self.n_speak - self.n_vote
+            return action - self.n_speak - self.n_vote 
         def get_vote_target(action):
             return action - self.n_speak
         def get_speech_type(action):
@@ -328,13 +329,13 @@ class WerewolfGameEnv:
         #switch case for different roles
         player_role = self.all_players[player_id].role
         if player_role == "werewolf":
-            n_actions = self.n_speak + self.n_vote + self.n_kill
+            n_actions = self.n_speak + self.n_vote + self.n_kill 
         elif player_role == "seer":
-            n_actions = self.n_speak + self.n_vote + self.n_see
+            n_actions = self.n_speak + self.n_vote + self.n_see 
         elif player_role == "medic":
-            n_actions = self.n_speak + self.n_vote + self.n_heal
+            n_actions = self.n_speak + self.n_vote + self.n_heal 
         else: #villager
-            n_actions = self.n_speak + self.n_vote
+            n_actions = self.n_speak + self.n_vote 
         return gym.spaces.Discrete(n_actions)
             
     def init_env(self):
@@ -530,7 +531,8 @@ class WerewolfGameEnv:
     
     def update_data(self):
        self.data.add_edge_and_node(
-            events=self.temp_events,
+            events = self.temp_events,
+            actions = self.latest_actions,
             state = self.get_state()
         )
        self.temp_events = []
@@ -593,11 +595,11 @@ class WerewolfGameEnv:
         else:
             assert isinstance(actions, str), "actions must be a string or a list of strings"
             if actions == "speak":
-                return [1] * self.n_speak + [0] * (self.get_action_space_size(player_id) - self.n_speak)
+                return [0] + [1] * self.n_speak + [0] * (self.get_action_space_size(player_id) - self.n_speak)
             elif actions == "vote":
-                return [0] * self.n_speak + [1] * self.n_vote + [0] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+                return [0] + [0] * self.n_speak + [1] * self.n_vote + [0] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
             else: #night actions
-                return [0] * self.n_speak + [0] * self.n_vote + [1] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+                return [0] + [0] * self.n_speak + [0] * self.n_vote + [1] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
         
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
@@ -623,11 +625,11 @@ class WerewolfGameEnv:
     def _convert_available_actions_to_description(self, available_actions):
         avail_des = []
         #check if the first self.n_speak actions in available_actions are 1
-        if all(available_actions[:self.n_speak]):
+        if all(available_actions[: self.n_speak]):
             avail_des.append("speak_type")
         elif all(available_actions[self.n_speak: self.n_speak + self.n_vote]):
             avail_des.append("vote")
-        elif len(available_actions) != self.n_speak + self.n_vote and all(available_actions[self.n_speak + self.n_vote:]):
+        elif len(available_actions) > self.n_speak + self.n_vote and all(available_actions[self.n_speak + self.n_vote:]):
             avail_des.append("night")
         return avail_des
             
@@ -681,6 +683,7 @@ class WerewolfGameEnv:
             actions = self.get_actions_reflex(avail_actions)
             self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
+            self.latest_actions = actions
             collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]
             if info is not None:
                 self.logger.info(str(info))
