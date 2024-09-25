@@ -671,6 +671,12 @@ class WerewolfGameEnv:
         avail_actions = self.get_available_actions()
         collect_rewards = [0 for _ in range(self.player_num)]
         while True:
+            if self.game_status["cur_stage"] == "day":
+                r = random.random()
+                if r <= trace_back_prob:
+                    self.logger.info("Random Trace Back Triggered!")
+                    self.backtrace(1)
+                avail_actions = self.get_available_actions()
             actions = self.get_actions_reflex(avail_actions)
             self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
@@ -680,11 +686,6 @@ class WerewolfGameEnv:
             if all(dones):
                 break
             self.update_all_hstates(add_to_data=True)
-            if self.game_status["cur_stage"] == "day":
-                r = random.random()
-                if r <= trace_back_prob:
-                    self.logger.info("Random Trace Back Triggered!")
-                    self.backtrace(1)
         self.logger.info("Game simulated successfully")
         
     def reset(self):

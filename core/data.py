@@ -44,7 +44,6 @@ class DataTree:
         edge_id = len(self.edges)
         edge = EventsEdge(edge_id, node1_id, node2_id, events)
         self.nodes[node1_id].add_edge(edge_id)
-        self.nodes[node2_id].add_edge(edge_id)
         self.edges.append(edge)
         return edge_id
         
