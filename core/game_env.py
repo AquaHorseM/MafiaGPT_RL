@@ -238,6 +238,7 @@ class WerewolfGameEnv:
             "hstate": hstate,
             "global_info": self.get_global_info(),
             "private_infos": private_infos,
+            "id": self.id
         }
         
     
