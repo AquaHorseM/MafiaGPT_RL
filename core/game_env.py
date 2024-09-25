@@ -637,7 +637,7 @@ class WerewolfGameEnv:
         if len(player_avail_actions) == 0:
             return 0 #Will not be checked, so return whatever action
         else:
-            action = self.all_players[player_id]._act(self.event_book, player_avail_actions, update_hstate = False)
+            action = self.all_players[player_id]._act(player_avail_actions)
             print(f"Debug: action is {action}")
             if isinstance(action, tuple):
                 if action[0] == "speak_type":
