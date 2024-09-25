@@ -202,7 +202,7 @@ class Player:
             
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
-        response = self.get_response("update_hidden_state")
+        response = self.get_response("update_hidden_state", replacements=replacements)
         #first line is the confidence, the other lines are the beliefs
         try:
             conf = float(response.split("\n")[0])/10
