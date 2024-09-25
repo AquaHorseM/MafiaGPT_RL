@@ -65,6 +65,11 @@ class EventBook:
             return True
         return [event for tick, events in self.events.items() for event in events if match(event, tick, start_tick, end_tick, id, labels, types)]
     
+    def backtrace(self, back_steps = 1):
+        for i in range(back_steps):
+            self.events.pop(self.tick, None)
+            self.tick -= 1
+    
     def __str__(self) -> str:
         s = ""
         for tick, events in self.events.items():

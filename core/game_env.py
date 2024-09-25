@@ -5,6 +5,7 @@ import random, logging
 from core.api import send_message
 import json, re, os, datetime
 import numpy as np
+from core.players.player import Player
 from prompts import render_prompts as render
 from core.baseline_players import Villager, Werewolf, Medic, Seer
 from core.event import Event, EventBook
@@ -12,8 +13,9 @@ from core.players.werewolf import WerewolfPlayer
 from core.players.villager import VillagerPlayer
 from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
-from core.utils import switcher_players, load_player_from_checkpoint
+from core.utils import load_player_from_info, switcher_players, load_player_from_checkpoint
 from core.api import load_client
+from core.data import DataTree
 import gym
 import inspect
 from core.common import *
@@ -57,7 +59,7 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        self.data = []
+        self.data = DataTree()
         self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
         #clear the data file if it exists
@@ -231,12 +233,11 @@ class WerewolfGameEnv:
     
     def get_state(self):
         hstate = self.get_joint_hstate()
-        shared_info = self.get_shared_observation()
-        history = self.event_book
+        private_infos = [self.all_players[i].private_info for i in range(self.player_num)]
         return {
             "hstate": hstate,
-            "shared_info": shared_info,
-            "history": str(history)
+            "global_info": self.get_global_info(),
+            "private_infos": private_infos,
         }
         
     
@@ -385,14 +386,8 @@ class WerewolfGameEnv:
         if player_id not in self.alive_players:
             self.logger.warning("Voting out an already dead guy! Skipped!")
             return
-        self.alive_players.remove(player_id)
-        self.dead_players.append(player_id)
         self.add_event({"event": "vote_out", "content": {"player": player_id}, "visible": "all"})
-        self.all_players[player_id].is_alive = False
-        #update for all players
-        for player_id in self.alive_players:
-            self.all_players[player_id].global_info["alive_players"] = self.alive_players
-            self.all_players[player_id].global_info["dead_players"] = self.dead_players
+        self.die(player_id)
     
     def die(self, player_id):
         if player_id not in self.alive_players:
@@ -466,53 +461,39 @@ class WerewolfGameEnv:
             "player_num": self.player_num,
             "alive_players": list(self.alive_players),
             "dead_players": list(self.dead_players),
-            "current_round": self.current_round,
             "roles_mapping": {
                 "villager": 0,
                 "werewolf": 1,
                 "medic": 2,
                 "seer": 3
             },
-            "previous_votes": self.votes
+            "previous_votes": self.votes,
+            "game_status": self.game_status,
         }
             
 
     def save_game_record(self):
         json.dump(str(self.event_book), open(f"records/game_{self.id}_log.json", "w"), indent=4)
-        
-    def save_checkpoint(self, root_path):
-        #assert all player types are reflex
-        self.logger.info(f"Saving checkpoint to {root_path}")
-        assert all([player_type == "reflex" for player_type in self.player_types]), "All players must be reflex players"
-        os.makedirs(root_path, exist_ok=True)
-        info = {
-            "global_info": self.get_global_info(),
-            "event_book": self.event_book,
-            "night_info": self.night_info, 
-            "id": self.id,
-            "cur_stage": self.cur_stage,
-        }
-        with open(os.path.join(root_path, f"game_checkpoint.pkl"), "wb") as file:
-            pickle.dump(info, file)
-        for player in self.all_players:
-            player.save_checkpoint(os.path.join(root_path, f"player_{player.id}_ckpt.pkl"))
-        self.logger.info(f"Checkpoint saved successfully")
-        return
-        
-    def load_checkpoint(self, root_path): #assume all players are reflex players
-        self.logger.info(f"Loading checkpoint from {root_path}")
-        with open(os.path.join(root_path, f"game_checkpoint.pkl"), "rb") as file:
-            info = pickle.load(file)
-        self.id = info["id"]
-        self.event_book = info["event_book"]
-        self.night_info = info["night_info"]
-        self.cur_stage = info["cur_stage"]
-        self.current_round = info["global_info"]["current_round"]
-        self.alive_players = info["global_info"]["alive_players"]
-        self.dead_players = info["global_info"]["dead_players"]
-        self.votes = info["global_info"]["previous_votes"]
-        for i in range(info["global_info"]["player_num"]):
-            player = load_player_from_checkpoint(os.path.join(root_path, f"player_{i}_ckpt.pkl"), self, i)
+                
+    
+    def parse_global_info(self, global_info: dict):
+        self.current_round = global_info["current_round"]
+        self.alive_players = global_info["alive_players"]
+        self.dead_players = global_info["dead_players"]
+        self.votes = global_info["previous_votes"]
+        self.game_status = global_info["game_status"]
+        self.player_num = global_info["player_num"]
+    
+    def load_state(self, state, events):
+        self.id = state["id"]
+        global_info = state["global_info"]
+        self.parse_global_info(global_info)
+        self.event_book = EventBook()
+        self.event_book.add_event(events)
+        self.all_players = []
+        for i in range(global_info["player_num"]):
+            player: Player = load_player_from_info(state["private_infos"][i], global_info, i)
+            player.hidden_state = deepcopy(state["hstate"][i])
             player.event_book.add_event(self.event_book.filter(
                 end_tick = player.tick,
                 id = player.id,
@@ -520,8 +501,8 @@ class WerewolfGameEnv:
             ))
             self.all_players.append(player)
             self.player_types.append("reflex")
-        self.logger.info(f"Checkpoint loaded successfully")
-
+        self.logger.info(f"Info loaded successfully")
+        
     def get_gt_hstate(self):
         #A temporary version for the current hidden state definition
         hstate = []
@@ -533,21 +514,7 @@ class WerewolfGameEnv:
     def all_players_reflex(self):
         for player_id in range(len(self.all_players)):
             player = self.all_players[player_id]
-            if self.player_types[player_id] == "baseline":
-                res = send_message(
-                    render.game_intro(player),
-                    render.game_report(self, player),
-                    render.notetaking_command(),
-                )
-                self.add_event(
-                    {
-                        "event": "notetaking",
-                        "content": {"player": player_id, "context": res},
-                        "visible": player_id
-                    }
-                )
-                player.notes = res
-            elif self.player_types[player_id] == "reflex":
+            if self.player_types[player_id] == "reflex":
                 player.reflex(self.data)
                 
     def all_players_reflex_from_data_path(self, data_path):
@@ -557,42 +524,27 @@ class WerewolfGameEnv:
         self.logger.info("All players reflexed successfully")
         return
     
-    def act(self, player_id, actions, update_hstate = True):
-        return self.all_players[player_id]._act(self.event_book, 
-                                                available_actions = [actions] if isinstance(actions, str) else actions,
-                                                update_hstate = update_hstate)
+    def act(self, player_id, actions):
+        return self.all_players[player_id]._act(available_actions = [actions] if isinstance(actions, str) else actions)
     
-    def update_all_hstates(self):
+    def update_data(self):
+       self.data.add_edge_and_node(
+            events=self.temp_events,
+            info = self.get_state()
+        )
+       self.temp_events = []
+    
+    def update_all_hstates(self, add_to_data = True):
         for player in self.all_players:
             player.update_hidden_state(self.event_book)
         self.logger.info("All hidden states updated successfully")
-        self.add_events_to_data(self.temp_events)
-        self.temp_events = []
-        self.add_all_hstate_to_data()
+        if add_to_data:
+            self.update_data()
         return
-    
-    def act_and_collect_hstate(self, player_id, actions):
-        self.update_all_hstates()
-        return self.act(player_id, actions, update_hstate=False)
 
-    def get_hstate(self, player_id):
-        return self.all_players[player_id].hidden_state
-    
     def get_joint_hstate(self):
         return np.concatenate([player.hidden_state.beliefs for player in self.all_players], axis = 0)
     
-    def add_all_hstate_to_data(self):
-        if self.temp_events:
-            self.add_events_to_data(self.temp_events)
-            self.temp_events = []
-        self.data.append(self.get_joint_hstate())
-    
-    def add_events_to_data(self, events):
-        #convert events to a tuple of strings
-        _events_ = [str(event) for event in events]
-        #convert to a tuple and add to data as a single element
-        self.data.append(tuple(_events_))
-
     
     def store_data(self, path):
         if not self.data:
@@ -611,10 +563,10 @@ class WerewolfGameEnv:
         
     def end(self):
         self.logger.info("Game ended")
+        self.update_all_hstates(add_to_data=True)
         self.save_game_record()
-        self.add_events_to_data(self.temp_events)
-        self.temp_events = []
         self.store_data(f"data/game_{self.id}_data.pkl")
+        self.logger.info(f"data stored successfully to data/game_{self.id}_data.pkl")
         if self.train:
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
@@ -714,7 +666,7 @@ class WerewolfGameEnv:
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
 
-    def sim_game_for_reflex_players(self):
+    def sim_game_for_reflex_players(self, trace_back_prob = 0.5):
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         collect_rewards = [0 for _ in range(self.player_num)]
@@ -727,8 +679,12 @@ class WerewolfGameEnv:
                 self.logger.info(str(info))
             if all(dones):
                 break
-            for i in range(self.player_num):
-                self.all_players[i].update_hidden_state(self.event_book)
+            self.update_all_hstates(add_to_data=True)
+            if self.game_status["cur_stage"] == "day":
+                r = random.random()
+                if r <= trace_back_prob:
+                    self.logger.info("Random Trace Back Triggered!")
+                    self.backtrace(1)
         self.logger.info("Game simulated successfully")
         
     def reset(self):
@@ -757,3 +713,10 @@ class WerewolfGameEnv:
         self.logger.info("Game reset successfully")
         #return obs, state, available_actions
         return self._repeat(self.get_observation_single_player), self.get_state(), self.get_available_actions()
+    
+    def backtrace(self, back_steps = 1):
+        node_id = self.data.get_backtrace_id(back_steps)
+        recover_info = self.data.backtrace(node_id)
+        info = recover_info["state"]
+        events = recover_info["events"]
+        self.load_state(info, events)

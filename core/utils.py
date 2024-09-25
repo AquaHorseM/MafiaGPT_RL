@@ -9,6 +9,9 @@ import pickle
 def load_player_from_checkpoint(path, game, player_id):
     with open(path, 'rb') as file:
         info = pickle.load(file)
+    return load_player_from_info(info, game, player_id)
+
+def load_player_from_info(info, global_info, player_id):
     role = info["private_info"]["role"]
     switcher = {
         "werewolf": WerewolfPlayer,
@@ -16,8 +19,7 @@ def load_player_from_checkpoint(path, game, player_id):
         "seer": SeerPlayer,
         "villager": VillagerPlayer
     }
-    p = switcher[role](player_id, game.get_global_info(), info["private_info"], info["prompt_dir_path"])
-    p.hidden_state.beliefs = info["beliefs"]
+    p = switcher[role](player_id, global_info, info["private_info"], info["prompt_dir_path"])
     p.tick = info["tick"]
     return p
 

@@ -53,7 +53,7 @@ if __name__ == "__main__":
     
     if args.ckpt_path is not None:
         game = Game(args.start_idx, args.train, openai_client=client, skip_error=args.skip_error)
-        game.load_checkpoint(args.ckpt_path)
+        game.load_checkpoint_from_path(args.ckpt_path)
         game.run_game()
     else:
         run_game = partial(run_game_with_client, client=client, skip_error=args.skip_error)

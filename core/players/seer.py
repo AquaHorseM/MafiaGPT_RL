@@ -30,9 +30,7 @@ class SeerPlayer(Player):
         if "known_roles" not in self.private_info:
             self.private_info["known_roles"] = dict()
         
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
+    def _act(self, available_actions = None):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
@@ -40,10 +38,10 @@ class SeerPlayer(Player):
             res = self._see()
             return ("see", res[0], res[1])
         elif "speak" in available_actions:
-            res = self._speak(event_book, update_hstate=False)
+            res = self._speak()
             return ("speak", None, res)
         elif "speak_type" in available_actions:
-            res = self._get_speak_type(event_book, update_hstate=False)
+            res = self._get_speak_type()
             return ("speak_type", res, None)
     
     

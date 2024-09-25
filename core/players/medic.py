@@ -9,6 +9,7 @@ class MedicPlayer(Player):
         super().__init__(id, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
         self.labels = ["all", "medic"]
         self.role = "medic"
+        self.private_info["last_heal"] = None
         
     def get_replacements(self):
         replacements = super().get_replacements()
@@ -25,14 +26,8 @@ class MedicPlayer(Player):
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
         return replacements
-    
-    def init_game(self, global_info, private_info):
-        super().init_game(global_info, private_info)
-        self.private_info["last_heal"] = None
         
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
+    def _act(self, available_actions = None):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
@@ -40,10 +35,10 @@ class MedicPlayer(Player):
             res = self._heal()
             return ("heal", res[0], res[1])
         elif "speak" in available_actions:
-            res = self._speak(event_book, update_hstate=False)
+            res = self._speak()
             return ("speak", None, res)
         elif "speak_type" in available_actions:
-            res = self._get_speak_type(event_book, update_hstate=False)
+            res = self._get_speak_type()
             return ("speak_type", res, None)
     
     def _heal(self):

@@ -14,7 +14,7 @@ def events_include_player(event, player_id):
             f.write(f"Event not include player {player_id}: {event}\n")
         return False
 
-def get_prompt(prompt_path, replacements):
+def get_prompt(prompt_path, replacements, background_path = None):
     if not prompt_path.endswith(".txt"):
         prompt_path = prompt_path + ".txt"
     with open(prompt_path, 'r') as file:

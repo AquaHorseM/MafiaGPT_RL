@@ -22,21 +22,16 @@ class VillagerPlayer(Player):
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
         return replacements
-    
-    def init_game(self, global_info, private_info):
-        super().init_game(global_info, private_info)
 
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
+    def _act(self, available_actions = None):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
         elif "speak" in available_actions:
-            res = self._speak(event_book, update_hstate=False)
+            res = self._speak()
             return ("speak", None, res)
         elif "speak_type" in available_actions:
-            res = self._get_speak_type(event_book, update_hstate=False)
+            res = self._get_speak_type()
             return ("speak_type", res, None)
         else:
             return (None, None, None)

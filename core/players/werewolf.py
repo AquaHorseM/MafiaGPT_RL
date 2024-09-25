@@ -9,6 +9,8 @@ class WerewolfPlayer(Player):
         super().__init__(id, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
         self.labels = ["all", "werewolf"]
         self.role = "werewolf"
+        for wid in self.private_info["werewolf_ids"]:
+            self.hidden_state.set_role(wid, self.global_info["roles_mapping"]["werewolf"])
         
     def get_replacements(self):
         replacements = super().get_replacements()
@@ -26,13 +28,8 @@ class WerewolfPlayer(Player):
         replacements.update({"{events}": str(self.event_book)})
         replacements.update({"{previous_advices}": self.show_previous_advices()})
         return replacements
-    
-    def init_game(self, global_info, private_info):
-        super().init_game(global_info, private_info)
-        for wid in self.private_info["werewolf_ids"]:
-            self.hidden_state.set_role(wid, self.global_info["roles_mapping"]["werewolf"])
         
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
+    def _act(self, available_actions = None):
         if "vote" in available_actions:
             res = self._vote()
             return ("vote", res[0], res[1])
@@ -40,10 +37,10 @@ class WerewolfPlayer(Player):
             res = self._kill()
             return ("kill", res[0], res[1])
         elif "speak" in available_actions:
-            res = self._speak(event_book, update_hstate)
+            res = self._speak()
             return ("speak", None, res)
         elif "speak_type" in available_actions:
-            res = self._get_speak_type(event_book, update_hstate)
+            res = self._get_speak_type()
             return ("speak_type", res, None)
     
     def _kill(self):

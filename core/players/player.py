@@ -111,15 +111,20 @@ class Player:
         self.openai_client = openai_client
         self.reflex_note_path_belief = reflex_note_path_belief if reflex_note_path_belief is not None else os.path.join(prompt_dir_path, "reflex_note_belief.txt")
         self.reflex_note_path_policy = reflex_note_path_policy if reflex_note_path_policy is not None else os.path.join(prompt_dir_path, "reflex_note_policy.txt")
-        self.init_game(global_info, private_info)
-        
-    def init_game(self, global_info, private_info):
         self.global_info = deepcopy(global_info)
         self.private_info = deepcopy(private_info)
         self.hidden_state = self.HiddenState(global_info["player_num"], global_info["roles_mapping"])
 
     def __str__(self):
         return f"Player {self.id}"
+    
+    def get_prompt(self, prompt_name: str, replacements = None):
+        if not prompt_name.endswith(".txt"):
+            prompt_name = prompt_name + ".txt"
+        background_file_name = "background.txt"
+        if replacements is None:
+            replacements = self.get_replacements()
+        return get_prompt(self.get_prompt_path(prompt_name), replacements, background_path=self.get_prompt_path(background_file_name))
 
     def update_hidden_state(self, event_book: EventBook):
         if event_book.tick == self.tick:
@@ -127,7 +132,7 @@ class Player:
         self._update_hidden_state(self.filter_event_book(event_book))
         self.tick = event_book.tick
     
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True): #return (action, target, reason)
+    def _act(self, available_actions = None): #return (action, target, reason)
         if len(available_actions) == 0:
             return (None, None, "No available actions.")
         else:
@@ -143,9 +148,7 @@ class Player:
         vote = get_target_from_response(response)
         return vote, response
     
-    def _get_speak_type(self, event_book: EventBook, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
+    def _get_speak_type(self):
         prompt_path = self.get_prompt_path("speak_type.txt")
         replacements = self.get_replacements()
         prompt = get_prompt(prompt_path, replacements)
@@ -166,11 +169,9 @@ class Player:
         prompt = get_prompt(prompt_path, replacements)
         response = self.send_message_xsm(prompt)
         return response
-        
-        
     
-    def _speak(self, event_book: EventBook, update_hstate = True): #TODO
-        s_type = self._get_speak_type(event_book, update_hstate)
+    def _speak(self): #TODO
+        s_type = self._get_speak_type()
         replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
@@ -239,14 +240,14 @@ class Player:
     DO NOT use them in the future.
     '''
     
-    def healing(self, game, update_hstate=True):
-        return self._act(game.event_book, available_actions = ["heal"], update_hstate = update_hstate)
+    def healing(self):
+        return self._act(available_actions = ["heal"])
     
-    def inquiry(self, game, update_hstate=True):
-        return self._act(game.event_book, available_actions = ["see"], update_hstate = update_hstate)
+    def inquiry(self):
+        return self._act(available_actions = ["see"])
     
-    def kill(self, game, update_hstate=True):
-        return self._act(game.event_book, available_actions = ["kill"], update_hstate = update_hstate)
+    def kill(self):
+        return self._act(available_actions = ["kill"])
     
     '''
     The following functions are defined for saving and loading checkpoints.
@@ -254,13 +255,13 @@ class Player:
     
     def save_checkpoint(self, path):
         info = {
-            "beliefs": self.hidden_state.beliefs,
             "prompt_dir_path": self.prompt_dir_path,
             "private_info": self.private_info,
-            "tick": self.tick
         }
-        with open(path, 'wb') as file:
-            pickle.dump(info, file)
+        if path is not None:
+            with open(path, 'wb') as file:
+                pickle.dump(info, file)
+        return info
 
     def reflex_single_pair(self, prev_hstate, prev_gt_hstate, new_events, next_hstate, pred_hstate, note_type = "belief"):
         replacements = self.get_replacements()
@@ -412,3 +413,12 @@ class Player:
     
     def reset(self):
         self.hidden_state = self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"])
+        
+    def backtrace(self, back_step = 1, hstate = None, global_info = None, private_info = None):
+        self.event_book.backtrace(back_step)
+        if hstate is not None:
+            self.hidden_state = deepcopy(hstate)
+        if global_info is not None:
+            self.global_info = deepcopy(global_info)
+        if private_info is not None:
+            self.private_info = deepcopy(private_info)
