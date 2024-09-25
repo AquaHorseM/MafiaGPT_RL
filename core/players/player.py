@@ -85,7 +85,7 @@ class Player:
             reflex_note_belief = f.read()
         with open(self.reflex_note_path_policy, "r") as f:
             reflex_note_policy = f.read()
-        current_round = self.global_info["current_round"] if self.global_info.get("current_round") is not None else self.global_info["game_status"]["current_round"]
+        current_round = self.global_info["current_round"] if self.global_info.get("current_round") is not None else self.global_info["game_status"]["cur_round"]
         return {
             "{player_id}": str(self.id),
             "{player_num}": str(self.global_info["player_num"]),
