@@ -178,7 +178,7 @@ def load_config(config_path):
     with open(config_path, 'r') as file:
         return json.load(file)
 
-def send_dialogue(folder_path, background_path, replacements, config_path = None):
+def send_dialogue(folder_path, background_path, replacements, config_path = None, client = None):
     prompts = load_prompts_from_folder(folder_path)
     config = load_config(config_path) if config_path is not None else load_config(os.path.join(folder_path, "config.json"))
     
@@ -190,25 +190,25 @@ def send_dialogue(folder_path, background_path, replacements, config_path = None
             prompt_path = os.path.join(folder_path, prompt_name)
             prompt = get_prompt(prompt_path, replacements, background_path=None)
             conversation_history.append({"role": "user", "content": prompt})
-            response = send_message_xsm(conversation_history) #?
+            response = send_message_xsm(conversation_history, client = client) #?
             conversation_history.append({"role": "assistant", "content": response})
     # Return the final response from the last assistant message
     return conversation_history[-1]["content"]
 
-def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements):
+def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, client):
     background_path = os.path.join(common_dir_path, "background.txt")
     common_folder = os.path.join(common_dir_path, prompt_name)
     if os.path.exists(common_folder):
-        return send_dialogue(common_folder, background_path, replacements)
+        return send_dialogue(common_folder, background_path, replacements, client = client)
     common_file = os.path.join(common_dir_path, prompt_name + ".txt")
     if os.path.exists(common_file):
         prompt = get_prompt(common_file, replacements, background_path)
-        return send_message_xsm(prompt)
+        return send_message_xsm(prompt, client = client)
     role_folder = os.path.join(prompt_dir_path, prompt_name)
     if os.path.exists(role_folder):
-        return send_dialogue(role_folder, background_path, replacements)
+        return send_dialogue(role_folder, background_path, replacements, client = client)
     role_file = os.path.join(prompt_dir_path, prompt_name + ".txt")
     if os.path.exists(role_file):
         prompt = get_prompt(role_file, replacements, background_path)
-        return send_message_xsm(prompt)
+        return send_message_xsm(prompt, client = client)
     raise ValueError(f"Prompt Not found for {prompt_name}")

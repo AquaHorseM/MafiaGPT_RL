@@ -389,4 +389,4 @@ class Player:
     def get_response(self, prompt_name, replacements = None):
         if replacements is None:
             replacements = self.get_replacements()
-        return get_response(self.prompt_dir_path, self.common_prompt_dir, prompt_name, replacements)
+        return get_response(self.prompt_dir_path, self.common_prompt_dir, prompt_name, replacements, client = self.openai_client)
