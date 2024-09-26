@@ -316,7 +316,7 @@ class WerewolfGameEnv:
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
             self.game_status["cur_round"] += 1
-        self.update_all_hstates(add_to_data = True)
+        # self.update_all_hstates(add_to_data = True)
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
@@ -695,7 +695,7 @@ class WerewolfGameEnv:
                 self.logger.info(str(info))
             if all(dones):
                 break
-            # self.update_all_hstates(add_to_data=True)
+            self.update_all_hstates(add_to_data=True)
         self.logger.info("Game simulated successfully")
         
     def reset(self):

@@ -87,6 +87,7 @@ class DataTree:
         return node_id
     
     def backtrace(self, node_id: int):
+        print(f"data debug: cur id is {self.cur_id}, target id is {node_id}")
         self.cur_id = node_id
         return {
             "state": self.nodes[node_id].state,
