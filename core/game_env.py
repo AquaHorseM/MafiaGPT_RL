@@ -673,13 +673,19 @@ class WerewolfGameEnv:
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         collect_rewards = [0 for _ in range(self.player_num)]
+        f = 0
         while True:
             if self.game_status["cur_stage"] == "day":
-                r = random.random()
-                if r <= trace_back_prob:
-                    self.logger.info("Random Trace Back Triggered!")
-                    self.backtrace(1)
-                avail_actions = self.get_available_actions()
+                if f == 0:
+                    f = 1
+                else:
+                    r = random.random()
+                    if r <= trace_back_prob:
+                        self.logger.info("Random Trace Back Triggered!")
+                        self.backtrace(1)
+                    avail_actions = self.get_available_actions()
+            else:
+                f = 0
             actions = self.get_actions_reflex(avail_actions)
             self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
