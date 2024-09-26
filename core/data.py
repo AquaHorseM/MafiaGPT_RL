@@ -2,12 +2,13 @@ import random
 from core.event import Event
 from typing import List, Union
 import numpy as np
+from copy import deepcopy
 
 class StateNode:
     def __init__(self, id: int, parent_id: int, state):
         self.id = id
         self.parent_id = parent_id
-        self.state = state
+        self.state = deepcopy(state)
         self.edges: list[int] = []
     
     def add_edge(self, edge_id: int):
@@ -92,8 +93,8 @@ class DataTree:
     def backtrace(self, node_id: int):
         print("***************************")
         print(f"data debug: cur id is {self.cur_id}, target id is {node_id}")
-        print(f"game status of {node_id} is {self.get_game_status(node_id)}")
-        print(f"game status of {self.cur_id} is {self.get_game_status(self.cur_id)}")
+        for i in range(len(self.nodes)):
+            print(f"game status of {i} is {self.get_game_status(i)}")
         print("***************************")
         self.cur_id = node_id
         return {
