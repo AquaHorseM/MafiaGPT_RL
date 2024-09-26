@@ -30,7 +30,7 @@ def count_adjustable_params(func):
 
     count = 0
     for i, param in enumerate(params.values()):
-        print(f"param: {param}")
+        # print(f"param: {param}")
         # Skip 'self' or 'cls' for methods
         if is_method and i == 0 and param.name in ('self', 'cls'):
             continue
@@ -637,12 +637,12 @@ class WerewolfGameEnv:
     
     def get_actions_from_reflex_player(self, player_id, available_actions):
         player_avail_actions = self._convert_available_actions_to_description(available_actions[player_id])
-        print(f"Player id: {player_id}, available_actions: {player_avail_actions}")
+        # print(f"Player id: {player_id}, available_actions: {player_avail_actions}")
         if len(player_avail_actions) == 0:
             return 0 #Will not be checked, so return whatever action
         else:
             action = self.all_players[player_id]._act(player_avail_actions)
-            print(f"Debug: action is {action}")
+            # print(f"Debug: action is {action}")
             if isinstance(action, tuple):
                 if action[0] == "speak_type":
                     s_type = action[1]
