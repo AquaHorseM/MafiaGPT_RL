@@ -91,11 +91,11 @@ class DataTree:
         return self.nodes[node_id].state["global_info"]["game_status"]
     
     def backtrace(self, node_id: int):
-        print("***************************")
-        print(f"data debug: cur id is {self.cur_id}, target id is {node_id}")
-        for i in range(1, len(self.nodes)):
-            print(f"game status of {i} is {self.get_game_status(i)}")
-        print("***************************")
+        # print("***************************")
+        # print(f"data debug: cur id is {self.cur_id}, target id is {node_id}")
+        # for i in range(1, len(self.nodes)):
+        #     print(f"game status of {i} is {self.get_game_status(i)}")
+        # print("***************************")
         self.cur_id = node_id
         return {
             "state": self.nodes[node_id].state,
