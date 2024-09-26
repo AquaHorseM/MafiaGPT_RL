@@ -729,8 +729,9 @@ class WerewolfGameEnv:
         node_id = self.data.get_backtrace_id(back_steps)
         recover_info = self.data.backtrace(node_id)
         info = recover_info["state"]
+        prev_game_status = info["global_info"]["game_status"]
         events = recover_info["events"]
         print(f"current game status: {self.game_status}")
-        print(f"game status to recover: {info["global_info"]["game_status"]}")
+        print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
         print(f"current game status: {self.game_status}")
