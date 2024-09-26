@@ -670,7 +670,7 @@ class WerewolfGameEnv:
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
 
-    def sim_game_for_reflex_players(self, trace_back_prob = 0.7):
+    def sim_game_for_reflex_players(self, trace_back_prob = 0.9):
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         collect_rewards = [0 for _ in range(self.player_num)]
@@ -685,6 +685,7 @@ class WerewolfGameEnv:
                         self.logger.info("Random Trace Back Triggered!")
                         self.backtrace(1)
                     avail_actions = self.get_available_actions()
+                    f = 0
             else:
                 f = 0
             actions = self.get_actions_reflex(avail_actions)
