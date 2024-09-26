@@ -53,7 +53,7 @@ class Player:
                     cur_player_id = int(belief_player_matches.group(1))
                 else:
                     assert cur_player_id is not None, "Invalid belief string"
-                    self_role_matches = re.search(r"player (\d+) is (.*) with probability (\d+.\d+)", line)
+                    self_role_matches = re.search(r"player (\d+) is (.*) with probability (\d+(\.\d+)?)", line)
                     if self_role_matches is not None:
                         try:
                             j = int(self_role_matches.group(1))

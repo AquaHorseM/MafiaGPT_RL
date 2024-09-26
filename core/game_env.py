@@ -70,7 +70,7 @@ class WerewolfGameEnv:
         self.game_status = {
             "cur_stage": "night", #night, day, vote
             "cur_round": 0,
-            "speaking_player": None, 
+            "next_speaking_player": None, 
             "start_speaking_player": None,
             "winner": None
         }
@@ -291,9 +291,9 @@ class WerewolfGameEnv:
             self.check_death_info()
             self.game_status["cur_stage"] = "day"
             self.game_status["start_speaking_player"] = random.choice(self.alive_players)
-            self.game_status["speaking_player"] = self.game_status["start_speaking_player"]
+            self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
         elif self.game_status["cur_stage"] == "day":
-            speaking_player = self.game_status["speaking_player"]
+            speaking_player = self.game_status["next_speaking_player"]
             speak_type = get_speech_type(actions[speaking_player])
             self.add_event({"event": "speak_type", "content": {"player": speaking_player, "speak_type": speak_type, "reason": None}, "visible": speaking_player})
             speech = self.all_players[speaking_player].speak_with_type(speak_type)
@@ -304,7 +304,7 @@ class WerewolfGameEnv:
                     self.game_status["cur_stage"] = "vote"
                     break
                 elif speaking_player in self.alive_players:
-                    self.game_status["speaking_player"] = speaking_player
+                    self.game_status["next_speaking_player"] = speaking_player
                     break
         else: #vote stage
             votes = {i : get_vote_target(actions[i]) for i in self.alive_players}
@@ -530,12 +530,13 @@ class WerewolfGameEnv:
         return self.all_players[player_id]._act(available_actions = [actions] if isinstance(actions, str) else actions)
     
     def update_data(self):
-       self.data.add_edge_and_node(
+        print(f"debug: adding game_status {self.game_status} to data")
+        self.data.add_edge_and_node(
             events = self.temp_events,
             actions = self.latest_actions,
             state = self.get_state()
         )
-       self.temp_events = []
+        self.temp_events = []
     
     def update_all_hstates(self, add_to_data = True):
         for player in self.all_players:
@@ -612,7 +613,7 @@ class WerewolfGameEnv:
             }
             return night_actions[self.all_players[player_id].get_role()]
         elif self.game_status["cur_stage"] == "day":
-            if player_id == self.game_status["speaking_player"]:
+            if player_id == self.game_status["next_speaking_player"]:
                 return ["speak"]
             else:
                 return []
@@ -707,7 +708,7 @@ class WerewolfGameEnv:
         self.game_status = {
             "cur_stage": "night", #night, day, vote
             "cur_round": 0,
-            "speaking_player": None, 
+            "next_speaking_player": None, 
             "start_speaking_player": None,
             "winner": None
         }
