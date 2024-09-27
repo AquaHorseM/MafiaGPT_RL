@@ -133,7 +133,7 @@ class DataTree:
                 print(f"No action done by player {player_id} in the data.")
                 return None
         else:
-            node_ids = self.nodes
+            node_ids = range(len(self.nodes))
         if sampling_method == "sqrt":
             weights = [np.sqrt(len(self.nodes[node_id].edges)) for node_id in node_ids]
         elif sampling_method == "log":

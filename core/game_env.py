@@ -560,15 +560,14 @@ class WerewolfGameEnv:
         if not self.data:
             self.logger.warning("No data to store! Skipped!")
             return
-        if os.path.exists(path):
-            with open(path, "rb") as file:
-                d = pickle.load(file)
-            dat = d + self.data
-        else:
-            dat = self.data
         with open(path, "wb") as file:
-            pickle.dump(dat, file)
+            pickle.dump(self.data, file)
         self.logger.info(f"Data stored successfully to {path}")
+        
+    def load_data(self, path):
+        self.data_path = path
+        with open(path, "rb") as f:
+            self.data: DataTree = pickle.load(f)
         
     def end(self):
         self.logger.info("Game ended")
