@@ -8,11 +8,16 @@ class StateNode:
     def __init__(self, id: int, parent_id: int, state):
         self.id = id
         self.parent_id = parent_id
-        self.state = deepcopy(state)
+        self.state: dict = deepcopy(state)
         self.edges: list[int] = []
     
     def add_edge(self, edge_id: int):
         self.edges.append(edge_id)
+        
+    def print_state(self, show_hstate_detail = False):
+        for key, value in self.state.items():
+            if key != "hstate" or show_hstate_detail:
+                print(f"{key}: {value}")
     
     def __repr__(self):
         return f"Node({self.id})" if self.id != 0 else "Root Node"
@@ -170,7 +175,7 @@ class DataTree:
                     print("*****************************")
                     print(f"State of node {id} is: ")
                     print("&&&&&&&&&&&&&&&&&&&&&&&&&")
-                    print(self.nodes[id].state)
+                    self.nodes[id].print_state(show_hstate_detail = False)
                     print("&&&&&&&&&&&&&&&&&&&&&&&&&")
                     print("*****************************")
                 elif command == "events":
