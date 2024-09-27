@@ -153,8 +153,54 @@ class DataTree:
             if node_id not in samples:
                 samples.append(node_id)
         return samples
-
+    
+    def show_info(self, interactive = False):
+        for i in range(len(self.nodes)):
+            print(f"Node {i}'s parent: {self.nodes[i].parent_id}")
+        if interactive:
+            while True:
+                command = input("Please input your command")
+                if command == "view":
+                    id = int(eval(input("Please input the node id you want to view; -1 for backward.")))
+                    if id == -1:
+                        continue
+                    if id < 0 or id >= len(self.nodes):
+                        print("Invalid id! Back to command input session.")
+                        continue
+                    print("*****************************")
+                    print(f"State of node {id} is: ")
+                    print("&&&&&&&&&&&&&&&&&&&&&&&&&")
+                    print(self.nodes[id].state)
+                    print("&&&&&&&&&&&&&&&&&&&&&&&&&")
+                    print("*****************************")
+                elif command == "events":
+                    t = input("Do you want to see events of an edge or a node? Enter 'edge' or 'node' correspondingly.")
+                    if t not in ["edge", "node"]:
+                        print("Unrecognized! Back to command input session.")
+                    else:
+                        id = int(eval(input("Please input the node id you want to view; -1 for backward.")))
+                        if id == -1:
+                            continue
+                        if id < 0 or (t == "node" and id >= len(self.nodes)) or (t == "edge" and id >= len(self.edges)):
+                            print("Invalid id! Back to command input session.")
+                            continue
+                        if t == "node":
+                            print("*****************************")
+                            print(f"Events of node {id} are: ")
+                            print("&&&&&&&&&&&&&&&&&&&&&&&&&")
+                            print(self.get_events(id))
+                            print("&&&&&&&&&&&&&&&&&&&&&&&&&")
+                            print("*****************************")
+                        else:
+                            print("*****************************")
+                            print(f"Events of edge {id} are: ")
+                            print("&&&&&&&&&&&&&&&&&&&&&&&&&")
+                            print(self.edges[id].events)
+                            print("&&&&&&&&&&&&&&&&&&&&&&&&&")
+                            print("*****************************")
+                else:
+                    break
+                        
     def __repr__(self):
         return f"Tree(Nodes: {self.nodes}, Edges: {self.edges})"
-    
     
