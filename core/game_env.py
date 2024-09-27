@@ -568,7 +568,6 @@ class WerewolfGameEnv:
             dat = self.data
         with open(path, "wb") as file:
             pickle.dump(dat, file)
-        self.data = []
         self.logger.info(f"Data stored successfully to {path}")
         
     def end(self):
@@ -576,7 +575,6 @@ class WerewolfGameEnv:
         self.update_all_hstates(add_to_data=True)
         self.save_game_record()
         self.store_data(f"data/game_{self.id}_data.pkl")
-        self.logger.info(f"data stored successfully to data/game_{self.id}_data.pkl")
         if self.train:
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
@@ -728,7 +726,7 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        self.data = []
+        self.data = DataTree()
         self.logger.info("Game reset successfully")
         #return obs, state, available_actions
         return self._repeat(self.get_observation_single_player), self.get_state(), self.get_available_actions()

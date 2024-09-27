@@ -59,6 +59,7 @@ class DataTree:
     def add_edge_and_node(self, events, actions, state):
         start_id = self.cur_id
         node_id = self._add_node(start_id, state)
+        print(f"debug: adding edge from {self.cur.id} to {node_id}")
         self._add_edge(start_id, node_id, events, actions)
         self.cur_id = node_id
         
@@ -102,6 +103,7 @@ class DataTree:
         #     print(f"game status of {i} is {self.get_game_status(i)}")
         # print("***************************")
         self.cur_id = node_id
+        print(f"backtraced to node {node_id}")
         return {
             "state": self.nodes[node_id].state,
             "events": self.get_events(node_id)
@@ -164,9 +166,9 @@ class DataTree:
             print(f"Node {i}'s parent: {self.nodes[i].parent_id}")
         if interactive:
             while True:
-                command = input("Please input your command")
+                command = input("Please input your command\n")
                 if command == "view":
-                    id = int(eval(input("Please input the node id you want to view; -1 for backward.")))
+                    id = int(eval(input("Please input the node id you want to view; -1 for backward.\n")))
                     if id == -1:
                         continue
                     if id < 0 or id >= len(self.nodes):
@@ -179,11 +181,11 @@ class DataTree:
                     print("&&&&&&&&&&&&&&&&&&&&&&&&&")
                     print("*****************************")
                 elif command == "events":
-                    t = input("Do you want to see events of an edge or a node? Enter 'edge' or 'node' correspondingly.")
+                    t = input("Do you want to see events of an edge or a node? Enter 'edge' or 'node' correspondingly.\n")
                     if t not in ["edge", "node"]:
                         print("Unrecognized! Back to command input session.")
                     else:
-                        id = int(eval(input("Please input the node id you want to view; -1 for backward.")))
+                        id = int(eval(input("Please input the node id you want to view; -1 for backward.\n")))
                         if id == -1:
                             continue
                         if id < 0 or (t == "node" and id >= len(self.nodes)) or (t == "edge" and id >= len(self.edges)):
