@@ -59,7 +59,7 @@ class DataTree:
     def add_edge_and_node(self, events, actions, state):
         start_id = self.cur_id
         node_id = self._add_node(start_id, state)
-        print(f"debug: adding edge from {self.cur.id} to {node_id}")
+        print(f"debug: adding edge from {self.cur_id} to {node_id}")
         self._add_edge(start_id, node_id, events, actions)
         self.cur_id = node_id
         
