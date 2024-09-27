@@ -27,7 +27,7 @@ class EventsEdge:
         self.id = id
         self.start_id = node1_id
         self.end_id = node2_id
-        self.events = events
+        self.events = deepcopy(events)
         self.actions = actions
     
     def __repr__(self):

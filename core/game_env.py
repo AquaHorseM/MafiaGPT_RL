@@ -454,8 +454,7 @@ class WerewolfGameEnv:
         
     def add_event(self, event):
         if isinstance(event, Event):
-            if self.train:
-                self.temp_events.append(event)
+            self.temp_events.append(event)
             self.event_book.add_event(event)
             self.logger.info(event)
         else:
@@ -537,7 +536,7 @@ class WerewolfGameEnv:
         return self.all_players[player_id]._act(available_actions = [actions] if isinstance(actions, str) else actions)
     
     def update_data(self):
-        print(f"debug: adding game_status {self.game_status} to data")
+        # print(f"debug: adding game_status {self.game_status} to data")
         self.data.add_edge_and_node(
             events = self.temp_events,
             actions = self.latest_actions,
