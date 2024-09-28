@@ -1,6 +1,6 @@
 __pycache__/
 venv/
-records/
+data/
 checkpoints/
 message_history_backup.txt
 .history/

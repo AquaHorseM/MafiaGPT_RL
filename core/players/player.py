@@ -245,7 +245,7 @@ class Player:
     
     def reflex(self, data : DataTree, sample_num = 6):
         reflex_data_belief = data.sample(self.id, sample_num = sample_num)
-        reflex_data_policy = data.sample(self.id, filter_node = True, sample_num = sample_num)
+        reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = sample_num)
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
         print(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
         print(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")

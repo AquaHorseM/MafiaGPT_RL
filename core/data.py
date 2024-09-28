@@ -18,6 +18,9 @@ class StateNode:
         for key, value in self.state.items():
             if key != "hstate" or show_hstate_detail:
                 print(f"{key}: {value}")
+                
+    def is_alive(self, player_id):
+        return player_id in self.state["global_info"]["alive_players"]
     
     def __repr__(self):
         return f"Node({self.id})" if self.id != 0 else "Root Node"
@@ -109,8 +112,8 @@ class DataTree:
             "events": self.get_events(node_id)
         }
         
-    def filter_node(self, node_id: int, player_id: int):
-        return any(self.filter_edge(e, player_id) for e in self.nodes[node_id].edges)
+    def filter_node(self, node_id: int, player_id: int, filter_events = False):
+        return self.nodes[node_id].is_alive(player_id) and (filter_events and any(self.filter_edge(e, player_id) for e in self.nodes[node_id].edges))
         
     def filter_edge(self, edge_id: int, player_id: int):
         return True if self.edges[edge_id].actions[player_id] != 0 else False
@@ -129,15 +132,12 @@ class DataTree:
             ]
         }
         
-    def sample_single(self, player_id = None, filter_node = False, sampling_method = "sqrt"): #sampling method from 'uniform', 'log' and 'sqrt'
+    def sample_single(self, player_id = None, filter_events = False, sampling_method = "sqrt"): #sampling method from 'uniform', 'log' and 'sqrt'
         #TODO find a better sampling method
-        if filter_node:
-            node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id)]
-            if len(node_ids) == 0:
-                print(f"No action done by player {player_id} in the data.")
-                return None
-        else:
-            node_ids = range(len(self.nodes))
+        node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id, filter_events)]
+        if len(node_ids) == 0:
+            print(f"No action done by player {player_id} in the data.")
+            return None
         if sampling_method == "sqrt":
             weights = [np.sqrt(len(self.nodes[node_id].edges)) for node_id in node_ids]
         elif sampling_method == "log":
@@ -148,19 +148,18 @@ class DataTree:
             raise ValueError(f"Sampling Method {sampling_method} not recognized")
         return random.choices(node_ids, weights=weights)[0]
 
-    def sample(self, player_id = None, filter_node = False, sampling_method = "sqrt", sample_num = 1):
-        if filter_node:
-            node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id)]
-            if len(node_ids) == 0:
-                print(f"No action done by player {player_id} in the data.")
-                return []
-            elif len(node_ids) <= sample_num:
-                if len(node_ids) < sample_num:
-                    print(f"Warning: Only {len(node_ids)} valid samples in data, but {sample_num} is required.")
-                return node_ids
+    def sample(self, player_id = None, filter_events = False, sampling_method = "sqrt", sample_num = 1):
+        node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id, filter_events)]
+        if len(node_ids) == 0:
+            print(f"No action done by player {player_id} in the data.")
+            return []
+        elif len(node_ids) <= sample_num:
+            if len(node_ids) < sample_num:
+                print(f"Warning: Only {len(node_ids)} valid samples in data, but {sample_num} is required.")
+            return node_ids
         samples = []
         while len(samples) < sample_num:
-            node_id = self.sample_single(player_id, filter_node, sampling_method)
+            node_id = self.sample_single(player_id, filter_events, sampling_method)
             if node_id not in samples:
                 samples.append(node_id)
         return samples
