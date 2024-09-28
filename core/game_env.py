@@ -60,7 +60,7 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        self.data = DataTree(self.get_state())
+        
         self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
         #clear the data file if it exists
@@ -78,6 +78,7 @@ class WerewolfGameEnv:
         self.action_space = []
         self.observation_space = None
         self.shared_observation_space = None
+        self.data = DataTree()
         
         self.logger.info(f"Game {self.id} created successfully")
 
@@ -154,7 +155,9 @@ class WerewolfGameEnv:
                     self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
                 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
-    
+        #restore the data
+        self.data = DataTree(self.get_state())
+        
     def get_unique_observation_space_single_player(self, player_id):
         def get_belief():
             return gym.spaces.Box(low = 0, high = 1, shape = (self.player_num * self.player_num * 4,), dtype = np.float32)
@@ -233,7 +236,7 @@ class WerewolfGameEnv:
         }
     
     def get_state(self):
-        hstate = self.get_joint_hstate()
+        hstate = self.get_joint_hstate() if len(self.all_players) != 0 else 
         private_infos = [self.all_players[i].private_info for i in range(self.player_num)]
         return {
             "hstate": hstate,
