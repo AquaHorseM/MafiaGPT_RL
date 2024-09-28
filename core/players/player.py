@@ -242,8 +242,16 @@ class Player:
                 pickle.dump(info, file)
         return info
     
+    def filter_reflex_event(self, event):
+        if isinstance(event.visible, str):
+            if event.visible not in self.labels:
+                return False
+        elif isinstance(event.visible, list):
+            if all(label not in event.visible for label in self.labels):
+                return False
+        return True
     
-    def reflex(self, data : DataTree, sample_num = 6):
+    def reflex(self, data : DataTree, sample_num = 5):
         reflex_data_belief = data.sample(self.id, sample_num = sample_num)
         reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = sample_num)
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
@@ -251,13 +259,12 @@ class Player:
         print(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
         for d in reflex_data_belief:
             dat = data.parse(d)
-            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
+            state, prev_events, trajs = dat["state"],  [str(event) for event in dat["prev_events"] if self.filter_reflex_event(event)], dat["trajs"]
             if state is None:
                 temp_hstate = self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"]).beliefs
-                k = 5  # Target new dimension
-                temp_joint = temp_hstate[np.newaxis, :, :]  # Shape will be (1, 3, 4)
+                k = self.global_info["player_num"]
+                temp_joint = temp_hstate[np.newaxis, :, :] 
 
-                # Now broadcast to (k, m, n)
                 temp_joint = np.broadcast_to(temp_joint, (k, *temp_hstate.shape))
                 state = {
                     "hstate": temp_joint
@@ -265,11 +272,11 @@ class Player:
             self.reflex_single_pair(state, prev_events, trajs, "belief")
         for d in reflex_data_policy:
             dat = data.parse(d)
-            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
+            state, prev_events, trajs = dat["state"], [self.filter_reflex_event(event) for event in dat["prev_events"]], dat["trajs"]
             if state is None:
                 temp_hstate = self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"]).beliefs
-                k = 5  # Target new dimension
-                temp_joint = temp_hstate[np.newaxis, :, :]  # Shape will be (1, 3, 4)
+                k = self.global_info["player_num"]
+                temp_joint = temp_hstate[np.newaxis, :, :] 
 
                 # Now broadcast to (k, m, n)
                 temp_joint = np.broadcast_to(temp_joint, (k, *temp_hstate.shape))
@@ -289,7 +296,7 @@ class Player:
         outcomes = []
         for i in range(len(trajs)):
             actions.append(trajs[i]["action"])
-            events.append(trajs[i]["events"])
+            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
             outcomes.append(trajs[i]["outcome"])
         if len(trajs) > 1:
             i = random.randint(0, len(trajs) - 1)
@@ -319,7 +326,7 @@ class Player:
         outcomes = []
         for i in range(len(trajs)):
             actions.append(trajs[i]["action"])
-            events.append(trajs[i]["events"])
+            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
             outcomes.append(trajs[i]["outcome"])
         replacements = self.get_replacements()
         replacements.update({
