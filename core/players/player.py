@@ -262,7 +262,7 @@ class Player:
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
             if state is None:
                 state = {
-                    "hstate": self.HiddenState()
+                    "hstate": self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"])
                 }
             if len(trajs) > 1:
                 self.reflex_single_data_new(state, prev_events, trajs)
