@@ -283,8 +283,12 @@ class Player:
         })
         if note_type == "belief":
             prompt_name = "reflex_belief"
+            with open("reflex_note_belief", "r") as f:
+                replacements.update({"reflex_note_belief": f.read()})
         elif note_type == "policy":
             prompt_name = "reflex_policy_single"
+            with open("reflex_note_policy", "r") as f:
+                replacements.update({"reflex_note_policy": f.read()})
         else:
             raise ValueError("Note type must be either 'belief' or 'policy'")
         response = self.get_response(prompt_name, replacements=replacements)
