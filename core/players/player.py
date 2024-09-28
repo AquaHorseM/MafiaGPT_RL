@@ -261,8 +261,14 @@ class Player:
             dat = data.parse(d)
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
             if state is None:
+                temp_hstate = self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"]).beliefs
+                k = 5  # Target new dimension
+                temp_joint = temp_hstate[np.newaxis, :, :]  # Shape will be (1, 3, 4)
+
+                # Now broadcast to (k, m, n)
+                temp_joint = np.broadcast_to(temp_joint, (k, *temp_hstate.shape))
                 state = {
-                    "hstate": self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"])
+                    "hstate": temp_joint
                 }
             if len(trajs) > 1:
                 self.reflex_single_data_new(state, prev_events, trajs)
