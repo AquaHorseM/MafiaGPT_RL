@@ -310,8 +310,8 @@ class Player:
             "{reflex_note}": open(reflex_note_path, "r").read(),
             "{note_type}": note_type
         })
-        response = self.get_response("polish_reflex_note")
-        original_note = parse_reflex_note(open(reflex_note_path, "r").read())
+        response = self.get_response("polish_reflex_note", replacements = replacements)
+        # original_note = parse_reflex_note(open(reflex_note_path, "r").read())
         with open(reflex_note_path, "w") as f:
             for line in response.split("\n"):
                 print(f"line: {line}")

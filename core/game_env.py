@@ -64,8 +64,8 @@ class WerewolfGameEnv:
         self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
         #clear the data file if it exists
-        if os.path.exists(self.data_path):
-            os.remove(self.data_path)
+        # if os.path.exists(self.data_path):
+        #     os.remove(self.data_path)
         self.train = train
         self.game_status = {
             "cur_stage": "night", #night, day, vote
