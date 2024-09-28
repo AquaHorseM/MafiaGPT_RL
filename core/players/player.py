@@ -6,8 +6,7 @@ from core.data import DataTree
 from core.event import EventBook
 from core.players.utils import get_response
 import re, pickle
-
-from core.players.utils import parse_data, parse_reflex_note, parse_reflex_actions, get_target_from_response
+from core.players.utils import parse_data, parse_reflex_note, parse_reflex_actions, get_target_from_response, get_gt_hstate_from_joint
         
 class Player:
     class HiddenState:
@@ -242,15 +241,45 @@ class Player:
             with open(path, 'wb') as file:
                 pickle.dump(info, file)
         return info
-
-    def reflex_single_pair(self, prev_hstate, prev_gt_hstate, new_events, next_hstate, pred_hstate, note_type = "belief"):
+    
+    
+    def reflex(self, data : DataTree, sample_num = 6):
+        reflex_data_belief = data.sample(self.id, sample_num = sample_num)
+        reflex_data_policy = data.sample(self.id, filter_node = True, sample_num = sample_num)
+        print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
+        for d in reflex_data_belief:
+            dat = data.parse(d)
+            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
+            self.reflex_single_pair(state, prev_events, trajs, "belief")
+        for d in reflex_data_policy:
+            dat = data.parse(d)
+            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
+            if len(trajs) > 1:
+                self.reflex_single_data_new(state, prev_events, trajs)
+            else:
+                self.reflex_single_pair(state, prev_events, trajs, "policy")
+        self.polish_reflex_notes()
+        return
+    
+    def reflex_single_pair(self, state, prev_events, trajs, note_type = "belief"):
+        actions = []
+        events = []
+        outcomes = []
+        for i in range(len(trajs)):
+            actions.append(trajs[i]["action"])
+            events.append(trajs[i]["events"])
+            outcomes.append(trajs[i]["outcome"])
+        if len(trajs) > 1:
+            i = random.randint(0, len(trajs) - 1)
+        else:
+            i = 0
         replacements = self.get_replacements()
         replacements.update({
-            "{prev_hstate}": str(prev_hstate),
-            "{prev_gt_hstate}": str(prev_gt_hstate),
-            "{new_events}": str(new_events),
-            "{next_hstate}": str(next_hstate),
-            "{pred_hstate}": str(pred_hstate),
+            "{prev_hstate}": str(get_gt_hstate_from_joint(state["hstate"])),
+            "{prev_events}": str(prev_events),
+            "{new_events}": str(events[i]),
+            "{next_hstate}": str(get_gt_hstate_from_joint(outcomes[i]["hstate"])),
+            "{pred_hstate}": str(outcomes[i]["hstate"][self.id]),
         })
         if note_type == "belief":
             prompt_name = "reflex_belief"
@@ -262,40 +291,26 @@ class Player:
         self.update_note_from_response(response, note_type=note_type)
         return response
     
-    def reflex_old(self, data, sample_num = 6, alpha = 1): #! outdated
-        reflex_data_belief = parse_data(data, self.id, alpha)
-        reflex_data_belief = random.sample(reflex_data_belief, sample_num) if len(reflex_data_belief) > sample_num else reflex_data_belief
-        reflex_data_policy = parse_data(data, self.id, alpha, check_event_include_player = True)
-        reflex_data_policy = random.sample(reflex_data_policy, sample_num) if len(reflex_data_policy) > sample_num else reflex_data_policy
-        print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
-        print(f"player {self.id} is reflexing")
-        for d in reflex_data_belief:
-            prev_hstate, prev_gt_hstate, events, pred_hstate, next_hstate = d
-            response = self.reflex_single_pair(prev_hstate, prev_gt_hstate, events, next_hstate, pred_hstate, note_type = "belief")
-            self.update_note_from_response(response, note_type = "belief")
-        print(f"player {self.id} has reflexed for belief model, now starting policy model reflexing")
-        for d in reflex_data_policy:
-            prev_hstate, prev_gt_hstate, events, pred_hstate, next_hstate = d
-            response = self.reflex_single_pair(prev_hstate, prev_gt_hstate, events, next_hstate, pred_hstate, note_type = "policy")
-            self.update_note_from_response(response, note_type = "policy")
-        print(f"player {self.id} has reflexed for policy model. Now polishing the reflex notes.")
-        self.polish_reflex_notes()
+    def reflex_single_data_new(self, state, prev_events, trajs): #only used for policy update
+        actions = []
+        events = []
+        outcomes = []
+        for i in range(len(trajs)):
+            actions.append(trajs[i]["action"])
+            events.append(trajs[i]["events"])
+            outcomes.append(trajs[i]["outcome"])
+        replacements = self.get_replacements()
+        replacements.update({
+            "{cur_hstate}": str(state["hstate"]),
+            "{prev_events}": str(prev_events),
+            "{action1}": actions[0],
+            "{outcome1}": outcomes[0],
+            "{action2}": actions[1],
+            "{outcome2}": outcomes[1]
+        })
+        response = self.get_response("reflex_multiple_events", replacements)
+        self.update_note_from_response(response, "policy")
         return
-    
-    def reflex(self, data : DataTree, sample_num = 6):
-        reflex_data_belief = data.sample(self.id, sample_num = sample_num)
-        reflex_data_policy = data.sample(self.id, filter_node = True, sample_num = sample_num)
-        print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
-        for d in reflex_data_belief:
-            dat = data.parse(d)
-            state, prev_events, outcomes = dat["state"], dat["prev_events"], dat["outcomes"]
-            self.reflex_single_pair_new(state, prev_events, outcomes)
-        self.polish_reflex_notes()
-        return
-    
-    def reflex_single_pair_new(self, state, prev_events, outcomes):
-        #TODO
-        pass
         
     
     def polish_reflex_note(self, note_type = "belief"):

@@ -119,9 +119,13 @@ class DataTree:
         #RETURN state, events, [(action1, events1, state1), ...]
         return {
             "state": self.nodes[node_id].state,
-            "prev_events": self.get_events(node_id),
-            "outcomes": [
-                (self.edges[e].actions, self.edges[e].events, self.nodes[self.edges[e].end_id].state) for e in self.nodes[node_id].edges if not filter_action or (player_id and self.filter_action(e, player_id))
+            "prev_events": [str(event) for event in self.get_events(node_id)],
+            "trajs": [
+                {
+                    "action": self.edges[e].actions, 
+                    "events": [str(event) for event in self.edges[e].events],
+                    "outcome": self.nodes[self.edges[e].end_id].state
+                } for e in self.nodes[node_id].edges if not filter_action or (player_id and self.filter_action(e, player_id))
             ]
         }
         
@@ -151,7 +155,7 @@ class DataTree:
                 print(f"No action done by player {player_id} in the data.")
                 return []
             elif len(node_ids) <= sample_num:
-                if len(node_ids < sample_num):
+                if len(node_ids) < sample_num:
                     print(f"Warning: Only {len(node_ids)} valid samples in data, but {sample_num} is required.")
                 return node_ids
         samples = []
