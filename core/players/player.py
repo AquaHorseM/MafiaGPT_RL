@@ -284,10 +284,10 @@ class Player:
         if note_type == "belief":
             prompt_name = "reflex_belief"
         elif note_type == "policy":
-            prompt_name = "reflex_policy"
+            prompt_name = "reflex_policy_single"
         else:
             raise ValueError("Note type must be either 'belief' or 'policy'")
-        response = self.get_response(prompt_name)
+        response = self.get_response(prompt_name, replacements=replacements)
         self.update_note_from_response(response, note_type=note_type)
         return response
     
@@ -308,8 +308,9 @@ class Player:
             "{action2}": actions[1],
             "{outcome2}": outcomes[1]
         })
-        response = self.get_response("reflex_multiple_events", replacements)
-        self.update_note_from_response(response, "policy")
+        if False: #temporarily skip this
+            response = self.get_response("reflex_policy_multi", replacements)
+            self.update_note_from_response(response, "policy")
         return
         
     
