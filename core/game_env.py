@@ -60,7 +60,7 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        self.data = DataTree()
+        self.data = DataTree(self.get_state())
         self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
         #clear the data file if it exists
@@ -725,7 +725,7 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        self.data = DataTree()
+        self.data = DataTree(self.get_state())
         self.logger.info("Game reset successfully")
         #return obs, state, available_actions
         return self._repeat(self.get_observation_single_player), self.get_state(), self.get_available_actions()

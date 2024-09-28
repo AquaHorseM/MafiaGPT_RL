@@ -34,10 +34,10 @@ class EventsEdge:
         return f"Edge({self.start_id} --> {self.end_id})"
 
 class DataTree:
-    def __init__(self):
+    def __init__(self, init_state = None):
         self.nodes: list[StateNode] = []
         self.edges: list[EventsEdge] = []
-        root_node = StateNode(0, -1, None)
+        root_node = StateNode(0, -1, init_state)
         self.nodes.append(root_node)
         self.cur_id = 0
     
@@ -118,7 +118,7 @@ class DataTree:
     def parse(self, node_id: int, player_id: int = None, filter_action = False):
         #RETURN state, events, [(action1, events1, state1), ...]
         return {
-            "state": self.nodes[node_id].state,
+            "state": self.nodes[node_id].state if node_id != 0 else None,
             "prev_events": [str(event) for event in self.get_events(node_id)],
             "trajs": [
                 {

@@ -252,10 +252,18 @@ class Player:
         for d in reflex_data_belief:
             dat = data.parse(d)
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
+            if state is None:
+                state = {
+                    "hstate": self.HiddenState()
+                }
             self.reflex_single_pair(state, prev_events, trajs, "belief")
         for d in reflex_data_policy:
             dat = data.parse(d)
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
+            if state is None:
+                state = {
+                    "hstate": self.HiddenState()
+                }
             if len(trajs) > 1:
                 self.reflex_single_data_new(state, prev_events, trajs)
             else:
