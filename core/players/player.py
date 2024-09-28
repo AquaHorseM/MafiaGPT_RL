@@ -79,7 +79,23 @@ class Player:
             self.beliefs[player_id][player_id][role] = 1.0
             return
                 
-    
+                        
+    def __init__(self, id, global_info, private_info, prompt_dir_path, common_prompt_dir = None, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
+        self.is_alive = True
+        self.id = id
+        self.labels = ["all"]
+        self.tick = 0
+        self.event_book = EventBook()
+        self.reflex_tuple = (None, None, None)
+        self.prompt_dir_path = prompt_dir_path
+        self.common_prompt_dir = common_prompt_dir
+        self.openai_client = openai_client
+        self.reflex_note_path_belief = reflex_note_path_belief if reflex_note_path_belief is not None else os.path.join(prompt_dir_path, "reflex_note_belief.txt")
+        self.reflex_note_path_policy = reflex_note_path_policy if reflex_note_path_policy is not None else os.path.join(prompt_dir_path, "reflex_note_policy.txt")
+        self.global_info = deepcopy(global_info)
+        self.private_info = deepcopy(private_info)
+        self.hidden_state = self.HiddenState(global_info["player_num"], global_info["roles_mapping"])
+        
     def get_replacements(self):
         with open(self.reflex_note_path_belief, "r") as f:
             reflex_note_belief = f.read()
@@ -99,22 +115,6 @@ class Player:
             "{reflex_note_policy}": str(reflex_note_policy)
         }
             
-                        
-    def __init__(self, id, global_info, private_info, prompt_dir_path, common_prompt_dir = None, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
-        self.is_alive = True
-        self.id = id
-        self.labels = ["all"]
-        self.tick = 0
-        self.event_book = EventBook()
-        self.reflex_tuple = (None, None, None)
-        self.prompt_dir_path = prompt_dir_path
-        self.common_prompt_dir = common_prompt_dir
-        self.openai_client = openai_client
-        self.reflex_note_path_belief = reflex_note_path_belief if reflex_note_path_belief is not None else os.path.join(prompt_dir_path, "reflex_note_belief.txt")
-        self.reflex_note_path_policy = reflex_note_path_policy if reflex_note_path_policy is not None else os.path.join(prompt_dir_path, "reflex_note_policy.txt")
-        self.global_info = deepcopy(global_info)
-        self.private_info = deepcopy(private_info)
-        self.hidden_state = self.HiddenState(global_info["player_num"], global_info["roles_mapping"])
 
     def __str__(self):
         return f"Player {self.id}"
@@ -247,6 +247,8 @@ class Player:
         reflex_data_belief = data.sample(self.id, sample_num = sample_num)
         reflex_data_policy = data.sample(self.id, filter_node = True, sample_num = sample_num)
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
+        print(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
+        print(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
         for d in reflex_data_belief:
             dat = data.parse(d)
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
@@ -283,12 +285,8 @@ class Player:
         })
         if note_type == "belief":
             prompt_name = "reflex_belief"
-            with open("reflex_note_belief", "r") as f:
-                replacements.update({"reflex_note_belief": f.read()})
         elif note_type == "policy":
             prompt_name = "reflex_policy_single"
-            with open("reflex_note_policy", "r") as f:
-                replacements.update({"reflex_note_policy": f.read()})
         else:
             raise ValueError("Note type must be either 'belief' or 'policy'")
         response = self.get_response(prompt_name, replacements=replacements)
