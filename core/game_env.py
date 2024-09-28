@@ -236,7 +236,7 @@ class WerewolfGameEnv:
         }
     
     def get_state(self):
-        hstate = self.get_joint_hstate() if len(self.all_players) != 0 else 
+        hstate = self.get_joint_hstate()
         private_infos = [self.all_players[i].private_info for i in range(self.player_num)]
         return {
             "hstate": hstate,
