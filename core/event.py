@@ -1,4 +1,4 @@
-import copy
+import copy, json
 class Event:
     def __init__(self, init_dict):
         self.event = init_dict["event"]
@@ -24,6 +24,20 @@ class Event:
         s = str(self)
         s = s[:-1] + ", visible:" + str(self.visible) + "}"
         return s
+    
+    def to_dict(self):
+        """Convert the Event object to a dictionary that can be serialized."""
+        return {
+            "event": self.event,
+            "content": self.content,  # Assuming content is already serializable
+            "visible": self.visible
+        }
+        
+class EventEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Event):
+            return obj.to_dict()
+        return super().default(obj)
 
 class EventBook:
     def __init__(self):

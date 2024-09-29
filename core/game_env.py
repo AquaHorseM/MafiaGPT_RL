@@ -8,7 +8,7 @@ import numpy as np
 from core.players.player import Player
 from prompts import render_prompts as render
 from core.baseline_players import Villager, Werewolf, Medic, Seer
-from core.event import Event, EventBook
+from core.event import Event, EventBook, EventEncoder
 from core.players.werewolf import WerewolfPlayer
 from core.players.villager import VillagerPlayer
 from core.players.medic import MedicPlayer
@@ -484,7 +484,8 @@ class WerewolfGameEnv:
             
 
     def save_game_record(self):
-        json.dump(list(self.event_book.events.values()), open(f"records/game_{self.id}_log.json", "w"), indent=4)
+        events = list(self.event_book.events.values())
+        json.dump(events, open(f"records/game_{self.id}_log.json", "w"), indent=4, cls=EventEncoder)
                 
     
     def parse_global_info(self, global_info: dict):
