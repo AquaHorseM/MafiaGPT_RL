@@ -48,9 +48,12 @@ def get_prompt(prompt_path, replacements, background_path = None):
 
 def get_target_from_response(response):
     #find the first number in the response
-    print(f"getting target from {response}")
-    target = int(re.search(r"\d+", response).group())
-    print(f"target is {target}")
+    # print(f"getting target from {response}")
+    try:
+        target = int(re.search(r"\d+", response).group())
+    except:
+        target = None
+    # print(f"target is {target}")
     return target
     
 def parse_reflex_actions(reflex_actions):
@@ -125,7 +128,7 @@ def load_config(config_path):
     with open(config_path, 'r') as file:
         return json.load(file)
 
-def send_dialogue(folder_path, background_path, replacements, config_path = None, client = None):
+def send_dialogue(folder_path, background_path, replacements, config_path = None, client = None, return_history = False):
     prompts = load_prompts_from_folder(folder_path)
     config = load_config(config_path) if config_path is not None else load_config(os.path.join(folder_path, "config.json"))
     
@@ -139,8 +142,11 @@ def send_dialogue(folder_path, background_path, replacements, config_path = None
             conversation_history.append({"role": "user", "content": prompt})
             response = send_message_xsm(conversation_history, client = client) #?
             conversation_history.append({"role": "assistant", "content": response})
-    # Return the final response from the last assistant message
-    return [conversation_history[i]["content"] for i in range(len(conversation_history)) if conversation_history[i]["role"] == "assistant"]
+    if return_history:
+        return [conversation_history[i]["content"] for i in range(len(conversation_history)) if conversation_history[i]["role"] == "assistant"]
+    else:
+        return conversation_history[-1]["content"]
+
 
 def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, client) -> List[str]:
     background_path = os.path.join(common_dir_path, "background.txt")
@@ -150,12 +156,12 @@ def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, cl
     common_file = os.path.join(common_dir_path, prompt_name + ".txt")
     if os.path.exists(common_file):
         prompt = get_prompt(common_file, replacements, background_path)
-        return [send_message_xsm(prompt, client = client)]
+        return send_message_xsm(prompt, client = client)
     role_folder = os.path.join(prompt_dir_path, prompt_name)
     if os.path.exists(role_folder):
         return send_dialogue(role_folder, background_path, replacements, client = client)
     role_file = os.path.join(prompt_dir_path, prompt_name + ".txt")
     if os.path.exists(role_file):
         prompt = get_prompt(role_file, replacements, background_path)
-        return [send_message_xsm(prompt, client = client)]
+        return send_message_xsm(prompt, client = client)
     raise ValueError(f"Prompt Not found for {prompt_name}")
