@@ -51,8 +51,8 @@ class SeerPlayer(Player):
             res = self._speak()
             return {
                 "action": "speak",
-                "target": None,
-                "reason": res,
+                "target": res,
+                "reason": None,
                 "imagination": None
             }
         elif "speak_type" in available_actions:

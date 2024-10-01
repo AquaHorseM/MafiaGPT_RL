@@ -266,7 +266,7 @@ class WerewolfGameEnv:
             self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
         elif self.game_status["cur_stage"] == "day":
             speaking_player = self.game_status["next_speaking_player"]
-            self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["reason"]}, "visible": "all"})
+            self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["target"]}, "visible": "all"})
             while True: #Find the next player to speak
                 speaking_player = (speaking_player + 1) % self.player_num
                 if speaking_player == self.game_status["start_speaking_player"]:
