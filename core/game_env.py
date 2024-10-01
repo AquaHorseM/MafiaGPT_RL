@@ -394,7 +394,7 @@ class WerewolfGameEnv:
         if isinstance(event, Event):
             self.temp_events.append(event)
             self.event_book.add_event(event)
-            self.logger.info(event)
+            self.logger.info(event.to_dict())
         else:
             assert isinstance(event, dict), "event must be a dict or an instance of Event"
             if "visible" not in event:
