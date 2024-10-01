@@ -146,8 +146,7 @@ class Player:
     
     def _speak(self): #TODO
         s_type = self._get_speak_type()
-        replacements = self.get_replacements()
-        response = self.speak_with_type(s_type, replacements)
+        response = self.speak_with_type(s_type)
         return response
             
     def train_obs(self, batch):
