@@ -74,6 +74,10 @@ class WerewolfGameEnv:
             "start_speaking_player": None,
             "winner": None
         }
+        #The action space and observation space should be set after the players are set using the 'init_env' method
+        self.action_space = []
+        self.observation_space = None
+        self.shared_observation_space = None
         self.data = DataTree()
         
         self.logger.info(f"Game {self.id} created successfully")
@@ -153,7 +157,41 @@ class WerewolfGameEnv:
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
         #restore the data
         self.data = DataTree(self.get_state())
-
+        
+    def get_unique_observation_space_single_player(self, player_id):
+        def get_belief():
+            return gym.spaces.Box(low = 0, high = 1, shape = (self.player_num * self.player_num * 4,), dtype = np.float32)
+        if self.all_players[player_id].role == "werewolf":
+            return gym.spaces.Dict({
+                "belief": get_belief(),
+                "role": gym.spaces.Discrete(1),
+                "companions": gym.spaces.MultiBinary(self.player_num),
+                "last_killing_target": gym.spaces.Discrete(1),
+            })
+        elif self.all_players[player_id].role == "seer":
+            return gym.spaces.Dict({
+                "belief": get_belief(),
+                "role": gym.spaces.Discrete(1),
+                "known_roles": gym.spaces.Discrete(self.player_num),
+            })
+        elif self.all_players[player_id].role == "medic":
+            return gym.spaces.Dict({
+                "belief": get_belief(),
+                "role": gym.spaces.Discrete(1),
+                "last_heal": gym.spaces.Discrete(1),
+                "inquiry_result": gym.spaces.Tuple([gym.spaces.Discrete(1), gym.spaces.Discrete(1)])
+            })
+        else: #villager
+            return gym.spaces.Dict({
+                "belief": get_belief(),
+                "role": gym.spaces.Discrete(1),
+            })
+            
+    def get_observation_space_single_player(self, player_id):
+        return gym.spaces.Dict({
+            "unique": self.get_unique_observation_space_single_player(player_id),
+            "shared": self.shared_observation_space
+        })
     
     def win_or_not(self, player_id):
         if self.game_status["winner"] == None:
@@ -215,29 +253,34 @@ class WerewolfGameEnv:
         return 1 if self.game_status["winner"] or not self.all_players[player_id].is_alive else 0
         
     def step(self, actions):
+        def get_action_target(action):
+            return action - self.n_speak - self.n_vote 
+        def get_vote_target(action):
+            return action - self.n_speak
+        def get_speech_type(action):
+            return speak_type_id_to_str[action]
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
             alive_medics = self.get_alive_medics()
             if len(alive_medics) != 0:
                 medic_id = alive_medics[0]
-                self.add_event({"event": "heal", "content": {"player": medic_id, \
-                    "target": actions[medic_id]["target"], "reason": actions[medic_id]["reason"]}, "visible": "medic"})
-                self.night_info["healed"] = actions[medic_id]["target"]
+                heal_target = get_action_target(actions[medic_id])
+                self.add_event({"event": "heal", "content": {"player": medic_id, "target": heal_target, "reason": None}, "visible": "medic"})
+                self.night_info["healed"] = heal_target
             else:
                 self.night_info["healed"] = None
             alive_seers = self.get_alive_seers()
             if len(alive_seers) != 0:
                 seer_id = alive_seers[0]
-                seer_target = actions[seer_id]["target"]
+                seer_target = get_action_target(actions[seer_id])
                 is_werewolf = self.all_players[seer_target].get_role() == "werewolf"
                 self.night_info["known_roles"][seer_target] = is_werewolf  
-                self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": seer_target, "is_werewolf": is_werewolf, \
-                    "reason": actions[seer_id]["reason"]}, "visible": seer_id})
+                self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": seer_target, "is_werewolf": is_werewolf, "reason": None}, "visible": seer_id})
             werewolf_ids= self.get_alive_werewolves()
             assert len(werewolf_ids) > 0, "There must be at least one werewolf alive"
             if len(werewolf_ids) > 1:
-                kill_target_1 = actions[werewolf_ids[0]]["target"]
-                kill_target_2 = actions[werewolf_ids[1]]["target"]
+                kill_target_1 = get_action_target(actions[werewolf_ids[0]])
+                kill_target_2 = get_action_target(actions[werewolf_ids[1]])
                 if kill_target_1 == kill_target_2:
                     kill_target = kill_target_1
                     kill_decider = 0
@@ -251,9 +294,8 @@ class WerewolfGameEnv:
                 self.night_info["killed"] = kill_target
             else:
                 werewolf_id = werewolf_ids[0]
-                kill_target = actions[werewolf_id]["target"]
-                self.add_event({"event": "kill", "content": {"player": werewolf_id, "target": kill_target, \
-                    "reason": actions[werewolf_id]["reason"]}, "visible": "werewolf"})
+                kill_target = get_action_target(actions[werewolf_id])
+                self.add_event({"event": "kill", "content": {"player": werewolf_id, "target": kill_target, "reason": None}, "visible": "werewolf"})
                 self.night_info["killed"] = kill_target
             
             self.check_death_info()
@@ -262,7 +304,10 @@ class WerewolfGameEnv:
             self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
         elif self.game_status["cur_stage"] == "day":
             speaking_player = self.game_status["next_speaking_player"]
-            self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["reason"]}, "visible": "all"})
+            speak_type = get_speech_type(actions[speaking_player])
+            self.add_event({"event": "speak_type", "content": {"player": speaking_player, "speak_type": speak_type, "reason": None}, "visible": speaking_player})
+            speech = self.all_players[speaking_player].speak_with_type(speak_type)
+            self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": speech, "reason": None}, "visible": "all"})
             while True: #Find the next player to speak
                 speaking_player = (speaking_player + 1) % self.player_num
                 if speaking_player == self.game_status["start_speaking_player"]:
@@ -272,12 +317,11 @@ class WerewolfGameEnv:
                     self.game_status["next_speaking_player"] = speaking_player
                     break
         else: #vote stage
-            assert all([actions[i]["action"] == "vote" for i in self.alive_players]), "all actions must be 'vote' in the vote stage"
-            votes = {i : actions[i]["target"] for i in self.alive_players}
+            votes = {i : get_vote_target(actions[i]) for i in self.alive_players}
             self.votes.append(votes)
             for player_id in self.alive_players:
                 self.all_players[player_id].global_info["last_vote"] = votes[player_id]
-                self.add_event({"event": "vote", "content": {"player": player_id, "target": votes[player_id], "reason": actions[player_id]["reason"]}, "visible": player_id})
+                self.add_event({"event": "vote", "content": {"player": player_id, "target": votes[player_id], "reason": None}, "visible": player_id})
             self.check_votes()
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
@@ -290,7 +334,36 @@ class WerewolfGameEnv:
         else:
             rewards = [0 for _ in range(self.player_num)]
         return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
-
+    
+    def get_action_space(self, player_id):
+        #switch case for different roles
+        player_role = self.all_players[player_id].role
+        if player_role == "werewolf":
+            n_actions = self.n_speak + self.n_vote + self.n_kill 
+        elif player_role == "seer":
+            n_actions = self.n_speak + self.n_vote + self.n_see 
+        elif player_role == "medic":
+            n_actions = self.n_speak + self.n_vote + self.n_heal 
+        else: #villager
+            n_actions = self.n_speak + self.n_vote 
+        return gym.spaces.Discrete(n_actions)
+            
+    def init_env(self):
+        assert self.player_num != 0 and len(self.all_players) == self.player_num, "Players must be set before initializing the environment"
+        self.n_speak = n_speak_actions 
+        self.n_kill = self.player_num #Werewolves can kill any player including themselves
+        self.n_see = self.player_num #Seer can see any player including himself, though it is not useful
+        self.n_heal = self.player_num #Medic can heal any player including himself
+        self.n_vote = self.player_num + 1 #Any player can vote any player including himself
+        self.action_space = self._repeat(self.get_action_space)
+        self.shared_observation_space = gym.spaces.Dict({
+            "player_num": gym.spaces.Discrete(1),
+            "alive_players": gym.spaces.MultiBinary(self.player_num),
+            "current_round": gym.spaces.Discrete(1),
+            "last_vote": gym.spaces.Discrete(self.player_num),
+        })
+        self.observation_space = self._repeat(self.get_observation_space_single_player)
+        
         
     def seed(self, seed):
         random.seed(seed)
@@ -443,8 +516,6 @@ class WerewolfGameEnv:
         self.logger.info(f"Info loaded successfully")
 
     def all_players_reflex(self):
-        #temp debug, disable this
-        return
         for player_id in range(len(self.all_players)):
             player = self.all_players[player_id]
             if self.player_types[player_id] == "reflex":
@@ -502,6 +573,34 @@ class WerewolfGameEnv:
         if self.train:
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
+                
+    def get_action_space_size(self, player_id):
+        if self.all_players[player_id].role == "werewolf":
+            return self.n_speak + self.n_vote + self.n_kill
+        elif self.all_players[player_id].role == "seer":
+            return self.n_speak + self.n_vote + self.n_see
+        elif self.all_players[player_id].role == "medic":
+            return self.n_speak + self.n_vote + self.n_heal
+        else: #villager
+            return self.n_speak + self.n_vote
+            
+    def discretify(self, actions, player_id):
+        if isinstance(actions, list):
+            avail = [0] * self.get_action_space_size(player_id)
+            for action in actions:
+                _avail_ = self.discretify(action, player_id)
+                assert len(_avail_) == len(avail), "actions must have the same length"
+                avail = [avail[i] or _avail_[i] for i in range(len(avail))]
+            return avail
+        else:
+            assert isinstance(actions, str), "actions must be a string or a list of strings"
+            if actions == "speak":
+                return [1] * self.n_speak + [0] * (self.get_action_space_size(player_id) - self.n_speak)
+            elif actions == "vote":
+                return [0] * self.n_speak + [1] * self.n_vote + [0] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+            else: #night actions
+                return [0] * self.n_speak + [0] * self.n_vote + [1] * (self.get_action_space_size(player_id) - self.n_speak - self.n_vote)
+        
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
         if self.game_status["cur_stage"] == "night":
@@ -521,24 +620,71 @@ class WerewolfGameEnv:
             return ["vote"]
         
     def get_available_actions(self):
-        return self._repeat(self.get_available_actions_single_player)
+        return self._repeat(lambda id: self.discretify(self.get_available_actions_single_player(id), id))
+
+    def _convert_available_actions_to_description(self, available_actions):
+        avail_des = []
+        #check if the first self.n_speak actions in available_actions are 1
+        if all(available_actions[: self.n_speak]):
+            avail_des.append("speak_type")
+        elif all(available_actions[self.n_speak: self.n_speak + self.n_vote]):
+            avail_des.append("vote")
+        elif len(available_actions) > self.n_speak + self.n_vote and all(available_actions[self.n_speak + self.n_vote:]):
+            avail_des.append("night")
+        return avail_des
     
     def get_actions_from_reflex_player(self, player_id, available_actions):
-        player_avail_actions = available_actions[player_id]
+        player_avail_actions = self._convert_available_actions_to_description(available_actions[player_id])
         # print(f"Player id: {player_id}, available_actions: {player_avail_actions}")
         if len(player_avail_actions) == 0:
-            return None #Will not be checked, so return whatever action
+            return 0 #Will not be checked, so return whatever action
         else:
             action = self.all_players[player_id]._act(player_avail_actions)
-            return action
+            if isinstance(action, tuple):
+                if action[0] == "speak_type":
+                    s_type = action[1]
+                    if s_type is None:
+                        return 0 #Use 0 to indicate that no speak type is chosen
+                    else:
+                        s_type = s_type[0] #TODO: multiple speech types
+                        if speak_type_mapping.get(s_type) is not None:
+                            return speak_type_mapping[s_type]  
+                        else:
+                            self.logger.warning(f"Invalid speak type {s_type} returned by player {player_id}")
+                            return 0
+                elif action[0] == "vote":
+                    if action[1] is None:
+                        return self.n_speak + player_id #Vote for oneself if no vote target is chosen
+                    return self.n_speak + action[1]
+                elif action[0] is not None:
+                    return self.n_speak + self.n_vote + action[1]
+                else:
+                    return 0 #Will not be checked, so return whatever action
+            else:
+                self.logger.warning(f"Invalid action {action} returned by player {player_id}: action must be a tuple")
+                return action
 
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
 
-    def sim_game_for_reflex_players(self): #main simulation function
+    def sim_game_for_reflex_players(self, trace_back_prob = 0.9): #main simulation function
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
+        collect_rewards = [0 for _ in range(self.player_num)]
+        f = 0
         while True:
+            if self.game_status["cur_stage"] == "day": #trace back or not
+                if f == 0:
+                    f = 1
+                else:
+                    r = random.random()
+                    if r <= trace_back_prob:
+                        self.logger.info("Random Trace Back Triggered!")
+                        self.backtrace(1)
+                    avail_actions = self.get_available_actions()
+                    f = 0
+            else:
+                f = 0
             actions = self.get_actions_reflex(avail_actions)
             self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)

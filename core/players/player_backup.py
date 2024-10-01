@@ -10,53 +10,74 @@ from core.players.utils import parse_data, parse_reflex_note, parse_reflex_actio
         
 class Player:
     class HiddenState:
-        def __init__(self, player_num, id):
-            self.beliefs = [{
-                "role": "unknown", #role should be unknown/werewolf/medic/seer/villager
-                "confidence": "high", #confidence should be high/medium/low
-                "reason": "There is no information yet." #any reason supporting the above conclusions
-            }] * player_num
-            self.id = id
-            
+        def __init__(self, player_num, role_mapping):
+            roles_num = len(role_mapping)
+            self.beliefs = np.ones((player_num, player_num, roles_num)) / roles_num
             self.player_num = player_num
-            
+            self.roles_num = roles_num
+            self.role_mapping = role_mapping
+            self.inverse_role_mapping = {v: k for k, v in role_mapping.items()}
+        
+        def prob_approx(self, prob):
+            #approximate the probability to 0.05
+            return round(prob * 20) / 20
+        
         def __str__(self) -> str:
             s = ""
             for i in range(self.player_num):
-                if i==self.id:
-                    continue
-                s += f"Player {i}'s role is {self.beliefs[i]["role"]} with {self.beliefs[i]["confidence"]} confidence.\n"
-                s += f"Reason is: {self.beliefs[i]["reason"]}\n"
+                s += f"player {i} is {self.inverse_role_mapping[np.argmax(self.beliefs[i][i])]} with probability {self.prob_approx(np.max(self.beliefs[i][i]))}\n"
+            for i in range(self.player_num):
+                f = 0
+                for j in range(self.player_num):
+                    if j == i:
+                        continue
+                    k = np.argmax(self.beliefs[i][j])
+                    if self.beliefs[i][j][k] >= 0.3: #! threshold
+                        if f == 0:
+                            s += "*********\n"
+                            s += f"player {i} believes: \n"
+                            f = 1
+                        s += f"player {j} is {self.inverse_role_mapping[k]} with probability {self.prob_approx(self.beliefs[i][j][k])}\n"
             return s
-        
-        def update(self, update_string):
-            def extract_info(string):
-                pattern = r"Player (\d+)'s role is (\w+)(?: with (high|medium|low) confidence)?\.\s*My reason is: (.*)?"
-                match = re.match(pattern, string)
-                if match:
-                    id = match.group(1)
-                    role = match.group(2)
-                    confidence = match.group(3) if match.group(3) else None
-                    reason = match.group(4) if match.group(4) else None
-                    return {
-                        "id": id,
-                        "role": role,
-                        "confidence": confidence,
-                        "reason": reason
-                    }
+            
+        def str_to_tensor(self, belief_str, id):
+            #assume the str is in the format "player i believes player j is role k with probability p \n ..."
+            beliefs = np.ones((self.player_num, self.player_num, self.roles_num)) / self.roles_num
+            cur_player_id = id
+            for line in belief_str.split("\n"):
+                if line == "":
+                    continue
+                belief_player_matches = re.search(r"player (\d+) believes", line)
+                if belief_player_matches is not None:
+                    cur_player_id = int(belief_player_matches.group(1))
                 else:
-                    return None
-            result = extract_info(update_string)
-            if result is None:
-                return
-            else:
-                self.beliefs[int(result["id"])] = {
-                    "role": result["role"],
-                    "confidence": result["confidence"] if result["confidence"] is not None else self.beliefs[int(result["id"])],
-                    "reason": result["reason"]
-                }
-                return
-
+                    assert cur_player_id is not None, "Invalid belief string"
+                    self_role_matches = re.search(r"player (\d+) is (.*) with probability (\d+(\.\d+)?)", line)
+                    if self_role_matches is not None:
+                        try:
+                            j = int(self_role_matches.group(1))
+                            k = self.role_mapping[self_role_matches.group(2).strip()]
+                            p = float(self_role_matches.group(3))
+                            beliefs[cur_player_id][j][k] = p
+                        except:
+                            print(f"Invalid line: {line}")
+                            continue
+                    else:
+                        print(f"Invalid line: {line}")
+            return beliefs
+        
+        def update(self, beliefs, id, confidence = 0.2):
+            if isinstance(beliefs, str):
+                beliefs = self.str_to_tensor(beliefs, id)
+            confidence = min(0.5, confidence) #DO NOT trust the new beliefs too much
+            if beliefs is not None:
+                self.beliefs = confidence * beliefs + (1 - confidence) * self.beliefs
+            return
+        
+        def set_role(self, player_id, role): #Use it carefully.
+            self.beliefs[player_id][player_id] = 0.0
+            self.beliefs[player_id][player_id][role] = 1.0
+            return
                 
                         
     def __init__(self, id, global_info, private_info, prompt_dir_path, common_prompt_dir = None, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
@@ -73,7 +94,7 @@ class Player:
         self.reflex_note_path_policy = reflex_note_path_policy if reflex_note_path_policy is not None else os.path.join(prompt_dir_path, "reflex_note_policy.txt")
         self.global_info = deepcopy(global_info)
         self.private_info = deepcopy(private_info)
-        self.hstate = self.HiddenState(global_info["player_num"], self.id)
+        self.hstate = self.HiddenState(global_info["player_num"], global_info["roles_mapping"])
         
     def get_replacements(self):
         with open(self.reflex_note_path_belief, "r") as f:
@@ -105,7 +126,7 @@ class Player:
         self._update_hstate(self.filter_event_book(event_book))
         self.tick = event_book.tick
     
-    def _act(self, available_actions = None): #return (action, target, reason, imagination)
+    def _act(self, available_actions = None): #return (action, target, reason)
         if len(available_actions) == 0:
             return (None, None, "No available actions.")
         else:
@@ -119,7 +140,7 @@ class Player:
         vote = get_target_from_response(response)
         return vote, response
     
-    def _get_speak_type(self): #aborted
+    def _get_speak_type(self):
         response = self.get_response("speak_type")
         assert isinstance(response, str), f"response is not a string: {response}"
         #Find the [type] in the response
@@ -128,7 +149,7 @@ class Player:
         s_type = [s.strip() for s in s_type]
         return s_type
     
-    def speak_with_type(self, s_type): #aborted
+    def speak_with_type(self, s_type):
         replacements = self.get_replacements()
         replacements.update({
             "{speech_type}": str(s_type)
@@ -151,14 +172,26 @@ class Player:
     def previous_votes(self):
         return self.global_info["previous_votes"]
 
+    def reset(self): #ABORTED
+        self.is_alive = True
+        self.hstate = self.HiddenState(self.global_info["player_num"], len(self.global_info["roles_mapping"]))
+        self.global_info["alive_players"] = range(self.global_info["player_num"])
+        self.global_info["dead_players"] = []
+        self.global_info["current_round"] = 0
+        self.private_info = {}
+        return
+    
     def filter_event_book(self, event_book: EventBook):
         return event_book.filter(start_tick=self.tick, id=self.id, labels=self.labels)
     
     def get_role(self):
         return self.private_info["role"]
     
-    def get_beliefs(self):
-        return self.hstate.beliefs
+    def get_hstate(self):
+        return self.hstate
+    
+    def get_gt_hiddenstate(self):
+        return self.hstate.beliefs[self.id]
     
     def _update_hstate(self, events):
         #TODO
@@ -170,9 +203,16 @@ class Player:
             
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
-        responses = self.get_response("update_hstate", replacements=replacements)
-        for line in responses[-1].split("\n"):
-            self.hstate.update(line)
+        response = self.get_response("update_hstate", replacements=replacements)
+        #first line is the confidence, the other lines are the beliefs
+        try:
+            conf = float(response.split("\n")[0])/10
+            beliefs = "\n".join(response.split("\n")[1:])
+        except ValueError:
+            conf = 0.2 
+            beliefs = response
+
+        self.hstate.update(beliefs, self.id, confidence = conf)
         return
 
     '''
@@ -302,12 +342,7 @@ class Player:
             response = self.get_response("reflex_policy_multi", replacements)
             self.update_note_from_response(response, "policy")
         return
-    
-    def reflex_policy(self, state, prev_events, trajs):
-        return
-    
-    def reflex_belief(self, state, prev_events, trajs):
-        return
+        
     
     def polish_reflex_note(self, note_type = "belief"):
         if note_type == "belief":
@@ -402,7 +437,7 @@ class Player:
         return
     
     def reset(self):
-        self.hstate = self.HiddenState(self.global_info["player_num"], self.id)
+        self.hstate = self.HiddenState(self.global_info["player_num"], self.global_info["roles_mapping"])
         
     def backtrace(self, back_step = 1, hstate = None, global_info = None, private_info = None):
         self.event_book.backtrace(back_step)

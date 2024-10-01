@@ -1,6 +1,6 @@
 import random
 from core.event import Event
-from typing import List, Union
+from typing import List, Union, Dict
 import numpy as np
 from copy import deepcopy
 
@@ -50,7 +50,7 @@ class DataTree:
         self.nodes.append(new_node)
         return node_id
     
-    def _add_edge(self, node1_id: int, node2_id: int, events: Union[List[Event], Event], actions: List[int]):
+    def _add_edge(self, node1_id: int, node2_id: int, events: Union[List[Event], Event], actions: List[Dict]):
         if isinstance(events, Event):
             events = [events]
         edge_id = len(self.edges)

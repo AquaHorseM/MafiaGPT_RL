@@ -16,7 +16,7 @@ class SeerPlayer(Player):
             "{known_roles}": self.get_known_roles(),
         })
         replacements.update({
-            "{hidden_state}": str(self.hidden_state),
+            "{hstate}": str(self.hstate),
         })
         replacements.update({
             "{private}": f"These are your previous inquiry results, which should be the key information for you and other good players to win: \n {self.get_known_roles()}"
@@ -30,16 +30,31 @@ class SeerPlayer(Player):
         if "known_roles" not in self.private_info:
             self.private_info["known_roles"] = dict()
         
-    def _act(self, available_actions = None):
+    def _act(self, available_actions = None): #return (action, target, reason, imagination)
         if "vote" in available_actions:
             res = self._vote()
-            return ("vote", res[0], res[1])
+            return {
+                "action": "vote",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "see" in available_actions or "night" in available_actions:
             res = self._see()
-            return ("see", res[0], res[1])
+            return {
+                "action": "see",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "speak" in available_actions:
             res = self._speak()
-            return ("speak", None, res)
+            return {
+                "action": "speak",
+                "target": None,
+                "reason": res,
+                "imagination": None
+            }
         elif "speak_type" in available_actions:
             res = self._get_speak_type()
             return ("speak_type", res, None)

@@ -17,7 +17,7 @@ class MedicPlayer(Player):
             "{last_heal}": self.private_info["last_heal"] if self.private_info["last_heal"] is not None else "Nobody",
         })
         replacements.update({
-            "{hidden_state}": str(self.hidden_state),
+            "{hstate}": str(self.hstate),
         })
         replacements.update({
             "{private}": f"You tried to heal player {self.private_info['last_heal']} last night." if self.private_info["last_heal"] is not None else "You haven't tried to heal anyone yet."
@@ -27,16 +27,31 @@ class MedicPlayer(Player):
         replacements.update({"{events}": str(self.event_book)})
         return replacements
         
-    def _act(self, available_actions = None):
+    def _act(self, available_actions = None): #return (action, target, reason, imagination)
         if "vote" in available_actions:
             res = self._vote()
-            return ("vote", res[0], res[1])
+            return {
+                "action": "vote",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "heal" in available_actions or "night" in available_actions:
             res = self._heal()
-            return ("heal", res[0], res[1])
+            return {
+                "action": "heal",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "speak" in available_actions:
             res = self._speak()
-            return ("speak", None, res)
+            return {
+                "action": "speak",
+                "target": None,
+                "reason": res,
+                "imagination": None
+            }
         elif "speak_type" in available_actions:
             res = self._get_speak_type()
             return ("speak_type", res, None)

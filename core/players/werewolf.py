@@ -10,7 +10,7 @@ class WerewolfPlayer(Player):
         self.labels = ["all", "werewolf"]
         self.role = "werewolf"
         for wid in self.private_info["werewolf_ids"]:
-            self.hidden_state.set_role(wid, self.global_info["roles_mapping"]["werewolf"])
+            self.hstate.set_role(wid, self.global_info["roles_mapping"]["werewolf"])
         
     def get_replacements(self):
         replacements = super().get_replacements()
@@ -19,7 +19,7 @@ class WerewolfPlayer(Player):
             "{werewolf_ids}": werewolf_ids,
         })
         replacements.update({
-            "{hidden_state}": str(self.hidden_state),
+            "{hstate}": str(self.hstate),
         })
         replacements.update({
             "{private}": f"All werewolves including you are {werewolf_ids}. Remember that you should work together to hide from other players and eliminate them."
@@ -29,16 +29,31 @@ class WerewolfPlayer(Player):
         replacements.update({"{previous_advices}": self.show_previous_advices()})
         return replacements
         
-    def _act(self, available_actions = None):
+    def _act(self, available_actions = None): #return (action, target, reason, imagination)
         if "vote" in available_actions:
             res = self._vote()
-            return ("vote", res[0], res[1])
+            return {
+                "action": "vote",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "kill" in available_actions or "night" in available_actions:
             res = self._kill()
-            return ("kill", res[0], res[1])
+            return {
+                "action": "kill",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "speak" in available_actions:
             res = self._speak()
-            return ("speak", None, res)
+            return {
+                "action": "speak",
+                "target": None,
+                "reason": res,
+                "imagination": None
+            }
         elif "speak_type" in available_actions:
             res = self._get_speak_type()
             return ("speak_type", res, None)

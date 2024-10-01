@@ -5,7 +5,7 @@ It is round {current_round}. All players currently alive are: {alive_players}, w
 
 Your previous beliefs after your last update were:
 
-{hidden_state}
+{hstate}
 
 These are the new events which happened after your last update:
 

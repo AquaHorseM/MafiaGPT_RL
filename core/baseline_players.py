@@ -51,7 +51,7 @@ class Player:
     '''
     To be consistent with the new version of the game, the following methods are added.
     '''
-    def update_hidden_state(self, obs):
+    def update_hstate(self, obs):
         return
     
     def train_obs(self, batch):

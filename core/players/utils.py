@@ -53,58 +53,6 @@ def get_target_from_response(response):
     except:
         target = None
     return target
-
-def get_gt_hstate_from_joint(joint_hstate):
-    if isinstance(joint_hstate, tuple) or isinstance(joint_hstate, list):
-        print("Warning: joint_hstate is a tuple or list, try to convert it to np array")
-        self_hstates = [joint_hstate[i][i] for i in range(len(joint_hstate))]
-    else:
-        print(f"joint_hstate shape: {joint_hstate.shape}")
-        if len(joint_hstate.shape) == 4:
-            assert joint_hstate.shape[1] == joint_hstate.shape[2], \
-                f"joint_hstate shape {joint_hstate.shape} is not recognized!"
-            self_hstates = [joint_hstate[i, i] for i in range(joint_hstate.shape[0])]
-        elif len(joint_hstate.shape) == 3:
-            assert joint_hstate.shape[0] == joint_hstate.shape[1] ** 2, \
-                f"joint_hstate shape {joint_hstate.shape} is not recognized!"
-            joint_hstate = np.reshape(joint_hstate, (int(joint_hstate.shape[0] ** 0.5), int(joint_hstate.shape[0] ** 0.5), joint_hstate.shape[1], joint_hstate.shape[2]))
-            self_hstates = [joint_hstate[i] for i in range(joint_hstate.shape[0])]
-    return np.concatenate(np.expand_dims(self_hstates, axis=0), axis=0)
-
-def get_player_reflex_info_from_raw_data(prev_joint_hstate, merged_events, new_joint_hstate, player_id, alpha = 1):
-    prev_hstate = prev_joint_hstate[player_id]
-    prev_gt_hstate = get_gt_hstate_from_joint(prev_joint_hstate)
-    new_hstate = new_joint_hstate[player_id]
-    new_gt_hstate = get_gt_hstate_from_joint(new_joint_hstate)
-    #! Temp
-    #Use alpha to blend the gt with the new hidden state, so that the model won't directly access the entire gt
-    targ_hstate = alpha * new_gt_hstate + (1-alpha) * new_hstate
-    return (prev_hstate, prev_gt_hstate, merged_events, new_hstate, targ_hstate)
-
-def parse_data(data, player_id, alpha = 1, check_event_include_player = False):
-    #data should be a list in the form of [hidden_state, tuple_of_events * n, hidden_state, tuple_of_events * n, ...]
-    #return a list of tuples in the form of [(hidden_state, tuple_of_events (merged), new_hidden_state), ...]
-    #hidden state should be np tensor
-    res = []
-    prev_hstate_index = 0
-    events = []
-    for i in range(1, len(data)):
-        if isinstance(data[i], tuple):
-            events.append(data[i])
-        else:
-            merged_events = sum(events, ())
-            if check_event_include_player and not any(events_include_player(event, player_id) for event in merged_events):
-                #skip this data
-                prev_hstate_index = i
-                continue
-            if prev_hstate_index == 0 and isinstance(data[0], tuple):
-                #error data; skip
-                prev_hstate_index = i
-                continue
-            else:
-                res.append(get_player_reflex_info_from_raw_data(data[prev_hstate_index], merged_events, data[i], player_id, alpha))
-            prev_hstate_index = i
-    return res    
     
 def parse_reflex_actions(reflex_actions):
     #parse all lines in the reflex note. Each line should be in the format of "OPERATION [VALUE]"
@@ -193,9 +141,9 @@ def send_dialogue(folder_path, background_path, replacements, config_path = None
             response = send_message_xsm(conversation_history, client = client) #?
             conversation_history.append({"role": "assistant", "content": response})
     # Return the final response from the last assistant message
-    return conversation_history[-1]["content"]
+    return [conversation_history[i]["content"] for i in range(len(conversation_history)) if conversation_history[i]["role"] == "assistant"]
 
-def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, client):
+def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, client) -> List[str]:
     background_path = os.path.join(common_dir_path, "background.txt")
     common_folder = os.path.join(common_dir_path, prompt_name)
     if os.path.exists(common_folder):
@@ -203,12 +151,12 @@ def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, cl
     common_file = os.path.join(common_dir_path, prompt_name + ".txt")
     if os.path.exists(common_file):
         prompt = get_prompt(common_file, replacements, background_path)
-        return send_message_xsm(prompt, client = client)
+        return [send_message_xsm(prompt, client = client)]
     role_folder = os.path.join(prompt_dir_path, prompt_name)
     if os.path.exists(role_folder):
         return send_dialogue(role_folder, background_path, replacements, client = client)
     role_file = os.path.join(prompt_dir_path, prompt_name + ".txt")
     if os.path.exists(role_file):
         prompt = get_prompt(role_file, replacements, background_path)
-        return send_message_xsm(prompt, client = client)
+        return [send_message_xsm(prompt, client = client)]
     raise ValueError(f"Prompt Not found for {prompt_name}")

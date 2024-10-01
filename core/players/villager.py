@@ -14,7 +14,7 @@ class VillagerPlayer(Player):
     def get_replacements(self):
         replacements = super().get_replacements()
         replacements.update({
-            "{hidden_state}": str(self.hidden_state),
+            "{hstate}": str(self.hstate),
         })
         replacements.update({
             "{private}": " ",
@@ -23,18 +23,32 @@ class VillagerPlayer(Player):
         replacements.update({"{events}": str(self.event_book)})
         return replacements
 
-    def _act(self, available_actions = None):
+    def _act(self, available_actions = None): #return (action, target, reason, imagination)
         if "vote" in available_actions:
             res = self._vote()
-            return ("vote", res[0], res[1])
+            return {
+                "action": "vote",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "speak" in available_actions:
             res = self._speak()
-            return ("speak", None, res)
+            return {
+                "action": "speak",
+                "target": None,
+                "reason": res,
+                "imagination": None
+            }
         elif "speak_type" in available_actions:
             res = self._get_speak_type()
             return ("speak_type", res, None)
         else:
-            return (None, None, None)
-
+            return {
+                "action": None,
+                "target": None,
+                "reason": None,
+                "imagination": None
+            }
 
     

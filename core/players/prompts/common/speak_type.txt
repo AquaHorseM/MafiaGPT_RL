@@ -5,7 +5,7 @@ It is round {current_round}. All players currently alive are: {alive_players}, w
 
 According to the history, this is your conclusion of other people's statuses and beliefs:
 
-{hidden_state}
+{hstate}
 
 2.Todo:
 

@@ -8,7 +8,7 @@ These are all previous events in the current game:
 
 According to the history, this is your conclusion of other people's statuses and beliefs:
 
-{hidden_state}
+{hstate}
 
 Now, it's time for you to speak. Speeches are categorized into 6 types, each type consists of two components:
 1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly

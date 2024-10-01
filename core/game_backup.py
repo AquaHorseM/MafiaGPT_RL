@@ -6,16 +6,18 @@ import numpy as np
 from prompts import render_prompts as render
 from core.baseline_players import Villager, Werewolf, Medic, Seer
 from core.event import Event, EventBook
+from core.players.player import Player
 from core.players.werewolf import WerewolfPlayer
 from core.players.villager import VillagerPlayer
 from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
-from core.utils import switcher_players, load_player_from_checkpoint
+from core.utils import switcher_players, load_player_from_checkpoint, load_player_from_info
 from core.api import load_client
+from core.data import DataTree
 
 
 class Game:
-    def __init__(self, id=1, train = False, reflex = False, openai_client = None, data_path = None):
+    def __init__(self, id=1, train = False, openai_client = None, data_path = None):
         self.id = id
         self.all_players = []
         self.alive_players = []
@@ -25,21 +27,28 @@ class Game:
         self.event_book = EventBook()
         self.logger = self._configure_logger()
         self.current_round = 0
-        self.cur_stage = 0
         self.player_num = 0
-        self.reflex =reflex
         self.temp_events = []
         self.night_info = {
             "killed": None,
             "healed": None
         }
-        self.data = []
+        self.game_status = {
+            "cur_stage": "night", #night, day, vote
+            "cur_round": 0,
+            "speaking_player": None, 
+            "start_speaking_player": None,
+            "winner": None
+        }
+        self.data = DataTree()
         self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
         self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
         #clear the data file if it exists
         if os.path.exists(self.data_path):
+            self.logger.warning(f"data path {self.data_path} already exists. Removing it.")
             os.remove(self.data_path)
         self.train = train
+        self.hstate_updated = True
 
 
     def _configure_logger(self):
@@ -104,17 +113,16 @@ class Game:
             self.player_types.append(player_type)
             if player_type == "reflex":
                 prompt_dir_path = os.path.join("core/players/prompts", role)
+                common_prompt_dir_path = os.path.join("core/players/prompts", "common")
                 assert os.path.exists(prompt_dir_path), "prompt directory not found"
-                self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, self.openai_client))
+                assert os.path.exists(common_prompt_dir_path), "common prompt directory not found"
+                self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, common_prompt_dir_path, self.openai_client))
             else:
                 self.all_players.append(switcher_players[player_type][role](role=role, id=i))
                 if role == "werewolf":
                     self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
                 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
-            
-    def get_player(self, id):
-        return self.all_players[id]
 
     def get_alive_werewolves(self):
         ls = list(filter(lambda player: self.all_players[player].get_role() == "werewolf", self.alive_players))
@@ -135,15 +143,9 @@ class Game:
         if player_id not in self.alive_players:
             self.logger.warning("Voting out an already dead guy! Skipped!")
             return
-        self.alive_players.remove(player_id)
-        self.dead_players.append(player_id)
         self.add_event({"event": "vote_out", "content": {"player": player_id}, "visible": "all"})
-        self.all_players[player_id].is_alive = False
-        #update for all players
-        for player_id in self.alive_players:
-            self.all_players[player_id].global_info["alive_players"] = self.alive_players
-            self.all_players[player_id].global_info["dead_players"] = self.dead_players
-    
+        self.die(player_id)
+        
     def die(self, player_id):
         if player_id not in self.alive_players:
             self.logger.warning(f"Player {player_id} is already dead! Skipped!")
@@ -175,7 +177,12 @@ class Game:
         votes = self.votes[-1]
         if max(votes) > 1:
             votes_sorted = dict(sorted(votes.items(), key=lambda x: x[1]))
-            self.vote_out(list(votes_sorted.keys())[-1])
+            if votes_sorted.values[-1] == votes_sorted.values[-2]:
+                self.add_event({
+                    "event": "vote draw", "content": "No one is voted out"
+                })
+            else:
+                self.vote_out(list(votes_sorted.keys())[-1])
         return
     
     def check_death_info(self):
@@ -195,17 +202,20 @@ class Game:
             "healed": None
         }
         
-    def add_event(self, event):
+    def add_event(self, event, sim_only = False):
         if isinstance(event, Event):
-            if self.train:
+            if self.train and not sim_only:
                 self.temp_events.append(event)
             self.event_book.add_event(event)
-            self.logger.info(event)
+            if not sim_only:
+                self.logger.info(event)
         else:
             assert isinstance(event, dict), "event must be a dict or an instance of Event"
             if "visible" not in event:
                 event["visible"] = "all"
             self.add_event(Event(event))
+        if not sim_only and self.hstate_updated:
+            self.hstate_updated = False
 
     def run_day(self, save_checkpoint = False):
         if self.cur_stage == 2:
@@ -214,13 +224,14 @@ class Game:
                     res = self.all_players[player_id].speak(self, render.speech_command()).replace("\n", " ")
                 else:
                     if self.train:
-                        self.update_all_hstates()
-                        self.add_all_hstate_to_data()
-                        res = self.all_players[player_id]._speak(self.event_book, update_hstate = False)
+                        self.update_all_hstates(add_to_data=True)
+                        # res = self.all_players[player_id]._speak(self.event_book, update_hstate = False)
+                        res = self.act(player_id, "speak", update_hstate=False)
                     else:
-                        res = self.all_players[player_id]._speak(self.event_book, update_hstate = True)
+                        # res = self.all_players[player_id]._speak(self.event_book, update_hstate = True)
+                        res = self.act(player_id, "speak", update_hstate=True)
                 self.add_event(
-                    {"event": "speech", "content": {"player": self.all_players[player_id].id, "context": res}}
+                    {"event": "speech", "content": {"player": player_id, "context": res}}
                 )
                 if save_checkpoint:
                     self.save_checkpoint(f"checkpoints/game_{self.id}_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}")
@@ -234,8 +245,9 @@ class Game:
                     target_voted, reason = self.all_players[player_id].vote(self)
                 else:
                     if self.train:
-                        self.update_all_hstates()
-                        self.add_all_hstate_to_data()
+                        if not self.hstate_updated:
+                            self.update_all_hstates()
+                            self.add_all_hstate_to_data()
                         action, target_voted, reason = self.all_players[player_id]._act(self.event_book, available_actions = ["vote"], update_hstate = False)
                     else:
                         action, target_voted, reason = self.all_players[player_id]._act(self.event_book, available_actions = ["vote"], update_hstate = True)
@@ -260,19 +272,40 @@ class Game:
             self.check_votes()
             self.cur_stage = max(4, self.cur_stage)
         return
+    
+    def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
+        if self.game_status["cur_stage"] == "night":
+            night_actions = {
+                "seer": ["see"],
+                "medic": ["heal"],
+                "werewolf": ["kill"],
+                "villager": []
+            }
+            return night_actions[self.all_players[player_id].get_role()]
+        elif self.game_status["cur_stage"] == "day":
+            if player_id == self.game_status["speaking_player"]:
+                return ["speak"]
+            else:
+                return []
+        else: #vote stage
+            return ["vote"]
+    
+    def get_available_actions(self):
+        return [self.get_available_actions_single_player(i) for i in range(self.player_num)]
 
     def run_night(self):
         self.werewolves_talks = []
-        if self.train:
-            self.update_all_hstates()
-            self.add_all_hstate_to_data()
+        if self.train and not self.hstate_updated:
+            self.update_all_hstates(add_to_data=True)
         update_hstate_for_actions = not self.train
         for medic_id in self.get_alive_medics():
-            action, target, reason = self.all_players[medic_id].healing(self, update_hstate = update_hstate_for_actions)
-            self.add_event({"event": "healing", "content": {"player": medic_id, "target": target, "reason": reason}, "visible": medic_id})
+            # action, target, reason = self.all_players[medic_id].healing(self, update_hstate = update_hstate_for_actions)
+            action, target, reason = self.act(medic_id, "heal", update_hstate=update_hstate_for_actions)
+            self.add_event({"event": "heal", "content": {"player": medic_id, "target": target, "reason": reason}, "visible": medic_id})
             self.night_info["healed"] = target
         for seer_id in self.get_alive_seers():
-            action, target, reason = self.all_players[seer_id].inquiry(self, update_hstate = update_hstate_for_actions)
+            # action, target, reason = self.all_players[seer_id].inquiry(self, update_hstate = update_hstate_for_actions)
+            action, target, reason = self.act(seer_id, "see", update_hstate=update_hstate_for_actions)
             is_werewolf = self.all_players[target].get_role() == "werewolf" if target is not None else None
             self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": target, "is_werewolf": is_werewolf, "reason": reason}, "visible": seer_id})
             if is_werewolf is not None: 
@@ -288,12 +321,13 @@ class Game:
                 else:
                     target, reason = self.all_players[werewolf_id].advicing(self)
                     advices.append({"id": werewolf_id, "target": target, "reason": reason})
-                    action = "advicing"
+                    action = "advice"
             elif self.player_types[werewolf_id] == "reflex":
                 self.all_players[werewolf_id].private_info["previous_advices"] = advices
-                action, target, reason = self.all_players[werewolf_id]._act(self.event_book, available_actions = ["kill"], 
-                                                                            update_hstate = update_hstate_for_actions)
-                action = "kill" if werewolf_id == werewolf_ids[-1] else "advicing"
+                # action, target, reason = self.all_players[werewolf_id]._act(self.event_book, available_actions = ["kill"], 
+                #                                                             update_hstate = update_hstate_for_actions)
+                action, target, reason = self.act(werewolf_id, "kill", update_hstate=update_hstate_for_actions)
+                action = "kill" if werewolf_id == werewolf_ids[-1] else "advice"
                 if action == "kill":
                     self.night_info["killed"] = target
             self.add_event({"event": action, "content": {"player": werewolf_id, "target": target, "reason": reason},
@@ -341,53 +375,70 @@ class Game:
             "player_num": self.player_num,
             "alive_players": list(self.alive_players),
             "dead_players": list(self.dead_players),
-            "current_round": self.current_round,
             "roles_mapping": {
                 "villager": 0,
                 "werewolf": 1,
                 "medic": 2,
                 "seer": 3
             },
-            "previous_votes": self.votes
+            "previous_votes": self.votes,
+            "game_status": self.game_status,
+            "joint_hstate": self.get_joint_hstate(),
         }
             
 
     def save_game_record(self):
         json.dump(str(self.event_book), open(f"records/game_{self.id}_log.json", "w"), indent=4)
         
-    def save_checkpoint(self, root_path):
+    def save_checkpoint(self, root_path = None):
+        #set root_path=None to merely output the info without saving
         #assert all player types are reflex
-        self.logger.info(f"Saving checkpoint to {root_path}")
         assert all([player_type == "reflex" for player_type in self.player_types]), "All players must be reflex players"
-        os.makedirs(root_path, exist_ok=True)
-        info = {
+        if root_path is not None:
+            self.logger.info(f"Saving checkpoint to {root_path}")
+            os.makedirs(root_path, exist_ok=True)
+        game_info = {
             "global_info": self.get_global_info(),
-            "event_book": self.event_book,
             "night_info": self.night_info, 
             "id": self.id,
-            "cur_stage": self.cur_stage,
+            "game_status": self.game_status,
         }
-        with open(os.path.join(root_path, f"game_checkpoint.pkl"), "wb") as file:
-            pickle.dump(info, file)
+        if root_path is not None:
+            with open(os.path.join(root_path, f"game_checkpoint.pkl"), "wb") as file:
+                pickle.dump(game_info, file)
+        player_infos = []
         for player in self.all_players:
-            player.save_checkpoint(os.path.join(root_path, f"player_{player.id}_ckpt.pkl"))
+            if root_path is not None:
+                player_info = player.save_checkpoint(os.path.join(root_path, f"player_{player.id}_ckpt.pkl"))
+            else:
+                player_info = player.save_checkpoint(path = None)
+            player_infos.append(player_info)
         self.logger.info(f"Checkpoint saved successfully")
-        return
-        
-    def load_checkpoint(self, root_path): #assume all players are reflex players
-        self.logger.info(f"Loading checkpoint from {root_path}")
-        with open(os.path.join(root_path, f"game_checkpoint.pkl"), "rb") as file:
-            info = pickle.load(file)
-        self.id = info["id"]
-        self.event_book = info["event_book"]
-        self.night_info = info["night_info"]
-        self.cur_stage = info["cur_stage"]
-        self.current_round = info["global_info"]["current_round"]
-        self.alive_players = info["global_info"]["alive_players"]
-        self.dead_players = info["global_info"]["dead_players"]
-        self.votes = info["global_info"]["previous_votes"]
-        for i in range(info["global_info"]["player_num"]):
-            player = load_player_from_checkpoint(os.path.join(root_path, f"player_{i}_ckpt.pkl"), self, i)
+        return {
+            "game_info": game_info,
+            "player_infos": player_infos 
+        }
+                
+    def parse_global_info(self, global_info: dict):
+        self.current_round = global_info["current_round"]
+        self.alive_players = global_info["alive_players"]
+        self.dead_players = global_info["dead_players"]
+        self.votes = global_info["previous_votes"]
+        self.game_status = global_info["game_status"]
+        self.player_num = global_info["player_num"]
+    
+    def load_checkpoint(self, info, events):
+        game_info = info["game_info"]
+        self.id = game_info["id"]
+        self.night_info = game_info["night_info"]
+        global_info = game_info["global_info"]
+        self.parse_global_info(global_info)
+        self.event_book = EventBook()
+        self.event_book.add_event(events)
+        self.all_players = []
+        for i in range(global_info["player_num"]):
+            player: Player = load_player_from_info(info["player_infos"][i], self, i)
+            player.hstate = global_info["joint_hstate"][i]
             player.event_book.add_event(self.event_book.filter(
                 end_tick = player.tick,
                 id = player.id,
@@ -395,7 +446,7 @@ class Game:
             ))
             self.all_players.append(player)
             self.player_types.append("reflex")
-        self.logger.info(f"Checkpoint loaded successfully")
+        self.logger.info(f"Info loaded successfully")
 
     def get_gt_hstate(self):
         #A temporary version for the current hidden state definition
@@ -406,9 +457,7 @@ class Game:
         return hstate
 
     def all_players_reflex(self):
-        if not self.reflex:
-            return
-        for player_id in self.alive_players:
+        for player_id in range(len(self.all_players)):
             player = self.all_players[player_id]
             if self.player_types[player_id] == "baseline":
                 res = send_message(
@@ -426,60 +475,57 @@ class Game:
                 player.notes = res
             elif self.player_types[player_id] == "reflex":
                 player.reflex(self.data)
-    
-    def act(self, player_id, actions, update_hstate = True):
-        return self.all_players[player_id]._act(self.event_book, 
-                                                available_actions = [actions] if isinstance(actions, str) else actions,
-                                                update_hstate = update_hstate)
-    
-    def update_all_hstates(self):
-        for player in self.all_players:
-            player.update_hidden_state(self.event_book)
+                
+    def all_players_reflex_from_data_path(self, data_path):
+        self.logger.info(f"Reflexing all players from data path {data_path}")
+        for player_id in range(len(self.all_players)):
+            self.all_players[player_id].reflex_from_data_path(data_path)
+        self.logger.info("All players reflexed successfully")
         return
     
-    def act_and_collect_hstate(self, player_id, actions):
-        self.update_all_hstates()
-        return self.act(player_id, actions, update_hstate=False)
-
-    def get_hstate(self, player_id):
-        return self.all_players[player_id].hidden_state
+    def act(self, player_id, actions):
+        return self.all_players[player_id]._act(available_actions = [actions] if isinstance(actions, str) else actions)
+    
+    def update_all_hstates(self, add_to_data = True):
+        for player in self.all_players:
+            player.update_hstate(self.event_book)
+        if add_to_data:
+            self.update_data()
+        self.hstate_updated = True
+        return
+    
+    def update_data(self):
+        info = self.save_checkpoint()
+        self.data.add_edge_and_node(
+            events = self.temp_events,
+            info = info
+        )
     
     def get_joint_hstate(self):
-        return np.concatenate([player.hidden_state.beliefs for player in self.all_players], axis = 0)
-    
-    def add_all_hstate_to_data(self):
-        if self.temp_events:
-            self.add_events_to_data(self.temp_events)
-            self.temp_events = []
-        self.data.append(self.get_joint_hstate())
-    
-    def add_events_to_data(self, events):
-        #convert events to a tuple of strings
-        _events_ = [str(event) for event in events]
-        #convert to a tuple and add to data as a single element
-        self.data.append(tuple(_events_))
-
+        return np.concatenate([np.expand_dims(player.hstate.beliefs, axis = 0) for player in self.all_players], axis = 0)
     
     def store_data(self, path):
         if not self.data:
             self.logger.warning("No data to store! Skipped!")
             return
-        if os.path.exists(path):
-            with open(path, "rb") as file:
-                d = pickle.load(file)
-            dat = d + self.data
-        else:
-            dat = self.data
         with open(path, "wb") as file:
-            pickle.dump(dat, file)
-        self.data = []
+            pickle.dump(self.data, file)
         self.logger.info(f"Data stored successfully to {path}")
         
     def end(self):
         self.save_game_record()
         if self.train:
-            self.add_events_to_data(self.temp_events)
-            self.temp_events = []
+            self.update_all_hstates(add_to_data=True)
+            self.store_data(f"records/game_{self.id}_data.pkl")
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
-            self.store_data(f"records/game_{self.id}_data.pkl")
+            self.logger.info("All players reflexed successfully")
+            
+    def backtrace(self, back_steps = 1):
+        node_id = self.data.get_backtrace_id(back_steps)
+        recover_info = self.data.backtrace(node_id)
+        info = recover_info["info"]
+        events = recover_info["events"]
+        self.load_checkpoint(info, events)
+        
+        
