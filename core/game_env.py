@@ -506,7 +506,11 @@ class WerewolfGameEnv:
         self.logger.info("Game ended")
         self.update_all_hstates(add_to_data=True)
         self.store_data(f"data/game_{self.id}_data.pkl")
-        self.save_game_record()
+        try:
+            self.save_game_record()
+        except Exception as e:
+            print("Failed to save game record.")
+            print(f"Error: {e}")
         if self.train:
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
