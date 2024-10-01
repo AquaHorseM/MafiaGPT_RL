@@ -215,7 +215,7 @@ class WerewolfGameEnv:
         return 1 if self.game_status["winner"] or not self.all_players[player_id].is_alive else 0
         
     def step(self, actions):
-        print("xsm debug actions: " + str(actions))
+        # print("xsm debug actions: " + str(actions))
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
             alive_medics = self.get_alive_medics()
@@ -541,7 +541,7 @@ class WerewolfGameEnv:
         avail_actions = self.get_available_actions()
         while True:
             actions = self.get_actions_reflex(avail_actions)
-            self.logger.info(f"actions: {actions}")
+            # self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
             self.latest_actions = actions
             collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]

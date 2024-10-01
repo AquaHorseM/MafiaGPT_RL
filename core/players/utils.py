@@ -48,10 +48,12 @@ def get_prompt(prompt_path, replacements, background_path = None):
 
 def get_target_from_response(response):
     #find the first number in the response
+    print(f"getting target from {response}")
     try:
         target = int(re.search(r"\d+", response).group())
     except:
         target = None
+    print(f"target is {target}")
     return target
     
 def parse_reflex_actions(reflex_actions):
