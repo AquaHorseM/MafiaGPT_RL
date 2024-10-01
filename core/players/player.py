@@ -25,8 +25,8 @@ class Player:
             for i in range(self.player_num):
                 if i==self.id:
                     continue
-                s += f"Player {i}'s role is {self.beliefs[i]["role"]} with {self.beliefs[i]["confidence"]} confidence.\n"
-                s += f"Reason is: {self.beliefs[i]["reason"]}\n"
+                s += f"Player {i}'s role is {self.beliefs[i]['role']} with {self.beliefs[i]['confidence']} confidence.\n"
+                s += f"Reason is: {self.beliefs[i]['reason']}\n"
             return s
         
         def update(self, update_string):
