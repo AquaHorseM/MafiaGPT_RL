@@ -41,6 +41,7 @@ class Event:
             s += f"Round {self.content['round']} begins."
         else:
             raise ValueError(f'Event type {self.event} not recognized.')
+        return s
         
     def log(self):
         s = str(self)
