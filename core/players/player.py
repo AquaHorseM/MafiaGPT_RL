@@ -56,6 +56,13 @@ class Player:
                     "reason": result["reason"]
                 }
                 return
+        
+        def set_role(self, id, role):
+            self.beliefs[id] = {
+                "role": role,
+                "confidence": "high",
+                "reason": "Fact"
+            }
 
                 
                         
@@ -74,6 +81,7 @@ class Player:
         self.global_info = deepcopy(global_info)
         self.private_info = deepcopy(private_info)
         self.hstate = self.HiddenState(global_info["player_num"], self.id)
+        self.hstate.set_role(self.id, self.get_role())
         
     def get_replacements(self):
         with open(self.reflex_note_path_belief, "r") as f:
