@@ -246,20 +246,23 @@ class WerewolfGameEnv:
                     #randomly choose
                     kill_decider = random.choice([0, 1])
                     kill_target = kill_target_1 if kill_decider == 0 else kill_target_2
-                self.add_event({"event": "advicing", "content": {"player": werewolf_ids[0], "target": kill_target_1, "reason": None}, "visible": "werewolf"})
-                self.add_event({"event": "advicing", "content": {"player": werewolf_ids[1], "target": kill_target_2, "reason": None}, "visible": "werewolf"})
-                self.add_event({"event": "kill", "content": {"player": werewolf_ids[kill_decider], "target": kill_target, "reason": None}, "visible": "werewolf"})
+                self.add_event({"event": "advicing", "content": {"player": werewolf_ids[0], "target": kill_target_1, "reason": actions[werewolf_ids[0]]["reason"]}, "visible": "werewolf"})
+                self.add_event({"event": "advicing", "content": {"player": werewolf_ids[1], "target": kill_target_2, "reason": actions[werewolf_ids[1]]["reason"]}, "visible": "werewolf"})
+                self.add_event({"event": "kill", "content": {"player": werewolf_ids[kill_decider], "target": kill_target, "reason": "System randomly decided from the werewolves' suggestions."}, "visible": "werewolf"})
                 self.night_info["killed"] = kill_target
             else:
                 werewolf_id = werewolf_ids[0]
                 kill_target = actions[werewolf_id]["target"]
-                self.add_event({"event": "kill", "content": {"player": werewolf_id, "target": kill_target, \
+                self.add_event({"event": "advicing", "content": {"player": werewolf_id, "target": kill_target, \
                     "reason": actions[werewolf_id]["reason"]}, "visible": "werewolf"})
+                self.add_event({"event": "kill", "content": {"player": werewolf_id, "target": kill_target, "reason": "System randomly decided from the werewolves' suggestions."}, "visible": "werewolf"})
                 self.night_info["killed"] = kill_target
             
             self.check_death_info()
             self.game_status["cur_stage"] = "day"
+            self.add_event({"event": "day_start"})
             self.game_status["start_speaking_player"] = random.choice(self.alive_players)
+            self.add_event({"event": "start_speaking", "content": {"player": self.game_status['start_speaking_player']}})
             self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
         elif self.game_status["cur_stage"] == "day":
             speaking_player = self.game_status["next_speaking_player"]
@@ -268,10 +271,12 @@ class WerewolfGameEnv:
                 speaking_player = (speaking_player + 1) % self.player_num
                 if speaking_player == self.game_status["start_speaking_player"]:
                     self.game_status["cur_stage"] = "vote"
+                    self.add_event({"event": "vote_start"})
                     break
                 elif speaking_player in self.alive_players:
                     self.game_status["next_speaking_player"] = speaking_player
                     break
+                
         else: #vote stage
             assert all([actions[i]["action"] == "vote" for i in self.alive_players]), "all actions must be 'vote' in the vote stage"
             votes = {i : actions[i]["target"] for i in self.alive_players if actions[i]["target"] is not None}
@@ -283,6 +288,8 @@ class WerewolfGameEnv:
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
             self.game_status["cur_round"] += 1
+            self.add_event({"event": "begin_round", "content": {"round": {self.game_status['cur_round']+1}}})
+            self.add_event({"event": "night_start"})
         # self.update_all_hstates(add_to_data = True)
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
@@ -539,6 +546,7 @@ class WerewolfGameEnv:
     def sim_game_for_reflex_players(self): #main simulation function
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
+        self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
         while True:
             actions = self.get_actions_reflex(avail_actions)
             # self.logger.info(f"actions: {actions}")
