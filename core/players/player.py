@@ -6,7 +6,7 @@ from core.data import DataTree
 from core.event import EventBook
 from core.players.utils import get_response
 import re, pickle
-from core.players.utils import parse_data, parse_reflex_note, parse_reflex_actions, get_target_from_response, get_gt_hstate_from_joint
+from core.players.utils import parse_reflex_note, parse_reflex_actions, get_target_from_response, get_gt_hstate_from_joint
         
 class Player:
     class HiddenState:
