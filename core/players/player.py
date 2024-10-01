@@ -6,7 +6,7 @@ from core.data import DataTree
 from core.event import EventBook
 from core.players.utils import get_response
 import re, pickle
-from core.players.utils import parse_reflex_note, parse_reflex_actions, get_target_from_response, get_gt_hstate_from_joint
+from core.players.utils import parse_reflex_note, parse_reflex_actions, get_target_from_response
         
 class Player:
     class HiddenState:
@@ -251,57 +251,57 @@ class Player:
         self.polish_reflex_notes()
         return
     
-    def reflex_single_pair(self, state, prev_events, trajs, note_type = "belief"):
-        actions = []
-        events = []
-        outcomes = []
-        for i in range(len(trajs)):
-            actions.append(trajs[i]["action"])
-            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
-            outcomes.append(trajs[i]["outcome"])
-        if len(trajs) > 1:
-            i = random.randint(0, len(trajs) - 1)
-        else:
-            i = 0
-        replacements = self.get_replacements()
-        replacements.update({
-            "{prev_hstate}": str(get_gt_hstate_from_joint(state["hstate"])),
-            "{prev_events}": str(prev_events),
-            "{new_events}": str(events[i]),
-            "{next_hstate}": str(get_gt_hstate_from_joint(outcomes[i]["hstate"])),
-            "{pred_hstate}": str(outcomes[i]["hstate"][self.id]),
-        })
-        if note_type == "belief":
-            prompt_name = "reflex_belief"
-        elif note_type == "policy":
-            prompt_name = "reflex_policy_single"
-        else:
-            raise ValueError("Note type must be either 'belief' or 'policy'")
-        response = self.get_response(prompt_name, replacements=replacements)
-        self.update_note_from_response(response, note_type=note_type)
-        return response
+    # def reflex_single_pair(self, state, prev_events, trajs, note_type = "belief"):
+    #     actions = []
+    #     events = []
+    #     outcomes = []
+    #     for i in range(len(trajs)):
+    #         actions.append(trajs[i]["action"])
+    #         events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
+    #         outcomes.append(trajs[i]["outcome"])
+    #     if len(trajs) > 1:
+    #         i = random.randint(0, len(trajs) - 1)
+    #     else:
+    #         i = 0
+    #     replacements = self.get_replacements()
+    #     replacements.update({
+    #         "{prev_hstate}": str(get_gt_hstate_from_joint(state["hstate"])),
+    #         "{prev_events}": str(prev_events),
+    #         "{new_events}": str(events[i]),
+    #         "{next_hstate}": str(get_gt_hstate_from_joint(outcomes[i]["hstate"])),
+    #         "{pred_hstate}": str(outcomes[i]["hstate"][self.id]),
+    #     })
+    #     if note_type == "belief":
+    #         prompt_name = "reflex_belief"
+    #     elif note_type == "policy":
+    #         prompt_name = "reflex_policy_single"
+    #     else:
+    #         raise ValueError("Note type must be either 'belief' or 'policy'")
+    #     response = self.get_response(prompt_name, replacements=replacements)
+    #     self.update_note_from_response(response, note_type=note_type)
+    #     return response
     
-    def reflex_single_data_new(self, state, prev_events, trajs): #only used for policy update
-        actions = []
-        events = []
-        outcomes = []
-        for i in range(len(trajs)):
-            actions.append(trajs[i]["action"])
-            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
-            outcomes.append(trajs[i]["outcome"])
-        replacements = self.get_replacements()
-        replacements.update({
-            "{cur_hstate}": str(state["hstate"]),
-            "{prev_events}": str(prev_events),
-            "{action1}": actions[0],
-            "{outcome1}": outcomes[0],
-            "{action2}": actions[1],
-            "{outcome2}": outcomes[1]
-        })
-        if False: #temporarily skip this
-            response = self.get_response("reflex_policy_multi", replacements)
-            self.update_note_from_response(response, "policy")
-        return
+    # def reflex_single_data_new(self, state, prev_events, trajs): #only used for policy update
+    #     actions = []
+    #     events = []
+    #     outcomes = []
+    #     for i in range(len(trajs)):
+    #         actions.append(trajs[i]["action"])
+    #         events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
+    #         outcomes.append(trajs[i]["outcome"])
+    #     replacements = self.get_replacements()
+    #     replacements.update({
+    #         "{cur_hstate}": str(state["hstate"]),
+    #         "{prev_events}": str(prev_events),
+    #         "{action1}": actions[0],
+    #         "{outcome1}": outcomes[0],
+    #         "{action2}": actions[1],
+    #         "{outcome2}": outcomes[1]
+    #     })
+    #     if False: #temporarily skip this
+    #         response = self.get_response("reflex_policy_multi", replacements)
+    #         self.update_note_from_response(response, "policy")
+    #     return
     
     def reflex_policy(self, state, prev_events, trajs):
         return
