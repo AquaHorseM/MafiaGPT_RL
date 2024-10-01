@@ -544,7 +544,6 @@ class WerewolfGameEnv:
             # self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
             self.latest_actions = actions
-            collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]
             if info is not None:
                 self.logger.info(str(info))
             if all(dones):
