@@ -59,8 +59,11 @@ class Event:
 class EventEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Event):
-            return obj.to_dict()
+            return self.default(obj.to_dict())
+        elif isinstance(obj, set):
+            return self.default(list(obj))
         return super().default(obj)
+    
 
 class EventBook:
     def __init__(self):
@@ -106,7 +109,7 @@ class EventBook:
         for i in range(back_steps):
             self.events.pop(self.tick, None)
             self.tick -= 1
-    
+                
     def __str__(self) -> str:
         s = ""
         for tick, events in self.events.items():

@@ -505,8 +505,8 @@ class WerewolfGameEnv:
     def end(self):
         self.logger.info("Game ended")
         self.update_all_hstates(add_to_data=True)
-        self.save_game_record()
         self.store_data(f"data/game_{self.id}_data.pkl")
+        self.save_game_record()
         if self.train:
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
