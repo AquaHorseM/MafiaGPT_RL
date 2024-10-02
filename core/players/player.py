@@ -311,9 +311,25 @@ class Player:
     #     return
     
     def reflex_policy(self, state, prev_events, trajs):
+        actions = []
+        events = []
+        outcomes = []
+        for i in range(len(trajs)):
+            actions.append(trajs[i]["action"])
+            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
+            outcomes.append(trajs[i]["outcome"])
+        hstate = state["hstate"]
+        alive_players = state["global_info"]["alive_players"]
         return
     
     def reflex_belief(self, state, prev_events, trajs):
+        actions = []
+        events = []
+        outcomes = []
+        for i in range(len(trajs)):
+            actions.append(trajs[i]["action"])
+            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
+            outcomes.append(trajs[i]["outcome"])
         return
     
     def polish_reflex_note(self, note_type = "belief"):
