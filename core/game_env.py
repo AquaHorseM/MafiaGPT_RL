@@ -275,8 +275,9 @@ class WerewolfGameEnv:
             votes = {i : actions[i]["target"] for i in self.alive_players if actions[i]["target"] is not None}
             self.votes.append(votes)
             for player_id in self.alive_players:
-                self.all_players[player_id].global_info["last_vote"] = votes[player_id]
-                self.add_event({"event": "vote", "content": {"player": player_id, "target": votes[player_id], "reason": actions[player_id]["reason"]}, "visible": player_id})
+                self.all_players[player_id].global_info["last_vote"] = votes[player_id] if votes.get(player_id) is not None else None
+                self.add_event({"event": "vote", "content": {"player": player_id, "target": votes[player_id] if votes.get(player_id) is not None else None, \
+                    "reason": actions[player_id]["reason"]}, "visible": player_id})
             self.check_votes()
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
@@ -400,12 +401,6 @@ class WerewolfGameEnv:
             "player_num": self.player_num,
             "alive_players": list(self.alive_players),
             "dead_players": list(self.dead_players),
-            "roles_mapping": {
-                "villager": 0,
-                "werewolf": 1,
-                "medic": 2,
-                "seer": 3
-            },
             "previous_votes": self.votes,
             "game_status": self.game_status,
         }
