@@ -95,7 +95,6 @@ class Player:
             "{alive_players}": str(list(self.global_info["alive_players"])),
             "{dead_players}": str(self.global_info["dead_players"]) if len(self.global_info["dead_players"]) > 0 else "Nobody",
             "{current_round}": str(current_round + 1), #! notice the +1 here
-            "{roles_mapping}": str(self.global_info["roles_mapping"]),
             "{role}": str(self.private_info["role"]),
             "{previous_votes}": str(self.global_info["previous_votes"]),
             "{reflex_note_belief}": str(reflex_note_belief),
@@ -220,6 +219,7 @@ class Player:
         return True
     
     def reflex(self, data : DataTree, sample_num = 5):
+        return
         reflex_data_belief = data.sample(self.id, sample_num = sample_num)
         reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = sample_num)
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
