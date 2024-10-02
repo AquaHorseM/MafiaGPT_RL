@@ -419,8 +419,8 @@ class WerewolfGameEnv:
             
 
     def save_game_record(self):
-        events = list(self.event_book.events.values())
-        json.dump(events, open(f"records/game_{self.id}_log.json", "w"), indent=4, cls=EventEncoder)
+        events = [e.to_dict() for es in self.event_book.events.values() for e in es]
+        json.dump(events, open(f"records/game_{self.id}_log.json", "w"), indent=4)
                 
     
     def parse_global_info(self, global_info: dict):

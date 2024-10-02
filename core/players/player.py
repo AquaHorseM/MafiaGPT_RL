@@ -148,12 +148,6 @@ class Player:
         s_type = self._get_speak_type()
         response = self.speak_with_type(s_type)
         return response
-            
-    def train_obs(self, batch):
-        return None
-    
-    def train_speech_policy(self, obs):
-        return None
     
     def previous_votes(self):
         return self.global_info["previous_votes"]

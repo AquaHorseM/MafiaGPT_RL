@@ -55,15 +55,6 @@ class Event:
             "content": self.content,  # Assuming content is already serializable
             "visible": self.visible
         }
-        
-class EventEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Event):
-            return self.default(obj.to_dict())
-        elif isinstance(obj, set):
-            return self.default(list(obj))
-        return super().default(obj)
-    
 
 class EventBook:
     def __init__(self):
