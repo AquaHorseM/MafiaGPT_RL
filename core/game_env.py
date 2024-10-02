@@ -6,17 +6,10 @@ from core.api import send_message
 import json, re, os, datetime
 import numpy as np
 from core.players.player import Player
-from prompts import render_prompts as render
-from core.baseline_players import Villager, Werewolf, Medic, Seer
-from core.event import Event, EventBook, EventEncoder
-from core.players.werewolf import WerewolfPlayer
-from core.players.villager import VillagerPlayer
-from core.players.medic import MedicPlayer
-from core.players.seer import SeerPlayer
+from core.event import Event, EventBook
 from core.utils import load_player_from_info, switcher_players, load_player_from_checkpoint
 from core.api import load_client
 from core.data import DataTree
-import gym
 import inspect
 from core.common import *
 
