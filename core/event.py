@@ -55,12 +55,6 @@ class Event:
             "content": self.content,  # Assuming content is already serializable
             "visible": self.visible
         }
-        
-class EventEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Event):
-            return obj.to_dict()
-        return super().default(obj)
 
 class EventBook:
     def __init__(self):
@@ -106,7 +100,7 @@ class EventBook:
         for i in range(back_steps):
             self.events.pop(self.tick, None)
             self.tick -= 1
-    
+                
     def __str__(self) -> str:
         s = ""
         for tick, events in self.events.items():

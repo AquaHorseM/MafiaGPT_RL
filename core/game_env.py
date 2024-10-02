@@ -6,17 +6,10 @@ from core.api import send_message
 import json, re, os, datetime
 import numpy as np
 from core.players.player import Player
-from prompts import render_prompts as render
-from core.baseline_players import Villager, Werewolf, Medic, Seer
-from core.event import Event, EventBook, EventEncoder
-from core.players.werewolf import WerewolfPlayer
-from core.players.villager import VillagerPlayer
-from core.players.medic import MedicPlayer
-from core.players.seer import SeerPlayer
+from core.event import Event, EventBook
 from core.utils import load_player_from_info, switcher_players, load_player_from_checkpoint
 from core.api import load_client
 from core.data import DataTree
-import gym
 import inspect
 from core.common import *
 
@@ -266,7 +259,7 @@ class WerewolfGameEnv:
             self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
         elif self.game_status["cur_stage"] == "day":
             speaking_player = self.game_status["next_speaking_player"]
-            self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["reason"]}, "visible": "all"})
+            self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["target"]}, "visible": "all"})
             while True: #Find the next player to speak
                 speaking_player = (speaking_player + 1) % self.player_num
                 if speaking_player == self.game_status["start_speaking_player"]:
@@ -419,8 +412,8 @@ class WerewolfGameEnv:
             
 
     def save_game_record(self):
-        events = list(self.event_book.events.values())
-        json.dump(events, open(f"records/game_{self.id}_log.json", "w"), indent=4, cls=EventEncoder)
+        events = [e.to_dict() for es in self.event_book.events.values() for e in es]
+        json.dump(events, open(f"records/game_{self.id}_log.json", "w"), indent=4)
                 
     
     def parse_global_info(self, global_info: dict):
@@ -505,8 +498,12 @@ class WerewolfGameEnv:
     def end(self):
         self.logger.info("Game ended")
         self.update_all_hstates(add_to_data=True)
-        self.save_game_record()
         self.store_data(f"data/game_{self.id}_data.pkl")
+        try:
+            self.save_game_record()
+        except Exception as e:
+            print("Failed to save game record.")
+            print(f"Error: {e}")
         if self.train:
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
