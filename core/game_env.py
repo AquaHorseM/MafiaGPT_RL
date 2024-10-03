@@ -257,6 +257,8 @@ class WerewolfGameEnv:
             self.game_status["start_speaking_player"] = random.choice(self.alive_players)
             self.add_event({"event": "start_speaking", "content": {"player": self.game_status['start_speaking_player']}})
             self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
+            os.makedirs("temp_data", exist_ok=True)
+            self.store_data(f"temp_data/game_{self.id}_round_{self.game_status['cur_round']}_day_start.pkl")
         elif self.game_status["cur_stage"] == "day":
             speaking_player = self.game_status["next_speaking_player"]
             self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["target"]}, "visible": "all"})
@@ -488,6 +490,7 @@ class WerewolfGameEnv:
         self.data_path = path
         with open(path, "rb") as f:
             self.data: DataTree = pickle.load(f)
+        self.backtrace(0)
         
     def end(self):
         self.logger.info("Game ended")

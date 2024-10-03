@@ -113,7 +113,7 @@ class DataTree:
         }
         
     def filter_node(self, node_id: int, player_id: int, filter_events = False):
-        return self.nodes[node_id].is_alive(player_id) and (filter_events and any(self.filter_edge(e, player_id) for e in self.nodes[node_id].edges))
+        return self.nodes[node_id].is_alive(player_id) and (not filter_events or any(self.filter_edge(e, player_id) for e in self.nodes[node_id].edges))
         
     def filter_edge(self, edge_id: int, player_id: int):
         return True if self.edges[edge_id].actions[player_id] is not None else False
