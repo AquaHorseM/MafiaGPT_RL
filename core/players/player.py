@@ -222,34 +222,24 @@ class Player:
         print(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
         for d in reflex_data_belief:
             dat = data.parse(d)
-            state, prev_events, trajs = dat["state"],  [str(event) for event in dat["prev_events"] if self.filter_reflex_event(event)], dat["trajs"]
+            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
             if state is None:
-                temp_hstate = self.HiddenState(self.player_num, self.global_info["roles_mapping"]).beliefs
+                temp_hstate = self.HiddenState(self.player_num, self.id).beliefs
                 k = self.player_num
-                temp_joint = temp_hstate[np.newaxis, :, :] 
-
-                temp_joint = np.broadcast_to(temp_joint, (k, *temp_hstate.shape))
                 state = {
-                    "hstate": temp_joint
+                    "hstate": [temp_hstate] * k
                 }
-            self.reflex_single_pair(state, prev_events, trajs, "belief")
+            self.reflex_belief(state, prev_events, trajs)
         for d in reflex_data_policy:
             dat = data.parse(d)
-            state, prev_events, trajs = dat["state"], [self.filter_reflex_event(event) for event in dat["prev_events"]], dat["trajs"]
+            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
             if state is None:
-                temp_hstate = self.HiddenState(self.player_num, self.global_info["roles_mapping"]).beliefs
+                temp_hstate = self.HiddenState(self.player_num, self.id).beliefs
                 k = self.player_num
-                temp_joint = temp_hstate[np.newaxis, :, :] 
-
-                # Now broadcast to (k, m, n)
-                temp_joint = np.broadcast_to(temp_joint, (k, *temp_hstate.shape))
                 state = {
-                    "hstate": temp_joint
+                    "hstate": [temp_hstate] * k
                 }
-            if len(trajs) > 1:
-                self.reflex_single_data_new(state, prev_events, trajs)
-            else:
-                self.reflex_single_pair(state, prev_events, trajs, "policy")
+            self.reflex_policy(state, prev_events, trajs)
         self.polish_reflex_notes()
         return
 
