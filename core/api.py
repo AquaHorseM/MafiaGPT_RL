@@ -4,6 +4,7 @@ TOKEN_LIMIT = 250  # token limit per message
 TEMPERATURE = 1
 MAX_RETRIES = 1
 # MODEL = "gpt-4-turbo"
+# MODEL = "gpt-4-turbo" #for debugging, use the cheaper api
 MODEL = "gpt-4-turbo" #for debugging, use the cheaper api
 
 import openai, os, time, yaml
