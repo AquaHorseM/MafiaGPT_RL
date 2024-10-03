@@ -1,5 +1,6 @@
 import os
 import random
+from typing import Dict
 import numpy as np
 from copy import deepcopy
 from core.data import DataTree
@@ -99,7 +100,7 @@ class Player:
             "{previous_votes}": str(self.global_info["previous_votes"]),
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
-            "{hidden_state}": str(self.hstate)
+            "{hstate}": str(self.hstate)
         }
             
 
@@ -213,7 +214,6 @@ class Player:
         return True
     
     def reflex(self, data : DataTree, sample_num = 5):
-        return
         reflex_data_belief = data.sample(self.id, sample_num = sample_num)
         reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = sample_num)
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
@@ -251,79 +251,51 @@ class Player:
                 self.reflex_single_pair(state, prev_events, trajs, "policy")
         self.polish_reflex_notes()
         return
+
+    def extract_traj(self, traj):
+        return {
+            "action": traj["action"],
+            "all_events": [str(event) for event in traj["events"]],
+            "visible_events": [str(event) for event in traj["events"] if self.filter_reflex_event(event)],
+            "outcome_hstate": traj["outcome"]["hstate"],
+            "outcome_alive_players": traj["outcome"]["global_info"]["alive_players"]
+        }
+
+    def extract_reflex_info(self, state, prev_events, trajs):
+        return {
+            "hstate": state["hstate"],
+            "alive_players": state["global_info"]["alive_players"],
+            "all_prev_events": [str(event) for event in prev_events],
+            "visible_prev_events": [str(event) for event in prev_events if self.filter_reflex_event(event)],
+            "trajs": [self.extract_traj(traj) for traj in trajs]
+        }
+        
+    def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
+        #TODO
+        pass
     
-    # def reflex_single_pair(self, state, prev_events, trajs, note_type = "belief"):
-    #     actions = []
-    #     events = []
-    #     outcomes = []
-    #     for i in range(len(trajs)):
-    #         actions.append(trajs[i]["action"])
-    #         events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
-    #         outcomes.append(trajs[i]["outcome"])
-    #     if len(trajs) > 1:
-    #         i = random.randint(0, len(trajs) - 1)
-    #     else:
-    #         i = 0
-    #     replacements = self.get_replacements()
-    #     replacements.update({
-    #         "{prev_hstate}": str(get_gt_hstate_from_joint(state["hstate"])),
-    #         "{prev_events}": str(prev_events),
-    #         "{new_events}": str(events[i]),
-    #         "{next_hstate}": str(get_gt_hstate_from_joint(outcomes[i]["hstate"])),
-    #         "{pred_hstate}": str(outcomes[i]["hstate"][self.id]),
-    #     })
-    #     if note_type == "belief":
-    #         prompt_name = "reflex_belief"
-    #     elif note_type == "policy":
-    #         prompt_name = "reflex_policy_single"
-    #     else:
-    #         raise ValueError("Note type must be either 'belief' or 'policy'")
-    #     response = self.get_response(prompt_name, replacements=replacements)
-    #     self.update_note_from_response(response, note_type=note_type)
-    #     return response
-    
-    # def reflex_single_data_new(self, state, prev_events, trajs): #only used for policy update
-    #     actions = []
-    #     events = []
-    #     outcomes = []
-    #     for i in range(len(trajs)):
-    #         actions.append(trajs[i]["action"])
-    #         events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
-    #         outcomes.append(trajs[i]["outcome"])
-    #     replacements = self.get_replacements()
-    #     replacements.update({
-    #         "{cur_hstate}": str(state["hstate"]),
-    #         "{prev_events}": str(prev_events),
-    #         "{action1}": actions[0],
-    #         "{outcome1}": outcomes[0],
-    #         "{action2}": actions[1],
-    #         "{outcome2}": outcomes[1]
-    #     })
-    #     if False: #temporarily skip this
-    #         response = self.get_response("reflex_policy_multi", replacements)
-    #         self.update_note_from_response(response, "policy")
-    #     return
+    def convert_reflex_info_to_belief_prompt(self, reflex_info: Dict) -> str:
+        #TODO
+        pass
     
     def reflex_policy(self, state, prev_events, trajs):
-        actions = []
-        events = []
-        outcomes = []
-        for i in range(len(trajs)):
-            actions.append(trajs[i]["action"])
-            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
-            outcomes.append(trajs[i]["outcome"])
-        hstate = state["hstate"]
-        alive_players = state["global_info"]["alive_players"]
+        reflex_info = self.extract_reflex_info(state, prev_events, trajs)
+        replacements = self.get_replacements()
+        replacements.update({
+            "reflex_info": self.convert_reflex_info_to_policy_prompt(reflex_info)
+        })
+        res = self.get_response("reflex_policy", replacements)
+        self.update_note_from_response(res, "policy")
         return
     
     def reflex_belief(self, state, prev_events, trajs):
-        actions = []
-        events = []
-        outcomes = []
-        for i in range(len(trajs)):
-            actions.append(trajs[i]["action"])
-            events.append([str(event) for event in trajs[i]["events"] if self.filter_reflex_event(event)])
-            outcomes.append(trajs[i]["outcome"])
+        reflex_info = self.extract_reflex_info(state, prev_events, trajs)
+        replacements = self.get_replacements()
+        replacements.update({
+            "reflex_info": self.convert_reflex_info_to_belief_prompt(reflex_info)
+        })
+        res = self.get_response("reflex_belief", replacements)
+        self.update_note_from_response(res, "belief")
         return
     
     def polish_reflex_note(self, note_type = "belief"):
