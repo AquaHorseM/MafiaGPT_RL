@@ -490,7 +490,13 @@ class WerewolfGameEnv:
         self.data_path = path
         with open(path, "rb") as f:
             self.data: DataTree = pickle.load(f)
-        self.backtrace(0)
+        recover_info = self.data.go_to_latest()
+        info = recover_info["state"]
+        prev_game_status = info["global_info"]["game_status"]
+        events = recover_info["events"]
+        print(f"game status to recover: {prev_game_status}")
+        self.load_state(info, events)
+        print(f"current game status: {self.game_status}")
         
     def end(self):
         self.logger.info("Game ended")

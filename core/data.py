@@ -106,7 +106,14 @@ class DataTree:
         #     print(f"game status of {i} is {self.get_game_status(i)}")
         # print("***************************")
         self.cur_id = node_id
-        print(f"backtraced to node {node_id}")
+        return {
+            "state": self.nodes[node_id].state,
+            "events": self.get_events(node_id)
+        }
+        
+    def go_to_latest(self):
+        node_id = len(self.nodes) - 1
+        self.cur_id = node_id
         return {
             "state": self.nodes[node_id].state,
             "events": self.get_events(node_id)
