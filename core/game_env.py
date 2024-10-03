@@ -67,7 +67,7 @@ class WerewolfGameEnv:
             "start_speaking_player": None,
             "winner": None
         }
-        self.data = DataTree()
+        # self.data = DataTree()
         self.save_after_step = False
         self.logger.info(f"Game {self.id} created successfully")
 
@@ -144,8 +144,9 @@ class WerewolfGameEnv:
                     self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
                 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
-        #restore the data
+        self.add_event({"event": "start_game"})
         self.data = DataTree(self.get_state())
+        self.update_all_hstates(add_to_data=True)
 
     
     def win_or_not(self, player_id):
@@ -555,6 +556,7 @@ class WerewolfGameEnv:
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
+        self.update_all_hstates(add_to_data=True)
         while True:
             actions = self.get_actions_reflex(avail_actions)
             # self.logger.info(f"actions: {actions}")

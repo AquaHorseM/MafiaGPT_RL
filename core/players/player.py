@@ -298,21 +298,15 @@ class Player:
             dat = data.parse(d)
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
             if state is None:
-                temp_hstate = self.HiddenState(self.player_num, self.id).beliefs
-                k = self.player_num
-                state = {
-                    "hstate": [temp_hstate] * k
-                }
+                print("Invalid data: empty state. Skipped.")
+                continue
             self.reflex_belief(state, prev_events, trajs)
         for d in reflex_data_policy:
             dat = data.parse(d)
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
             if state is None:
-                temp_hstate = self.HiddenState(self.player_num, self.id).beliefs
-                k = self.player_num
-                state = {
-                    "hstate": [temp_hstate] * k
-                }
+                print("Invalid data: empty state. Skipped.")
+                continue
             self.reflex_policy(state, prev_events, trajs)
         self.polish_reflex_notes()
         return
