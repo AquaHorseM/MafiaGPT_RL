@@ -272,11 +272,12 @@ class Player:
         
     def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
         #TODO
-        pass
+        raise NotImplementedError
+        
     
     def convert_reflex_info_to_belief_prompt(self, reflex_info: Dict) -> str:
         #TODO
-        pass
+        raise NotImplementedError
     
     def reflex_policy(self, state, prev_events, trajs):
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
