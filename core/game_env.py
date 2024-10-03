@@ -285,7 +285,7 @@ class WerewolfGameEnv:
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
             self.game_status["cur_round"] += 1
-            self.add_event({"event": "begin_round", "content": {"round": {self.game_status['cur_round']+1}}})
+            self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
             self.add_event({"event": "night_start"})
         # self.update_all_hstates(add_to_data = True)
         #return obs, state, rewards, dones, info, available_actions
