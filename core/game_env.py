@@ -588,3 +588,6 @@ class WerewolfGameEnv:
         print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
         print(f"current game status: {self.game_status}")
+        
+
+    
