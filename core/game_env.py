@@ -440,7 +440,6 @@ class WerewolfGameEnv:
 
     def all_players_reflex(self):
         #temp debug, disable this
-        return
         for player_id in range(len(self.all_players)):
             player = self.all_players[player_id]
             if self.player_types[player_id] == "reflex":
