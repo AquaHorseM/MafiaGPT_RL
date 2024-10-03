@@ -84,6 +84,9 @@ class Player:
         self.player_num = global_info["player_num"]
         self.hstate = self.HiddenState(global_info["player_num"], self.id)
         self.hstate.set_role(self.id, self.get_role())
+        self.draft_dict = dict()
+        self.draft_dict["vote"] = list()
+        
         
     def get_replacements(self):
         with open(self.reflex_note_path_belief, "r") as f:
@@ -101,7 +104,10 @@ class Player:
             "{previous_votes}": str(self.global_info["previous_votes"]),
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
-            "{hstate}": str(self.hstate)
+            "{hstate}": str(self.hstate),
+            # "{previous_vote_proposal}": str(self.draft_dict["vote"][-1]["vote_proposal"]),
+            # "{previous_vote_proposal_and_imaginations}": str(self.draft_dict['vote'][-1].get("proposal_and_imaginations",'')),
+            # "{previous_vote_proposal_chosen_and_reasons}": str(self.draft_dict["vote"][-1].get("proposal_chosen_and_reasons",'')),
         }
             
 
@@ -123,11 +129,79 @@ class Player:
             reason = "I am the baseline player and I do things randomly."
             return (action, target, reason)
         
+    
+    
+    
+    def _get_proposals_from_response_VoteThreeStep(self, response):
+        # Regex to capture the first number after 'Firstly' and 'Secondly'
+        first_number_pattern = r'Firstly.*?(\d+)'
+        second_number_pattern = r'Secondly.*?(\d+)'
+        
+        # Regex to capture the reason after 'the reason is'
+        first_reason_pattern = r'Firstly.*?the reason is:? (.*?)(?:\.|Secondly)'
+        second_reason_pattern = r'Secondly.*?the reason is:? (.*)\.'
+        
+        # Find the first player number and reason
+        first_player_match = re.search(first_number_pattern, response)
+        first_reason_match = re.search(first_reason_pattern, response, re.DOTALL)
+        
+        # Find the second player number and reason
+        second_player_match = re.search(second_number_pattern, response)
+        second_reason_match = re.search(second_reason_pattern, response, re.DOTALL)
+        
+        # Extract data or set to None if not found
+        first_player = int(first_player_match.group(1)) if first_player_match else None
+        first_reason = first_reason_match.group(1).strip() if first_reason_match else None
+        second_player = int(second_player_match.group(1)) if second_player_match else None
+        second_reason = second_reason_match.group(1).strip() if second_reason_match else None
+        
+        return first_player, first_reason, second_player, second_reason
+    
+    
+    def _get_imagination_from_response_VoteThreeStep(self, response):
+        return response
+    def _get_final_choice_from_response_VoteThreeStep(self, response):
+        return get_target_from_response(response)
+    
     def _vote(self):
+        self.draft_dict["vote"].append(dict())
+        response = self.get_response("vote_threeStage_propose")
+        first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_VoteThreeStep(response)
+        
+        proposals = [first_player, second_player]
+        
+        
+        self.draft_dict["vote"][-1]["vote_proposal"] = proposals
+        self.draft_dict["vote"][-1]["proposal_and_imaginations"] = list()
+        result_list = list()
+        for propose in proposals:
+            replacements = self.get_replacements()
+            replacements["{current_propose}"] = str(propose)
+            response = self.get_response("vote_threeStage_imagine", replacements)
+            
+            results = self._get_imagination_from_response_VoteThreeStep(response)
+            result_list.append(results)
+            self.draft_dict["vote"][-1]["proposal_and_imaginations"].append(response)
+        
+        replacements = self.get_replacements()
+        replacements["{current_propose_0}"] = str(proposals[0])
+        replacements["{current_propose_1}"] = str(proposals[1])
+        replacements["{current_propose_0_imagination}"] = result_list[0]
+        replacements["{current_propose_1_imagination}"] = result_list[1]
+        
+        
+        
+        response_and_reason = self.get_response("vote_threeStage_choose", replacements)
+        vote = self._get_final_choice_from_response_VoteThreeStep(response_and_reason)
+        
+        self.draft_dict["vote"][-1]["proposal_chosen_and_reasons"] = response_and_reason
+        return vote, response
+
+    def _vote_org(self):
         response = self.get_response("vote")
         vote = get_target_from_response(response)
         return vote, response
-    
+
     def _get_speak_type(self): #aborted
         response = self.get_response("speak_type")
         assert isinstance(response, str), f"response is not a string: {response}"

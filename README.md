@@ -1,6 +1,6 @@
 # MafiaGPT
 
-sjz draft ver.
+sjz draft ver!
 
 <img src="https://github.com/MEgooneh/MafiaGPT/blob/master/assets/robotic%20werewol%200.jpg" style="width:40%">
 

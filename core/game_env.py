@@ -190,7 +190,14 @@ class WerewolfGameEnv:
             "last_vote": np.array(self.votes[-1]) if self.votes else np.zeros(self.player_num)
         }
     
+    def get_player_draft(self):
+        pass
+    
     def get_state(self):
+        # sjjjjj
+        player_draft = self.get_player_draft()
+        # TODO
+        
         hstate = self.get_joint_hstate()
         private_infos = [self.all_players[i].private_info for i in range(self.player_num)]
         return {
