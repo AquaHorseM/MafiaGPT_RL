@@ -1,5 +1,5 @@
 from functools import partial
-from core.game import Game
+from core.game_backup import Game
 import json, sys, os
 #run the game with multiple processes
 import multiprocessing
