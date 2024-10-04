@@ -35,10 +35,12 @@ class Player:
                 pattern = r"(P|p)layer (\d+)'s role is (\w+)(?: with (high|medium|low) confidence)?\.\s*My reason is: (.*)?"
                 match = re.match(pattern, string)
                 if match:
+                    
                     id = match.group(1)
                     role = match.group(2)
                     confidence = match.group(3) if match.group(3) else None
                     reason = match.group(4) if match.group(4) else None
+                    print(id,role,confidence, reason, 'apoefnpawoiwef')
                     return {
                         "id": id,
                         "role": role,
@@ -307,7 +309,7 @@ class Player:
     
     def _update_hstate(self, events):
         #TODO
-        self.event_book.add_event(events)        
+        self.event_book.add_event(events)
         event_des = ""
         for event in events:
             event_des += str(event)
@@ -316,6 +318,7 @@ class Player:
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
         response = self.get_response("update_hstate", replacements=replacements)
+        print("banwuopef", response)
         for line in response.split("\n"):
             self.hstate.update(line)
         return
@@ -423,8 +426,27 @@ class Player:
         }
         
     def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
-        #TODO
-        raise NotImplementedError
+        return
+        if len(reflex_info["trajs"]) > 1:
+            weights = [self.get_traj_importance_for_belief(traj) for traj in reflex_info["trajs"]]
+            traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]
+        else:
+            traj = reflex_info["trajs"][0]
+        s = ""
+        s += "\nThese are the ACTUAL ROLES of the players.\n\n"
+        for i in range(self.player_num):
+            s += f"Player {i} is {reflex_info['roles'][i]}\n"
+        s += "\nThese are ALL events happened previously that you observed:\n\n"
+        for e in reflex_info["visible_prev_events"]:
+            s += e
+            s += '\n'
+        s += "\nThe following is YOUR belief AFTER THESE EVENTS\n\n"
+        s += str(reflex_info["hstate"][self.id])
+        s += "\n The following is your proposals and your imagination of your speech \n\n"
+        s += ''
+        
+        pass
+        # raise NotImplementedError
         
     
     def convert_reflex_info_to_belief_prompt(self, reflex_info: Dict) -> str: #TEMP
@@ -453,7 +475,6 @@ class Player:
         return s
     
     def reflex_policy(self, state, prev_events, trajs):
-        return
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         replacements = self.get_replacements()
         replacements.update({
