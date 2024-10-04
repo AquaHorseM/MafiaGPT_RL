@@ -235,6 +235,7 @@ class WerewolfGameEnv:
                 self.night_info["known_roles"][seer_target] = is_werewolf  
                 self.add_event({"event": "inquiry", "content": {"player": seer_id, "target": seer_target, "is_werewolf": is_werewolf, \
                     "reason": actions[seer_id]["reason"]}, "visible": seer_id})
+                self.all_players[seer_id].receive_inquiry_result(seer_target, is_werewolf)
             werewolf_ids= self.get_alive_werewolves()
             assert len(werewolf_ids) > 0, "There must be at least one werewolf alive"
             if len(werewolf_ids) > 1:

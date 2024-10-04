@@ -32,7 +32,7 @@ class Player:
         
         def update(self, update_string):
             def extract_info(string):
-                pattern = r"(P|p)layer (\d+)'s role is (\w+)(?: with (high|medium|low) confidence)?\.\s*My reason is: (.*)?"
+                pattern = r"Player (\d+)'s role is (\w+)(?: with (high|medium|low) confidence)?\.\s*My reason is: (.*)?"
                 match = re.match(pattern, string)
                 if match:
                     
