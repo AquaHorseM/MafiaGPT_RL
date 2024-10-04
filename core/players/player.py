@@ -86,6 +86,7 @@ class Player:
         self.hstate.set_role(self.id, self.get_role())
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
+        self.draft_dict["speak"] = list()
         
         
     def get_replacements(self):
@@ -139,7 +140,7 @@ class Player:
         
         # Regex to capture the reason after 'the reason is'
         first_reason_pattern = r'Firstly.*?the reason is:? (.*?)(?:\.|Secondly)'
-        second_reason_pattern = r'Secondly.*?the reason is:? (.*)\.'
+        second_reason_pattern = r'Secondly.*?the reason is:? (.*)'
         
         # Find the first player number and reason
         first_player_match = re.search(first_number_pattern, response)
@@ -219,7 +220,74 @@ class Player:
         response = self.get_response("speak_with_type", replacements)
         return response
     
-    def _speak(self): #TODO
+    
+    
+    def _get_proposals_from_response_SpeakThreeStep(self, response):
+        first_pattern = r"First Proposal:(.*?)\n"
+        second_pattern = r"Second Proposal:(.*?)\n"
+        first_match = re.search(first_pattern, response)
+        second_match = re.search(second_pattern, response)
+        
+        first_proposal = first_match.group(1) if first_match else None
+        second_proposal = second_match.group(1) if second_match else None
+        
+        
+        
+        return first_proposal, second_proposal
+        
+    def _get_imagination_from_response_SpeakThreeStep(self, response):
+        return response
+        first_pattern = r"After I do this speech, then (.*?)"
+        first_match = re.search(first_pattern, response)
+        
+        first_answer = first_match.group(1) if first_match else None
+        
+        return first_answer
+    
+    def _get_final_choice_from_response_SpokeThreeStep(self, response):
+        first_pattern = r"My final speech is (.*?)"
+        first_match = re.search(first_pattern, response)
+        
+        first_answer = first_match.group(1) if first_match else None
+        
+        return first_answer
+    
+    def _speak_multiagent(self):
+        self.draft_dict["speak"].append(dict())
+        response = self.get_response("speak_threeStage_propose")
+        first_speak, second_speak = self._get_proposals_from_response_SpeakThreeStep(response)
+        
+        proposals = [first_speak, second_speak]
+        
+        self.draft_dict["speak"][-1]["speak_proposal"] = proposals
+        self.draft_dict["speak"][-1]["proposal_and_imaginations"] = list()
+        result_list = list()
+        for propose in proposals:
+            replacements = self.get_replacements()
+            replacements["{current_propose}"] = str(propose)
+            response = self.get_response("speak_threeStage_imagine", replacements)
+            
+            results = self._get_imagination_from_response_SpeakThreeStep(response)
+            result_list.append(results)
+            self.draft_dict["speak"][-1]["proposal_and_imaginations"].append(response)
+        
+        replacements = self.get_replacements()
+        replacements["{current_propose_0}"] = str(proposals[0])
+        replacements["{current_propose_1}"] = str(proposals[1])
+        replacements["{current_propose_0_imagination}"] = result_list[0]
+        replacements["{current_propose_1_imagination}"] = result_list[1]
+        
+        response_and_reason = self.get_response("speak_threeStage_choose", replacements)
+        speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
+        
+        self.draft_dict["speak"][-1]["proposal_chosen_and_reasons"] = response_and_reason
+        return speak, response
+
+    def _speak(self, use_multiagent = True): #TODO
+        returned = self._speak_org() if not use_multiagent else self._speak_multiagent()
+        return returned
+
+    def _speak_org(self):
         s_type = self._get_speak_type()
         response = self.speak_with_type(s_type)
         return response
