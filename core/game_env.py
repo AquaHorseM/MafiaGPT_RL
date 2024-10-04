@@ -556,7 +556,7 @@ class WerewolfGameEnv:
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
-        self.update_all_hstates(add_to_data=True)
+        # self.update_all_hstates(add_to_data=True)
         while True:
             actions = self.get_actions_reflex(avail_actions)
             # self.logger.info(f"actions: {actions}")

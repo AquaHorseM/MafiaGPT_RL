@@ -10,7 +10,8 @@ class WerewolfPlayer(Player):
         self.labels = ["all", "werewolf"]
         self.role = "werewolf"
         for wid in self.private_info["werewolf_ids"]:
-            self.hstate.set_role(wid, "werewolf")
+            if wid != self.id:
+                self.hstate.set_role(wid, "werewolf")
         
     def get_replacements(self):
         replacements = super().get_replacements()

@@ -24,11 +24,8 @@ Now, based on the above instructions, you should answer your updated belief.
 The first line of your answer should be an integer ranging from 1 to 10 denoting your confidence, 1 denoting that you are totally not sure about your modification (e.g. your modification is totally based on guessing without evidence), and 10 denotes that you are very sure this is the fact (which should be the case that this is the only possibility in the game).
 
 After that, all following lines should be in the format of:
-You should first write down your own belief, where each line should be: player {i} is {r} with probability {p}.
-After that, you should write "player {i} believes:" to switch to another player's belief, then write down his/her belief similarly, and then switch to another player...
-The probability {p} should be a number ranging from 0 to 1, kept to the second decimal place.
-The role {r} should be a role chosen from villager/medic/seer/werewolf. Anything other than these 4 roles will not be recognized.
-If you don't want to modify a specific probability for players i and j, you may omit it.
+"Player [i]'s role is (werewolf/medic/seer/villager/unknown) with (high/medium/low) confidence. My reason is: [reason]."
+Any response not satisfying this format will not be recognized, including any unrecognized role or confidence. You may skip some players if your belief to him/her maintain unchanged.
 
 Now you should answer your response based on the above requirements. Don't output anything unnecessary or your answer may not be recognized.
 
@@ -36,14 +33,9 @@ Now you should answer your response based on the above requirements. Don't outpu
 An example of your response could be:
 
 '''
-7
-player 1 is medic with probability 0.7
-player 3 is werewolf with probability 0.8
-player 1 believes:
-player 2 is werewolf with probability 0.5
-player 6 is villager with probability 0.8
-player 2 believes:
-player 3 is seer with probability 0.2
+Player 0;s role is werewolf with high confidence. My reason is: ...
+Player 1's role is medic with medium confidence. My reason is: ...
+Player 2's role is unknown with high confidence. My reason is: ...
 ...
 
 '''
