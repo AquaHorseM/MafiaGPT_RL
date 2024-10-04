@@ -533,6 +533,27 @@ class WerewolfGameEnv:
     
     def update_data(self):
         # print(f"debug: adding game_status {self.game_status} to data")
+        '''
+            sjz 20241004 19:54 note:
+            I have added 'draft_dict' in actions.
+            player_draft_dict = self.latest_actions[player_id]['draft_dict']
+            this dict has the following keys:
+                vote: dictionary for vote drafts. it has the following items:
+                    vote_proposal: list[int], list of proposals of votes. Currently len = 2.
+                    proposal_and_imaginations: list[str], list of imagination. See core/player.py/Player/_vote
+                    proposal_chosen_and_reasons: str, description of chosen proposal. See core/player.py/Player/_vote and core/players/prompts/common/vote_threeStage_choose.txt for format of it.
+                speak: dictionary for speak drafts. it has the following items:
+                    speak_proposal: list[str], list of proposals of speak summary. Currently len = 2.
+                    proposal_and_imaginations: list[str], list of imagination after speech. See core/player.py/Player/_speak_multiagent
+                    final_speech: str, final speech.
+        
+        '''
+        
+        
+        
+        
+        
+        
         self.data.add_edge_and_node(
             events = self.temp_events,
             actions = self.latest_actions,
@@ -688,7 +709,19 @@ class WerewolfGameEnv:
             actions = self.get_actions_reflex(avail_actions)
             self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
-            self.latest_actions = actions
+            
+            self.latest_actions = deepcopy(actions)
+            def get_latest_draft(draft_dict):
+                for key in draft_dict.keys():
+                    draft_dict[key] = draft_dict[key][-1]
+            for player_id in range(self.player_num):
+                current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
+                current_player_latest_draft_dict = get_latest_draft(current_player_draft_dict)
+                self.latest_actions[player_id]['drat_dict'] = current_player_latest_draft_dict
+            
+            
+            
+            
             collect_rewards = [collect_rewards[i] + rewards[i] for i in range(self.player_num)]
             if info is not None:
                 self.logger.info(str(info))

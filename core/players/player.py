@@ -106,9 +106,6 @@ class Player:
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
             "{hstate}": str(self.hstate),
-            # "{previous_vote_proposal}": str(self.draft_dict["vote"][-1]["vote_proposal"]),
-            # "{previous_vote_proposal_and_imaginations}": str(self.draft_dict['vote'][-1].get("proposal_and_imaginations",'')),
-            # "{previous_vote_proposal_chosen_and_reasons}": str(self.draft_dict["vote"][-1].get("proposal_chosen_and_reasons",'')),
         }
             
 
@@ -164,7 +161,11 @@ class Player:
     def _get_final_choice_from_response_VoteThreeStep(self, response):
         return get_target_from_response(response)
     
-    def _vote(self):
+    def _vote(self, use_multiagent = True):
+        vote, response = self._vote_org() if not use_multiagent else self._vote_multiagent()
+        return vote, response
+    
+    def _vote_multiagent(self):
         self.draft_dict["vote"].append(dict())
         response = self.get_response("vote_threeStage_propose")
         first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_VoteThreeStep(response)
@@ -280,8 +281,8 @@ class Player:
         response_and_reason = self.get_response("speak_threeStage_choose", replacements)
         speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
         
-        self.draft_dict["speak"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        return speak, response
+        self.draft_dict["speak"][-1]["final_speech"] = speak
+        return speak
 
     def _speak(self, use_multiagent = True): #TODO
         returned = self._speak_org() if not use_multiagent else self._speak_multiagent()
