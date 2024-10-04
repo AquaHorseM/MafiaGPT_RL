@@ -146,6 +146,7 @@ class WerewolfGameEnv:
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
         self.add_event({"event": "start_game"})
         self.data = DataTree(self.get_state())
+        self.latest_actions = [None] * self.player_num
         self.update_all_hstates(add_to_data=True)
 
     
