@@ -266,9 +266,6 @@ class WerewolfGameEnv:
             self.add_event({"event": "start_speaking", "content": {"player": self.game_status['start_speaking_player']}})
             self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
         elif self.game_status["cur_stage"] == "day":
-            if self.game_status["next_speaking_player"] == self.game_status["start_speaking_player"]:
-                os.makedirs("temp_data", exist_ok=True)
-                self.store_data(f"temp_data/game_{self.id}_round_{self.game_status['cur_round']}_day_start.pkl")
             speaking_player = self.game_status["next_speaking_player"]
             self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["target"]}, "visible": "all"})
             while True: #Find the next player to speak
@@ -556,8 +553,11 @@ class WerewolfGameEnv:
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
-        self.update_all_hstates(add_to_data=True)
+        # self.update_all_hstates(add_to_data=True)
         while True:
+            if self.game_status["cur_stage"] == "day" and self.game_status["next_speaking_player"] == self.game_status["start_speaking_player"]:
+                os.makedirs("temp_data", exist_ok=True)
+                self.store_data(f"temp_data/game_{self.id}_round_{self.game_status['cur_round']}_day_start.pkl")
             actions = self.get_actions_reflex(avail_actions)
             # self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)

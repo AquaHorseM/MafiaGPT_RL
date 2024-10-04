@@ -32,7 +32,7 @@ class Player:
         
         def update(self, update_string):
             def extract_info(string):
-                pattern = r"Player (\d+)'s role is (\w+)(?: with (high|medium|low) confidence)?\.\s*My reason is: (.*)?"
+                pattern = r"(P|p)layer (\d+)'s role is (\w+)(?: with (high|medium|low) confidence)?\.\s*My reason is: (.*)?"
                 match = re.match(pattern, string)
                 if match:
                     id = match.group(1)
@@ -62,7 +62,7 @@ class Player:
             self.beliefs[id] = {
                 "role": role,
                 "confidence": "high",
-                "reason": "Fact"
+                "reason": "Fact."
             }
 
                 
@@ -314,8 +314,8 @@ class Player:
             
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
-        responses = self.get_response("update_hstate", replacements=replacements)
-        for line in responses[-1].split("\n"):
+        response = self.get_response("update_hstate", replacements=replacements)
+        for line in response.split("\n"):
             self.hstate.update(line)
         return
 
@@ -391,7 +391,12 @@ class Player:
     def get_traj_importance_for_belief(self, traj, roles):
         #naive approach
         own_belief = traj["outcome_hstate"][self.id]
-        correct = [own_belief[i]["role"].lower() == roles[i].lower() for i in range(self.player_num)]
+        def get_wrong(own_belief_role, true_role):
+            if own_belief_role == "unknown":
+                return 0.5
+            else:
+                return 0 if own_belief_role.lower() == true_role.lower() else 1
+        wrongs = [get_wrong(own_belief[i]["role"], roles[i]) for i in range(self.player_num)]
         confidences = [own_belief[i]["confidence"] for i in range(self.player_num)]
         def get_weight(confidence):
             if confidence == "high":
@@ -403,7 +408,7 @@ class Player:
             else:
                 raise ValueError("confidence not spotted")
         weights = [get_weight(i) for i in confidences]
-        importance = sum([(1-correct[i]) * weights[i] for i in range(self.player_num)])
+        importance = sum([wrongs[i] * weights[i] for i in range(self.player_num)])
         return importance
 
     def extract_reflex_info(self, state, prev_events, trajs):

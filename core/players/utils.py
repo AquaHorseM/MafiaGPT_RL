@@ -148,7 +148,7 @@ def send_dialogue(folder_path, background_path, replacements, config_path = None
         return conversation_history[-1]["content"]
 
 
-def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, client) -> List[str]:
+def get_response(prompt_dir_path, common_dir_path, prompt_name, replacements, client) -> str:
     background_path = os.path.join(common_dir_path, "background.txt")
     common_folder = os.path.join(common_dir_path, prompt_name)
     if os.path.exists(common_folder):
