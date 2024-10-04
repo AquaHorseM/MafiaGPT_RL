@@ -67,8 +67,8 @@ class WerewolfGameEnv:
             "start_speaking_player": None,
             "winner": None
         }
-        self.data = DataTree()
-        
+        # self.data = DataTree()
+        self.save_after_step = False
         self.logger.info(f"Game {self.id} created successfully")
 
 
@@ -144,8 +144,9 @@ class WerewolfGameEnv:
                     self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
                 
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
-        #restore the data
+        self.add_event({"event": "start_game"})
         self.data = DataTree(self.get_state())
+        self.update_all_hstates(add_to_data=True)
 
     
     def win_or_not(self, player_id):
@@ -265,6 +266,9 @@ class WerewolfGameEnv:
             self.add_event({"event": "start_speaking", "content": {"player": self.game_status['start_speaking_player']}})
             self.game_status["next_speaking_player"] = self.game_status["start_speaking_player"]
         elif self.game_status["cur_stage"] == "day":
+            if self.game_status["next_speaking_player"] == self.game_status["start_speaking_player"]:
+                os.makedirs("temp_data", exist_ok=True)
+                self.store_data(f"temp_data/game_{self.id}_round_{self.game_status['cur_round']}_day_start.pkl")
             speaking_player = self.game_status["next_speaking_player"]
             self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": actions[speaking_player]["target"]}, "visible": "all"})
             while True: #Find the next player to speak
@@ -282,13 +286,14 @@ class WerewolfGameEnv:
             votes = {i : actions[i]["target"] for i in self.alive_players if actions[i]["target"] is not None}
             self.votes.append(votes)
             for player_id in self.alive_players:
-                self.all_players[player_id].global_info["last_vote"] = votes[player_id]
-                self.add_event({"event": "vote", "content": {"player": player_id, "target": votes[player_id], "reason": actions[player_id]["reason"]}, "visible": player_id})
+                self.all_players[player_id].global_info["last_vote"] = votes[player_id] if votes.get(player_id) is not None else None
+                self.add_event({"event": "vote", "content": {"player": player_id, "target": votes[player_id] if votes.get(player_id) is not None else None, \
+                    "reason": actions[player_id]["reason"]}, "visible": player_id})
             self.check_votes()
             self.current_round += 1
             self.game_status["cur_stage"] = "night"
             self.game_status["cur_round"] += 1
-            self.add_event({"event": "begin_round", "content": {"round": {self.game_status['cur_round']+1}}})
+            self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
             self.add_event({"event": "night_start"})
         # self.update_all_hstates(add_to_data = True)
         #return obs, state, rewards, dones, info, available_actions
@@ -407,12 +412,6 @@ class WerewolfGameEnv:
             "player_num": self.player_num,
             "alive_players": list(self.alive_players),
             "dead_players": list(self.dead_players),
-            "roles_mapping": {
-                "villager": 0,
-                "werewolf": 1,
-                "medic": 2,
-                "seer": 3
-            },
             "previous_votes": self.votes,
             "game_status": self.game_status,
         }
@@ -452,7 +451,6 @@ class WerewolfGameEnv:
 
     def all_players_reflex(self):
         #temp debug, disable this
-        return
         for player_id in range(len(self.all_players)):
             player = self.all_players[player_id]
             if self.player_types[player_id] == "reflex":
@@ -501,6 +499,13 @@ class WerewolfGameEnv:
         self.data_path = path
         with open(path, "rb") as f:
             self.data: DataTree = pickle.load(f)
+        recover_info = self.data.go_to_latest()
+        info = recover_info["state"]
+        prev_game_status = info["global_info"]["game_status"]
+        events = recover_info["events"]
+        print(f"game status to recover: {prev_game_status}")
+        self.load_state(info, events)
+        print(f"current game status: {self.game_status}")
         
     def end(self):
         self.logger.info("Game ended")
@@ -551,6 +556,7 @@ class WerewolfGameEnv:
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
+        self.update_all_hstates(add_to_data=True)
         while True:
             actions = self.get_actions_reflex(avail_actions)
             # self.logger.info(f"actions: {actions}")
@@ -600,3 +606,6 @@ class WerewolfGameEnv:
         print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
         print(f"current game status: {self.game_status}")
+        
+
+    

@@ -106,17 +106,24 @@ class DataTree:
         #     print(f"game status of {i} is {self.get_game_status(i)}")
         # print("***************************")
         self.cur_id = node_id
-        print(f"backtraced to node {node_id}")
+        return {
+            "state": self.nodes[node_id].state,
+            "events": self.get_events(node_id)
+        }
+        
+    def go_to_latest(self):
+        node_id = len(self.nodes) - 1
+        self.cur_id = node_id
         return {
             "state": self.nodes[node_id].state,
             "events": self.get_events(node_id)
         }
         
     def filter_node(self, node_id: int, player_id: int, filter_events = False):
-        return self.nodes[node_id].is_alive(player_id) and (filter_events and any(self.filter_edge(e, player_id) for e in self.nodes[node_id].edges))
+        return self.nodes[node_id].is_alive(player_id) and (not filter_events or any(self.filter_edge(e, player_id) for e in self.nodes[node_id].edges))
         
     def filter_edge(self, edge_id: int, player_id: int):
-        return True if self.edges[edge_id].actions[player_id] != 0 else False
+        return True if self.edges[edge_id].actions[player_id] is not None else False
         
     def parse(self, node_id: int, player_id: int = None, filter_action = False):
         #RETURN state, events, [(action1, events1, state1), ...]

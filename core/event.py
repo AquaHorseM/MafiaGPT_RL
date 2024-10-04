@@ -39,6 +39,8 @@ class Event:
             s += f"System randomly chooses player {self.content['player']} to start speaking this round."
         elif self.event == "begin_round":
             s += f"Round {self.content['round']} begins."
+        elif self.event == "start_game":
+            s += "Game starts."
         else:
             raise ValueError(f'Event type {self.event} not recognized.')
         return s

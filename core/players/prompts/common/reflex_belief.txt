@@ -1,21 +1,9 @@
 1.Current situation:
 You are player {player_id}, and in this game you are a {role}.
 
-You previous belief was:
+These are a small snippet of a previous game.
 
-{prev_hstate}
-
-These new events happened:
-
-{new_events}
-
-Your new belief was:
-
-{pred_hstate}
-
-The ground truth new belief is:
-
-{targ_hstate}
+{reflex_info}
 
 2.Todo:
 You are using the information you gathered from a previous game to update your strategy. More specifically: you are given some events, your belief before the events, your belief after the events, and the ground truth after the events.
