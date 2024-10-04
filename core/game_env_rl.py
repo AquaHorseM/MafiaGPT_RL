@@ -541,19 +541,14 @@ class WerewolfGameEnv:
                 vote: dictionary for vote drafts. it has the following items:
                     vote_proposal: list[int], list of proposals of votes. Currently len = 2.
                     proposal_and_imaginations: list[str], list of imagination. See core/player.py/Player/_vote
-                    proposal_chosen_and_reasons: str, description of chosen proposal. See core/player.py/Player/_vote and core/players/prompts/common/vote_threeStage_choose.txt for format of it.
+                    proposal_chosen_and_reasons: str, description of chosen proposal. See core/player.py/Player/_vote \\
+                                                                    and core/players/prompts/common/vote_threeStage_choose.txt for format of it.
                 speak: dictionary for speak drafts. it has the following items:
                     speak_proposal: list[str], list of proposals of speak summary. Currently len = 2.
                     proposal_and_imaginations: list[str], list of imagination after speech. See core/player.py/Player/_speak_multiagent
                     final_speech: str, final speech.
         
         '''
-        
-        
-        
-        
-        
-        
         self.data.add_edge_and_node(
             events = self.temp_events,
             actions = self.latest_actions,
