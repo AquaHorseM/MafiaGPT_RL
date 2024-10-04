@@ -246,8 +246,8 @@ class Player:
             
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
-        responses = self.get_response("update_hstate", replacements=replacements)
-        for line in responses[-1].split("\n"):
+        response = self.get_response("update_hstate", replacements=replacements)
+        for line in response.split("\n"):
             self.hstate.update(line)
         return
 
