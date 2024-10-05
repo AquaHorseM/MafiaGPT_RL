@@ -1,10 +1,10 @@
 import os
 import random
-from typing import Dict
+from typing import Dict, List
 import numpy as np
 from copy import deepcopy
 from core.data import DataTree
-from core.event import EventBook
+from core.event import Event, EventBook
 from core.players.utils import get_response
 import re, pickle
 from core.players.utils import parse_reflex_note, parse_reflex_actions, get_target_from_response
@@ -40,7 +40,7 @@ class Player:
                     role = match.group(2)
                     confidence = match.group(3) if match.group(3) else None
                     reason = match.group(4) if match.group(4) else None
-                    print(id,role,confidence, reason, 'apoefnpawoiwef')
+                    print(id,role,confidence, reason, 'sjj is a big stupid ball')
                     return {
                         "id": id,
                         "role": role,
@@ -286,7 +286,7 @@ class Player:
         self.draft_dict["speak"][-1]["final_speech"] = speak
         return speak
 
-    def _speak(self, use_multiagent = True): #TODO
+    def _speak(self, use_multiagent = True): #TODO use a argument to decide which speaking method to use
         returned = self._speak_org() if not use_multiagent else self._speak_multiagent()
         return returned
 
@@ -308,7 +308,7 @@ class Player:
         return self.hstate.beliefs
     
     def _update_hstate(self, events):
-        #TODO
+        #TODO add previous events to this
         self.event_book.add_event(events)
         event_des = ""
         for event in events:
@@ -318,7 +318,6 @@ class Player:
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
         response = self.get_response("update_hstate", replacements=replacements)
-        print("banwuopef", response)
         for line in response.split("\n"):
             self.hstate.update(line)
         return
@@ -385,11 +384,12 @@ class Player:
 
     def extract_traj(self, traj):
         return {
-            "action": traj["action"],
+            "actions": traj["actions"],
             "all_events": [str(event) for event in traj["events"]],
             "visible_events": [str(event) for event in traj["events"] if self.filter_reflex_event(event)],
             "outcome_hstate": traj["outcome"]["hstate"],
-            "outcome_alive_players": traj["outcome"]["global_info"]["alive_players"]
+            "outcome_alive_players": traj["outcome"]["global_info"]["alive_players"],
+            "after_events": traj["after_events"] 
         }
         
     def get_traj_importance_for_belief(self, traj, roles):
@@ -415,20 +415,47 @@ class Player:
         importance = sum([wrongs[i] * weights[i] for i in range(self.player_num)])
         return importance
 
-    def extract_reflex_info(self, state, prev_events, trajs):
+    def get_traj_importance_for_policy(self, traj, roles):
+        #TODO sample more important traj for policy
+        if traj["actions"][self.id] is None:
+            return 0
+        return 1
+    
+    def summarize_events(self, events: List[Event]):
+        #TODO Add a summarizing model (using gpt) here.
+        return '\n'.join([str(event) for event in events if event.event in \
+            ["vote_out", "die", "day_start", "night_start", "end", "no_death", "vote"]])
+
+    def extract_reflex_info(self, state, prev_events, after_events, trajs):
         return {
             "hstate": state["hstate"],
             "roles": [state["private_infos"][i]["role"] for i in range(self.player_num)],
             "alive_players": state["global_info"]["alive_players"],
             "all_prev_events": [str(event) for event in prev_events],
             "visible_prev_events": [str(event) for event in prev_events if self.filter_reflex_event(event)],
-            "trajs": [self.extract_traj(traj) for traj in trajs]
+            "trajs": [self.extract_traj(traj) for traj in trajs],
         }
+    
+    def convert_draft_to_prompt(self, draft: Dict):
+        if draft["cur_action"] not in ["vote", "speak"]:
+            return ""
+        else:
+            s = "\nThe following is your proposals and your imagination of your action.\n\n"
+            if draft["cur_action"] == "vote":
+                for i in range(len(draft["vote_proposal"])):
+                    s += f"Proposal: vote for player {draft['vote_proposal'][i]}\n"
+                    s += f"Imagination: {draft['proposal_and_imaginations'][i]}\n\n"
+                s += f"FINAL decision:\n {draft['proposal_chosen_and_reasons']}\n"
+            elif draft["cur_action"] == "speak":
+                for i in range(len(draft["vote_proposal"])):
+                    s += f"Speech proposal: {draft['speak_proposal'][i]}\n"
+                    s += f"Imagination: {draft['proposal_and_imaginations'][i]}\n\n"
+                s += f"FINAL speech:\n {draft['final_speech']}\n"
+        return s
         
     def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
-        return
         if len(reflex_info["trajs"]) > 1:
-            weights = [self.get_traj_importance_for_belief(traj) for traj in reflex_info["trajs"]]
+            weights = [self.get_traj_importance_for_policy(traj, reflex_info["roles"]) for traj in reflex_info["trajs"]]
             traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]
         else:
             traj = reflex_info["trajs"][0]
@@ -440,19 +467,18 @@ class Player:
         for e in reflex_info["visible_prev_events"]:
             s += e
             s += '\n'
-        s += "\nThe following is YOUR belief AFTER THESE EVENTS\n\n"
-        s += str(reflex_info["hstate"][self.id])
-        s += "\n The following is your proposals and your imagination of your speech \n\n"
-        s += ''
-        
-        pass
-        # raise NotImplementedError
+        action_type = traj["actions"][self.id]["action"]
+        s += f"\n Your next action should be {action_type}.\n"
+        s += self.convert_draft_to_prompt(traj["drafts"][self.id])
+        s += "\n This is a summary of what happens after your final decided action:\n\n"
+        s += self.summarize_events(traj["after_events"])
+        return s
         
     
     def convert_reflex_info_to_belief_prompt(self, reflex_info: Dict) -> str: #TEMP
-        #TODO
+        #TODO Refine this
         if len(reflex_info["trajs"]) > 1:
-            weights = [self.get_traj_importance_for_belief(traj) for traj in reflex_info["trajs"]]
+            weights = [self.get_traj_importance_for_belief(traj, reflex_info["roles"]) for traj in reflex_info["trajs"]]
             traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]
         else:
             traj = reflex_info["trajs"][0]

@@ -68,7 +68,7 @@ class WerewolfPlayer(Player):
         return [wid for wid in self.private_info["werewolf_ids"] if wid in self.global_info["alive_players"]]
     
     def show_previous_advices(self):
-        #TODO
+        #! Aborted
         if self.private_info["previous_advices"] == []:
             s = "No previous advices."
         else:
