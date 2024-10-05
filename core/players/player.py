@@ -241,6 +241,7 @@ class Player:
         return first_proposal, second_proposal
         
     def _get_imagination_from_response_SpeakThreeStep(self, response):
+        #TODO
         return response
         first_pattern = r"After I do this speech, then (.*?)"
         first_match = re.search(first_pattern, response)
@@ -311,17 +312,19 @@ class Player:
     
     def _update_hstate(self, events):
         #TODO add previous events to this
-        self.event_book.add_event(events)
         event_des = ""
         for event in events:
             event_des += str(event)
             event_des += "\n"
-            
         replacements = self.get_replacements()
-        replacements.update({"{event_des}": event_des})
+        replacements.update({
+            "{event_des}": event_des,
+            "{prev_events}": str(self.event_book)
+        })
         response = self.get_response("update_hstate", replacements=replacements)
         for line in response.split("\n"):
             self.hstate.update(line)
+        self.event_book.add_event(events)
         return
 
     '''
