@@ -29,6 +29,11 @@ All lines should be in the format of:
 "Player [i]'s role is (werewolf/medic/seer/villager/unknown) with (high/medium/low) confidence. My reason is: [reason]."
 Any response not satisfying this format will not be recognized, including any unrecognized role or confidence. You may skip some players if your belief to him/her maintain unchanged.
 
+The reason should be AS SHORT AS POSSIBLE. 
+A negative example is: 'Player A did not give enough evidence while challenging that player B is not the seer, and as most players agree with player B's seer identity, there is high possibility that he is the true seer. Hence player A might be a werewolf.'
+We may convert it into: 'Challenged the well-acknowlegded seer (player B) without enough evidence.'
+This is merely an example, but it may guide you on how to make your reason briefer.
+
 Now you should answer your response based on the above requirements. Don't output anything unnecessary or your answer may not be recognized.
 
 4.Example response:
@@ -36,7 +41,7 @@ An example of your response could be:
 
 '''
 Player 0;s role is werewolf with high confidence. My reason is: ...
-Player 1's role is medic with medium confidence. My reason is: ...
+Player 4's role is medic with medium confidence. My reason is: ...
 Player 2's role is unknown with high confidence. My reason is: ...
 ...
 
