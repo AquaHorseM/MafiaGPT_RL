@@ -239,6 +239,7 @@ class Player:
         return first_proposal, second_proposal
         
     def _get_imagination_from_response_SpeakThreeStep(self, response):
+        #TODO
         return response
         first_pattern = r"After I do this speech, then (.*?)"
         first_match = re.search(first_pattern, response)
