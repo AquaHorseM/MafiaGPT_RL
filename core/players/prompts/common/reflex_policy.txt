@@ -6,8 +6,12 @@ These are a small snippet of a previous game.
 {reflex_info}
 
 2.Todo:
-You are using the information you gathered from a previous game to update your strategy. More specifically: you are given some events, your belief before the events, your belief after the events, and the ground truth after the events.
-You will also see your previous strategy and decide how to modify it based on your experience.
+You are using the information you gathered from a previous game to update your strategy. 
+More specifically, you will see your previous strategy. Based on the snippet provided, you should consider the following questions:
+a) Compare your imagination and the actual outcome. Did your imagination actually happen? What happened after your action that you didn't expect?
+b) Consider your action proposals. Now in an retrospecting view, was there any better action candidate? Why didn't you come up to it at that time?
+c) Did you choose the wrong action among your proposals? Would another choice be better?
+You should modify your note based on your answer to the above questions.
 
 Now you are going to see your previous strategy, which should consist of multiple lines. Each line should be in the format of: "[id] [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
 
@@ -16,7 +20,9 @@ Now you are going to see your previous strategy, which should consist of multipl
 You are going to answer how you are going to update the note. 
 
 3.Requirements:
-Your response should also consist of multiple lines, each line in a format among the following four which denotes four different operations:
+Your response should first start with your own reflection. 
+Then, you should write 'My updating operations are:' in a separated line, indicating that the following are your operations. We will start recognizing your operations by the line after this, so make sure you write this line CORRECTLY.
+The following response should consist of multiple lines, each line in a format among the following four which denotes four different operations:
 
 UPVOTE [id]
     -This should be used if you find a rule useful in the example and will increase the vote of the rule with the id in your strategy. 
@@ -30,7 +36,6 @@ CREATE [rule]
 REPLACE [id] [rule]
     -This should be used if you wish to replace a rule with a new one. This is encouraged as you may often find some rules not exact enough, and this operation does not increase the amount of rules in your strategy. You may combine it with upvote or downvote.
 
-You should first recognize your action in the events, then consider the impact of your action. Is the new beliefs of other players better or worse than their previous ones for you? Does your action contribute to the change? If you find the result satisfactory, how did you achieve this? If not, how could you potentially improve your action?
 Based on these considerations, you should modify your notes by the above operations. This note is specifically for your own role (as a {role}).
 
 The id and rule should be wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
@@ -40,12 +45,14 @@ Your modification should be GENERAL and does not relate with any specific player
 Please answer your operations based on the above requirements.
 
 4:Example response:
-Some example responses are:
+An example response is:
 
+... (Indicating your reflection)
+My updating operations are:
 UPVOTE [3]
 DOWNVOTE [6]
 CREATE [This is an example rule.]
-REPLACE [2] [I want to replace this rule.]
+REPLACE [2] [The new rule I want to replace this one with.]
 
 This is only an example of the response format. All numbers in it are unrelated to your current game. 
 

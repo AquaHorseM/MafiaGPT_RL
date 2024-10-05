@@ -48,6 +48,7 @@ class WerewolfGameEnv:
         self.player_num = 0
         self.temp_events = []
         self.latest_actions = None
+        self.latest_drafts = None
         self.night_info = {
             "killed": None,
             "healed": None,
@@ -147,6 +148,10 @@ class WerewolfGameEnv:
         self.add_event({"event": "start_game"})
         self.data = DataTree(self.get_state())
         self.latest_actions = [None] * self.player_num
+        self.latest_drafts = [{
+            "action": None,
+            "player_id": i
+        } for i in range(self.player_num)]
         self.update_all_hstates(add_to_data=True)
 
     
@@ -466,32 +471,36 @@ class WerewolfGameEnv:
         return self.all_players[player_id]._act(available_actions = [actions] if isinstance(actions, str) else actions)
     
     def update_data(self):
-        # print(f"debug: adding game_status {self.game_status} to data")
         '''
-            sjz 20241004 19:54 note:
-            I have added 'draft_dict' in actions.
-            player_draft_dict = self.latest_actions[player_id]['draft_dict']
-            this dict has the following keys:
-                vote: dictionary for vote drafts. it has the following items:
+            mqw 20241005 14:08 note:
+            I have added draft to data
+            player_draft_dict = self.latest_drafts
+            It has at least two keys:
+                "player_id": player_id
+                "cur_action" The current action
+            We should first recognize the 'cur_action' key. If it is None then there's nothing else. Else there are two cases:
+                "cur_action": "vote": 
+                    dictionary for vote drafts. it has the following items:
                     vote_proposal: list[int], list of proposals of votes. Currently len = 2.
                     proposal_and_imaginations: list[str], list of imagination. See core/player.py/Player/_vote
                     proposal_chosen_and_reasons: str, description of chosen proposal. See core/player.py/Player/_vote and core/players/prompts/common/vote_threeStage_choose.txt for format of it.
-                speak: dictionary for speak drafts. it has the following items:
+                "cur_action": "speak": 
+                    dictionary for speak drafts. it has the following items:
                     speak_proposal: list[str], list of proposals of speak summary. Currently len = 2.
                     proposal_and_imaginations: list[str], list of imagination after speech. See core/player.py/Player/_speak_multiagent
                     final_speech: str, final speech.
-        
         '''
-        
-        
-        
-        
-        
+        if self.game_status["winner"] is not None:
+            is_game_end = True
+        else:
+            is_game_end = False
         
         self.data.add_edge_and_node(
             events = self.temp_events,
             actions = self.latest_actions,
-            state = self.get_state()
+            state = self.get_state(),
+            draft = self.latest_drafts,
+            is_game_end = is_game_end
         )
         self.temp_events = []
     
@@ -588,13 +597,27 @@ class WerewolfGameEnv:
             self.latest_actions = deepcopy(actions)
             def get_latest_draft(draft_dict):
                 for key in draft_dict.keys():
+                    if len(draft_dict[key]) == 0:
+                        draft_dict[key]
                     draft_dict[key] = draft_dict[key][-1]
+                return draft_dict
             for player_id in range(self.player_num):
-                current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
-                current_player_latest_draft_dict = get_latest_draft(current_player_draft_dict)
-                self.latest_actions[player_id]['drat_dict'] = current_player_latest_draft_dict
-            
-            
+                self.latest_drafts = {
+                    "cur_action": actions[player_id].get("actions") if actions[player_id] is not None else None,
+                    "player_id": player_id
+                }
+                if actions[player_id] is None or actions[player_id].get("actions") is None:
+                    continue
+                else:
+                    current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
+                    current_player_latest_draft_dict = get_latest_draft(current_player_draft_dict)
+                    if actions[player_id]["action"] == "vote":
+                        self.latest_drafts = current_player_latest_draft_dict["vote"]
+                    elif actions[player_id]["action"] == "speak":
+                        self.latest_drafts = current_player_latest_draft_dict["speak"]
+                    else:
+                        continue
+                        
             if info is not None:
                 self.logger.info(str(info))
             if all(dones):
