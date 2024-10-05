@@ -16,10 +16,12 @@ parser.add_argument("--ckpt_path", type=str, default=None)
 parser.add_argument("--reflex-only",default=False, action="store_true")
 parser.add_argument("--data-path", type=str, default=None)
 parser.add_argument("--train",default=False, action="store_true")
+parser.add_argument("--log_hstate",default=False, action="store_true")
+
 
 def run_game_with_client(ipt, client):
-    idx, player_configs, train = ipt
-    new = Game(idx, train = train, openai_client=client)
+    idx, player_configs, train, log_hstate = ipt
+    new = Game(idx, train = train, log_hstate=log_hstate, openai_client=client)
     new.set_players(player_configs)
     # new.init_env()
     new.sim_game_for_reflex_players()
@@ -34,9 +36,9 @@ if __name__ == "__main__":
         player_configs = json.load(f)["players"]
     if args.num_processes == 1:
         for i in range(args.num_games):
-            run_game((args.start_idx, player_configs, args.train))
+            run_game((args.start_idx, player_configs, args.train, args.log_hstate))
     else:
-        ipt = [(args.start_idx + i, player_configs, args.train) for i in range(args.num_games)]
+        ipt = [(args.start_idx + i, player_configs, args.train, args.log_hstate) for i in range(args.num_games)]
         if __name__ == "__main__":
             with multiprocessing.Pool(args.num_processes) as pool:
                 pool.map(run_game, ipt)

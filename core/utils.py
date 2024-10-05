@@ -38,3 +38,8 @@ switcher_players = {
         "villager": Villager   
     }
 }
+
+def emph_print(info):
+    print("**************************")
+    print(info)
+    print("**************************")

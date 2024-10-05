@@ -7,7 +7,7 @@ import json, re, os, datetime
 import numpy as np
 from core.players.player import Player
 from core.event import Event, EventBook
-from core.utils import load_player_from_info, switcher_players, load_player_from_checkpoint
+from core.utils import load_player_from_info, switcher_players, load_player_from_checkpoint, emph_print
 from core.api import load_client
 from core.data import DataTree
 import inspect
@@ -34,7 +34,7 @@ def count_adjustable_params(func):
 
 
 class WerewolfGameEnv:
-    def __init__(self, id=1, train = False, openai_client = None, data_path = None):
+    def __init__(self, id=1, train = False, log_hstate = False, openai_client = None, data_path = None):
         self.id = id
         self.all_players = []
         self.alive_players = []
@@ -61,6 +61,7 @@ class WerewolfGameEnv:
         # if os.path.exists(self.data_path):
         #     os.remove(self.data_path)
         self.train = train
+        self.log_hstate = log_hstate
         self.game_status = {
             "cur_stage": "night", #night, day, vote
             "cur_round": 0,
@@ -485,6 +486,7 @@ class WerewolfGameEnv:
                     speak_proposal: list[str], list of proposals of speak summary. Currently len = 2.
                     proposal_and_imaginations: list[str], list of imagination after speech. See core/player.py/Player/_speak_multiagent
                     final_speech: str, final speech.
+                    proposal_id: int, final chosen proposal id
         '''
         if self.game_status["winner"] is not None:
             is_game_end = True
@@ -506,6 +508,10 @@ class WerewolfGameEnv:
         self.logger.info("All hidden states updated successfully")
         if add_to_data:
             self.update_data()
+        if self.log_hstate:
+            for i in range(self.player_num):
+                emph_print(f"Player {i}'s hstate is:")
+                print(str(self.all_players[i].hstate))
         return
 
     def get_joint_hstate(self):
@@ -544,6 +550,10 @@ class WerewolfGameEnv:
             print("Failed to save game record.")
             print(f"Error: {e}")
         if self.train:
+            #TODO make it adjustable
+            for i in range(3): #retry one step for random 3 nodes
+                self.random_retry_one_node(retry_steps = 1)
+                self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
             
@@ -578,6 +588,38 @@ class WerewolfGameEnv:
 
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
+    
+    def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
+        self.latest_actions = deepcopy(actions)
+        def get_latest_draft(draft_dict):
+            for key in draft_dict.keys():
+                if len(draft_dict[key]) == 0:
+                    draft_dict[key]
+                draft_dict[key] = draft_dict[key][-1]
+            return draft_dict
+        for player_id in range(self.player_num):
+            self.latest_drafts = {
+                "cur_action": actions[player_id].get("actions") if actions[player_id] is not None else None,
+                "player_id": player_id
+            }
+            if actions[player_id] is None or actions[player_id].get("actions") is None:
+                continue
+            else:
+                current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
+                current_player_latest_draft_dict = get_latest_draft(current_player_draft_dict)
+                if actions[player_id]["action"] == "vote":
+                    self.latest_drafts = current_player_latest_draft_dict["vote"]
+                elif actions[player_id]["action"] == "speak":
+                    self.latest_drafts = current_player_latest_draft_dict["speak"]
+                else:
+                    continue
+                    
+        if info is not None:
+            self.logger.info(str(info))
+        if all(dones):
+            return True
+        self.update_all_hstates(add_to_data=True)
+        return False
 
     def sim_game_for_reflex_players(self): #main simulation function
         if len(self.temp_events) != 0:
@@ -594,37 +636,45 @@ class WerewolfGameEnv:
             actions = self.get_actions_reflex(avail_actions)
             # self.logger.info(f"actions: {actions}")
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
-            
-            self.latest_actions = deepcopy(actions)
-            def get_latest_draft(draft_dict):
-                for key in draft_dict.keys():
-                    if len(draft_dict[key]) == 0:
-                        draft_dict[key]
-                    draft_dict[key] = draft_dict[key][-1]
-                return draft_dict
-            for player_id in range(self.player_num):
-                self.latest_drafts = {
-                    "cur_action": actions[player_id].get("actions") if actions[player_id] is not None else None,
-                    "player_id": player_id
-                }
-                if actions[player_id] is None or actions[player_id].get("actions") is None:
-                    continue
-                else:
-                    current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
-                    current_player_latest_draft_dict = get_latest_draft(current_player_draft_dict)
-                    if actions[player_id]["action"] == "vote":
-                        self.latest_drafts = current_player_latest_draft_dict["vote"]
-                    elif actions[player_id]["action"] == "speak":
-                        self.latest_drafts = current_player_latest_draft_dict["speak"]
-                    else:
-                        continue
-                        
-            if info is not None:
-                self.logger.info(str(info))
-            if all(dones):
+            if self.postprocess_step(actions, dones, info):
                 break
-            self.update_all_hstates(add_to_data=True)
+             
         self.logger.info("Game simulated successfully")
+        
+    def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
+        #TODO make it suitable for other actions (which should be easier)
+        drafts = self.data.get_next_drafts(node_id)
+        if drafts is None or all([draft["cur_action"] != "speak" for draft in drafts]):
+            return False
+        self.backtrace(targ_id=node_id)
+        actions = [None] * self.player_num
+        for player_id in range(self.player_num):
+            if drafts[player_id]["cur_action"] == "speak":
+                speak_action = self.all_players[player_id]._speak_with_other_proposal(drafts[player_id])
+                actions[player_id] = speak_action
+        obs, state, rewards, dones, info, avail_actions = self.step(actions)
+        if self.postprocess_step(actions, dones, info):
+            return True
+        if retry_steps == 1:
+            return True
+        for retry_step in range(retry_steps - 1):
+            actions = self.get_actions_reflex(avail_actions)
+            # self.logger.info(f"actions: {actions}")
+            obs, state, rewards, dones, info, avail_actions = self.step(actions)
+            if self.postprocess_step(actions, dones, info):
+                self.logger.info(f"Game ends after {retry_step+2} steps starting from the retry steps")
+                return True
+        return True
+    
+    def random_retry_one_node(self, retry_steps = 1):
+        MAX_ATTEMPT = 10
+        for i in range(MAX_ATTEMPT):
+            nid = random.randint(1, len(self.data.nodes) - 2)
+            if self.retry_for_reflex_players(nid, retry_steps):
+                print("Retry succeeded")
+                return
+        print(f"Retry failed after {MAX_ATTEMPT} attempts")
+            
         
     def reset(self):
         #reset hidden state
@@ -653,9 +703,10 @@ class WerewolfGameEnv:
         #return obs, state, available_actions
         return self._repeat(self.get_observation_single_player), self.get_state(), self.get_available_actions()
     
-    def backtrace(self, back_steps = 1):
-        node_id = self.data.get_backtrace_id(back_steps)
-        recover_info = self.data.backtrace(node_id)
+    def backtrace(self, targ_id = None, back_steps = 1):
+        if targ_id is None:
+            targ_id = self.data.get_backtrace_id(back_steps)
+        recover_info = self.data.backtrace(targ_id)
         info = recover_info["state"]
         prev_game_status = info["global_info"]["game_status"]
         events = recover_info["events"]

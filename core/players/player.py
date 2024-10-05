@@ -40,7 +40,7 @@ class Player:
                     role = match.group(2)
                     confidence = match.group(3) if match.group(3) else None
                     reason = match.group(4) if match.group(4) else None
-                    print(id,role,confidence, reason, 'sjj is a big stupid ball')
+                    # print(id,role,confidence, reason, 'sjj is a big stupid ball')
                     return {
                         "id": id,
                         "role": role,
@@ -249,11 +249,12 @@ class Player:
         return first_answer
     
     def _get_final_choice_from_response_SpokeThreeStep(self, response):
-        first_pattern = r".*My final speech is:(.*)"
+        first_pattern = r"I choose Proposal (\d).*My final speech is:(.*)"
         first_match = re.search(first_pattern, response)
         
-        first_answer = first_match.group(1) if first_match else None
-        return first_answer.strip()
+        proposal = first_match.group(1) if first_match else None
+        speech = first_match.group(2).strip() if first_match else "Speech not recognized."
+        return proposal, speech
     
     def _speak_multiagent(self):
         self.draft_dict["speak"].append(dict())
@@ -281,9 +282,10 @@ class Player:
         replacements["{current_propose_1_imagination}"] = result_list[1]
         
         response_and_reason = self.get_response("speak_threeStage_choose", replacements)
-        speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
+        proposal_id, speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
         
         self.draft_dict["speak"][-1]["final_speech"] = speak
+        self.draft_dict["speak"][-1]["final_proposal"] = proposal_id
         return speak
 
     def _speak(self, use_multiagent = True): #TODO use a argument to decide which speaking method to use
@@ -434,7 +436,7 @@ class Player:
         res = self.get_response("summarize_events", replacements)
         return res
 
-    def extract_reflex_info(self, state, prev_events, after_events, trajs):
+    def extract_reflex_info(self, state, prev_events, trajs):
         return {
             "hstate": state["hstate"],
             "roles": [state["private_infos"][i]["role"] for i in range(self.player_num)],
@@ -453,13 +455,43 @@ class Player:
                 for i in range(len(draft["vote_proposal"])):
                     s += f"Proposal: vote for player {draft['vote_proposal'][i]}\n"
                     s += f"Imagination: {draft['proposal_and_imaginations'][i]}\n\n"
-                s += f"FINAL decision:\n {draft['proposal_chosen_and_reasons']}\n"
+                s += f"Your FINAL decision was to vote for player\n {draft['proposal_chosen_and_reasons']}\n"
             elif draft["cur_action"] == "speak":
-                for i in range(len(draft["vote_proposal"])):
+                for i in range(len(draft["speak_proposal"])):
                     s += f"Speech proposal: {draft['speak_proposal'][i]}\n"
                     s += f"Imagination: {draft['proposal_and_imaginations'][i]}\n\n"
-                s += f"FINAL speech:\n {draft['final_speech']}\n"
+                s += f"You finally chose proposal {draft['proposal_id']}.\n\n"
+                s += f"Your FINAL speech:\n \"{draft['final_speech']}\"\n"
         return s
+    
+    def _speak_with_other_proposal(self, draft: Dict):
+        if len(draft["speak_proposal"]) <= 1:
+            return None
+        if len(draft["speak_proposal"]) == 2:
+            new_proposal_id = 1- draft["proposal_id"]
+        else:
+            ids = list(range(len(draft["speak_proposal"])))
+            ids.pop(draft["proposal_id"])
+            new_proposal_id = random.choice(ids)
+        replacements = self.get_replacements
+        replacements["{current_propose}"] = str(draft['speak_proposal'][new_proposal_id])
+        
+        response = self.get_response("speak_other_proposal", replacements)
+        speech_match = re.match(r"My final speech is:(.*)", response.strip())
+        if speech_match is not None:
+            final_speech = speech_match.group.strip()
+        else:
+            final_speech = "Unrecognized speech, skipped by system."
+        self.draft_dict["speak"].append(deepcopy(draft))
+        self.draft_dict["speak"][-1]["final_speech"] = final_speech
+        self.draft_dict["speak"][-1]["final_proposal"] = new_proposal_id
+        return {
+            "action": "speak",
+            "target": final_speech,
+            "reason": None,
+            "imagination": None        
+        }
+
         
     def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
         if len(reflex_info["trajs"]) > 1:

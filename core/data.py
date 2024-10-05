@@ -196,6 +196,11 @@ class DataTree:
                 samples.append(node_id)
         return samples
     
+    def get_next_drafts(self, node_id: int):
+        if len(self.nodes[node_id].edges) != 1:
+            return None
+        return self.edges[self.nodes[node_id].edges[0]].drafts
+    
     def show_info(self, interactive = False):
         for i in range(len(self.nodes)):
             print(f"Node {i}'s parent: {self.nodes[i].parent_id}")
