@@ -524,6 +524,7 @@ class WerewolfGameEnv:
         self.data_path = path
         with open(path, "rb") as f:
             self.data: DataTree = pickle.load(f)
+        print(f"loading data from {path}")
         recover_info = self.data.go_to_latest()
         info = recover_info["state"]
         prev_game_status = info["global_info"]["game_status"]
