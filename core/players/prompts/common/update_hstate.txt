@@ -3,7 +3,11 @@ You are player {player_id}, and in this game you are a {role}.
 It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
 {private}
 
-Your previous beliefs after your last update were:
+These are the events which happened BEFORE your last update:
+
+{prev_events}
+
+Your previous beliefs AFTER your last update were:
 
 {hstate}
 
