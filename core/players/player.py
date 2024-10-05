@@ -248,7 +248,7 @@ class Player:
         return first_answer
     
     def _get_final_choice_from_response_SpokeThreeStep(self, response):
-        first_pattern = r"My final speech is (.*?)"
+        first_pattern = r".*My final speech is: (.*?)"
         first_match = re.search(first_pattern, response)
         
         first_answer = first_match.group(1) if first_match else None
@@ -284,6 +284,7 @@ class Player:
         speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
         
         self.draft_dict["speak"][-1]["final_speech"] = speak
+        print("Debug: speech is")
         return speak
 
     def _speak(self, use_multiagent = True): #TODO use a argument to decide which speaking method to use
