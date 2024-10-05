@@ -11,7 +11,7 @@ parser.add_argument("--openai_config_path", type=str, default="openai_config.yam
 parser.add_argument("--config_path", type=str, default="configs/player_configs_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
 parser.add_argument("--ckpt_path", type=str, default=None)
-parser.add_argument("--data-path", type=str, default="temp_data/game_21_round_0_day_start.pkl")
+parser.add_argument("--data-path", type=str, default="temp_data/game_0_round_0_day_start.pkl")
 
 def load_ckpt(ipt, client, path):
     idx, player_configs = ipt

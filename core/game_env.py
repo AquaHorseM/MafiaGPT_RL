@@ -152,7 +152,7 @@ class WerewolfGameEnv:
             "action": None,
             "player_id": i
         } for i in range(self.player_num)]
-        self.update_all_hstates(add_to_data=True)
+        # self.update_all_hstates(add_to_data=True)
 
     
     def win_or_not(self, player_id):
@@ -524,6 +524,7 @@ class WerewolfGameEnv:
         self.data_path = path
         with open(path, "rb") as f:
             self.data: DataTree = pickle.load(f)
+        print(f"loading data from {path}")
         recover_info = self.data.go_to_latest()
         info = recover_info["state"]
         prev_game_status = info["global_info"]["game_status"]
@@ -531,6 +532,7 @@ class WerewolfGameEnv:
         print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
         print(f"current game status: {self.game_status}")
+        self.temp_events = []
         
     def end(self):
         self.logger.info("Game ended")
@@ -578,6 +580,9 @@ class WerewolfGameEnv:
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
 
     def sim_game_for_reflex_players(self): #main simulation function
+        if len(self.temp_events) != 0:
+            #Not updated data yet.
+            self.update_all_hstates(add_to_data=True)
         self.logger.info("Simulating games for reflex players")
         avail_actions = self.get_available_actions()
         self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
