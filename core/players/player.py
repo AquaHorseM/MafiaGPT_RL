@@ -422,8 +422,14 @@ class Player:
     
     def summarize_events(self, events: List[Event]):
         #TODO Add a summarizing model (using gpt) here.
-        return '\n'.join([str(event) for event in events if event.event in \
+        replacements = self.get_replacements()
+        event_txt = '\n'.join([str(event) for event in events if event.event in \
             ["vote_out", "die", "day_start", "night_start", "end", "no_death", "vote"]])
+        replacements.update({
+            "{all_events}": event_txt
+        })
+        res = self.get_response("summarize_events", replacements)
+        return res
 
     def extract_reflex_info(self, state, prev_events, after_events, trajs):
         return {
