@@ -495,7 +495,7 @@ class WerewolfGameEnv:
             events = self.temp_events,
             actions = self.latest_actions,
             state = self.get_state(),
-            draft = self.latest_drafts,
+            drafts = self.latest_drafts,
             is_game_end = is_game_end
         )
         self.temp_events = []
