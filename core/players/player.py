@@ -248,11 +248,12 @@ class Player:
         return first_answer
     
     def _get_final_choice_from_response_SpokeThreeStep(self, response):
+        print(f"DEBUG: response is {response}")
         first_pattern = r".*My final speech is: (.*?)"
         first_match = re.search(first_pattern, response)
         
         first_answer = first_match.group(1) if first_match else None
-        
+        print(f"DEBUG: first answer is {first_answer}")
         return first_answer
     
     def _speak_multiagent(self):
