@@ -284,7 +284,6 @@ class Player:
         speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
         
         self.draft_dict["speak"][-1]["final_speech"] = speak
-        print("Debug: speech is")
         return speak
 
     def _speak(self, use_multiagent = True): #TODO use a argument to decide which speaking method to use
