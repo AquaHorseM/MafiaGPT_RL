@@ -40,7 +40,7 @@ class Player:
                     role = match.group(2)
                     confidence = match.group(3) if match.group(3) else None
                     reason = match.group(4) if match.group(4) else None
-                    print(id,role,confidence, reason, 'apoefnpawoiwef')
+                    print(id,role,confidence, reason, 'sjj is a big stupid ball')
                     return {
                         "id": id,
                         "role": role,
@@ -286,7 +286,7 @@ class Player:
         self.draft_dict["speak"][-1]["final_speech"] = speak
         return speak
 
-    def _speak(self, use_multiagent = True): #TODO
+    def _speak(self, use_multiagent = True): #TODO use a argument to decide which speaking method to use
         returned = self._speak_org() if not use_multiagent else self._speak_multiagent()
         return returned
 
@@ -308,7 +308,7 @@ class Player:
         return self.hstate.beliefs
     
     def _update_hstate(self, events):
-        #TODO
+        #TODO add previous events to this
         self.event_book.add_event(events)
         event_des = ""
         for event in events:
@@ -318,7 +318,6 @@ class Player:
         replacements = self.get_replacements()
         replacements.update({"{event_des}": event_des})
         response = self.get_response("update_hstate", replacements=replacements)
-        print("banwuopef", response)
         for line in response.split("\n"):
             self.hstate.update(line)
         return
@@ -417,13 +416,15 @@ class Player:
         return importance
 
     def get_traj_importance_for_policy(self, traj, roles):
-        #TODO
+        #TODO sample more important traj for policy
+        if traj["actions"][self.id] is None:
+            return 0
         return 1
     
     def summarize_events(self, events: List[Event]):
-        #TODO
-        #We should add a summarizing model (using gpt) here.
-        return '\n'.join([str(event) for event in events])
+        #TODO Add a summarizing model (using gpt) here.
+        return '\n'.join([str(event) for event in events if event.event in \
+            ["vote_out", "die", "day_start", "night_start", "end", "no_death", "vote"]])
 
     def extract_reflex_info(self, state, prev_events, after_events, trajs):
         return {
@@ -475,7 +476,7 @@ class Player:
         
     
     def convert_reflex_info_to_belief_prompt(self, reflex_info: Dict) -> str: #TEMP
-        #TODO
+        #TODO Refine this
         if len(reflex_info["trajs"]) > 1:
             weights = [self.get_traj_importance_for_belief(traj, reflex_info["roles"]) for traj in reflex_info["trajs"]]
             traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]

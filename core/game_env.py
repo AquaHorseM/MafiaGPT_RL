@@ -201,10 +201,6 @@ class WerewolfGameEnv:
         pass
     
     def get_state(self):
-        # sjjjjj
-        player_draft = self.get_player_draft()
-        # TODO
-        
         hstate = self.get_joint_hstate()
         private_infos = [self.all_players[i].private_info for i in range(self.player_num)]
         return {
