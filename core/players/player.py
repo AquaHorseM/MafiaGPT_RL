@@ -40,7 +40,7 @@ class Player:
                     role = match.group(2)
                     confidence = match.group(3) if match.group(3) else None
                     reason = match.group(4) if match.group(4) else None
-                    print(id,role,confidence, reason, 'sjj is a big stupid ball')
+                    # print(id,role,confidence, reason, 'sjj is a big stupid ball')
                     return {
                         "id": id,
                         "role": role,
@@ -154,7 +154,7 @@ class Player:
         first_reason = first_reason_match.group(1).strip() if first_reason_match else None
         second_player = int(second_player_match.group(1)) if second_player_match else None
         second_reason = second_reason_match.group(1).strip() if second_reason_match else None
-        
+        print("baw;oiefnaw;oienaw;ioe", first_player, first_reason, second_player, second_reason)
         return first_player, first_reason, second_player, second_reason
     
     
@@ -226,13 +226,15 @@ class Player:
     
     
     def _get_proposals_from_response_SpeakThreeStep(self, response):
-        first_pattern = r"First Proposal:(.*)\n"
-        second_pattern = r"Second Proposal:(.*)\n"
+        first_pattern = r".*First Proposal:(.*?)\n"
+        second_pattern = r".*Second Proposal:(.*?)"
         first_match = re.search(first_pattern, response)
         second_match = re.search(second_pattern, response)
         
         first_proposal = first_match.group(1) if first_match else None
         second_proposal = second_match.group(1) if second_match else None
+        
+        print("bnaew;origna;woienfioa;we", first_proposal,'\n\n\nawefunaweufnawpeufnawief', second_proposal)
         
         
         
@@ -252,6 +254,7 @@ class Player:
         first_match = re.search(first_pattern, response)
         
         first_answer = first_match.group(1) if first_match else None
+        print("bawn;oieifnawo;ie", first_answer)
         return first_answer.strip()
     
     def _speak_multiagent(self):
