@@ -418,15 +418,34 @@ class Player:
         weights = [get_weight(i) for i in confidences]
         importance = sum([wrongs[i] * weights[i] for i in range(self.player_num)])
         return importance
+    
+    def evaluate_joint_hstate(self, joint_hstate):
+        #TODO
+        s = 1 #base weight
+        def confidence_to_weight(conf):
+            if confidence == "high":
+                return 2
+            elif confidence == "medium":
+                return 1.5
+            elif confidence == "low":
+                return 1
+        for i in range(self.player_num):
+            if i == self.id:
+                continue
+            if joint_hstate[i][self.id]["role"] == "werewolf":
+                confidence = joint_hstate[i][self.id]["confidence"]
+                s += confidence_to_weight(confidence)
+        return s
 
-    def get_traj_importance_for_policy(self, traj, roles):
+    def get_traj_importance_for_policy(self, traj, init_jhstate):
         #TODO sample more important traj for policy
+        #How to use it to sample more important nodes?
         if traj["actions"][self.id] is None:
             return 0
-        return 1
+        outcome_hstate = traj["outcome_hstate"]
+        return 1 + (self.evaluate_joint_hstate(outcome_hstate) - self.evaluate_joint_hstate(init_jhstate))**2
     
     def summarize_events(self, events: List[Event]):
-        #TODO Add a summarizing model (using gpt) here.
         replacements = self.get_replacements()
         event_txt = '\n'.join([str(event) for event in events if event.event in \
             ["vote_out", "die", "day_start", "night_start", "end", "no_death", "vote"]])
