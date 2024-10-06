@@ -319,7 +319,10 @@ class Player:
             event_des += "\n"
             
         replacements = self.get_replacements()
-        replacements.update({"{event_des}": event_des})
+        replacements.update({
+            "{event_des}": event_des,
+            "{prev_events}": str(self.event_book)
+        })
         response = self.get_response("update_hstate", replacements=replacements)
         for line in response.split("\n"):
             self.hstate.update(line)
