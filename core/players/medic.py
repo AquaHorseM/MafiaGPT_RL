@@ -56,7 +56,85 @@ class MedicPlayer(Player):
             res = self._get_speak_type()
             return ("speak_type", res, None)
     
-    def _heal(self):
+    
+    
+    
+    def _get_proposals_from_response_HealThreeStep(self, response):
+        # Regex to capture the first number after 'Firstly' and 'Secondly'
+        first_number_pattern = r'Firstly.*?(\d+)'
+        second_number_pattern = r'.*?Secondly.*?(\d+)'
+        
+        # Regex to capture the reason after 'the reason is'
+        first_reason_pattern = r'Firstly.*?the reason is:? (.*?)(?:\.|Secondly)'
+        second_reason_pattern = r'.*?Secondly.*?the reason is:? (.*)'
+        
+        # Find the first player number and reason
+        first_player_match = re.search(first_number_pattern, response)
+        first_reason_match = re.search(first_reason_pattern, response, re.DOTALL)
+        
+        # Find the second player number and reason
+        second_player_match = re.search(second_number_pattern, response)
+        second_reason_match = re.search(second_reason_pattern, response, re.DOTALL)
+        
+        # Extract data or set to None if not found
+        first_player = int(first_player_match.group(1)) if first_player_match else None
+        first_reason = first_reason_match.group(1).strip() if first_reason_match else None
+        second_player = int(second_player_match.group(1)) if second_player_match else None
+        second_reason = second_reason_match.group(1).strip() if second_reason_match else None
+        print("baw;oiefnaw;oienaw;ioe", first_player, first_reason, second_player, second_reason)
+        return first_player, first_reason, second_player, second_reason
+    
+    
+    def _get_imagination_from_response_HealThreeStep(self, response):
+        return response
+    def _get_final_choice_from_response_HealThreeStep(self, response):
+        return get_target_from_response(response)
+
+    def _heal_multiagent(self):
+        self.draft_dict["heal"].append(dict())
+        response = self.get_response("heal_threeStage_propose")
+        first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_HealThreeStep(response)
+        
+        proposals = [first_player, second_player]
+        
+        
+        self.draft_dict["heal"][-1]["heal_proposal"] = proposals
+        self.draft_dict["heal"][-1]["proposal_and_imaginations"] = list()
+        result_list = list()
+        for propose in proposals:
+            replacements = self.get_replacements()
+            replacements["{current_propose}"] = str(propose)
+            response = self.get_response("heal_threeStage_imagine", replacements)
+            
+            results = self._get_imagination_from_response_HealThreeStep(response)
+            result_list.append(results)
+            self.draft_dict["heal"][-1]["proposal_and_imaginations"].append(response)
+        
+        replacements = self.get_replacements()
+        replacements["{current_propose_0}"] = str(proposals[0])
+        replacements["{current_propose_1}"] = str(proposals[1])
+        replacements["{current_propose_0_imagination}"] = result_list[0]
+        replacements["{current_propose_1_imagination}"] = result_list[1]
+        
+        
+        
+        response_and_reason = self.get_response("heal_threeStage_choose", replacements)
+        heal = self._get_final_choice_from_response_HealThreeStep(response_and_reason)
+        
+        self.draft_dict["heal"][-1]["proposal_chosen_and_reasons"] = response_and_reason
+        return heal, response
+        
+    
+    
+    
+    
+    def _heal(self, use_multiagent = False):
+        if not use_multiagent:
+            return self._heal_org()
+        else:
+            return self._heal_multiagent()
+    
+    def _heal_org(self):
         response = self.get_response("heal")
         heal = get_target_from_response(response)
         return heal, response

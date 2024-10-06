@@ -9,6 +9,8 @@ class SeerPlayer(Player):
         super().__init__(id, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
         self.labels = ["all", "seer"]
         self.role = "seer"
+        if "known_roles" not in self.private_info:
+            self.private_info["known_roles"] = dict()
         
     def get_replacements(self):
         replacements = super().get_replacements()
@@ -25,11 +27,6 @@ class SeerPlayer(Player):
         replacements.update({"{events}": str(self.event_book)})
         return replacements
     
-    def init_game(self, global_info, private_info):
-        super().init_game(global_info, private_info)
-        if "known_roles" not in self.private_info:
-            self.private_info["known_roles"] = dict()
-        
     def _act(self, available_actions = None): #return (action, target, reason, imagination)
         if "vote" in available_actions:
             res = self._vote()

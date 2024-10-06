@@ -40,7 +40,6 @@ class Player:
                     role = match.group(2)
                     confidence = match.group(3) if match.group(3) else None
                     reason = match.group(4) if match.group(4) else None
-                    # print(id,role,confidence, reason, 'sjj is a big stupid ball')
                     return {
                         "id": id,
                         "role": role,
@@ -234,8 +233,6 @@ class Player:
         first_proposal = first_match.group(1) if first_match else None
         second_proposal = second_match.group(1) if second_match else None
         
-        
-        
         return first_proposal, second_proposal
         
     def _get_imagination_from_response_SpeakThreeStep(self, response):
@@ -310,7 +307,6 @@ class Player:
         return self.hstate.beliefs
     
     def _update_hstate(self, events):
-        #TODO add previous events to this
         event_des = ""
         for event in events:
             event_des += str(event)
@@ -363,26 +359,48 @@ class Player:
                 return False
         return True
     
+    def get_node_importance_for_policy(self, state, prev_events, trajs):
+        reflex_info = self.extract_reflex_info(state, prev_events, trajs)
+        cur_score = self.evaluate_joint_hstate(reflex_info["hstate"])
+        total_score = 0
+        for traj in reflex_info["trajs"]:
+            traj_score = self.evaluate_joint_hstate(traj["outcome_hstate"])
+            total_score += (cur_score - traj_score) ** 2
+        total_score /= np.sqrt(len(reflex_info["trajs"]))
+        return total_score
+            
+    def get_node_importance_for_belief(self, state, prev_events, trajs):
+        #TODO
+        return 1
+    
     def reflex(self, data : DataTree, sample_num = 5):
-        reflex_data_belief = data.sample(self.id, sample_num = sample_num)
-        reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = sample_num)
+        reflex_data_belief = data.sample(self.id, sample_num = 1000)
+        reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = 1000)
         print(f"there are {len(reflex_data_belief)} data for belief model and {len(reflex_data_policy)} data for policy model")
         print(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
         print(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
-        for d in reflex_data_belief:
+        def get_elems(d):
             dat = data.parse(d)
             state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
             if state is None:
-                print("Invalid data: empty state. Skipped.")
-                continue
+                return None
+            return (state, prev_events, trajs)
+        reflex_data_belief = [get_elems(d) for d in reflex_data_belief]
+        reflex_data_belief = [i for i in reflex_data_belief if i is not None]
+        if len(reflex_data_belief) > sample_num:
+            weights_belief = [self.get_node_importance_for_belief(elem[0], elem[1], elem[2]) for elem in reflex_data_belief]
+            reflex_data_belief = random.choices(reflex_data_belief, weights_belief, k=sample_num)
+        reflex_data_policy = [get_elems(d) for d in reflex_data_policy]
+        reflex_data_policy = [i for i in reflex_data_policy if i is not None]
+        if len(reflex_data_policy) > sample_num:
+            weights_policy = [self.get_node_importance_for_policy(elem[0], elem[1], elem[2]) for elem in reflex_data_policy]
+            reflex_data_policy = random.choices(reflex_data_belief, weights_policy, k=sample_num)
+        print(f"Data ready for reflex!")
+        for state, prev_events, trajs in reflex_data_belief:
             self.reflex_belief(state, prev_events, trajs)
-        for d in reflex_data_policy:
-            dat = data.parse(d)
-            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
-            if state is None:
-                print("Invalid data: empty state. Skipped.")
-                continue
+        for state, prev_events, trajs in reflex_data_policy:
             self.reflex_policy(state, prev_events, trajs)
+        print("Finished reflex; now polish reflex notes.")
         self.polish_reflex_notes()
         return
 
@@ -393,7 +411,8 @@ class Player:
             "visible_events": [str(event) for event in traj["events"] if self.filter_reflex_event(event)],
             "outcome_hstate": traj["outcome"]["hstate"],
             "outcome_alive_players": traj["outcome"]["global_info"]["alive_players"],
-            "after_events": traj["after_events"] 
+            "after_events": traj["after_events"],
+            "connect_to_end": traj["connect_to_end"] if traj.get("connect_to_end") is not None else False
         }
         
     def get_traj_importance_for_belief(self, traj, roles):
@@ -418,15 +437,41 @@ class Player:
         weights = [get_weight(i) for i in confidences]
         importance = sum([wrongs[i] * weights[i] for i in range(self.player_num)])
         return importance
+    
+    def evaluate_joint_hstate(self, joint_hstate):
+        #TODO make it more complete
+        s = 0 #base weight
+        def confidence_to_weight(conf):
+            if confidence == "high":
+                return 3
+            elif confidence == "medium":
+                return 2
+            elif confidence == "low":
+                return 1
+        for i in range(self.player_num):
+            if joint_hstate[i][i]["role"] == "werewolf":
+                continue
+            for j in range(self.player_num):
+                if joint_hstate[i][j]["role"] == "werewolf":
+                    confidence = joint_hstate[i][j]["confidence"]
+                    w = confidence_to_weight(confidence)
+                    sgn = 1 if (joint_hstate[j][j]["role"] == "werewolf") != (self.get_role() == "werewolf") else -1
+                    s += (w * sgn)
+                else:
+                    w = confidence_to_weight(confidence)
+                    sgn = 1 if (joint_hstate[j][j]["role"] == "werewolf") == (self.get_role() == "werewolf") else -1
+                    s += (w * sgn)
+        return s
 
-    def get_traj_importance_for_policy(self, traj, roles):
+    def get_traj_importance_for_policy(self, traj, init_jhstate):
         #TODO sample more important traj for policy
-        if traj["actions"][self.id] is None:
+        #How to use it to sample more important nodes?
+        if traj["actions"][self.id] is None or not traj["connect_to_end"]:
             return 0
-        return 1
+        outcome_hstate = traj["outcome_hstate"]
+        return 1 + (self.evaluate_joint_hstate(outcome_hstate) - self.evaluate_joint_hstate(init_jhstate))**2
     
     def summarize_events(self, events: List[Event]):
-        #TODO Add a summarizing model (using gpt) here.
         replacements = self.get_replacements()
         event_txt = '\n'.join([str(event) for event in events if event.event in \
             ["vote_out", "die", "day_start", "night_start", "end", "no_death", "vote"]])
@@ -512,6 +557,28 @@ class Player:
         s += self.convert_draft_to_prompt(traj["drafts"][self.id])
         s += "\n This is a summary of what happens after your final decided action:\n\n"
         s += self.summarize_events(traj["after_events"])
+        if len(reflex_info["trajs"]) > 1:
+            other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
+            other_draft = other_traj["drafts"][self.id]
+            if other_draft["cur_action"] not in ["vote", "speak"]:
+                pass
+            else:
+                if other_draft["cur_action"] == "speak":
+                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"]) >= self.evaluate_joint_hstate(traj["outcome_hstate"]):
+                        s += f"\n\nThe system also simulated the game for your other proposal, which is proposal {other_draft['proposal_id']}."
+                        s += f"\n\nYour speech, in this case, is: \"{other_draft['final_speech']}\""
+                        s += "System automatically evaluates it as a potentially better speech than your previous speech."
+                    else:
+                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['proposal_id']}."
+                        s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
+                    #TODO
+                    #?
+                    #xsm note: Why do we need two trajs at the same node? 
+                    #How can we compare them if we don't simulate the other traj to the end? 
+                    #However is this really meaningful to simulate the other branch? When is it meaningful?
+                elif other_draft["cur_action"] == "vote":
+                    #TODO
+                    pass
         return s
         
     
@@ -537,7 +604,7 @@ class Player:
             s += e
             s += '\n'
         s += "\nThese are YOUR updated belief AFTER THESE NEW EVENTS:\n\n"
-        s += str(reflex_info["hstate"][self.id])
+        s += str(traj["outcome_hstate"][self.id])
         return s
     
     def reflex_policy(self, state, prev_events, trajs):
