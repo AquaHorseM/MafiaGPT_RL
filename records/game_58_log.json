@@ -1,0 +1,671 @@
+[
+    [
+        {
+            "event": "set_player",
+            "content": {
+                "id": 0,
+                "role": "seer",
+                "player_type": "reflex"
+            },
+            "visible": "system"
+        },
+        {
+            "event": "set_player",
+            "content": {
+                "id": 1,
+                "role": "werewolf",
+                "player_type": "reflex"
+            },
+            "visible": "system"
+        },
+        {
+            "event": "set_player",
+            "content": {
+                "id": 2,
+                "role": "medic",
+                "player_type": "reflex"
+            },
+            "visible": "system"
+        },
+        {
+            "event": "set_player",
+            "content": {
+                "id": 3,
+                "role": "werewolf",
+                "player_type": "reflex"
+            },
+            "visible": "system"
+        },
+        {
+            "event": "set_player",
+            "content": {
+                "id": 4,
+                "role": "villager",
+                "player_type": "reflex"
+            },
+            "visible": "system"
+        },
+        {
+            "event": "set_player",
+            "content": {
+                "id": 5,
+                "role": "villager",
+                "player_type": "reflex"
+            },
+            "visible": "system"
+        },
+        {
+            "event": "set_player",
+            "content": {
+                "id": 6,
+                "role": "villager",
+                "player_type": "reflex"
+            },
+            "visible": "system"
+        },
+        {
+            "event": "heal",
+            "content": {
+                "player": 2,
+                "target": 2,
+                "reason": null
+            },
+            "visible": "medic"
+        },
+        {
+            "event": "inquiry",
+            "content": {
+                "player": 0,
+                "target": 1,
+                "is_werewolf": true,
+                "reason": null
+            },
+            "visible": 0
+        },
+        {
+            "event": "advicing",
+            "content": {
+                "player": 1,
+                "target": 2,
+                "reason": null
+            },
+            "visible": "werewolf"
+        },
+        {
+            "event": "advicing",
+            "content": {
+                "player": 3,
+                "target": 2,
+                "reason": null
+            },
+            "visible": "werewolf"
+        },
+        {
+            "event": "kill",
+            "content": {
+                "player": 1,
+                "target": 2,
+                "reason": null
+            },
+            "visible": "werewolf"
+        },
+        {
+            "event": "no_death",
+            "content": "Nobody died last night",
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 6,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 6
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 6,
+                "speech": "As we begin, it's clear that no one has shown definitive behavior that distinguishes them as a werewolf. I encourage everyone to stay alert and share observations that could help the village. Since it's the first round and there's not much to go on, let's focus on gathering more information tonight. Keep an eye out for any peculiar moves or statements.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 0,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 0
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 0,
+                "speech": "I have reason to suspect that player 1 might not be who they claim to be. Keep a close eye on their moves and claims as the game progresses.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 1,
+                "speak_type": "deceptive statement",
+                "reason": null
+            },
+            "visible": 1
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 1,
+                "speech": "Last night's events leave us with little to go on, but I want to remind everyone that indistinct accusations could cause unnecessary panic. My observation from last night hasn't led to concrete suspicions of anyone in particular. However, player 0's early focus on me feels like it could be an attempt to cast doubt without basis and distract us from looking elsewhere. While it's good to be cautious, let's not be hasty in pointing fingers without more evidence. I suggest we all pay attention to the discussions and watch for any inconsistencies moving forward.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 2,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 2
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 2,
+                "speech": "The events of last night leave us with very little to deduce who might be a werewolf among us. It is prudent that we remain cautious and focused on gathering evidence before making any rash accusations. Player 0's suspicion of Player 1 seems premature without solid evidence, and likewise, any suspicion cast upon me would be unfounded, as my actions have only been in the interest of protecting our village. It is essential that we all act with vigilance and share any concrete information we may have. Let's continue observing behaviors and patterns that may emerge in the forthcoming rounds.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 3,
+                "speak_type": "deceptive statement",
+                "reason": null
+            },
+            "visible": 3
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 3,
+                "speech": "I've been paying close attention to the discussions and I'm starting to get a clearer picture of what's going on. I have a strong suspicion about player 2; something about their behavior seems off to me. I'd like to encourage others to keep an eye on them and be cautious. Meanwhile, from what I've observed, player 0 hasn't done anything that seems particularly suspicious, so I think we have less to worry about there. Let's continue to share our thoughts and work together to figure out who we can really trust.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 4,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 4
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 4,
+                "speech": "Given the current probabilities, I believe that we should closely observe player 6's actions and statements, as they seem to have a slightly different perspective on my role. It's important for us as a village to discuss why they might believe differently and ensure we're making decisions with the most information possible. Let's work together to root out any deception among us.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 5,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 5
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 5,
+                "speech": "As we navigate through these uncertain times, I'd like to express my thoughts without causing undue suspicion. I've taken note of the early accusations from player 0 towards player 1, and while suspicion is part of this game, it's crucial we don't let it cloud our judgment without substantial evidence. Similarly, player 3's suspicion of player 2 needs to be examined further as the rounds progress. I encourage everyone to share their insights to paint a clearer picture of who we can trust. As of now, I maintain vigilance and urge everyone to communicate openly. Let's focus on observable actions and listen carefully to each other's claims to ensure our village's safety.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 0,
+                "target": 1,
+                "reason": null
+            },
+            "visible": 0
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 1,
+                "target": 6,
+                "reason": null
+            },
+            "visible": 1
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 2,
+                "target": 2,
+                "reason": null
+            },
+            "visible": 2
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 3,
+                "target": 2,
+                "reason": null
+            },
+            "visible": 3
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 4,
+                "target": 0,
+                "reason": null
+            },
+            "visible": 4
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 5,
+                "target": 6,
+                "reason": null
+            },
+            "visible": 5
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 6,
+                "target": 1,
+                "reason": null
+            },
+            "visible": 6
+        },
+        {
+            "event": "vote_out",
+            "content": {
+                "player": 5
+            },
+            "visible": "all"
+        },
+        {
+            "event": "die",
+            "content": {
+                "player": 5
+            },
+            "visible": "all"
+        },
+        {
+            "event": "heal",
+            "content": {
+                "player": 2,
+                "target": 1,
+                "reason": null
+            },
+            "visible": "medic"
+        },
+        {
+            "event": "inquiry",
+            "content": {
+                "player": 0,
+                "target": 1,
+                "is_werewolf": true,
+                "reason": null
+            },
+            "visible": 0
+        },
+        {
+            "event": "advicing",
+            "content": {
+                "player": 1,
+                "target": 2,
+                "reason": null
+            },
+            "visible": "werewolf"
+        },
+        {
+            "event": "advicing",
+            "content": {
+                "player": 3,
+                "target": 2,
+                "reason": null
+            },
+            "visible": "werewolf"
+        },
+        {
+            "event": "kill",
+            "content": {
+                "player": 1,
+                "target": 2,
+                "reason": null
+            },
+            "visible": "werewolf"
+        },
+        {
+            "event": "die",
+            "content": {
+                "player": 2
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 6,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 6
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 6,
+                "speech": "Based on our discussions and what has happened so far, I'm inclined to think that player 1 may be onto something with their suspicion of player 0. However, I would advise caution and suggest we don't rush to judgment without more evidence. It's important we remain vigilant and closely observe everyone's behavior in the next round. Let's keep the conversation open and work together to protect the village.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 0,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 0
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 0,
+                "speech": "My fellow villagers, as we strive to protect our village, it is essential to heed the truth we uncover. Last night, I exercised my ability and discovered unsettling news about player 1; they are not the innocent villager they claim to be. I urge you all to consider the gravity of this revelation, as it is our collective responsibility to safeguard our community from the lurking werewolves among us. Let us remain vigilant and united in our efforts to eliminate this threat.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 1,
+                "speak_type": "deceptive statement",
+                "reason": null
+            },
+            "visible": 1
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 1,
+                "speech": "Fellow villagers, as the sun rises on another day, we are faced with the difficult task of rooting out deceit in our midst. I've observed carefully and reflected on the words and actions from the last night, and I find player 4's focus on player 6 to be unusual and potentially misleading. Player 6 has not shown substantial suspicious behavior; thus, their reasoning seems unfounded. In the spirit of unity and caution, we should also consider player 0's accusations. It's vital we scrutinize their claims as much as those they accuse. Let's not be swayed by fear but instead continue our vigilant watch over the village tonight.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 3,
+                "speak_type": "deceptive statement",
+                "reason": null
+            },
+            "visible": 3
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 3,
+                "speech": "Last round was tough, but I've been observing carefully. I have a strong hunch that player 4 has been really quiet, and in my experience, that can sometimes hint at something. They've been flying under the radar, and I think that's a strategy to keep our attention off them. We should definitely keep an eye on player 4, and maybe push for more information on what they've been up to. Meanwhile, I've noticed player 6 contributing to the discussions and seems to be actively working to figure things out which doesn't strike me as typical werewolf behavior. I think their actions seem more in line with a villager looking out for the village.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 4,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 4
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 4,
+                "speech": "Villagers, I urge you to consider the evidence before us with great care. My observations lead me to cast doubt on player 6's intentions. Their interjection in the discussion, while seemingly helpful, may be a tactic to divert suspicion. Player 6's alignment with player 1, who is also under suspicion, raises further questions. We must scrutinize their actions and probe for clarity. Meanwhile, I've noted some inconsistency in player 0's behavior, so I advise keeping a wary eye there too. Let's communicate openly and protect our village with vigilance.",
+                "reason": null
+            },
+            "visible": "all"
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 0,
+                "target": 1,
+                "reason": null
+            },
+            "visible": 0
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 1,
+                "target": 4,
+                "reason": null
+            },
+            "visible": 1
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 3,
+                "target": 4,
+                "reason": null
+            },
+            "visible": 3
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 4,
+                "target": 1,
+                "reason": null
+            },
+            "visible": 4
+        },
+        {
+            "event": "vote",
+            "content": {
+                "player": 6,
+                "target": 0,
+                "reason": null
+            },
+            "visible": 6
+        },
+        {
+            "event": "vote_out",
+            "content": {
+                "player": 3
+            },
+            "visible": "all"
+        },
+        {
+            "event": "die",
+            "content": {
+                "player": 3
+            },
+            "visible": "all"
+        },
+        {
+            "event": "inquiry",
+            "content": {
+                "player": 0,
+                "target": 1,
+                "is_werewolf": true,
+                "reason": null
+            },
+            "visible": 0
+        },
+        {
+            "event": "kill",
+            "content": {
+                "player": 1,
+                "target": 0,
+                "reason": null
+            },
+            "visible": "werewolf"
+        },
+        {
+            "event": "die",
+            "content": {
+                "player": 0
+            },
+            "visible": "all"
+        },
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 4,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 4
+        },
+        {
+            "event": "speak",
+            "content": {
+                "player": 4,
+                "speech": "I think we need to pay close attention to player 1. There seems to be a consensus that they may be a werewolf, given the suspicions raised by both player 0 and player 6. I also have my doubts about player 1's role in the village. However, we should keep in mind the need for remaining attentive and vigilant, as the true werewolf might be manipulating the situation to their favor.",
+                "reason": null
+            },
+            "visible": "all"
+        }
+    ],
+    [
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 6,
+                "speak_type": "honest statement",
+                "reason": null
+            },
+            "visible": 6
+        }
+    ],
+    [
+        {
+            "event": "speak",
+            "content": {
+                "player": 6,
+                "speech": "Given what we've seen so far, my gut is telling me that we need to be wary of player 1. The probability point to them potentially being a werewolf is higher than the others. I haven't noticed anything suspicious from player 4, and I'm inclined to believe they are a villager. Let's stay alert and question player 1's actions thus far to ensure we're making the right decision for the village.",
+                "reason": null
+            },
+            "visible": "all"
+        }
+    ],
+    [
+        {
+            "event": "speak_type",
+            "content": {
+                "player": 1,
+                "speak_type": "deceptive statement",
+                "reason": null
+            },
+            "visible": 1
+        }
+    ],
+    [
+        {
+            "event": "speak",
+            "content": {
+                "player": 1,
+                "speech": "Given the grave situation we find ourselves in, vigilance is our ally. Through careful scrutiny, I have observed player 4's conduct and find no apparent inconsistency that would suggest a non-villager role. Player 6, however, has made keen observations and implied strong convictions that player 4 might be a villager, which aligns with my own assessments. This partnership in deduction is valuable, and I would urge us to consider the possibility that their combined reasoning could lead us closer to the truth. Despite the raising of suspicion towards me, I assure you, my actions and intent remain in service to the village. Let us maintain our focus on unearthing the true threat among us, so that our village may persevere through these dark times.",
+                "reason": null
+            },
+            "visible": "all"
+        }
+    ],
+    [
+        {
+            "event": "vote",
+            "content": {
+                "player": 1,
+                "target": 4,
+                "reason": null
+            },
+            "visible": 1
+        }
+    ],
+    [
+        {
+            "event": "vote",
+            "content": {
+                "player": 4,
+                "target": 1,
+                "reason": null
+            },
+            "visible": 4
+        }
+    ],
+    [
+        {
+            "event": "vote",
+            "content": {
+                "player": 6,
+                "target": 1,
+                "reason": null
+            },
+            "visible": 6
+        }
+    ],
+    [
+        {
+            "event": "vote_out",
+            "content": {
+                "player": 1
+            },
+            "visible": "all"
+        }
+    ],
+    [
+        {
+            "event": "die",
+            "content": {
+                "player": 1
+            },
+            "visible": "all"
+        }
+    ],
+    [
+        {
+            "event": "end",
+            "content": {
+                "winner": "Villagers"
+            },
+            "visible": "all"
+        }
+    ]
+]
