@@ -643,15 +643,14 @@ class WerewolfGameEnv:
         
     def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
         #TODO make it suitable for other actions (which should be easier)
-        drafts = self.data.get_next_drafts(node_id)
-        if drafts is None or all([draft["cur_action"] != "speak" for draft in drafts]):
+        draft = self.data.get_next_drafts(node_id)
+        if draft["cur_action"] != "speak":
             return False
         self.backtrace(targ_id=node_id)
         actions = [None] * self.player_num
-        for player_id in range(self.player_num):
-            if drafts[player_id]["cur_action"] == "speak":
-                speak_action = self.all_players[player_id]._speak_with_other_proposal(drafts[player_id])
-                actions[player_id] = speak_action
+        player_id = draft["player_id"]
+        speak_action = self.all_players[player_id]._speak_with_other_proposal(draft)
+        actions[player_id] = speak_action
         obs, state, rewards, dones, info, avail_actions = self.step(actions)
         if self.postprocess_step(actions, dones, info):
             return True
