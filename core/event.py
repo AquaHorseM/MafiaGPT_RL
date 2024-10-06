@@ -18,9 +18,10 @@ class Event:
         elif self.event == "kill":
             s += f"System randomly chooses from the werewolves' suggestions. Player {self.content['target']} is killed."  
         elif self.event == "speak":
-            s += f"Player {self.content['player']} says: '{self.content['speech']}'"  
-        elif self.event == "speak_summarized":
-            s += f"Player {self.content['player']} saying summarized as : '{self.content['speech_summary']}'"
+            if self.content.get("speech_summary") is not None:
+                s += f"Player {self.content['player']} saying summarized as : '{self.content['speech_summary']}'"
+            else:
+                s += f"Player {self.content['player']} says: '{self.content['speech']}'"  
         elif self.event == "vote":
             s += f"Player {self.content['player']} votes for player {self.content['target']}. His reason is: {self.content['reason']}"
         elif self.event == "vote_out":
