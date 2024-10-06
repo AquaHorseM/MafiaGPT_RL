@@ -278,7 +278,7 @@ class WerewolfGameEnv:
             })
             speech_summary = self.all_players[0].get_response("summarize_speech", replacements)
             
-            self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": speech, "speech_summary": speech_summary}, "visible": "all"})
+            self.add_event({"event": "speak_summarized", "content": {"player": speaking_player, "speech": speech, "speech_summary": speech_summary}, "visible": "all"})
             while True: #Find the next player to speak
                 speaking_player = (speaking_player + 1) % self.player_num
                 if speaking_player == self.game_status["start_speaking_player"]:
