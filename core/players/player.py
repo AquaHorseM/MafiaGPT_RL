@@ -309,6 +309,7 @@ class Player:
     def get_beliefs(self):
         return self.hstate.beliefs
     
+    
     def _update_hstate(self, events):
         #TODO add previous events to this
         self.event_book.add_event(events)
@@ -316,8 +317,13 @@ class Player:
         for event in events:
             event_des += str(event)
             event_des += "\n"
-            
+        
         replacements = self.get_replacements()
+        replacements.update({
+            "{all_events}": event_des
+        })
+        # summarized_events = self.get_response("summarize_events")
+            
         replacements.update({"{event_des}": event_des})
         response = self.get_response("update_hstate", replacements=replacements)
         for line in response.split("\n"):
