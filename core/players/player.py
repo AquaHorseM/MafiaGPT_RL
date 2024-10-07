@@ -615,6 +615,7 @@ class Player:
             if other_draft["cur_action"] not in ["vote", "speak"]:
                 pass
             else:
+                #TODO how to combine the other traj?
                 if other_draft["cur_action"] == "speak":
                     if self.evaluate_joint_hstate(other_traj["outcome_hstate"]) >= self.evaluate_joint_hstate(traj["outcome_hstate"]):
                         s += f"\n\nThe system also simulated the game for your other proposal, which is proposal {other_draft['proposal_id']}."
@@ -623,13 +624,10 @@ class Player:
                     else:
                         s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['proposal_id']}."
                         s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
-                    #TODO
-                    #?
                     #xsm note: Why do we need two trajs at the same node? 
                     #How can we compare them if we don't simulate the other traj to the end? 
                     #However is this really meaningful to simulate the other branch? When is it meaningful?
                 elif other_draft["cur_action"] == "vote":
-                    #TODO
                     if self.evaluate_joint_hstate(other_traj["outcome_hstate"]) >= self.evaluate_joint_hstate(traj["outcome_hstate"]):
                         s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['proposal_id']}."
                         s += f"\n\nYour vote, in this case, is: \"{other_draft['proposal_chosen_and_reasons']}\""

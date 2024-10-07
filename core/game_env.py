@@ -637,7 +637,7 @@ class WerewolfGameEnv:
         self.logger.info("Game simulated successfully")
         
     def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
-        #TODO make it suitable for other actions (which should be easier)
+        #TODO make it suitable for night actions
         draft = self.data.get_next_drafts(node_id)
         if draft["cur_action"] == "speak":
             self.backtrace(targ_id=node_id)
