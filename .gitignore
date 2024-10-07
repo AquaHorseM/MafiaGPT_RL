@@ -6,3 +6,5 @@ message_history_backup.txt
 _message_history_backup.txt
 message_input_history_backup.txt
 .history/
+temp_data/
+sjz*
