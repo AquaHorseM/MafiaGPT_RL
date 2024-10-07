@@ -451,7 +451,8 @@ class Player:
             "outcome_hstate": traj["outcome"]["hstate"],
             "outcome_alive_players": traj["outcome"]["global_info"]["alive_players"],
             "after_events": traj["after_events"],
-            "connect_to_end": traj["connect_to_end"] if traj.get("connect_to_end") is not None else False
+            "connect_to_end": traj["connect_to_end"] if traj.get("connect_to_end") is not None else False,
+            "draft": traj["drafts"][self.id]
         }
         
     def get_hstate_score_for_belief(self, joint_hstate, roles = None):
@@ -630,12 +631,12 @@ class Player:
             s += '\n'
         action_type = traj["actions"][self.id]["action"]
         s += f"\n Your next action should be {action_type}.\n"
-        s += self.convert_draft_to_prompt(traj["drafts"][self.id])
+        s += self.convert_draft_to_prompt(traj["draft"])
         s += "\n This is a summary of what happens after your final decided action:\n\n"
         s += self.summarize_events(traj["after_events"])
         if len(reflex_info["trajs"]) > 1:
             other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
-            other_draft = other_traj["drafts"][self.id]
+            other_draft = other_traj["draft"]
             if other_draft["cur_action"] not in ["vote", "speak"]:
                 pass
             else:
