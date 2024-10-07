@@ -820,4 +820,11 @@ class Player:
     def get_response(self, prompt_name, replacements = None):
         if replacements is None:
             replacements = self.get_replacements()
-        return get_response(self.prompt_dir_path, self.common_prompt_dir, prompt_name, replacements, client = self.openai_client)
+        cnt = 0
+        while cnt < 3:
+            try:
+                return get_response(self.prompt_dir_path, self.common_prompt_dir, prompt_name, replacements, client = self.openai_client)
+            except Exception as e:
+                cnt += 1
+                self.logger.warning(f"Exception encountered: {e}")
+        return "Failed to get response."
