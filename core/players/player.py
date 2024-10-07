@@ -398,11 +398,6 @@ class Player:
             total_score += (cur_score - traj_score) ** 2
         total_score /= np.sqrt(len(reflex_info["trajs"]))
         return total_score
-    
-    def belief_score(self, joint_hstate):
-        s = 0
-        for i in range(self.player_num):
-            if 
             
     def get_node_importance_for_belief(self, state, prev_events, trajs):
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
