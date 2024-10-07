@@ -13,7 +13,7 @@ from core.players.werewolf import WerewolfPlayer
 from core.players.villager import VillagerPlayer
 from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
-from core.utils import load_player_from_info, switcher_players, load_player_from_checkpoint
+from core.utils import load_player_from_info, switcher_players
 from core.api import load_client
 from core.data import DataTree
 import gym

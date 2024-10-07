@@ -6,24 +6,7 @@ from core.players.seer import SeerPlayer
 from core.players.villager import VillagerPlayer
 from core.baseline_players import Werewolf, Medic, Seer, Villager
 import pickle, os
-def load_player_from_checkpoint(path, game, player_id):
-    with open(path, 'rb') as file:
-        info = pickle.load(file)
-    return load_player_from_info(info, game, player_id)
-
-def load_player_from_info(private_info, global_info, player_id, openai_client):
-    role = private_info["role"]
-    switcher = {
-        "werewolf": WerewolfPlayer,
-        "medic": MedicPlayer,
-        "seer": SeerPlayer,
-        "villager": VillagerPlayer
-    }
-    prompt_dir_path = os.path.join("core/players/prompts", role) #TODO
-    common_prompt_dir = os.path.join("core/players/prompts", "common")
-    p = switcher[role](player_id, global_info, private_info, prompt_dir_path, common_prompt_dir, openai_client)
-    return p
-
+import inspect
 switcher_players = {
     "reflex": {
         "werewolf": WerewolfPlayer,
@@ -38,6 +21,25 @@ switcher_players = {
         "villager": Villager   
     }
 }
+
+def count_adjustable_params(func):    
+    # Get the signature of the function
+    sig = inspect.signature(func)
+    params = sig.parameters
+    
+    # Determine if it's a method (by checking if 'self' or 'cls' is the first parameter)
+    is_method = inspect.ismethod(func) or (inspect.isfunction(func) and 'self' in params)
+
+    count = 0
+    for i, param in enumerate(params.values()):
+        # print(f"param: {param}")
+        # Skip 'self' or 'cls' for methods
+        if is_method and i == 0 and param.name in ('self', 'cls'):
+            continue
+        # Count only adjustable (non-default) parameters
+        if param.default == param.empty and param.kind in (param.POSITIONAL_OR_KEYWORD, param.POSITIONAL_ONLY, param.KEYWORD_ONLY):
+            count += 1
+    return count
 
 def emph_print(info):
     print("**************************")

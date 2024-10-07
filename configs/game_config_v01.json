@@ -60,5 +60,6 @@
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/seer"
         }
-    ]
+    ],
+    "extra_sim_nodes": 5
 }

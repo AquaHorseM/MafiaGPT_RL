@@ -165,8 +165,7 @@ class DataTree:
             ]
         }
         
-    def sample_single(self, player_id = None, filter_events = False, sampling_method = "sqrt"): #sampling method from 'uniform', 'log' and 'sqrt'
-        #TODO find a better sampling method
+    def sample_single(self, player_id = None, filter_events = False, sampling_method = "uniform"): #sampling method from 'uniform', 'log' and 'sqrt'
         node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id, filter_events)]
         if len(node_ids) == 0:
             print(f"No action done by player {player_id} in the data.")
