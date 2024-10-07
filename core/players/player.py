@@ -821,7 +821,7 @@ class Player:
         if replacements is None:
             replacements = self.get_replacements()
         cnt = 0
-        while cnt < 3:
+        while cnt < 10:
             try:
                 return get_response(self.prompt_dir_path, self.common_prompt_dir, prompt_name, replacements, client = self.openai_client)
             except Exception as e:
