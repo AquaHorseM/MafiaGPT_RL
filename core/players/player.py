@@ -441,7 +441,7 @@ class Player:
     def evaluate_joint_hstate(self, joint_hstate):
         #TODO make it more complete
         s = 0 #base weight
-        def confidence_to_weight(conf):
+        def confidence_to_weight(confidence):
             if confidence == "high":
                 return 3
             elif confidence == "medium":
@@ -464,7 +464,6 @@ class Player:
         return s
 
     def get_traj_importance_for_policy(self, traj, init_jhstate):
-        #TODO sample more important traj for policy
         #How to use it to sample more important nodes?
         if traj["actions"][self.id] is None or not traj["connect_to_end"]:
             return 0
