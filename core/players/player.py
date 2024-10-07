@@ -401,7 +401,7 @@ class Player:
             
     def get_node_importance_for_belief(self, state, prev_events, trajs):
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
-        cur_score = self.belief_score(reflex_info["hstate"])
+        cur_score = self.get_hstate_score_for_belief(reflex_info["hstate"])
         total_score = 0
         for traj in reflex_info["trajs"]:
             traj_score = self.get_hstate_score_for_belief(traj["outcome_hstate"])
