@@ -31,7 +31,8 @@ REPLACE [id] [rule]
     -This should be used if you wish to replace a rule with a new one. This is encouraged as you may often find some rules not exact enough, and this operation does not increase the amount of rules in your strategy. You may combine it with upvote or downvote.
 
 You should focus on how you updated your belief based on the happening events. Is your prediction of the beliefs closer to the ground truth compared to your previous one? How can it be closer? What can you learn from this experience?
-Based on these considerations, you should modify your notes by the above operations. This note is specifically for your own role (as a {role}).
+Based on these considerations, you should modify your notes by the above operations. This note is specifically for your own role (as a {role}). Make your note AS ACCURATE AS POSSIBLE, as vague rules will not help you in upcoming games.
+Warning again: this note is ONLY for how you update your belief, so don't include ANYTHING about you action or speech strategies here.
 
 The id and rule should be wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
 
