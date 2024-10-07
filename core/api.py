@@ -1,6 +1,6 @@
 # CONFIG YOUR API HERE :
 RATE_LIMIT = 20  # sleeping time for openai per minute limitation
-SLEEP_EVERYTIME = 0.2 # sleep for 1s every time, for what? I don't know!
+SLEEP_EVERYTIME = 2 # sleep for 1s every time, for what? I don't know!
 TOKEN_LIMIT = 250  # token limit per message
 TEMPERATURE = 1
 MAX_RETRIES = 1
