@@ -226,7 +226,7 @@ class Player:
     
     def _get_proposals_from_response_SpeakThreeStep(self, response):
         first_pattern = r"First Proposal:(.*)\n"
-        second_pattern = r"Second Proposal:(.*)\n"
+        second_pattern = r"Second Proposal:(.*)"
         first_match = re.search(first_pattern, response)
         second_match = re.search(second_pattern, response)
         
