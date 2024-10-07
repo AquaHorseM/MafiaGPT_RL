@@ -159,7 +159,8 @@ class DataTree:
                     "drafts": self.edges[e].drafts,
                     "events": self.edges[e].events,
                     "outcome": self.nodes[self.edges[e].end_id].state,
-                    "after_events": self.get_events_after(self.edges[e].end_id)
+                    "after_events": self.get_events_after(self.edges[e].end_id),
+                    "connect_to_end": self.nodes[self.edges[e].end_id].connect_to_end
                 } for e in self.nodes[node_id].edges if not filter_action or (player_id and self.filter_action(e, player_id))
             ]
         }
@@ -195,6 +196,11 @@ class DataTree:
             if node_id not in samples:
                 samples.append(node_id)
         return samples
+    
+    def get_next_drafts(self, node_id: int):
+        if len(self.nodes[node_id].edges) != 1:
+            return None
+        return self.edges[self.nodes[node_id].edges[0]].drafts
     
     def show_info(self, interactive = False):
         for i in range(len(self.nodes)):

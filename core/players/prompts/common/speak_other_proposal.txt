@@ -1,0 +1,31 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a {role}.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+{private}
+
+According to the history, this is your conclusion of other people's statuses and beliefs:
+
+{hstate}
+
+2.Todo:
+
+Now you are going to see your original strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+You should ABSOLUTELY follow your strategy even if you think some of them are not necessarily correct. You will have a chance to update your strategy later.
+
+{reflex_note_policy}
+
+Now, it's your time to decide in which way you should speak. Here are some possible dimensions you may refer to.
+1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly
+2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf, including yourself. 
+However, there are multiple ways to be deceptive (Which role you are pretending to be? Which information you are hiding? Which false information you are giving?) Try to be more accurate in your proposal.
+
+This is your previous proposal: {current_propose}. 
+Now you have to give a final speech.
+Your final speech should be brief and precise. You should focus on facts and your own opinions to specific players or strategies. You SHOULD use as LESS descriptive or emotional words as possible. Statements should be made with reasons to support them, and speeches like 'we should stay cautious' or other common knowledge stuffs should NOT exist in your speech. Overall, make your speech AS SHORT AS POSSIBLE.
+
+3.Requirements:
+You answer should be in a format of:
+
+My final speech is: [YOUR FINAL SPEECH]
+
+Please give your answer based on the above requirements. You must begin your speech with "My final speech is:", otherwise you may lose the game directly!
