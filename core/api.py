@@ -1,5 +1,6 @@
 # CONFIG YOUR API HERE :
 RATE_LIMIT = 20  # sleeping time for openai per minute limitation
+SLEEP_EVERYTIME = 1 # sleep for 1s every time, for what? I don't know!
 TOKEN_LIMIT = 250  # token limit per message
 TEMPERATURE = 1
 MAX_RETRIES = 1
@@ -86,9 +87,10 @@ def send_message_xsm(messages, agent_config = {}, client = None):
     model_name = agent_config.get("model", MODEL)
     temperature = agent_config.get("temperature", TEMPERATURE)
     max_retries = agent_config.get("max_retries", MAX_RETRIES)
+    sleep_everytime = agent_config.get("sleep_everytime", SLEEP_EVERYTIME)
     context = get_context(messages)
     
-    time.sleep(rate_limit)
+    time.sleep(sleep_everytime)
         
     # connecting to Openai
     for i in range(max_retries):
@@ -107,6 +109,9 @@ def send_message_xsm(messages, agent_config = {}, client = None):
             continue
     # returning the response as a string
     #! debug
+    
+    with open("message_input_history_backup.txt", "a") as f:
+        f.write(f"{context}\n\n")
     with open("message_history_backup.txt", "a") as f:
         f.write(f"{response.choices[0].message.content}\n\n")
     return response.choices[0].message.content
