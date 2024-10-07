@@ -7,7 +7,7 @@ The note should consist of multiple lines. Each line should be in the format of:
 
 You are going to give me a new version of the note based on this game and the current situation that:
 1. chooses a subset of these rules that 
-    a) avoid repeated rules or rules with similar meanings(btw, apparently you also should definitely not choose rules that are in conflict)
+    a) avoid repeated rules or rules with similar meanings(btw, apparently you also should NOT choose rules that are in conflict)
     b) avoid ungeneralizable rules (especially rules related to a specific player id, for example "player 3 is probably a werewolf" is a rule that can not be generalized to other games.)
 2. summarize each rule to make it briefer and more direct. Recommended formats for each rule are:
     a) I should (not) ...
