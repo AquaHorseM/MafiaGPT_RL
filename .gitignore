@@ -3,4 +3,5 @@ venv/
 data/
 checkpoints/
 message_history_backup.txt
+message_input_history_backup.txt
 .history/
