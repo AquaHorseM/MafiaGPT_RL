@@ -88,7 +88,7 @@ class WerewolfPlayer(Player):
         first_reason = first_reason_match.group(1).strip() if first_reason_match else None
         second_player = int(second_player_match.group(1)) if second_player_match else None
         second_reason = second_reason_match.group(1).strip() if second_reason_match else None
-        self.logger.debug(first_player, first_reason, second_player, second_reason)
+        self.logger.debug(str(first_player) + ' ' + first_reason + ' ' + str(second_player) + ' ' + second_reason)
         return first_player, first_reason, second_player, second_reason
     
     
