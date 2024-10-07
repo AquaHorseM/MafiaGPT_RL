@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 import random
 from typing import Dict, List
 import numpy as np
@@ -90,6 +91,9 @@ class Player:
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
         self.draft_dict["speak"] = list()
+        self.draft_dict["see"]=list()
+        self.draft_dict["kill"]=list()
+        self.draft_dict["heal"]=list()
         self.logger = self._configure_logger()
         
     def _configure_logger(self):
@@ -151,8 +155,8 @@ class Player:
         second_number_pattern = r'Secondly.*?(\d+)'
         
         # Regex to capture the reason after 'the reason is'
-        first_reason_pattern = r'Firstly.*?the reason is:? (.*?)(?:\.|Secondly)'
-        second_reason_pattern = r'Secondly.*?the reason is:? (.*)'
+        first_reason_pattern = r'Firstly.*?reason is:? (.*?)\n'
+        second_reason_pattern = r'Secondly.*?reason is:? (.*)'
         
         # Find the first player number and reason
         first_player_match = re.search(first_number_pattern, response)
@@ -182,8 +186,13 @@ class Player:
     
     def _vote_multiagent(self):
         self.draft_dict["vote"].append(dict())
-        response = self.get_response("vote_threeStage_propose")
-        first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_VoteThreeStep(response)
+        first_player, first_reason, second_player, second_reason = None, None, None, None
+        count = 0
+        while ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None)) and (count < 3):
+            count += 1
+            response = self.get_response("vote_threeStage_propose")
+            first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_VoteThreeStep(response)
+        assert not ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None))
         
         proposals = [first_player, second_player]
         
@@ -263,8 +272,14 @@ class Player:
     
     def _speak_multiagent(self):
         self.draft_dict["speak"].append(dict())
-        response = self.get_response("speak_threeStage_propose")
-        first_speak, second_speak = self._get_proposals_from_response_SpeakThreeStep(response)
+        first_speak, second_speak = None, None
+        count = 0
+        while ((first_speak is None) or (second_speak is None)) and (count < 3):
+            count += 1
+            response = self.get_response("speak_threeStage_propose")
+            first_speak, second_speak = self._get_proposals_from_response_SpeakThreeStep(response)
+        assert not ((first_speak is None) or (second_speak is None))
+        
         
         proposals = [first_speak, second_speak]
         
@@ -315,20 +330,27 @@ class Player:
         return self.hstate.beliefs
     
     def _update_hstate(self, events):
-        event_des = ""
-        for event in events:
-            event_des += str(event)
-            event_des += "\n"
-        replacements = self.get_replacements()
-        replacements.update({
-            "{event_des}": event_des,
-            "{prev_events}": str(self.event_book)
-        })
-        response = self.get_response("update_hstate", replacements=replacements)
-        for line in response.split("\n"):
-            self.hstate.update(line)
-        self.event_book.add_event(events)
-        return
+        for _ in range(3):
+            try:
+                event_des = ""
+                for event in events:
+                    event_des += str(event)
+                    event_des += "\n"
+                replacements = self.get_replacements()
+                replacements.update({
+                    "{event_des}": event_des,
+                    "{prev_events}": str(self.event_book)
+                })
+                response = self.get_response("update_hstate", replacements=replacements)
+                for line in response.split("\n"):
+                    self.hstate.update(line)
+                self.event_book.add_event(events)
+                return
+            except Exception as e:
+                print("Exception in _update_hstate, sleep for 5 seconds and try again. Exception:", e)
+                time.sleep(5)
+                continue
+        raise Exception("update hidden state, error for three times.")
 
     '''
     The following functions are defined to be consistent with the baseline version.
@@ -532,12 +554,12 @@ class Player:
         if len(draft["speak_proposal"]) <= 1:
             return None
         if len(draft["speak_proposal"]) == 2:
-            new_proposal_id = 1- draft["proposal_id"]
+            new_proposal_id = 2 - draft["proposal_id"]
         else:
             ids = list(range(len(draft["speak_proposal"])))
             ids.pop(draft["proposal_id"])
             new_proposal_id = random.choice(ids)
-        replacements = self.get_replacements
+        replacements = self.get_replacements()
         replacements["{current_propose}"] = str(draft['speak_proposal'][new_proposal_id])
         
         response = self.get_response("speak_other_proposal", replacements)
@@ -552,6 +574,22 @@ class Player:
         return {
             "action": "speak",
             "target": final_speech,
+            "reason": None,
+            "imagination": None        
+        }
+    
+    def _vote_with_other_proposal(self, draft: Dict):
+        if len(draft["vote_proposal"]) <= 1:
+            return None
+        if len(draft["vote_proposal"]) == 2:
+            new_proposal_id = 2 - draft["proposal_id"]
+        else:
+            ids = list(range(len(draft["vote_proposal"])))
+            ids.pop(draft["proposal_id"])
+            new_proposal_id = random.choice(ids)
+        return {
+            "action": "vote",
+            "target": draft['vote_proposal'][new_proposal_id],
             "reason": None,
             "imagination": None        
         }
@@ -597,7 +635,15 @@ class Player:
                     #However is this really meaningful to simulate the other branch? When is it meaningful?
                 elif other_draft["cur_action"] == "vote":
                     #TODO
-                    pass
+                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"]) >= self.evaluate_joint_hstate(traj["outcome_hstate"]):
+                        s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['proposal_id']}."
+                        s += f"\n\nYour vote, in this case, is: \"{other_draft['proposal_chosen_and_reasons']}\""
+                        s += "System automatically evaluates it as a potentially better speech than your previous speech."
+                    else:
+                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['proposal_id']}."
+                        s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
+                
+                    
         return s
         
     
