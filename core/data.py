@@ -30,7 +30,7 @@ class StateNode:
         return f"Node({self.id})" if self.id != 0 else "Root Node"
 
 class EventsEdge:
-    def __init__(self, id: int, node1_id: int, node2_id: int, events: List[Event], actions: List[Dict], drafts: Dict):
+    def __init__(self, id: int, node1_id: int, node2_id: int, events: List[Event], actions: List[Dict], drafts: List[Dict]):
         self.id = id
         self.start_id = node1_id
         self.end_id = node2_id
