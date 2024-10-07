@@ -435,7 +435,7 @@ class WerewolfGameEnv:
         self.set_players(self.players_config)
         for player in self.all_players:
             player.global_info = deepcopy(global_info)
-            player.private_info = deepcopy(state["private_infos"][player.id]), 
+            player.private_info = deepcopy(state["private_infos"][player.id])
             player.hstate.beliefs = deepcopy(state["hstate"][player.id])
             player.event_book.add_event(self.event_book.filter(
                 end_tick = player.tick,
