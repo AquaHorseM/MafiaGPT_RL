@@ -65,8 +65,8 @@ class MedicPlayer(Player):
         second_number_pattern = r'.*?Secondly.*?(\d+)'
         
         # Regex to capture the reason after 'the reason is'
-        first_reason_pattern = r'Firstly.*?the reason is:? (.*?)(?:\.|Secondly)'
-        second_reason_pattern = r'.*?Secondly.*?the reason is:? (.*)'
+        first_reason_pattern = r'Firstly.*? reason is:? (.*?)(?:\.|Secondly)'
+        second_reason_pattern = r'.*?Secondly.*? reason is:? (.*)'
         
         # Find the first player number and reason
         first_player_match = re.search(first_number_pattern, response)
@@ -133,7 +133,7 @@ class MedicPlayer(Player):
     
     
     
-    def _heal(self, use_multiagent = False):
+    def _heal(self, use_multiagent = True):
         if not use_multiagent:
             return self._heal_org()
         else:

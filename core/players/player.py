@@ -89,6 +89,9 @@ class Player:
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
         self.draft_dict["speak"] = list()
+        self.draft_dict["see"]=list()
+        self.draft_dict["kill"]=list()
+        self.draft_dict["heal"]=list()
         
         
     def get_replacements(self):
