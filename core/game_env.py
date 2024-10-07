@@ -603,9 +603,9 @@ class WerewolfGameEnv:
                 current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
                 current_player_latest_draft_dict = get_latest_draft(current_player_draft_dict)
                 if actions[player_id]["action"] == "vote":
-                    self.latest_drafts = current_player_latest_draft_dict["vote"]
+                    self.latest_drafts[player_id] = current_player_latest_draft_dict["vote"]
                 elif actions[player_id]["action"] == "speak":
-                    self.latest_drafts = current_player_latest_draft_dict["speak"]
+                    self.latest_drafts[player_id] = current_player_latest_draft_dict["speak"]
                 else:
                     continue
                     
