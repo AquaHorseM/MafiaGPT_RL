@@ -390,6 +390,8 @@ class Player:
         return True
     
     def get_node_importance_for_policy(self, state, prev_events, trajs):
+        if len(trajs) == 0:
+            return 0
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         cur_score = self.evaluate_joint_hstate(reflex_info["hstate"])
         total_score = 0
@@ -400,6 +402,8 @@ class Player:
         return total_score
             
     def get_node_importance_for_belief(self, state, prev_events, trajs):
+        if len(trajs) == 0:
+            return 0
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         cur_score = self.get_hstate_score_for_belief(reflex_info["hstate"])
         total_score = 0

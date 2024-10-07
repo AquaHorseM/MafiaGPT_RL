@@ -26,7 +26,6 @@ class WerewolfGameEnv:
         self.player_num = 0
         self.temp_events = []
         self.latest_actions = None
-        self.latest_drafts = None
         self.night_info = {
             "killed": None,
             "healed": None,
@@ -638,7 +637,16 @@ class WerewolfGameEnv:
         
     def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
         #TODO make it suitable for night actions
-        draft = self.data.get_next_drafts(node_id)
+        drafts = self.data.get_next_drafts(node_id)
+        draft = None
+        for td in drafts:
+            if td["cur_action"] is None:
+                continue
+            else:
+                draft = td
+                break
+        if draft is None:
+            return False
         if draft["cur_action"] == "speak":
             self.backtrace(targ_id=node_id)
             actions = [None] * self.player_num
