@@ -34,7 +34,7 @@ def count_adjustable_params(func):
 
 
 class WerewolfGameEnv:
-    def __init__(self, id=1, train = False, log_hstate = False, openai_client = None, data_path = None):
+    def __init__(self, id=1, game_config = None):
         self.id = id
         self.all_players = []
         self.alive_players = []
@@ -54,14 +54,14 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        
-        self.openai_client = openai_client if not isinstance(openai_client, str) else load_client(openai_client)
-        self.data_path = data_path if data_path is not None else f"records/game_{self.id}_data.pkl"
+        self.openai_client = load_client(game_config["openai_client_path"])
+        data_folder = game_config.get("data_folder", "data")
+        self.data_path = os.path.join(data_folder, f"game_{self.id}_data.pkl")
         #clear the data file if it exists
         # if os.path.exists(self.data_path):
         #     os.remove(self.data_path)
-        self.train = train
-        self.log_hstate = log_hstate
+        self.train = game_config.get("reflex_after_sim", False)
+        self.log_hstate = game_config.get("log_hstate_for_debug", False)
         self.game_status = {
             "cur_stage": "night", #night, day, vote
             "cur_round": 0,
@@ -70,9 +70,8 @@ class WerewolfGameEnv:
             "winner": None
         }
         # self.data = DataTree()
-        self.save_after_step = False
+        self.set_players(game_config["players"])
         self.logger.info(f"Game {self.id} created successfully")
-
 
     def _configure_logger(self):
         logger = logging.getLogger(f"Game-{self.id}")
@@ -135,11 +134,18 @@ class WerewolfGameEnv:
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
             if player_type == "reflex":
-                prompt_dir_path = os.path.join("core/players/prompts", role)
-                common_prompt_dir_path = os.path.join("core/players/prompts", "common")
-                assert os.path.exists(prompt_dir_path), "prompt directory not found"
-                assert os.path.exists(common_prompt_dir_path), "common prompt directory not found"
-                self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, common_prompt_dir_path, self.openai_client))
+                prompt_dir_path = player_configs[num].get("prompt_dir_path")
+                common_prompt_dir_path = player_configs[num].get("common_prompt_dir_path")
+                assert os.path.exists(prompt_dir_path), f"prompt directory {prompt_dir_path} not found"
+                assert os.path.exists(common_prompt_dir_path), f"common prompt directory {common_prompt_dir_path} not found"
+                reflex_note_belief_path = player_configs[num].get("reflex_note_belief_path")
+                reflex_note_policy_path = player_configs[num].get("reflex_note_policy_path")
+                if reflex_note_belief_path is None or reflex_note_policy_path is None:
+                    self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, \
+                        common_prompt_dir_path, self.openai_client))
+                else:
+                    self.all_players.append(switcher_players[player_type][role](i, init_global_info, switcher_private_info[role], prompt_dir_path, \
+                        common_prompt_dir_path, self.openai_client, reflex_note_belief_path, reflex_note_policy_path))
             else:
                 self.all_players.append(switcher_players[player_type][role](role=role, id=i))
                 if role == "werewolf":
@@ -553,7 +559,7 @@ class WerewolfGameEnv:
     def end(self):
         self.logger.info("Game ended")
         self.update_all_hstates(add_to_data=True)
-        self.store_data(f"data/game_{self.id}_data.pkl")
+        self.store_data(self.data_path)
         try:
             self.save_game_record()
         except Exception as e:
@@ -561,7 +567,7 @@ class WerewolfGameEnv:
             print(f"Error: {e}")
         if self.train:
             #TODO make it adjustable
-            for i in range(3): #retry one step for random 3 nodes
+            for i in range(5): #retry one step for random 3 nodes
                 self.random_retry_one_node(retry_steps = 1)
                 self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
             self.logger.info("ALl players reflexing")
