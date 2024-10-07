@@ -444,6 +444,8 @@ class Player:
         return
 
     def extract_traj(self, traj):
+        #debug
+        print(traj)
         return {
             "actions": traj["actions"],
             "all_events": [str(event) for event in traj["events"]],
