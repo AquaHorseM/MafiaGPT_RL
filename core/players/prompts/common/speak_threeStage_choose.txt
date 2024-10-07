@@ -26,7 +26,8 @@ Proposal1: {current_propose_0}. Your analysis and imagination about what may hap
 Proposal2: {current_propose_1}. Your analysis and imagination about what may happen: {current_propose_1_imagination}.
 
 Now, you have to choose between these two proposals according to your analysis and imagination about what could happen, and give a final speech.
-Your final speech should be brief and precise. You should focus on facts and your own opinions to specific players or strategies. You SHOULD use as LESS descriptive or emotional words as possible. Statements should be made with reasons to support them, and speeches like 'we should stay cautious' or other common knowledge stuffs should NOT exist in your speech. Overall, make your speech AS SHORT AS POSSIBLE.
+Your final speech should be brief and precise. You should focus on facts and your own opinions to specific players or strategies. You SHOULD use as LESS descriptive or emotional words as possible. Statements should be made with reasons to support them, and speeches like 'we should stay cautious' or other common knowledge stuffs should NOT exist in your speech. Overall, make your speech AS SHORT AS POSSIBLE. However, make sure that your speech is clear enough to express your opinion and evidences.
+You should NOT directly mention your rules (as they are not visible to other players) or cite their ids in your speech.
 
 3.Requirements:
 You answer should be in a format of:
