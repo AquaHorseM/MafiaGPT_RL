@@ -8,15 +8,12 @@ from argparse import ArgumentParser
     
 parser = ArgumentParser()
 parser.add_argument("--openai_config_path", type=str, default="openai_config.yaml")
-parser.add_argument("--config_path", type=str, default="configs/player_configs_v01.json")
-parser.add_argument("--start_idx", type=int, default=0)
+parser.add_argument("--config_path", type=str, default="configs/game_config_v01.json")
 parser.add_argument("--ckpt_path", type=str, default=None)
 parser.add_argument("--data-path", type=str, default="data/game_1_data.pkl")
 
-def reflex_from_path(ipt, client, path):
-    idx, player_configs = ipt
-    game = Game(999, True, False, client, path)
-    game.set_players(player_configs)
+def reflex_from_path(game_config, client, path):
+    game = Game(999, game_config)
     game.load_data(path)
     game.all_players_reflex()
     
@@ -26,5 +23,5 @@ if __name__ == "__main__":
     client = args.openai_config_path
     run_game = partial(reflex_from_path, client=client, path = args.data_path)
     with open(args.config_path, "r") as f:
-        player_configs = json.load(f)["players"]
-    run_game((args.start_idx, player_configs))
+        game_config = json.load(f)
+    run_game(game_config)
