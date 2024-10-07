@@ -393,10 +393,10 @@ class Player:
         if len(trajs) == 0:
             return 0
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
-        cur_score = self.evaluate_joint_hstate(reflex_info["hstate"])
+        cur_score = self.evaluate_joint_hstate(reflex_info["hstate"], reflex_info["alive_players"])
         total_score = 0
         for traj in reflex_info["trajs"]:
-            traj_score = self.evaluate_joint_hstate(traj["outcome_hstate"])
+            traj_score = self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"])
             total_score += (cur_score - traj_score) ** 2
         total_score /= np.sqrt(len(reflex_info["trajs"]))
         return total_score
@@ -479,7 +479,7 @@ class Player:
         importance = sum([wrongs[i] * weights[i] for i in range(self.player_num)])
         return importance
     
-    def evaluate_joint_hstate(self, joint_hstate):
+    def evaluate_joint_hstate(self, joint_hstate, alive_players = None):
         #TODO make it more complete for other roles
         s = 0 #base weight
         def confidence_to_weight(confidence):
@@ -489,10 +489,30 @@ class Player:
                 return 2
             elif confidence == "low":
                 return 1
+        if alive_players is not None:
+            for i in range(self.player_num):
+                if i in alive_players:
+                    continue
+                if joint_hstate[i][i]["role"] == "werewolf":
+                    w = 3
+                    sgn = 1 if (self.get_role() != "werewolf") else -1
+                elif joint_hstate[i][i]["role"] == "villager":
+                    w = 2
+                    sgn = 1 if (self.get_role() == "werewolf") else -1
+                elif joint_hstate[i][i]["role"] in ["medic", "seer"]:
+                    w = 4
+                    sgn = 1 if (self.get_role() == "werewolf") else -1
+                else:
+                    continue
+                s += (w*sgn)
         for i in range(self.player_num):
+            if alive_players is not None and i not in alive_players:
+                continue
             if joint_hstate[i][i]["role"] == "werewolf":
                 continue
             for j in range(self.player_num):
+                if alive_players is not None and j not in alive_players:
+                    continue
                 if joint_hstate[i][j]["role"] == "werewolf":
                     confidence = joint_hstate[i][j]["confidence"]
                     w = confidence_to_weight(confidence)
@@ -504,12 +524,12 @@ class Player:
                     s += (w * sgn)
         return s
 
-    def get_traj_importance_for_policy(self, traj, init_jhstate):
+    def get_traj_importance_for_policy(self, traj, init_jhstate, init_alive_players):
         #How to use it to sample more important nodes?
         if traj["actions"][self.id] is None or not traj["connect_to_end"]:
             return 0
-        outcome_hstate = traj["outcome_hstate"]
-        return 1 + (self.evaluate_joint_hstate(outcome_hstate) - self.evaluate_joint_hstate(init_jhstate))**2
+        return 1 + (self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]) - \
+            self.evaluate_joint_hstate(init_jhstate, init_alive_players))**2
     
     def summarize_events(self, events: List[Event]):
         replacements = self.get_replacements()
@@ -596,7 +616,7 @@ class Player:
         
     def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
         if len(reflex_info["trajs"]) > 1:
-            weights = [self.get_traj_importance_for_policy(traj, reflex_info["roles"]) for traj in reflex_info["trajs"]]
+            weights = [self.get_traj_importance_for_policy(traj, reflex_info["hstate"], reflex_info["alive_players"]) for traj in reflex_info["trajs"]]
             traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]
         else:
             traj = reflex_info["trajs"][0]
@@ -621,7 +641,8 @@ class Player:
             else:
                 #TODO how to combine the other traj?
                 if other_draft["cur_action"] == "speak":
-                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"]) >= self.evaluate_joint_hstate(traj["outcome_hstate"]):
+                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
+                        self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
                         s += f"\n\nThe system also simulated the game for your other proposal, which is proposal {other_draft['proposal_id']}."
                         s += f"\n\nYour speech, in this case, is: \"{other_draft['final_speech']}\""
                         s += "System automatically evaluates it as a potentially better speech than your previous speech."
@@ -632,7 +653,8 @@ class Player:
                     #How can we compare them if we don't simulate the other traj to the end? 
                     #However is this really meaningful to simulate the other branch? When is it meaningful?
                 elif other_draft["cur_action"] == "vote":
-                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"]) >= self.evaluate_joint_hstate(traj["outcome_hstate"]):
+                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
+                        self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
                         s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['proposal_id']}."
                         s += f"\n\nYour vote, in this case, is: \"{other_draft['proposal_chosen_and_reasons']}\""
                         s += "System automatically evaluates it as a potentially better speech than your previous speech."
