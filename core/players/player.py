@@ -459,7 +459,7 @@ class Player:
             else:
                 return 0 if own_belief_role.lower() == true_role.lower() else 1
         if roles is None:
-            roles = [joint_hstate[i][i] for i in range(self.player_num)]
+            roles = [joint_hstate[i][i]["role"] for i in range(self.player_num)]
         wrongs = [get_wrong(own_belief[i]["role"], roles[i]) for i in range(self.player_num)]
         confidences = [own_belief[i]["confidence"] for i in range(self.player_num)]
         def get_weight(confidence):
