@@ -1,6 +1,6 @@
 # CONFIG YOUR API HERE :
 RATE_LIMIT = 20  # sleeping time for openai per minute limitation
-SLEEP_EVERYTIME = 1 # sleep for 1s every time, for what? I don't know!
+SLEEP_EVERYTIME = 0.2 # sleep for 1s every time, for what? I don't know!
 TOKEN_LIMIT = 250  # token limit per message
 TEMPERATURE = 1
 MAX_RETRIES = 1
@@ -51,7 +51,7 @@ def send_message(
     ]
     context = get_context(messages)
 
-    time.sleep(time_limit_rate)
+    time.sleep(SLEEP_EVERYTIME)
 
     # connecting to Openai
     response = openai.chat.completions.create(

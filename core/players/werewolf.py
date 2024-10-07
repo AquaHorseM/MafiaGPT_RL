@@ -99,8 +99,13 @@ class WerewolfPlayer(Player):
 
     def _kill_multiagent(self):
         self.draft_dict["kill"].append(dict())
-        response = self.get_response("kill_threeStage_propose")
-        first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_KillThreeStep(response)
+        first_player, first_reason, second_player, second_reason = None, None, None, None
+        count = 0
+        while ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None)) and (count < 3):
+            count += 1
+            response = self.get_response("kill_threeStage_propose")
+            first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_KillThreeStep(response)
+        assert not ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None))
         
         proposals = [first_player, second_player]
         

@@ -92,8 +92,14 @@ class MedicPlayer(Player):
 
     def _heal_multiagent(self):
         self.draft_dict["heal"].append(dict())
-        response = self.get_response("heal_threeStage_propose")
-        first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_HealThreeStep(response)
+        
+        first_player, first_reason, second_player, second_reason = None, None, None, None
+        count = 0
+        while ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None)) and (count < 3):
+            count += 1
+            response = self.get_response("heal_threeStage_propose")
+            first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_HealThreeStep(response)
+        assert not ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None))
         
         proposals = [first_player, second_player]
         
@@ -105,7 +111,6 @@ class MedicPlayer(Player):
             replacements = self.get_replacements()
             replacements["{current_propose}"] = str(propose)
             response = self.get_response("heal_threeStage_imagine", replacements)
-            
             results = self._get_imagination_from_response_HealThreeStep(response)
             result_list.append(results)
             self.draft_dict["heal"][-1]["proposal_and_imaginations"].append(response)

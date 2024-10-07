@@ -660,26 +660,46 @@ class WerewolfGameEnv:
     def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
         #TODO make it suitable for other actions (which should be easier)
         draft = self.data.get_next_drafts(node_id)
-        if draft["cur_action"] != "speak":
-            return False
-        self.backtrace(targ_id=node_id)
-        actions = [None] * self.player_num
-        player_id = draft["player_id"]
-        speak_action = self.all_players[player_id]._speak_with_other_proposal(draft)
-        actions[player_id] = speak_action
-        obs, state, rewards, dones, info, avail_actions = self.step(actions)
-        if self.postprocess_step(actions, dones, info):
-            return True
-        if retry_steps == 1:
-            return True
-        for retry_step in range(retry_steps - 1):
-            actions = self.get_actions_reflex(avail_actions)
-            # self.logger.info(f"actions: {actions}")
+        if draft["cur_action"] == "speak":
+            self.backtrace(targ_id=node_id)
+            actions = [None] * self.player_num
+            player_id = draft["player_id"]
+            speak_action = self.all_players[player_id]._speak_with_other_proposal(draft)
+            actions[player_id] = speak_action
             obs, state, rewards, dones, info, avail_actions = self.step(actions)
             if self.postprocess_step(actions, dones, info):
-                self.logger.info(f"Game ends after {retry_step+2} steps starting from the retry steps")
                 return True
-        return True
+            if retry_steps == 1:
+                return True
+            for retry_step in range(retry_steps - 1):
+                actions = self.get_actions_reflex(avail_actions)
+                # self.logger.info(f"actions: {actions}")
+                obs, state, rewards, dones, info, avail_actions = self.step(actions)
+                if self.postprocess_step(actions, dones, info):
+                    self.logger.info(f"Game ends after {retry_step+2} steps starting from the retry steps")
+                    return True
+            return True
+        elif draft["cur_action"] == "vote":
+            self.backtrace(targ_id=node_id)
+            actions = [None] * self.player_num
+            player_id = draft["player_id"]
+            vote_action = self.all_players[player_id]._vote_with_other_proposal(draft)
+            actions[player_id] = vote_action
+            obs, state, rewards, dones, info, avail_actions = self.step(actions)
+            if self.postprocess_step(actions, dones, info):
+                return True
+            if retry_steps == 1:
+                return True
+            for retry_step in range(retry_steps - 1):
+                actions = self.get_actions_reflex(avail_actions)
+                # self.logger.info(f"actions: {actions}")
+                obs, state, rewards, dones, info, avail_actions = self.step(actions)
+                if self.postprocess_step(actions, dones, info):
+                    self.logger.info(f"Game ends after {retry_step+2} steps starting from the retry steps")
+                    return True
+            return True
+        else:
+            return False
     
     def random_retry_one_node(self, retry_steps = 1):
         MAX_ATTEMPT = 10
