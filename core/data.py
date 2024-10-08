@@ -199,6 +199,7 @@ class DataTree:
     def get_next_drafts(self, node_id: int):
         if len(self.nodes[node_id].edges) != 1:
             return None
+        print(f"node id: {node_id}, edge id: {self.nodes[node_id].edges[0]}")
         return self.edges[self.nodes[node_id].edges[0]].drafts
     
     def show_info(self, interactive = False):
