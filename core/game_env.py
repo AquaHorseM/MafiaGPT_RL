@@ -691,13 +691,13 @@ class WerewolfGameEnv:
                 player_id = draft["player_id"]
                 speak_action = self.all_players[player_id]._speak_with_other_proposal(draft)
                 actions[player_id] = speak_action
-                self.logger.debug(f"speak action: {speak_action}")
+                self.logger.debug(f"player: {player_id}'s speak action: {speak_action}")
             elif draft["cur_action"] == "vote":
                 self.logger.debug("Vote other proposal!")
                 player_id = draft["player_id"]
                 vote_action = self.all_players[player_id]._vote_with_other_proposal(draft)
                 actions[player_id] = vote_action
-                self.logger.debug(f"vote action: {vote_action}")
+                self.logger.debug(f"player: {player_id}'s vote action: {vote_action}")
         obs, state, rewards, dones, info, avail_actions = self.step(actions)
         self.logger.debug("Stepped!")
         if self.postprocess_step(actions, dones, info):
