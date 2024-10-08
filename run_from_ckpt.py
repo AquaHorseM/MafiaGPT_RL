@@ -9,7 +9,7 @@ import json, sys, os
 parser = ArgumentParser()
 parser.add_argument("--config_path", type=str, default="configs/game_config_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
-parser.add_argument("--data-path", type=str, default="data/game_2_data.pkl")
+parser.add_argument("--data-path", type=str, default="data/game_102_data.pkl")
 
 def load_ckpt(config, path):
     game = Game(999, config)
