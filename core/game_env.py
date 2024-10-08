@@ -672,7 +672,7 @@ class WerewolfGameEnv:
         #TODO make it suitable for night actions?
         drafts = self.data.get_next_drafts(node_id)
         #debug
-        print(self.data.nodes[node_id].state["game_status"])
+        print(self.data.nodes[node_id].state["global_info"]["game_status"])
         if drafts is None:
             return False
         for i in range(self.player_num):
