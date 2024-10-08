@@ -686,11 +686,12 @@ class WerewolfGameEnv:
         actions = [None] * self.player_num
         for draft in avail_drafts:
             if draft["cur_action"] == "speak":
+                self.logger.debug("Speak other proposal!")
                 player_id = draft["player_id"]
                 speak_action = self.all_players[player_id]._speak_with_other_proposal(draft)
                 actions[player_id] = speak_action
             elif draft["cur_action"] == "vote":
-                self.backtrace(targ_id=node_id)
+                self.logger.debug("Vote other proposal!")
                 player_id = draft["player_id"]
                 vote_action = self.all_players[player_id]._vote_with_other_proposal(draft)
                 actions[player_id] = vote_action
