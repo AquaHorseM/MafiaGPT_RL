@@ -70,14 +70,41 @@ class WerewolfGameEnv:
         logger.addHandler(console_handler)
         return logger
 
-    def set_players(self, player_configs): #player_configs should be a list of dicts
+    def set_players(self, player_configs, roles_order = None): #player_configs should be a list of dicts
         self.player_num = len(player_configs)
-        shuffled_nums = list(range(self.player_num))
-        random.shuffle(shuffled_nums)
-        
+        if roles_order is None:
+            shuffled_nums = list(range(self.player_num))
+            random.shuffle(shuffled_nums)
+        else:
+            def shuffle_roles(roles, player_configs):
+                # Check if the lengths match
+                if len(roles) != len(player_configs):
+                    raise ValueError("The lengths of roles and player_configs must be the same.")
+                role_count = {}
+                for role in roles:
+                    role_count[role] = role_count.get(role, 0) + 1
+                player_role_count = {}
+                for config in player_configs:
+                    role = config.get("role")
+                    player_role_count[role] = player_role_count.get(role, 0) + 1
+                if role_count != player_role_count:
+                    raise ValueError("Roles in 'roles' do not match roles in 'player_configs'.")
+                role_to_indices = {}
+                for idx, config in enumerate(player_configs):
+                    role = config["role"]
+                    if role not in role_to_indices:
+                        role_to_indices[role] = []
+                    role_to_indices[role].append(idx)
+                ids = []
+                for role in roles:
+                    if role_to_indices[role]:
+                        ids.append(role_to_indices[role].pop())
+                    else:
+                        raise ValueError(f"No available players for role: {role}")
+                return ids
+            shuffled_nums = shuffle_roles(roles_order, player_configs)
         self.alive_players = list(range(self.player_num))
         self.dead_players = []        
-        
         werewolf_ids = [] 
         for num in range(len(shuffled_nums)):
             if player_configs[shuffled_nums[num]]["role"].lower() == "werewolf":
