@@ -594,7 +594,7 @@ class WerewolfGameEnv:
             return draft_dict
         for player_id in range(self.player_num):
             self.latest_drafts[player_id] = {
-                "cur_action": actions[player_id].get("actions") if actions[player_id] is not None else None,
+                "cur_action": actions[player_id].get("action") if actions[player_id] is not None else None,
                 "player_id": player_id
             }
             if actions[player_id] is None or actions[player_id].get("actions") is None:

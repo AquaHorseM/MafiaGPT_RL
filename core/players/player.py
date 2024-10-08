@@ -694,6 +694,8 @@ class Player:
         return s
     
     def reflex_policy(self, state, prev_events, trajs):
+        if len(trajs) == 0:
+            return
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         replacements = self.get_replacements()
         replacements.update({
@@ -704,6 +706,8 @@ class Player:
         return
     
     def reflex_belief(self, state, prev_events, trajs):
+        if len(trajs) == 0:
+            return
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         replacements = self.get_replacements()
         replacements.update({
