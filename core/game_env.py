@@ -459,7 +459,7 @@ class WerewolfGameEnv:
         self.event_book = EventBook()
         self.event_book.add_event(events)
         self.all_players = []
-        self.set_players(self.players_config)
+        self.set_players(self.players_config, [state["private_infos"][i]["role"] for i in range(self.player_num)])
         for player in self.all_players:
             player.global_info = deepcopy(global_info)
             player.private_info = deepcopy(state["private_infos"][player.id])
