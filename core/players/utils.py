@@ -75,7 +75,7 @@ def parse_reflex_actions(reflex_actions: str):
                     #represents that there are multiple values in the value, each of which should be in the format of "[...]"
                     values = re.findall(r"\[.*?\]", value)
                     if len(values) > 2:
-                        print(f"Line in reflex note not recognized! {line}")
+                        print(f"Line in reflex operation not recognized! {line}")
                         continue
                     id = values[0].strip()[1:-1].strip()
                     value = values[1].strip()[1:-1].strip()
@@ -104,7 +104,7 @@ def parse_reflex_actions(reflex_actions: str):
                         print(f"Operation not recognized! {line}")
                         continue
         except:
-            print(f"Line in reflex note not recognized! {line}")
+            print(f"Line in reflex operation not recognized! {line}")
     return res
 
 def parse_reflex_note(reflex_note):

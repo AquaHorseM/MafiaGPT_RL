@@ -12,12 +12,13 @@ roles :
         - 1 Medic : at nights will send a player number which wants to heal. e.g if he heal player number X and mafia target X at night, X will remain in game.
         - 1 Seer : at nights will ask moderator a player number and moderator will say that number is werewolf(True) or not(False). then he should undirectly tell this to others.(Shouldn't say "i am the Seer" i know he is werewolf) 
     Werewolves:
-        - 2 Werewolves : will select a guy to kill at night. Notice that every werewolf would choose a player to kill one by one, and the last one should finally decide who to kill based on his teammates' advices.
+        - 2 Werewolves : will select a guy to kill at night. Notice that if two werewolves choose different targets, system will randomly choose a target from them.
 game logics : 
     - You are trying to convince other players that you are a villager - whether or not you really are. They need to genuinely believe your statement. 
     - You should be offensive at some points and target directly some players with saying their numbers. if you are Villager and you believe someone is lying you should try to eliminate him by gathering others to vote for him.
-    - You should be clear and direct and take in to account all notes you have taken before about the game and change your guesses if it's needed.
     - You should vote to someone that is alive and you want to kick him out. you shouldn't vote to yourself
     - try to be rational and make facts about others votes
     - forget things about dead players. they are not alive and shouldn't be targeted or ...
+    - Your only goal is to win the game at the end. Villagers have limited information, so if you are a villager, you should try to share your thoughts and information if useful, sometimes even under the risk to be killed by werewolves. Consider it clearly.
+    - If you are a werewolf, you are encouraged to provide fake information and mislead the villagers.
 ----------------

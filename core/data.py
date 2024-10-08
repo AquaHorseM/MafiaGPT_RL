@@ -30,7 +30,7 @@ class StateNode:
         return f"Node({self.id})" if self.id != 0 else "Root Node"
 
 class EventsEdge:
-    def __init__(self, id: int, node1_id: int, node2_id: int, events: List[Event], actions: List[Dict], drafts: Dict):
+    def __init__(self, id: int, node1_id: int, node2_id: int, events: List[Event], actions: List[Dict], drafts: List[Dict]):
         self.id = id
         self.start_id = node1_id
         self.end_id = node2_id
@@ -165,8 +165,7 @@ class DataTree:
             ]
         }
         
-    def sample_single(self, player_id = None, filter_events = False, sampling_method = "sqrt"): #sampling method from 'uniform', 'log' and 'sqrt'
-        #TODO find a better sampling method
+    def sample_single(self, player_id = None, filter_events = False, sampling_method = "uniform"): #sampling method from 'uniform', 'log' and 'sqrt'
         node_ids = [node_id for node_id in range(len(self.nodes)) if self.filter_node(node_id, player_id, filter_events)]
         if len(node_ids) == 0:
             print(f"No action done by player {player_id} in the data.")
@@ -200,6 +199,7 @@ class DataTree:
     def get_next_drafts(self, node_id: int):
         if len(self.nodes[node_id].edges) != 1:
             return None
+        print(f"node id: {node_id}, edge id: {self.nodes[node_id].edges[0]}")
         return self.edges[self.nodes[node_id].edges[0]].drafts
     
     def show_info(self, interactive = False):
