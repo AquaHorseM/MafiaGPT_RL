@@ -618,11 +618,12 @@ class WerewolfGameEnv:
         return False
 
     def sim_game_for_reflex_players(self): #main simulation function
+        if self.game_status["winner"] is not None:
+            self.end()
         if len(self.temp_events) != 0:
             #Not updated data yet.
             self.update_all_hstates(add_to_data=True)
         self.logger.info("Simulating games for reflex players")
-        if self.game_status["winner"] is not None:
             
         avail_actions = self.get_available_actions()
         self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
