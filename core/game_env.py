@@ -678,8 +678,8 @@ class WerewolfGameEnv:
             if draft["cur_action"] is None or draft["cur_action"] not in ["speak", "vote"]:
                 continue
             else:
+                self.logger.debug(f"next action is: {draft['cur_action']}")
                 avail_drafts.append(draft)
-                break
         if len(avail_drafts) == 0:
             return False
         self.backtrace(targ_id=node_id)
