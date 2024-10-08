@@ -7,14 +7,12 @@ from core.game_env import WerewolfGameEnv as Game
 import json, sys, os
     
 parser = ArgumentParser()
-parser.add_argument("--openai_config_path", type=str, default="openai_config.yaml")
 parser.add_argument("--config_path", type=str, default="configs/game_config_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
 parser.add_argument("--data-path", type=str, default="data/game_2_data.pkl")
 
-def load_ckpt(ipt, client, path):
-    game = Game(999, True, client, path)
-    game.set_players(player_configs)
+def load_ckpt(config, path):
+    game = Game(999, config)
     game.load_data(path)
     game.sim_game_for_reflex_players()
     
