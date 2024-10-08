@@ -579,7 +579,7 @@ class Player:
         if len(draft["speak_proposal"]) <= 1:
             return None
         if len(draft["speak_proposal"]) == 2:
-            new_proposal_id = 2 - draft["final_proposal"]
+            new_proposal_id = 2 - draft["final_proposal"] #! notice this 2-
         else:
             ids = list(range(len(draft["speak_proposal"])))
             ids.pop(draft["final_proposal"])
@@ -607,7 +607,7 @@ class Player:
         if len(draft["vote_proposal"]) <= 1:
             return None
         if len(draft["vote_proposal"]) == 2:
-            new_proposal_id = 2 - draft["final_proposal"]
+            new_proposal_id = 1 - draft["final_proposal"] #! temporarily 0 & 1
         else:
             ids = list(range(len(draft["vote_proposal"])))
             ids.pop(draft["final_proposal"])
@@ -667,8 +667,6 @@ class Player:
                     else:
                         s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
                         s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
-                
-                    
         return s
         
     
