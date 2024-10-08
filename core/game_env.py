@@ -304,7 +304,7 @@ class WerewolfGameEnv:
                     break
                 
         else: #vote stage
-            assert all([actions[i]["action"] == "vote" for i in self.alive_players]), "all actions must be 'vote' in the vote stage"
+            assert all([actions[i]["action"] == "vote" for i in self.alive_players if actions[i] is not None]), "all actions must be 'vote' in the vote stage"
             votes = {i : actions[i]["target"] for i in self.alive_players if actions[i]["target"] is not None}
             self.votes.append(votes)
             for player_id in self.alive_players:
