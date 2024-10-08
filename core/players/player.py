@@ -612,9 +612,12 @@ class Player:
             ids = list(range(len(draft["vote_proposal"])))
             ids.pop(draft["final_proposal"])
             new_proposal_id = random.choice(ids)
+        new_target = draft['vote_proposal'][new_proposal_id]
+        self.draft_dict["vote"].append(deepcopy(draft))
+        self.draft_dict["vote"][-1]["final_proposal"] = new_proposal_id
         return {
             "action": "vote",
-            "target": draft['vote_proposal'][new_proposal_id],
+            "target": new_target,
             "reason": None,
             "imagination": None        
         }
