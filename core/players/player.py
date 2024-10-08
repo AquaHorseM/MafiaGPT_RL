@@ -605,8 +605,8 @@ class Player:
     
     def _vote_with_other_proposal(self, draft: Dict):
         if len(draft["vote_proposal"]) <= 1:
-            return None
-        if len(draft["vote_proposal"]) == 2:
+            new_proposal_id = draft["final_proposal"]
+        elif len(draft["vote_proposal"]) == 2:
             new_proposal_id = 1 - draft["final_proposal"] #! temporarily 0 & 1
         else:
             ids = list(range(len(draft["vote_proposal"])))
