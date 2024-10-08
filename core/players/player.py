@@ -766,9 +766,6 @@ class Player:
             reflex_note = f.read()
         operations = parse_reflex_actions(response)
         reflex_note = parse_reflex_note(reflex_note)
-        with open("debug.out", "a") as f:
-            f.write(f"player {self.id} is updating the reflex note with operations: {operations}\n")
-            f.write(f"previous reflex note: {reflex_note}\n")
         max_id = max(reflex_note.keys())
         for action in operations:
             operation, value1, value2 = action
