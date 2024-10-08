@@ -556,7 +556,7 @@ class Player:
     
     def convert_draft_to_prompt(self, draft: Dict):
         if draft["cur_action"] not in ["vote", "speak"]:
-            return ""
+            return "No draft stored."
         else:
             s = "\nThe following is your proposals and your imagination of your action.\n\n"
             if draft["cur_action"] == "vote":
