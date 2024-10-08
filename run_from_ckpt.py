@@ -18,9 +18,6 @@ def load_ckpt(config, path):
     
 if __name__ == "__main__":
     args = parser.parse_args()
-    # client = load_client(args.openai_config_path)
-    client = args.openai_config_path
-    run_game = partial(load_ckpt, client=client, path = args.data_path)
     with open(args.config_path, "r") as f:
-        player_configs = json.load(f)["players"]
-    run_game((args.start_idx, player_configs))
+        game_config = json.load(f)
+    load_ckpt()
