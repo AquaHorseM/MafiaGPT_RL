@@ -626,7 +626,7 @@ class WerewolfGameEnv:
                 "cur_action": actions[player_id].get("action") if actions[player_id] is not None else None,
                 "player_id": player_id
             }
-            if actions[player_id] is None or actions[player_id].get("actions") is None:
+            if actions[player_id] is None or actions[player_id].get("action") is None:
                 continue
             else:
                 current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
