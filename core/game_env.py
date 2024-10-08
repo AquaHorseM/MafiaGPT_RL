@@ -622,6 +622,8 @@ class WerewolfGameEnv:
             #Not updated data yet.
             self.update_all_hstates(add_to_data=True)
         self.logger.info("Simulating games for reflex players")
+        if self.game_status["winner"] is not None:
+            
         avail_actions = self.get_available_actions()
         self.add_event({"event": "begin_round", "content": {"round": self.game_status['cur_round']+1}})
         # self.update_all_hstates(add_to_data=True)
