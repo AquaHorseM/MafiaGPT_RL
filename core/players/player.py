@@ -515,6 +515,7 @@ class Player:
                 if alive_players is not None and j not in alive_players:
                     continue
                 if joint_hstate[i][j]["role"] == "werewolf":
+                    confidence = joint_hstate[i][j]["confidence"]
                     w = confidence_to_weight(confidence)
                     sgn = 1 if (joint_hstate[j][j]["role"] == "werewolf") != (self.get_role() == "werewolf") else -1
                     s += (w * sgn)
