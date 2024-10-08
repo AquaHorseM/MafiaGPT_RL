@@ -647,6 +647,7 @@ class WerewolfGameEnv:
 
     def sim_game_for_reflex_players(self): #main simulation function
         if self.game_status["winner"] is not None:
+            self.temp_events = []
             self.end()
             self.logger.info("Game simulated successfully")
             return
