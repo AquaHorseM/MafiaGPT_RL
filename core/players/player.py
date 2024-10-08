@@ -284,7 +284,6 @@ class Player:
             first_speak, second_speak = self._get_proposals_from_response_SpeakThreeStep(response)
         assert not ((first_speak is None) or (second_speak is None))
         
-        
         proposals = [first_speak, second_speak]
         
         self.draft_dict["speak"][-1]["speak_proposal"] = proposals

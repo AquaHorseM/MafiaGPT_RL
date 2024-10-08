@@ -674,6 +674,8 @@ class WerewolfGameEnv:
     def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
         #TODO make it suitable for night actions?
         drafts = self.data.get_next_drafts(node_id)
+        if drafts is None:
+            return False
         for i in range(self.player_num):
             self.logger.debug(f"player: {i}, cur_action: {drafts[i]['cur_action']}")
         avail_drafts = []
