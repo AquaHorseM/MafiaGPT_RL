@@ -221,6 +221,10 @@ class Player:
         vote = self._get_final_choice_from_response_VoteThreeStep(response_and_reason)
         
         self.draft_dict["vote"][-1]["proposal_chosen_and_reasons"] = response_and_reason
+        if vote == proposals[0]:
+            self.draft_dict["vote"][-1]["final_proposal"] = 0
+        else:
+            self.draft_dict["vote"][-1]["final_proposal"] = 1
         return vote, response
 
     def _vote_org(self):
@@ -567,7 +571,7 @@ class Player:
                 for i in range(len(draft["speak_proposal"])):
                     s += f"Speech proposal: {draft['speak_proposal'][i]}\n"
                     s += f"Imagination: {draft['proposal_and_imaginations'][i]}\n\n"
-                s += f"You finally chose proposal {draft['proposal_id']}.\n\n"
+                s += f"You finally chose proposal {draft['final_proposal']}.\n\n"
                 s += f"Your FINAL speech:\n \"{draft['final_speech']}\"\n"
         return s
     
@@ -575,10 +579,10 @@ class Player:
         if len(draft["speak_proposal"]) <= 1:
             return None
         if len(draft["speak_proposal"]) == 2:
-            new_proposal_id = 2 - draft["proposal_id"]
+            new_proposal_id = 2 - draft["final_proposal"]
         else:
             ids = list(range(len(draft["speak_proposal"])))
-            ids.pop(draft["proposal_id"])
+            ids.pop(draft["final_proposal"])
             new_proposal_id = random.choice(ids)
         replacements = self.get_replacements()
         replacements["{current_propose}"] = str(draft['speak_proposal'][new_proposal_id])
@@ -603,10 +607,10 @@ class Player:
         if len(draft["vote_proposal"]) <= 1:
             return None
         if len(draft["vote_proposal"]) == 2:
-            new_proposal_id = 2 - draft["proposal_id"]
+            new_proposal_id = 2 - draft["final_proposal"]
         else:
             ids = list(range(len(draft["vote_proposal"])))
-            ids.pop(draft["proposal_id"])
+            ids.pop(draft["final_proposal"])
             new_proposal_id = random.choice(ids)
         return {
             "action": "vote",
@@ -645,11 +649,11 @@ class Player:
                 if other_draft["cur_action"] == "speak":
                     if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
                         self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
-                        s += f"\n\nThe system also simulated the game for your other proposal, which is proposal {other_draft['proposal_id']}."
+                        s += f"\n\nThe system also simulated the game for your other proposal, which is proposal {other_draft['final_proposal']}."
                         s += f"\n\nYour speech, in this case, is: \"{other_draft['final_speech']}\""
                         s += "System automatically evaluates it as a potentially better speech than your previous speech."
                     else:
-                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['proposal_id']}."
+                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
                         s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
                     #xsm note: Why do we need two trajs at the same node? 
                     #How can we compare them if we don't simulate the other traj to the end? 
@@ -657,11 +661,11 @@ class Player:
                 elif other_draft["cur_action"] == "vote":
                     if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
                         self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
-                        s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['proposal_id']}."
+                        s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['final_proposal']}."
                         s += f"\n\nYour vote, in this case, is: \"{other_draft['proposal_chosen_and_reasons']}\""
                         s += "System automatically evaluates it as a potentially better speech than your previous speech."
                     else:
-                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['proposal_id']}."
+                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
                         s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
                 
                     
