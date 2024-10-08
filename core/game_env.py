@@ -511,7 +511,8 @@ class WerewolfGameEnv:
         else:
             is_game_end = False
         self.logger.debug(f"actions: {self.latest_actions}")
-        self.logger.debug(f"cur_actions in drafts: {[draft['cur_action'] for draft in self.latest_drafts if draft is not None else None]}")
+        cur_actions = [self.latest_drafts[i]['cur_action'] if self.latest_drafts[i] is not None else None for i in range(len(self.latest_drafts))]
+        self.logger.debug(f"cur_actions in drafts: {cur_actions}")
         self.logger.debug(f"current game status: {self.game_status}")
         
         self.data.add_edge_and_node(
