@@ -309,7 +309,7 @@ class Player:
         proposal_id, speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
         
         self.draft_dict["speak"][-1]["final_speech"] = speak
-        self.draft_dict["speak"][-1]["final_proposal"] = proposal_id
+        self.draft_dict["speak"][-1]["final_proposal"] = int(proposal_id)
         return speak
 
     def _speak(self, use_multiagent = True):
@@ -576,6 +576,7 @@ class Player:
         return s
     
     def _speak_with_other_proposal(self, draft: Dict):
+        draft["final_proposal"] = int(draft["final_proposal"])
         if len(draft["speak_proposal"]) <= 1:
             return None
         if len(draft["speak_proposal"]) == 2:
