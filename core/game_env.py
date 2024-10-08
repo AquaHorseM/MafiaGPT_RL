@@ -510,6 +510,9 @@ class WerewolfGameEnv:
             is_game_end = True
         else:
             is_game_end = False
+        self.logger.debug(f"actions: {self.latest_actions}")
+        self.logger.debug(f"cur_actions in drafts: {[draft['cur_action'] for draft in self.latest_drafts]}")
+        self.logger.debug(f"current game status: {self.game_status}")
         
         self.data.add_edge_and_node(
             events = self.temp_events,
@@ -721,9 +724,12 @@ class WerewolfGameEnv:
         MAX_ATTEMPT = 10
         for i in range(MAX_ATTEMPT):
             nid = random.randint(1, len(self.data.nodes) - 2)
-            if self.retry_for_reflex_players(nid, retry_steps):
-                print("Retry succeeded")
-                return
+            try:
+                if self.retry_for_reflex_players(nid, retry_steps):
+                    print("Retry succeeded")
+                    return
+            except Exception as e:
+                self.logger.warning(f"Encountered error {e} while retrying; skipped.")
         print(f"Retry failed after {MAX_ATTEMPT} attempts")
             
         
