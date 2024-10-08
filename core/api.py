@@ -21,7 +21,7 @@ def load_client(key_path="openai_config_backup.yaml"):
         setattr(openai, k, v)
     return openai._load_client()
 
-# make content in openai wanted format
+# make content in openai wanted formaty
 def create_message(role, content):
     return {"role": role, "content": content}
 
