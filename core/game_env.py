@@ -548,7 +548,7 @@ class WerewolfGameEnv:
         self.logger.info(f"Data stored successfully to {path}")
         
     def load_data(self, path):
-        self.data_path = path
+        # self.data_path = path
         with open(path, "rb") as f:
             self.data: DataTree = pickle.load(f)
         print(f"loading data from {path}")
