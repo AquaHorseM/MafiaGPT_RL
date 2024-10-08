@@ -591,7 +591,7 @@ class Player:
         response = self.get_response("speak_other_proposal", replacements)
         speech_match = re.match(r"My final speech is:(.*)", response.strip())
         if speech_match is not None:
-            final_speech = speech_match.group.strip()
+            final_speech = speech_match.group().strip()
         else:
             final_speech = "Unrecognized speech, skipped by system."
         self.draft_dict["speak"].append(deepcopy(draft))
