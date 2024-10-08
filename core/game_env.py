@@ -536,7 +536,8 @@ class WerewolfGameEnv:
         
     def end(self):
         self.logger.info("Game ended")
-        self.update_all_hstates(add_to_data=True)
+        if len(self.temp_events) != 0:
+            self.update_all_hstates(add_to_data=True)
         self.store_data(self.data_path)
         try:
             self.save_game_record()
