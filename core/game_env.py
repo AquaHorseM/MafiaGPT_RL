@@ -548,6 +548,7 @@ class WerewolfGameEnv:
             for i in range(self.retry_num):
                 self.random_retry_one_node(retry_steps = 1)
                 self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
+            self.store_data(self.data_path)
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
             
@@ -648,6 +649,10 @@ class WerewolfGameEnv:
                 break
         if draft is None:
             return False
+        #! debug
+        print("DEBUG draft:")
+        for key, value in draft.items():
+            print(f"{key}: {value}")
         if draft["cur_action"] == "speak":
             self.backtrace(targ_id=node_id)
             actions = [None] * self.player_num
