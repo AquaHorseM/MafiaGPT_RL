@@ -703,7 +703,7 @@ class WerewolfGameEnv:
         if self.postprocess_step(actions, dones, info):
             return True
         if retry_steps == 1:
-            self.logger.log("Yeahhh")
+            self.logger.debug("Yeahhh")
             return True
         for retry_step in range(retry_steps - 1):
             actions = self.get_actions_reflex(avail_actions)
