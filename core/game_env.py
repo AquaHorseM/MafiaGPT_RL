@@ -51,7 +51,7 @@ class WerewolfGameEnv:
         self.data = DataTree(self.get_state())
         self.latest_actions = [None] * self.player_num
         self.latest_drafts = [{
-            "action": None,
+            "cur_action": None,
             "player_id": i
         } for i in range(self.player_num)]
         self.players_config = game_config["players"]
