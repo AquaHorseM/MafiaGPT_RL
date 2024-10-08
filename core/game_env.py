@@ -289,9 +289,6 @@ class WerewolfGameEnv:
                 "{org_speech}": speech,
             })
             # speech_summary = self.all_players[0].get_response("summarize_speech", replacements)
-            
-
-            
             self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": speech, "speech_summary": 'speech summary has been deprecated!'}, "visible": "all"})
             while True: #Find the next player to speak
                 speaking_player = (speaking_player + 1) % self.player_num
@@ -674,6 +671,8 @@ class WerewolfGameEnv:
     def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
         #TODO make it suitable for night actions?
         drafts = self.data.get_next_drafts(node_id)
+        #debug
+        print(self.data.nodes[node_id].state["game_status"])
         if drafts is None:
             return False
         for i in range(self.player_num):
