@@ -20,4 +20,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     with open(args.config_path, "r") as f:
         game_config = json.load(f)
-    load_ckpt()
+    load_ckpt(game_config, args.data_path)
