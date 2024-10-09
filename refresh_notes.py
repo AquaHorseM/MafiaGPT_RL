@@ -1,48 +1,37 @@
-import os
-import re
 import shutil
-import glob
+import os
+from argparse import ArgumentParser
 
-# Define the source and destination patterns
-source_pattern = r"core/notes_v1/([^/]+)/\1_reflex_note_([^/]+)_backup\.txt"
-destination_pattern = r"core/notes_v1/{}/{}_reflex_note_{}.txt"
-backup_folder = "note_v1_backups"
+def load_from_backup(role: str, note_type: str, from_init = False) -> None:
+    """
+    Loads the initial version of a note to the current note.
+    
+    Parameters:
+    role (str): The role of the note.
+    note_type (str): The type of the note.
+    """
+    if from_init:
+        init_note_path = f"core/notes_v0/{role}/{role}_reflex_note_{note_type}.txt"
+    else:
+        init_note_path = f"core/notes_v1/{role}/{role}_reflex_note_{note_type}_backup.txt"
+    current_note_path = f"core/notes_v1/{role}/{role}_reflex_note_{note_type}.txt"
+    
+    # Ensure the initial note exists before copying
+    if os.path.exists(init_note_path):
+        os.makedirs(f"core/notes_v1/{role}", exist_ok=True)
+        shutil.copyfile(init_note_path, current_note_path)
+        print(f"Initial note for {role}'s {note_type} has been loaded into the current note.")
+    else:
+        print(f"Initial note does not exist at {init_note_path}. No changes made.")
+    
+parser = ArgumentParser()
+parser.add_argument("-from-init", default=False, action="store_true")
 
-# Ensure the backup folder exists
-os.makedirs(backup_folder, exist_ok=True)
+roles = ["werewolf", "medic", "seer", "villager"]
+note_types = ["belief", "policy"]
 
-# Find all backup files matching the pattern
-backup_files = glob.glob("core/notes_v1/*/*_reflex_note_*_backup.txt")
-
-# Determine the version number to use for all files
-version = 1
-while any(
-    os.path.exists(
-        os.path.join(backup_folder, f"{os.path.splitext(os.path.basename(destination_pattern.format(role, role, note_type)))[0]}_v{version}.txt")
-    )
-    for file_path in backup_files
-    if (match := re.match(source_pattern, file_path))
-    for role, note_type in [(match.group(1), match.group(2))]
-):
-    version += 1
-
-# Use the determined version for all files
-for file_path in backup_files:
-    match = re.match(source_pattern, file_path)
-    if match:
-        role = match.group(1)
-        note_type = match.group(2)
-        destination_path = destination_pattern.format(role, role, note_type)
-        
-        # If the non-backup file exists, move it to the backup folder with the determined version number
-        if os.path.exists(destination_path):
-            base_name, ext = os.path.splitext(os.path.basename(destination_path))
-            backup_name = f"{base_name}_v{version}{ext}"
-            backup_path = os.path.join(backup_folder, backup_name)
-            
-            shutil.move(destination_path, backup_path)
-            print(f"Moved existing file: {destination_path} -> {backup_path}")
-
-        # Copy the backup file to the non-backup destination
-        shutil.copy(file_path, destination_path)
-        print(f"Copied: {file_path} -> {destination_path}")
+if __name__ == "__main__":
+    args = parser.parse_args()
+    for role in roles:
+        for note_type in note_types:
+            load_from_backup(role, note_type, args.from_init)

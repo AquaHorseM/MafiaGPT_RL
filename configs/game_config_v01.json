@@ -2,7 +2,7 @@
     "reflex_after_sim": true,
     "log_hstate_for_debug": false,
     "openai_client_path": "openai_config.yaml",
-    "data_folder": "data",
+    "data_folder": "data_v1",
     "players": [
         {
             "role": "werewolf",
