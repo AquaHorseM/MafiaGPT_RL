@@ -512,6 +512,8 @@ class WerewolfGameEnv:
             self.logger.warning("Only using 4 processes for reflex.")
             num_processes = 4
         
+        self.logger.debug(f"Reflex player ids: {reflex_player_ids}")
+        
         with multiprocessing.Pool(num_processes) as pool:
             successes = pool.map(self.reflex_for_player, reflex_player_ids)
         success_num = sum([1 if success else 0 for success in successes])
