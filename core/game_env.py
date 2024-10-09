@@ -482,7 +482,7 @@ class WerewolfGameEnv:
         return False
     
     def reflex_multi_process(self, num_processes = 4):
-        def reflex_player_from_data(player, data):
+        def reflex_player_from_data(player: Player, data):
             player.reflex(data)
         reflex_player_ids = []
         werewolf_ids = []
