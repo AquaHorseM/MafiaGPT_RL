@@ -482,6 +482,8 @@ class WerewolfGameEnv:
         return False
     
     def reflex_multi_process(self, num_processes = 4):
+        def reflex_player_from_data(player, data):
+            player.reflex(data)
         reflex_player_ids = []
         werewolf_ids = []
         villager_ids = []
@@ -514,8 +516,11 @@ class WerewolfGameEnv:
         
         self.logger.debug(f"Reflex player ids: {reflex_player_ids}")
         
+        reflex_player = partial(reflex_player_from_data, data=self.data)
+        players_to_reflex = [self.all_players[i] for i in reflex_player_ids]
+        
         with multiprocessing.Pool(num_processes) as pool:
-            successes = pool.map(self.reflex_for_player, reflex_player_ids)
+            successes = pool.map(reflex_player, players_to_reflex)
         success_num = sum([1 if success else 0 for success in successes])
         if success_num == len(reflex_player_ids):
             self.logger.info(f"Reflex succeeded for all {success_num} players.")
