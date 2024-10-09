@@ -14,6 +14,7 @@ def load_from_init(role: str, note_type: str) -> None:
     
     # Ensure the initial note exists before copying
     if os.path.exists(init_note_path):
+        os.makedirs(f"core/notes_v1/{role}", exist_ok=True)
         shutil.copyfile(init_note_path, current_note_path)
         print(f"Initial note for {role}'s {note_type} has been loaded into the current note.")
     else:
