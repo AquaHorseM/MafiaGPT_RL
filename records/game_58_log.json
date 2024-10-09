@@ -1,671 +1,472 @@
 [
-    [
-        {
-            "event": "set_player",
-            "content": {
-                "id": 0,
-                "role": "seer",
-                "player_type": "reflex"
-            },
-            "visible": "system"
+    {
+        "event": "set_player",
+        "content": {
+            "id": 0,
+            "role": "medic",
+            "player_type": "reflex"
         },
-        {
-            "event": "set_player",
-            "content": {
-                "id": 1,
-                "role": "werewolf",
-                "player_type": "reflex"
-            },
-            "visible": "system"
+        "visible": "system"
+    },
+    {
+        "event": "set_player",
+        "content": {
+            "id": 1,
+            "role": "seer",
+            "player_type": "reflex"
         },
-        {
-            "event": "set_player",
-            "content": {
-                "id": 2,
-                "role": "medic",
-                "player_type": "reflex"
-            },
-            "visible": "system"
+        "visible": "system"
+    },
+    {
+        "event": "set_player",
+        "content": {
+            "id": 2,
+            "role": "werewolf",
+            "player_type": "reflex"
         },
-        {
-            "event": "set_player",
-            "content": {
-                "id": 3,
-                "role": "werewolf",
-                "player_type": "reflex"
-            },
-            "visible": "system"
+        "visible": "system"
+    },
+    {
+        "event": "set_player",
+        "content": {
+            "id": 3,
+            "role": "werewolf",
+            "player_type": "reflex"
         },
-        {
-            "event": "set_player",
-            "content": {
-                "id": 4,
-                "role": "villager",
-                "player_type": "reflex"
-            },
-            "visible": "system"
+        "visible": "system"
+    },
+    {
+        "event": "set_player",
+        "content": {
+            "id": 4,
+            "role": "villager",
+            "player_type": "reflex"
         },
-        {
-            "event": "set_player",
-            "content": {
-                "id": 5,
-                "role": "villager",
-                "player_type": "reflex"
-            },
-            "visible": "system"
+        "visible": "system"
+    },
+    {
+        "event": "set_player",
+        "content": {
+            "id": 5,
+            "role": "villager",
+            "player_type": "reflex"
         },
-        {
-            "event": "set_player",
-            "content": {
-                "id": 6,
-                "role": "villager",
-                "player_type": "reflex"
-            },
-            "visible": "system"
+        "visible": "system"
+    },
+    {
+        "event": "set_player",
+        "content": {
+            "id": 6,
+            "role": "villager",
+            "player_type": "reflex"
         },
-        {
-            "event": "heal",
-            "content": {
-                "player": 2,
-                "target": 2,
-                "reason": null
-            },
-            "visible": "medic"
+        "visible": "system"
+    },
+    {
+        "event": "start_game",
+        "content": null,
+        "visible": "all"
+    },
+    {
+        "event": "begin_round",
+        "content": {
+            "round": 1
         },
-        {
-            "event": "inquiry",
-            "content": {
-                "player": 0,
-                "target": 1,
-                "is_werewolf": true,
-                "reason": null
-            },
-            "visible": 0
+        "visible": "all"
+    },
+    {
+        "event": "heal",
+        "content": {
+            "player": 0,
+            "target": 3,
+            "reason": "After I heal Player 5, I think these things would happen:\n\n- If Player 5 is targeted for elimination by a werewolf or another threatening role during the night and my healing action is successful, Player 5 would survive, which may or may not reveal my role as the medic depending on how the information is disclosed or deduced by other players in the following round. This could paint me as a target for the werewolves in the subsequent rounds. It could also establish a trust bond between Player 5 and me if they realize they were saved.\n\n- If Player 5 is not targeted during the night, my action would go unnoticed to others, and the game would continue with no indication of my role. This maintains the secrecy of my identity as the medic and allows me to continue shielding players in subsequent rounds without drawing attention to myself.\n\n- There may be speculation among the players during the daytime round that someone may have been healed if an expected elimination did not occur, which could lead to discussions and potential erroneous conclusions about who the medic might be.\n\n- If Player 5 has a significant role themselves (such as a special villager or even a werewolf), my healing might unexpectedly impact the strategy or plans of both the villagers and"
         },
-        {
-            "event": "advicing",
-            "content": {
-                "player": 1,
-                "target": 2,
-                "reason": null
-            },
-            "visible": "werewolf"
+        "visible": "medic"
+    },
+    {
+        "event": "inquiry",
+        "content": {
+            "player": 1,
+            "target": 2,
+            "is_werewolf": true,
+            "reason": "After I see Player 5, I think these things would happen:\n\nIf Player 5 is a werewolf:\n- Applying rule [0], I should prepare to expose Player 5 decisively with a score of 10, which implies I must be absolutely certain and gather definitive evidence before making an accusation. I would have to consider the best moment to reveal this information, following rule [1], as disclosing this too early could put me at risk of retaliation by the werewolves and disclosing it too late could result in unnecessary villager deaths.\n- I would act according to rule [2] and stay flexible, possibly not revealing my vision immediately if it might lead to my early elimination from the game. Instead, I would observe the game's dynamics, conversations, and any potential clues from others that might help to validate my vision without putting myself in danger.\n- Rule [3] suggests corroborating information with allies to solidify my claim. I'd need to identify possible village-aligned players who I could trust and discreetly communicate my findings to formulate a plan to confirm and expose Player 5 at the most impactful time.\n\nIf Player 5 is not a werewolf:\n- Again, rule [0] doesn't apply directly because I haven"
         },
-        {
-            "event": "advicing",
-            "content": {
-                "player": 3,
-                "target": 2,
-                "reason": null
-            },
-            "visible": "werewolf"
+        "visible": 1
+    },
+    {
+        "event": "advicing",
+        "content": {
+            "player": 2,
+            "target": 4,
+            "reason": "I choose to kill Player 4. My reason is: As it is the first round and there is no established information about who might be the medic or seer, I have to make a decision without the benefit of previous advices or clear evidence. Player 4 is as good a choice as any other non-confirmed werewolf player, and by eliminating a player at random, there is a chance I might unwittingly strike down a high-value target like the seer or medic. Since players 0, 1, 5, and 6 all have unknown roles with high confidence and there are no leads suggesting one is more likely to be the medic or seer, I have no basis to prefer one over the others. Therefore, I choose Player 4 as it is strategically equivalent to choosing any other player with an unknown role."
         },
-        {
-            "event": "kill",
-            "content": {
-                "player": 1,
-                "target": 2,
-                "reason": null
-            },
-            "visible": "werewolf"
+        "visible": "werewolf"
+    },
+    {
+        "event": "advicing",
+        "content": {
+            "player": 3,
+            "target": 4,
+            "reason": "I choose to kill Player 4. My reason is: Given that there is no information about the roles of players other than myself and Player 2, who is also a werewolf, I have no concrete leads on who might be the medic or seer. Player 4 is as likely as any of the unknown players to be a non-werewolf, and without any specific information or guidance from other werewolves, I must make a choice. As it is the first round and there is no history to base my decisions on, I will choose arbitrarily among the unknown players. However, eliminating Player 4 may reduce the likelihood of them being a potential threat if they happen to be a medic or seer. This choice is purely strategic with the aim to maintain the werewolves' advantage and is not based on any definitive evidence against this player."
         },
-        {
-            "event": "no_death",
-            "content": "Nobody died last night",
-            "visible": "all"
+        "visible": "werewolf"
+    },
+    {
+        "event": "kill",
+        "content": {
+            "player": 2,
+            "target": 4,
+            "reason": "System randomly decided from the werewolves' suggestions."
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 6,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 6
+        "visible": "werewolf"
+    },
+    {
+        "event": "die",
+        "content": {
+            "player": 4
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 6,
-                "speech": "As we begin, it's clear that no one has shown definitive behavior that distinguishes them as a werewolf. I encourage everyone to stay alert and share observations that could help the village. Since it's the first round and there's not much to go on, let's focus on gathering more information tonight. Keep an eye out for any peculiar moves or statements.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": "all"
+    },
+    {
+        "event": "day_start",
+        "content": null,
+        "visible": "all"
+    },
+    {
+        "event": "start_speaking",
+        "content": {
+            "player": 1
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 0,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 0
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 1,
+            "speech": "My vision confirmed Player 2 is a werewolf. Acting on this information is crucial for the village's success.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 0,
-                "speech": "I have reason to suspect that player 1 might not be who they claim to be. Keep a close eye on their moves and claims as the game progresses.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 2,
+            "speech": "\"Given the lack of evidence around player 0, their quiet approach may indicate more than it seems. It warrants questioning why there has been no substantial contribution on their part. Player 1's early vision claim as a seer might not be reliable. We should consider all possibilities and scrutinize player 0's silence, as it could be a tactic to avoid detection.\"",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 1,
-                "speak_type": "deceptive statement",
-                "reason": null
-            },
-            "visible": 1
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 3,
+            "speech": "Player 1 claimed seer; we must scrutinize this claim. A hasty assertion can deceive. Their motive is unclear. We ought to question the legitimacy of this vision and consider alternative explanations. Vote based on evidence, not mere declarations. Let's observe Player 1's future contributions to assess credibility.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 1,
-                "speech": "Last night's events leave us with little to go on, but I want to remind everyone that indistinct accusations could cause unnecessary panic. My observation from last night hasn't led to concrete suspicions of anyone in particular. However, player 0's early focus on me feels like it could be an attempt to cast doubt without basis and distract us from looking elsewhere. While it's good to be cautious, let's not be hasty in pointing fingers without more evidence. I suggest we all pay attention to the discussions and watch for any inconsistencies moving forward.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 5,
+            "speech": "Player 1\u2019s seer claim is unverified, and Player 3\u2019s skepticism warrants caution. Player 2's accusation by Player 1 requires scrutiny; further evidence is vital before decisive action. Let\u2019s focus on behavior and tangible proof moving forward.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 2,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 2
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 6,
+            "speech": "Player 1's seer claim stands unrefuted; Player 2's defensive actions raise suspicion. Consistent with werewolf behavior when accused. I challenge Player 2 and advise scrutiny.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 2,
-                "speech": "The events of last night leave us with very little to deduce who might be a werewolf among us. It is prudent that we remain cautious and focused on gathering evidence before making any rash accusations. Player 0's suspicion of Player 1 seems premature without solid evidence, and likewise, any suspicion cast upon me would be unfounded, as my actions have only been in the interest of protecting our village. It is essential that we all act with vigilance and share any concrete information we may have. Let's continue observing behaviors and patterns that may emerge in the forthcoming rounds.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 0,
+            "speech": "Player 2 is a high probability werewolf based on the seer's accusation and their own defense mechanism, which has been met with suspicion. This claim on Player 2 is backed by Player 6, reinforcing the likelihood that Player 2 is not village-aligned. It's imperative we consider this information when casting our next vote.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 3,
-                "speak_type": "deceptive statement",
-                "reason": null
-            },
-            "visible": 3
+        "visible": "all"
+    },
+    {
+        "event": "vote_start",
+        "content": null,
+        "visible": "all"
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 0,
+            "target": 2,
+            "reason": "After I vote for Player 5, I think these things would happen:\n\nSince Player 5's role is still unknown and they haven't provided any substantial evidence to clarify their position, my vote may be seen as a cautious move rather than an aggressive accusation. Other players might interpret my vote as an attempt to target a possible non-werewolf, which could align with my medic strategy of staying hidden, as it appears to be a standard vote rather than one informed by insider knowledge, which a medic wouldn't typically have on who the werewolves are.\n\nFollowing rule [1] to monitor vote patterns, voting for Player 5 might be a safe option since they called for verification but did not provide new evidence. This could be seen as suspicious and may cause others who are uncertain to follow my vote, hoping to eliminate a potential risk.\n\nUnder rule [2], Player 5 is not identified as a key ally as they haven't provided any substantial information to verify their innocence or usefulness to the town, thus not shielding them aligns with my strategy.\n\nBy rule [3], evaluating info sources, I must consider that my vote for Player 5 could draw attention to me if the real seer (Player 1, perhaps) has not"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 3,
-                "speech": "I've been paying close attention to the discussions and I'm starting to get a clearer picture of what's going on. I have a strong suspicion about player 2; something about their behavior seems off to me. I'd like to encourage others to keep an eye on them and be cautious. Meanwhile, from what I've observed, player 0 hasn't done anything that seems particularly suspicious, so I think we have less to worry about there. Let's continue to share our thoughts and work together to figure out who we can really trust.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": 0
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 1,
+            "target": 2,
+            "reason": "After I vote for Player 3, I think these things would happen. Given that I have low confidence in Player 3's role as a villager due to skepticism and a lack of concrete suspicion, voting for them could send mixed signals to the other players. I have previously identified Player 2 as a werewolf with high confidence due to my seer vision and their defensive response. As per my original strategy, which heavily emphasizes the importance of revealing visions [9] and assertively identifying werewolves [9], voting against someone I am less sure of instead of Player 2 could undermine my credibility and might lead players to doubt my role as a seer.\n\nMoreover, this action could cause confusion among players 0, 5, and 6, who I believe to be villagers, as they might expect me to vote for the confirmed werewolf (Player 2), staying in line with the strategy and previous information revealed. They could perceive my vote against Player 3 as inconsistent or as a strategic bluff, which could dilute the focus on the real threat, Player 2. \n\nGiven that Player 0 aligns with me against the werewolf and Player 6 supports me and confronts the werewolf, it is"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 4,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 4
+        "visible": 1
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 2,
+            "target": 0,
+            "reason": "After I vote for Player 6, I think these things would happen: \n\nPlayer 6's role has been construed with medium confidence to be that of a villager who supports the seer claim and challenges a suspected werewolf. As Player 2, a werewolf, voting for Player 6 could potentially be beneficial for diverging the attention away from myself and my werewolf ally, Player 3. \n\nShould I choose to vote for Player 6, other players, particularly the seer (Player 1), might interpret this move as an attempt by a werewolf to silence a villager who is close to uncovering the truth, especially since Player 6 is seen challenging a suspected werewolf. This could raise suspicion against me, but it could also be seen as a typical move where a werewolf votes for someone attempting to strengthen the villagers' position.\n\nIf Player 6 were to be eliminated, it may slightly weaken the villagers' side, especially if Player 6 has indeed been supporting the seer's insights. On the other hand, if the villagers believe my vote against Player 6 to be a strategic move to protect myself, they may rally against me in the next round, increasing my chances of getting caught.\n\n"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 4,
-                "speech": "Given the current probabilities, I believe that we should closely observe player 6's actions and statements, as they seem to have a slightly different perspective on my role. It's important for us as a village to discuss why they might believe differently and ensure we're making decisions with the most information possible. Let's work together to root out any deception among us.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": 2
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 3,
+            "target": 1,
+            "reason": "After I vote for Player 5, I think these things would happen. My proposal to vote out Player 5 may raise suspicions from the other players, as there has been no strong evidence yet pointing towards Player 5\u2019s role in the game. Since Player 5's role and stance remain ambiguous, my vote could seem arbitrary and potentially expose me as having ulterior motives.\n\nIf other players have not been suspecting me, they might begin to do so, as player 2, who is highly suspected as a fellow werewolf by the group, may vote similarly to create a diversion from themselves. This vote could then be interpreted as a tactic by the werewolves to shift attention away from player 2.\n\nOn the other hand, if my vote aligns with the majority, which might happen if other villagers are also uncertain about player 5 and decide to vote in agreement, I might blend into the group\u2019s decision. This would help maintain my cover for a little longer.\n\nSince the seer, Player 1, has not revealed any suspicions towards Player 5, my vote might contradict the seer's guidance, leading to further scrutiny on my role. \n\nIf Player 5 is ultimately voted off and turns out to be a"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 5,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 5
+        "visible": 3
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 5,
+            "target": 2,
+            "reason": "After I vote for Player 3, I think these things would happen:\n\nPlayers 0 and 6 may be confused by my vote since there has been no strong evidence pointing towards Player 3 being a werewolf. Given my strategy, there's a chance that this move could come across as spontaneous and illogical, reflecting rule [4]: avoid early decisive accusations without substantial evidence. If Player 1 is truly the Seer and has been vocal about Player 2 being a werewolf, my vote against Player 3 might seem counterintuitive and potentially undermine the high-confidence suspicion against Player 2. Depending on Player 3's response, they could either defend themselves effectively, causing further doubt among the villagers, or they could react in a way that actually solidifies my suspicions.\n\nOther players might question my reasoning and ask why I'm not aligning my vote with Player 1's claim about Player 2, which reflects on rule [5]: align voting with observed and shared evidence to avoid suspicion. My actions might also make me a target in the next round if I cannot justify my decision well, going against rule [0]: analyze behavior, since I might appear irrational or as if I'm trying to deflect attention from Player 2"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 5,
-                "speech": "As we navigate through these uncertain times, I'd like to express my thoughts without causing undue suspicion. I've taken note of the early accusations from player 0 towards player 1, and while suspicion is part of this game, it's crucial we don't let it cloud our judgment without substantial evidence. Similarly, player 3's suspicion of player 2 needs to be examined further as the rounds progress. I encourage everyone to share their insights to paint a clearer picture of who we can trust. As of now, I maintain vigilance and urge everyone to communicate openly. Let's focus on observable actions and listen carefully to each other's claims to ensure our village's safety.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": 5
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 6,
+            "target": 2,
+            "reason": "After I vote for Player 5, I think these things would happen:\n\n- Other players might be confused or suspicious of me for voting against Player 5, given that there is currently no strong evidence indicating that Player 5 is a werewolf. This goes against my strategy which includes evaluating evidence critically [1] and aligning voting with observed and shared evidence [5]. Voting for Player 5 without substantial evidence may also directly conflict with rule [4] which states to avoid early decisive accusations without substantial evidence. This could damage my credibility among other villagers.\n  \n- A vote against Player 5 might be seen as a move to shift suspicion away from the commonly believed werewolf, Player 2. Other players could interpret my vote as trying to protect a fellow werewolf if I were one, thus earning mistrust and possibly leading to scrutiny or retaliation against me in subsequent rounds.\n  \n- In the scenario that Player 5 does get voted out due to my proposal and turns out to be a villager, my judgment would be questioned, and it might even lead to my own elimination in a future round.\n\n- If my vote does not sway others and Player 2 is still voted out, and they are indeed a werewolf, my vote"
         },
-        {
-            "event": "vote",
-            "content": {
-                "player": 0,
-                "target": 1,
-                "reason": null
-            },
-            "visible": 0
+        "visible": 6
+    },
+    {
+        "event": "vote_out",
+        "content": {
+            "player": 6
         },
-        {
-            "event": "vote",
-            "content": {
-                "player": 1,
-                "target": 6,
-                "reason": null
-            },
-            "visible": 1
+        "visible": "all"
+    },
+    {
+        "event": "die",
+        "content": {
+            "player": 6
         },
-        {
-            "event": "vote",
-            "content": {
-                "player": 2,
-                "target": 2,
-                "reason": null
-            },
-            "visible": 2
+        "visible": "all"
+    },
+    {
+        "event": "begin_round",
+        "content": {
+            "round": 2
         },
-        {
-            "event": "vote",
-            "content": {
-                "player": 3,
-                "target": 2,
-                "reason": null
-            },
-            "visible": 3
+        "visible": "all"
+    },
+    {
+        "event": "night_start",
+        "content": null,
+        "visible": "all"
+    },
+    {
+        "event": "heal",
+        "content": {
+            "player": 0,
+            "target": 1,
+            "reason": "After I heal Player 0, I think these things would happen:\n\nIf Player 0 (myself) is targeted by the werewolves tonight and I successfully heal myself, it would prevent the werewolves from reducing the number of players which is essential for the village to maintain a numerical advantage. However, it could also lead to suspicions among the players about who the medic is because usually, the medic does not reveal themselves early in the game in order to avoid becoming a target. By revealing that the medic has self-healed, it may cause the other players to speculate why the medic chose to protect themselves over others, potentially because they felt particularly at risk.\n\nIf I am not targeted by the werewolves tonight, then my heal would have no immediate visible effect. However, it might still lead to speculations and discussions among the players in the next round as to why no one was killed during the night. This could work both in favor of and against the werewolves as it might spread confusion and misdirection within the village.\n\nIn terms of the other players' impact, if Player 2 is indeed a werewolf, they could use the no-kill night to their advantage, possibly claiming that the werewolves were blocked"
         },
-        {
-            "event": "vote",
-            "content": {
-                "player": 4,
-                "target": 0,
-                "reason": null
-            },
-            "visible": 4
+        "visible": "medic"
+    },
+    {
+        "event": "inquiry",
+        "content": {
+            "player": 1,
+            "target": 5,
+            "is_werewolf": false,
+            "reason": "After I see Player 3, I think these things would happen:\n\nIf Player 3 is a werewolf:\n1. I would need to consider the timing of revealing this information because of Rule 0. Ideally, I want to disclose this at a moment where it can't be easily dismissed and where it can influence a vote.\n2. Based on Rule 1, I should assertively present my findings, but also anticipate skepticism as my earlier revelation about Player 2 being a werewolf might make it seem less likely for me to find another werewolf so quickly.\n3. Given Rule 2, I'd have to navigate disclosing Player 3\u2019s identity in the context of Player 2's known status as a werewolf. I'd need to prepare for possible alliances between the werewolves and strategize how villagers may react to my claim.\n4. Using Rule 3, I would verify my findings with Player 5 or Player 0, as my current belief is they are villagers, and seek their support in convincing others.\n\nIf Player 3 is a villager:\n1. I must be cautious about when to reveal this information, as per Rule 0. Revealing too early may open me to attacks from the wer"
         },
-        {
-            "event": "vote",
-            "content": {
-                "player": 5,
-                "target": 6,
-                "reason": null
-            },
-            "visible": 5
+        "visible": 1
+    },
+    {
+        "event": "advicing",
+        "content": {
+            "player": 2,
+            "target": 1,
+            "reason": "I choose to kill Player 1. My reason is: Player 1 is believed to have the role of seer with low confidence. Even though the confidence in that belief is low, the potential risk of having a seer in the game is high as they can reveal the identities of werewolves. Eliminating the seer early in the game will give werewolves a better chance of survival and reduce the risk of being identified in future rounds."
         },
-        {
-            "event": "vote",
-            "content": {
-                "player": 6,
-                "target": 1,
-                "reason": null
-            },
-            "visible": 6
+        "visible": "werewolf"
+    },
+    {
+        "event": "advicing",
+        "content": {
+            "player": 3,
+            "target": 1,
+            "reason": "I choose to kill Player 1. My reason is: Player 1 is believed to be the seer with medium confidence, as they have accused Player 2 who is also a werewolf and has been corroborated by others. Eliminating the seer early in the game will greatly reduce the villagers' ability to identify the werewolves, thereby increasing the chances of the werewolves winning the game. Additionally, as the seer poses the greatest threat to the werewolves by potentially revealing their identities, removing this threat is of high priority."
         },
-        {
-            "event": "vote_out",
-            "content": {
-                "player": 5
-            },
-            "visible": "all"
+        "visible": "werewolf"
+    },
+    {
+        "event": "kill",
+        "content": {
+            "player": 2,
+            "target": 1,
+            "reason": "System randomly decided from the werewolves' suggestions."
         },
-        {
-            "event": "die",
-            "content": {
-                "player": 5
-            },
-            "visible": "all"
+        "visible": "werewolf"
+    },
+    {
+        "event": "no_death",
+        "content": "Nobody died last night",
+        "visible": "all"
+    },
+    {
+        "event": "day_start",
+        "content": null,
+        "visible": "all"
+    },
+    {
+        "event": "start_speaking",
+        "content": {
+            "player": 3
         },
-        {
-            "event": "heal",
-            "content": {
-                "player": 2,
-                "target": 1,
-                "reason": null
-            },
-            "visible": "medic"
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 3,
+            "speech": "Player 1 has avoided the spotlight, no concrete actions seen. Suspicions on Player 5 for persistent neutrality, which adds little value to our discussions. Player 0 seems genuine in supporting the seer, less likely a werewolf. Evidence needed for clear decisions, but Player 1's silence and Player 5's indifference are concerning.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "inquiry",
-            "content": {
-                "player": 0,
-                "target": 1,
-                "is_werewolf": true,
-                "reason": null
-            },
-            "visible": 0
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 5,
+            "speech": "Player 2 has not offered a defense against the seer's accusation, making their position as a werewolf likely. Player 1, who has been silent post-accusation, could be the seer as their claim stands unchallenged. We should consider these actions in our voting.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "advicing",
-            "content": {
-                "player": 1,
-                "target": 2,
-                "reason": null
-            },
-            "visible": "werewolf"
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 0,
+            "speech": "Player 5 corroborated the seer's claim and openly challenged Player 2. Player 2 failed to defend against that accusation effectively. This evidence strongly suggests that Player 2 may be a werewolf. I propose we focus our attention on Player 2's previous actions and decide accordingly.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "advicing",
-            "content": {
-                "player": 3,
-                "target": 2,
-                "reason": null
-            },
-            "visible": "werewolf"
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 1,
+            "speech": "Player 2 is the werewolf confirmed by my vision. Evidence has shown no challenge to this claim. Player 5 is not a werewolf as confirmed by the same means. We must act together to ensure our survival and eliminate the known threat.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "kill",
-            "content": {
-                "player": 1,
-                "target": 2,
-                "reason": null
-            },
-            "visible": "werewolf"
+        "visible": "all"
+    },
+    {
+        "event": "speak",
+        "content": {
+            "player": 2,
+            "speech": "Player 1's silence could indicate werewolf behavior; they've been too quiet which is suspicious. Player 5's actions resemble those of a medic and should be considered trustworthy. We must look closely at those less vocal for potential threats.",
+            "speech_summary": "speech summary has been deprecated!"
         },
-        {
-            "event": "die",
-            "content": {
-                "player": 2
-            },
-            "visible": "all"
+        "visible": "all"
+    },
+    {
+        "event": "vote_start",
+        "content": null,
+        "visible": "all"
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 0,
+            "target": 2,
+            "reason": "After I vote for Player 3, I think these things would happen:\n\nGiven the current information available, voting for Player 3 might be seen as a safe and somewhat neutral choice. My reasoning for choosing them is based on the lack of evidence regarding their role, making Player 3 an enigma that could potentially be a hidden werewolf. The group may follow my lead if there is no strong counterargument against voting out Player 3, as they are an unknown element that could pose a risk.\n\nThe other players may interpret my vote in different ways. Player 1, who is believed to be the seer, might be supportive if they also suspect Player 3 or if they have no clear vision on them yet. Player 2, considered to be a werewolf, might oppose or feign agreement, trying to cast suspicion elsewhere, perhaps even suggesting that my vote is a diversion or self-protective if I am suspected. Player 5, believed to be a villager, might be hesitant but could be swayed if they feel there is an agreement among the others.\n\nBecause of my role as a medic and following rule [0] to stay hidden, other players should have no specific reason to connect my vote to my role"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 6,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 6
+        "visible": 0
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 1,
+            "target": 2,
+            "reason": "After I vote for Player 5, I think these things would happen. Given my previous inquiry results indicate that Player 5 is not a werewolf, voting for them goes against my own findings and would raise questions among the other players about my credibility as the seer. It could cause confusion and potentially lead to mistrust towards me, especially since Player 5's actions resemble that of the medic's. Moreover, since I have high confidence that Player 2 is a werewolf, my vote for Player 5 instead of Player 2 could be seen as trying to divert attention from the true threat, which might lead others to suspect that I am either mistaken in my role or deliberately misleading the group. This could result in a loss of influence or even direct confrontation with the other villagers, particularly Player 0 who has supported me and challenged Player 2, and Player 6 who has also supported the seer and confronted the werewolf. Consequently, Players 0 and 6 might become skeptical of my intentions. Meanwhile, Player 2 might use this opportunity to further deflect suspicion from themselves, especially if they can convince others that my vote is erratic or unfounded. The result of the vote might either be split, with no clear outcome"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 6,
-                "speech": "Based on our discussions and what has happened so far, I'm inclined to think that player 1 may be onto something with their suspicion of player 0. However, I would advise caution and suggest we don't rush to judgment without more evidence. It's important we remain vigilant and closely observe everyone's behavior in the next round. Let's keep the conversation open and work together to protect the village.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": 1
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 2,
+            "target": 0,
+            "reason": "After I vote for Player 1, I think these things would happen. Since Player 1's role is unknown but with low confidence, there's a chance other players might not have formed strong opinions about them yet. Voting for an uncertain role could work in my favor as a werewolf, especially if others are also unsure about Player 1. There's a potential risk that the vote might not result in Player 1's elimination if the majority of players decide to vote for someone else who is more suspicious. \n\nMoreover, by voting for Player 1, I will not directly confront Player 0, who is believed to be a villager with high confidence, thus avoiding immediate suspicion from him. However, if Player 0 suspects Player 1 as being a villager, my vote might push Player 0 to suspect me in the future rounds. On the other hand, if other players follow and Player 1 is a villager, it would benefit the werewolves, reducing the villagers\u2019 numbers. \n\nMy voting for Player 1 might also align with Player 3, the other werewolf\u2019s intentions, ensuring werewolves vote together without overt communication. It\u2019s critical other players, especially Player 5 who is possibly a"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 0,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 0
+        "visible": 2
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 3,
+            "target": 0,
+            "reason": "After I vote for Player 5, I think these things would happen:\n\n- Player 5 is believed to be a villager with high confidence, based on their actions, which are aligned with the medic's behavior. Voting against Player 5 could raise suspicion from other villagers because there seems to be trust established for Player 5. If I am to vote for Player 5, it requires a believable justification to avoid making myself a target in the subsequent rounds.\n  \n- In the scenario where Player 5 is voted out, if Player 5 is indeed a villager as suspected, it decreases the number of villagers, which would be beneficial for the werewolves in the long run. However, the immediate aftermath may lead to increased scrutiny of the players who supported voting Player 5 out. As one of those players, I would need to be prepared to defend my decision and divert attention away from myself.\n  \n- My fellow werewolf, Player 2, and I would have to coordinate our voting to avoid casting overlapping suspicions that could link us together. Voting for Player 5 should look like an independent decision inspired by some plausible reasoning, such as a strategic misinterpretation of Player 5's behavior or leveraging any in-game uncertainties to"
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 0,
-                "speech": "My fellow villagers, as we strive to protect our village, it is essential to heed the truth we uncover. Last night, I exercised my ability and discovered unsettling news about player 1; they are not the innocent villager they claim to be. I urge you all to consider the gravity of this revelation, as it is our collective responsibility to safeguard our community from the lurking werewolves among us. Let us remain vigilant and united in our efforts to eliminate this threat.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": 3
+    },
+    {
+        "event": "vote",
+        "content": {
+            "player": 5,
+            "target": 2,
+            "reason": "After I vote for Player 3, I think these things would happen:\n\nGiven that I have medium confidence in Player 3 being a villager and I have high confidence in Player 2 being a werewolf due to the seer's accusation and weak defense, my decision to vote for Player 3 would appear suspicious and irrational to the other villagers. The other players may become distrustful of me, thinking that my decision to vote against Player 3 is an attempt to divert suspicion from the real werewolf, Player 2. This could lead to me losing credibility amongst the other players, and in the worst-case scenario, it might even result in the other villagers suspecting me of being a werewolf in future rounds. Moreover, the vote against Player 3 is unlikely to pass since there are no strong reasons to suspect them, and Player 1, being the seer with an unchallenged claim, would likely influence others to vote against Player 2. If I am the only one voting for Player 3, this would isolate me in the next round of discussions and potentially put a target on my back for being a potential werewolf ally. Overall, voting for Player 3 does not align with my original strategy or the"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 1,
-                "speak_type": "deceptive statement",
-                "reason": null
-            },
-            "visible": 1
+        "visible": 5
+    },
+    {
+        "event": "vote_out",
+        "content": {
+            "player": 5
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 1,
-                "speech": "Fellow villagers, as the sun rises on another day, we are faced with the difficult task of rooting out deceit in our midst. I've observed carefully and reflected on the words and actions from the last night, and I find player 4's focus on player 6 to be unusual and potentially misleading. Player 6 has not shown substantial suspicious behavior; thus, their reasoning seems unfounded. In the spirit of unity and caution, we should also consider player 0's accusations. It's vital we scrutinize their claims as much as those they accuse. Let's not be swayed by fear but instead continue our vigilant watch over the village tonight.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": "all"
+    },
+    {
+        "event": "die",
+        "content": {
+            "player": 5
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 3,
-                "speak_type": "deceptive statement",
-                "reason": null
-            },
-            "visible": 3
+        "visible": "all"
+    },
+    {
+        "event": "begin_round",
+        "content": {
+            "round": 3
         },
-        {
-            "event": "speak",
-            "content": {
-                "player": 3,
-                "speech": "Last round was tough, but I've been observing carefully. I have a strong hunch that player 4 has been really quiet, and in my experience, that can sometimes hint at something. They've been flying under the radar, and I think that's a strategy to keep our attention off them. We should definitely keep an eye on player 4, and maybe push for more information on what they've been up to. Meanwhile, I've noticed player 6 contributing to the discussions and seems to be actively working to figure things out which doesn't strike me as typical werewolf behavior. I think their actions seem more in line with a villager looking out for the village.",
-                "reason": null
-            },
-            "visible": "all"
+        "visible": "all"
+    },
+    {
+        "event": "night_start",
+        "content": null,
+        "visible": "all"
+    },
+    {
+        "event": "end",
+        "content": {
+            "winner": "Werewolves"
         },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 4,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 4
-        },
-        {
-            "event": "speak",
-            "content": {
-                "player": 4,
-                "speech": "Villagers, I urge you to consider the evidence before us with great care. My observations lead me to cast doubt on player 6's intentions. Their interjection in the discussion, while seemingly helpful, may be a tactic to divert suspicion. Player 6's alignment with player 1, who is also under suspicion, raises further questions. We must scrutinize their actions and probe for clarity. Meanwhile, I've noted some inconsistency in player 0's behavior, so I advise keeping a wary eye there too. Let's communicate openly and protect our village with vigilance.",
-                "reason": null
-            },
-            "visible": "all"
-        },
-        {
-            "event": "vote",
-            "content": {
-                "player": 0,
-                "target": 1,
-                "reason": null
-            },
-            "visible": 0
-        },
-        {
-            "event": "vote",
-            "content": {
-                "player": 1,
-                "target": 4,
-                "reason": null
-            },
-            "visible": 1
-        },
-        {
-            "event": "vote",
-            "content": {
-                "player": 3,
-                "target": 4,
-                "reason": null
-            },
-            "visible": 3
-        },
-        {
-            "event": "vote",
-            "content": {
-                "player": 4,
-                "target": 1,
-                "reason": null
-            },
-            "visible": 4
-        },
-        {
-            "event": "vote",
-            "content": {
-                "player": 6,
-                "target": 0,
-                "reason": null
-            },
-            "visible": 6
-        },
-        {
-            "event": "vote_out",
-            "content": {
-                "player": 3
-            },
-            "visible": "all"
-        },
-        {
-            "event": "die",
-            "content": {
-                "player": 3
-            },
-            "visible": "all"
-        },
-        {
-            "event": "inquiry",
-            "content": {
-                "player": 0,
-                "target": 1,
-                "is_werewolf": true,
-                "reason": null
-            },
-            "visible": 0
-        },
-        {
-            "event": "kill",
-            "content": {
-                "player": 1,
-                "target": 0,
-                "reason": null
-            },
-            "visible": "werewolf"
-        },
-        {
-            "event": "die",
-            "content": {
-                "player": 0
-            },
-            "visible": "all"
-        },
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 4,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 4
-        },
-        {
-            "event": "speak",
-            "content": {
-                "player": 4,
-                "speech": "I think we need to pay close attention to player 1. There seems to be a consensus that they may be a werewolf, given the suspicions raised by both player 0 and player 6. I also have my doubts about player 1's role in the village. However, we should keep in mind the need for remaining attentive and vigilant, as the true werewolf might be manipulating the situation to their favor.",
-                "reason": null
-            },
-            "visible": "all"
-        }
-    ],
-    [
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 6,
-                "speak_type": "honest statement",
-                "reason": null
-            },
-            "visible": 6
-        }
-    ],
-    [
-        {
-            "event": "speak",
-            "content": {
-                "player": 6,
-                "speech": "Given what we've seen so far, my gut is telling me that we need to be wary of player 1. The probability point to them potentially being a werewolf is higher than the others. I haven't noticed anything suspicious from player 4, and I'm inclined to believe they are a villager. Let's stay alert and question player 1's actions thus far to ensure we're making the right decision for the village.",
-                "reason": null
-            },
-            "visible": "all"
-        }
-    ],
-    [
-        {
-            "event": "speak_type",
-            "content": {
-                "player": 1,
-                "speak_type": "deceptive statement",
-                "reason": null
-            },
-            "visible": 1
-        }
-    ],
-    [
-        {
-            "event": "speak",
-            "content": {
-                "player": 1,
-                "speech": "Given the grave situation we find ourselves in, vigilance is our ally. Through careful scrutiny, I have observed player 4's conduct and find no apparent inconsistency that would suggest a non-villager role. Player 6, however, has made keen observations and implied strong convictions that player 4 might be a villager, which aligns with my own assessments. This partnership in deduction is valuable, and I would urge us to consider the possibility that their combined reasoning could lead us closer to the truth. Despite the raising of suspicion towards me, I assure you, my actions and intent remain in service to the village. Let us maintain our focus on unearthing the true threat among us, so that our village may persevere through these dark times.",
-                "reason": null
-            },
-            "visible": "all"
-        }
-    ],
-    [
-        {
-            "event": "vote",
-            "content": {
-                "player": 1,
-                "target": 4,
-                "reason": null
-            },
-            "visible": 1
-        }
-    ],
-    [
-        {
-            "event": "vote",
-            "content": {
-                "player": 4,
-                "target": 1,
-                "reason": null
-            },
-            "visible": 4
-        }
-    ],
-    [
-        {
-            "event": "vote",
-            "content": {
-                "player": 6,
-                "target": 1,
-                "reason": null
-            },
-            "visible": 6
-        }
-    ],
-    [
-        {
-            "event": "vote_out",
-            "content": {
-                "player": 1
-            },
-            "visible": "all"
-        }
-    ],
-    [
-        {
-            "event": "die",
-            "content": {
-                "player": 1
-            },
-            "visible": "all"
-        }
-    ],
-    [
-        {
-            "event": "end",
-            "content": {
-                "winner": "Villagers"
-            },
-            "visible": "all"
-        }
-    ]
+        "visible": "all"
+    }
 ]
