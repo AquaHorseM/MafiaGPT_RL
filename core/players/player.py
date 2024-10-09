@@ -436,7 +436,7 @@ class Player:
         reflex_data_policy = [i for i in reflex_data_policy if i is not None]
         if len(reflex_data_policy) > sample_num:
             weights_policy = [self.get_node_importance_for_policy(elem[0], elem[1], elem[2]) for elem in reflex_data_policy]
-            reflex_data_policy = random.choices(reflex_data_belief, weights_policy, k=sample_num)
+            reflex_data_policy = random.choices(reflex_data_policy, weights_policy, k=sample_num)
         self.logger.info(f"Data ready for reflex!")
         for state, prev_events, trajs in reflex_data_belief:
             self.reflex_belief(state, prev_events, trajs)
