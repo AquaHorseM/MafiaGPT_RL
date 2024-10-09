@@ -64,6 +64,8 @@ def parse_reflex_actions(reflex_actions: str):
         reflex_actions = '\n'.join(reflex_actions.split("My updating operations are:")[1:])
     else:
         print("No Operation starting indication detected! Scanning the whole response now...")
+        #debug
+        print(f"debug reflex actions: {reflex_actions}")
     for line in reflex_actions.split("\n"):
         try:
             line = line.strip()
