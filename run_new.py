@@ -12,15 +12,19 @@ parser.add_argument("--num_processes", type=int, default=1)
 parser.add_argument("--config_path", type=str, default="configs/game_config_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
 parser.add_argument("--reflex-only",default=False, action="store_true")
+parser.add_argument("--skip-error",default=False, action="store_true")
 
 
-def run_game_with_config(id, config):
+def run_game_with_config(id, config, skip_error = False):
     new = Game(id, game_config=config)
-    try:
+    if skip_error:
+        try:
+            new.sim_game_for_reflex_players()
+        except Exception as e:
+            print(f"WARNING!!!!!! Error encountered in simulating game {id}: {e}.")
+            print("Skipped it.")
+    else:
         new.sim_game_for_reflex_players()
-    except Exception as e:
-        print(f"WARNING!!!!!! Error encountered in simulating game {id}: {e}.")
-        print("Skipped it.")
     
 if __name__ == "__main__":
     args = parser.parse_args()
