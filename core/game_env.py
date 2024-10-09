@@ -12,6 +12,9 @@ from core.api import load_client
 import multiprocessing
 from core.data import DataTree
 
+def reflex_player_from_data(player: Player, data):
+    player.reflex(data)
+
 class WerewolfGameEnv:
     def __init__(self, id=1, game_config = None):
         self.id = id
@@ -482,8 +485,6 @@ class WerewolfGameEnv:
         return False
     
     def reflex_multi_process(self, num_processes = 4):
-        def reflex_player_from_data(player: Player, data):
-            player.reflex(data)
         reflex_player_ids = []
         werewolf_ids = []
         villager_ids = []
