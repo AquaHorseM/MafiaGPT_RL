@@ -771,10 +771,10 @@ class Player:
             raise ValueError("Note type must be either 'belief' or 'policy'")
         with open(reflex_note_path, "r") as f:
             reflex_note = f.read()
-        self.logger.debug(f"Updating reflex note with response {response}")
+        # self.logger.debug(f"Updating reflex note with response {response}")
         operations = parse_reflex_actions(response)
         reflex_note = parse_reflex_note(reflex_note)
-        max_id = max(reflex_note.keys())
+        max_id = max(reflex_note.keys()) if reflex_note.keys() else -1
         for action in operations:
             operation, value1, value2 = action
             self.logger.info(f"player {self.id} is updating the reflex note with operation {operation} {value1} {value2}")
