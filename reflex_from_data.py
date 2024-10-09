@@ -15,7 +15,7 @@ parser.add_argument("--data-path", type=str, default="data/game_1_data.pkl")
 def reflex_from_path(game_config, client, path):
     game = Game(999, game_config)
     game.load_data(path)
-    game.all_players_reflex()
+    game.reflex_multi_process()
     
 if __name__ == "__main__":
     args = parser.parse_args()
