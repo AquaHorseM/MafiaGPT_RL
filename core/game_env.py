@@ -9,7 +9,11 @@ from core.players.player import Player
 from core.event import Event, EventBook
 from core.utils import switcher_players, emph_print, count_adjustable_params
 from core.api import load_client
+import multiprocessing
 from core.data import DataTree
+
+def reflex_player_from_data(player: Player, data):
+    player.reflex(data)
 
 class WerewolfGameEnv:
     def __init__(self, id=1, game_config = None):
@@ -51,7 +55,7 @@ class WerewolfGameEnv:
         self.data = DataTree(self.get_state())
         self.latest_actions = [None] * self.player_num
         self.latest_drafts = [{
-            "action": None,
+            "cur_action": None,
             "player_id": i
         } for i in range(self.player_num)]
         self.players_config = game_config["players"]
@@ -71,6 +75,8 @@ class WerewolfGameEnv:
         return logger
 
     def set_players(self, player_configs, roles_order = None): #player_configs should be a list of dicts
+        self.all_players = []
+        self.player_types = []
         self.player_num = len(player_configs)
         if roles_order is None:
             shuffled_nums = list(range(self.player_num))
@@ -140,7 +146,6 @@ class WerewolfGameEnv:
             "seer": deepcopy(init_seer_private_info),
             "villager": deepcopy(init_villager_private_info)
         }
-        
         for i, num in enumerate(shuffled_nums):
             role = player_configs[num]["role"].lower()
             player_type = player_configs[num]["player_type"].lower()
@@ -289,9 +294,6 @@ class WerewolfGameEnv:
                 "{org_speech}": speech,
             })
             # speech_summary = self.all_players[0].get_response("summarize_speech", replacements)
-            
-
-            
             self.add_event({"event": "speak", "content": {"player": speaking_player, "speech": speech, "speech_summary": 'speech summary has been deprecated!'}, "visible": "all"})
             while True: #Find the next player to speak
                 speaking_player = (speaking_player + 1) % self.player_num
@@ -474,17 +476,62 @@ class WerewolfGameEnv:
     def all_players_reflex(self):
         #temp debug, disable this
         for player_id in range(len(self.all_players)):
-            player = self.all_players[player_id]
-            if self.player_types[player_id] == "reflex":
-                player.reflex(self.data)
-                
-    def all_players_reflex_from_data_path(self, data_path):
-        self.logger.info(f"Reflexing all players from data path {data_path}")
-        for player_id in range(len(self.all_players)):
-            self.all_players[player_id].reflex_from_data_path(data_path)
-        self.logger.info("All players reflexed successfully")
-        return
+            self.reflex_for_player(player_id)
     
+    def reflex_for_player(self, player_id):
+        if self.player_types[player_id] == "reflex":
+            self.all_players[player_id].reflex(self.data)
+            return True
+        return False
+    
+    def reflex_multi_process(self, num_processes = 4):
+        reflex_player_ids = []
+        werewolf_ids = []
+        villager_ids = []
+        for i in range(self.player_num):
+            if not self.player_types[i]=="reflex":
+                self.logger.debug(f"Player {i} not reflexable. Skipping.")
+                continue
+            if self.all_players[i].get_role() in ["medic", "seer"]:
+                reflex_player_ids.append(i)
+            elif self.all_players[i].get_role() == "werewolf":
+                werewolf_ids.append(i)
+            else: #villager
+                villager_ids.append(i)
+        
+        if len(werewolf_ids) > 0:
+            reflex_player_ids.append(random.choice(werewolf_ids))
+        if len(villager_ids) > 0:
+            reflex_player_ids.append(random.choice(villager_ids))
+        
+        if len(reflex_player_ids) < 4:
+            self.logger.warning(f"Only {len(reflex_player_ids)} players are reflexable.")
+            if num_processes > len(reflex_player_ids):
+                self.logger.warning(f"Reducing the number of processes used to {len(reflex_player_ids)}")
+                num_processes = len(reflex_player_ids)
+        
+        if num_processes > 4:
+            self.logger.warning(f"Maximum processes allowed for reflexing is 4, but {num_processes} is required.")
+            self.logger.warning("Only using 4 processes for reflex.")
+            num_processes = 4
+        
+        self.logger.debug(f"Reflex player ids: {reflex_player_ids}")
+        if num_processes > 1:
+            reflex_player = partial(reflex_player_from_data, data=self.data)
+            players_to_reflex = [self.all_players[i] for i in reflex_player_ids]
+            
+            with multiprocessing.Pool(num_processes) as pool:
+                successes = pool.map(reflex_player, players_to_reflex)
+        else:
+            successes = []
+            for player_id in reflex_player_ids:
+                successes.append(self.reflex_for_player(player_id))
+        success_num = sum([1 if success else 0 for success in successes])
+        if success_num == len(reflex_player_ids):
+            self.logger.info(f"Reflex succeeded for all {success_num} players.")
+        else:
+            self.logger.warning(f"Reflex failed for {len(reflex_player_ids) - success_num} players!")
+
     def act(self, player_id, actions):
         return self.all_players[player_id]._act(available_actions = [actions] if isinstance(actions, str) else actions)
     
@@ -513,6 +560,10 @@ class WerewolfGameEnv:
             is_game_end = True
         else:
             is_game_end = False
+        self.logger.debug(f"actions: {self.latest_actions}")
+        cur_actions = [self.latest_drafts[i]['cur_action'] if self.latest_drafts[i] is not None else None for i in range(len(self.latest_drafts))]
+        self.logger.debug(f"cur_actions in drafts: {cur_actions}")
+        self.logger.debug(f"current game status: {self.game_status}")
         
         self.data.add_edge_and_node(
             events = self.temp_events,
@@ -674,6 +725,10 @@ class WerewolfGameEnv:
     def retry_for_reflex_players(self, node_id: int, retry_steps: int = 1) -> bool: #return if it succeeds
         #TODO make it suitable for night actions?
         drafts = self.data.get_next_drafts(node_id)
+        #debug
+        print(self.data.nodes[node_id].state["global_info"]["game_status"])
+        if drafts is None:
+            return False
         for i in range(self.player_num):
             self.logger.debug(f"player: {i}, cur_action: {drafts[i]['cur_action']}")
         avail_drafts = []
@@ -720,9 +775,12 @@ class WerewolfGameEnv:
         MAX_ATTEMPT = 10
         for i in range(MAX_ATTEMPT):
             nid = random.randint(1, len(self.data.nodes) - 2)
-            if self.retry_for_reflex_players(nid, retry_steps):
-                print("Retry succeeded")
-                return
+            try:
+                if self.retry_for_reflex_players(nid, retry_steps):
+                    print("Retry succeeded")
+                    return
+            except Exception as e:
+                self.logger.warning(f"Encountered error {e} while retrying; skipped.")
         print(f"Retry failed after {MAX_ATTEMPT} attempts")
             
         

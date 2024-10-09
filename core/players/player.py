@@ -284,7 +284,6 @@ class Player:
             first_speak, second_speak = self._get_proposals_from_response_SpeakThreeStep(response)
         assert not ((first_speak is None) or (second_speak is None))
         
-        
         proposals = [first_speak, second_speak]
         
         self.draft_dict["speak"][-1]["speak_proposal"] = proposals
@@ -395,10 +394,10 @@ class Player:
     
     def get_node_importance_for_policy(self, state, prev_events, trajs):
         if len(trajs) == 0:
-            return 0
+            return 0.0001
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         cur_score = self.evaluate_joint_hstate(reflex_info["hstate"], reflex_info["alive_players"])
-        total_score = 0
+        total_score = 0.5
         for traj in reflex_info["trajs"]:
             traj_score = self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"])
             total_score += (cur_score - traj_score) ** 2
@@ -407,10 +406,10 @@ class Player:
             
     def get_node_importance_for_belief(self, state, prev_events, trajs):
         if len(trajs) == 0:
-            return 0
+            return 0.0001
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         cur_score = self.get_hstate_score_for_belief(reflex_info["hstate"])
-        total_score = 0
+        total_score = 0.5
         for traj in reflex_info["trajs"]:
             traj_score = self.get_hstate_score_for_belief(traj["outcome_hstate"])
             total_score += (cur_score - traj_score) ** 2
@@ -437,12 +436,18 @@ class Player:
         reflex_data_policy = [i for i in reflex_data_policy if i is not None]
         if len(reflex_data_policy) > sample_num:
             weights_policy = [self.get_node_importance_for_policy(elem[0], elem[1], elem[2]) for elem in reflex_data_policy]
-            reflex_data_policy = random.choices(reflex_data_belief, weights_policy, k=sample_num)
+            reflex_data_policy = random.choices(reflex_data_policy, weights_policy, k=sample_num)
         self.logger.info(f"Data ready for reflex!")
         for state, prev_events, trajs in reflex_data_belief:
-            self.reflex_belief(state, prev_events, trajs)
+            try:
+                self.reflex_belief(state, prev_events, trajs)
+            except Exception as e:
+                self.logger.warning(f"Error encountered while reflexing belief: {e}")
         for state, prev_events, trajs in reflex_data_policy:
-            self.reflex_policy(state, prev_events, trajs)
+            try:
+                self.reflex_policy(state, prev_events, trajs)
+            except Exception as e:
+                self.logger.warning(f"Error encountered while reflexing policy: {e}")
         self.logger.info("Finished reflex; now polish reflex notes.")
         self.polish_reflex_notes()
         return
@@ -461,6 +466,7 @@ class Player:
         
     def get_hstate_score_for_belief(self, joint_hstate, roles = None):
         #naive approach
+        #always non-negative
         own_belief = joint_hstate[self.id]
         def get_wrong(own_belief_role, true_role):
             if own_belief_role == "unknown":
@@ -533,7 +539,7 @@ class Player:
     def get_traj_importance_for_policy(self, traj, init_jhstate, init_alive_players):
         #How to use it to sample more important nodes?
         if traj["actions"][self.id] is None or not traj["connect_to_end"]:
-            return 0
+            return 0.001
         return 1 + (self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]) - \
             self.evaluate_joint_hstate(init_jhstate, init_alive_players))**2
     
@@ -765,11 +771,9 @@ class Player:
             raise ValueError("Note type must be either 'belief' or 'policy'")
         with open(reflex_note_path, "r") as f:
             reflex_note = f.read()
+        self.logger.debug(f"Updating reflex note with response {response}")
         operations = parse_reflex_actions(response)
         reflex_note = parse_reflex_note(reflex_note)
-        with open("debug.out", "a") as f:
-            f.write(f"player {self.id} is updating the reflex note with operations: {operations}\n")
-            f.write(f"previous reflex note: {reflex_note}\n")
         max_id = max(reflex_note.keys())
         for action in operations:
             operation, value1, value2 = action

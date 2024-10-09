@@ -99,6 +99,8 @@ def send_message_xsm(messages, agent_config = {}, client = None):
                 model=model_name, messages=context, temperature=temperature,
                 max_tokens=token_limit, top_p=1
             )
+            if response.choices[0].message.content is None:
+                raise ValueError("Response is None!")
             break
         except Exception as e:
             print(f"Error: {e}")

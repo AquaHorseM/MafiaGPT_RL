@@ -59,11 +59,13 @@ def get_target_from_response(response):
 def parse_reflex_actions(reflex_actions: str):
     #parse all lines in the reflex note. Each line should be in the format of "OPERATION [VALUE]"
     #return a list of tuples in the form of [(OPERATION, VALUE), ...]
+    print(f"debug reflex actions: {reflex_actions}")
     res = []
     if "My updating operations are:" in reflex_actions:
         reflex_actions = '\n'.join(reflex_actions.split("My updating operations are:")[1:])
     else:
         print("No Operation starting indication detected! Scanning the whole response now...")
+        #debug
     for line in reflex_actions.split("\n"):
         try:
             line = line.strip()
