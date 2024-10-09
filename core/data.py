@@ -35,8 +35,8 @@ class EventsEdge:
         self.start_id = node1_id
         self.end_id = node2_id
         self.events = deepcopy(events)
-        self.actions = actions
-        self.drafts = drafts
+        self.actions = deepcopy(actions)
+        self.drafts = deepcopy(drafts)
     
     def __repr__(self):
         return f"Edge({self.start_id} --> {self.end_id})"
