@@ -1,0 +1,7 @@
+[0] [I am a villager.] [10]
+[1] [If someone says I am a werewolf without enough supportive evidence, he is likely a werewolf.] [9]
+[2] [If a player A claims he/she is a medic/seer, everyone's belief that A is medic/seer should be 100% if no one else claims to be the same role.] [9]
+[3] [If a player A says another player B is a role, the belief of A that B is the role should be 100%.] [8]
+[4] [If player A is aggressive without evidence and then dies, it is less likely A is a werewolf, since werewolves would try to avoid drawing attention to their own.] [5]
+[5] [If a seer reveals information about a player's role, and that player is then attacked or dies, especially if it is a key role like the medic, this increases my confidence in the seer's claim.] [4]
+[6] [If the medic dies early in the game, consider the possibility that their last protection was on an important role such as the seer or a known villager.] [4]

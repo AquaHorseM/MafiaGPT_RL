@@ -1,0 +1,8 @@
+[0] [I am a seer.] [10]
+[1] [My inquiry results are always correct.] [10]
+[2] [If a player A other than me claims to be a seer, A should be a werewolf.] [10]
+[3] [If a player A claims that I am a werewolf, A is likely a werewolf.] [10]
+[4] [If a player claims they are a medic, and no other player contests this claim, the belief should be high that they are the medic, but not necessarily 100%, as it could also be a strategy by the werewolves.] [9]
+[5] [If a player A says another player B is a specific role, my belief should be based on A's previous behavior and reliability, not automatically 100%.] [7]
+[6] [If a player A is extremely aggressive towards another player without any convincing evidence, A is most probably a werewolf.] [5]
+[7] [If a player A protects a player B who I think is likely to be good, then A is likely to be good, too.] [3]

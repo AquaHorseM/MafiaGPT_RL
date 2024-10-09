@@ -1,0 +1,6 @@
+[0] [All other werewolf players and myself are definitely werewolves.] [10]
+[1] [If a player A claims a role like medic or seer, the default belief should be skepticism until corroborated by further evidence. Counterclaims or in-game events such as player survivability after claiming important roles should be used to adjust this belief.] [10]
+[2] [Werewolves should observe voting patterns and arguments to infer roles, while considering the possibility that villagers may vote unpredictably and wolves may blend in by following the majority.] [5]
+[3] [If a player A says another player B is a role, adjust belief about B's role based on the reliability and potential strategy of player A rather than assuming the claim is 100% true.] [4]
+[4] [If the medic is likely eliminated based on night events, werewolves should adjust strategies to target players who are more likely to be the seer in the next rounds.] [4]
+[5] [Werewolves must track which players are defending or trusting each other to identify potential alliances and disrupt them if necessary.] [4]

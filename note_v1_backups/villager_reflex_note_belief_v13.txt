@@ -1,0 +1,6 @@
+[0] [I am a villager.] [10]
+[1] [If someone says I am a werewolf without enough supportive evidence, he is likely a werewolf.] [10]
+[2] [If a player A claims he/she is a medic/seer, everyone's initial belief that A is medic/seer should be high unless another player credibly disputes this claim. If no dispute arises, confidence in A's claim should stay strong until evidence suggests otherwise.] [10]
+[3] [If a player A says another player B is a role, the belief of A that B is the role should be updated based on the reliability of A, potential motivations for A to lie, and any corroborating evidence provided.] [7]
+[4] [If a player A is aggressive in their accusations and fails to provide substantial evidence or a consistent logic, they should be seen as more suspicious of having a malicious role.] [4]
+[5] [When a medic dies early in the game without revealing their insights, prioritize re-evaluating players with unusual or aggressive behaviors as they may have targeted the medic to disrupt protection and information flow.] [4]
