@@ -9,11 +9,13 @@ from core.players.player import Player
 from core.event import Event, EventBook
 from core.utils import switcher_players, emph_print, count_adjustable_params
 from core.api import load_client
-import multiprocessing
+# import multiprocessing
+from pathos.multiprocessing import ProcessingPool as Pool
 from core.data import DataTree
 
 def reflex_player_from_data(player: Player, data):
     player.reflex(data)
+    return True
 
 class WerewolfGameEnv:
     def __init__(self, id=1, game_config = None):
@@ -520,7 +522,7 @@ class WerewolfGameEnv:
             reflex_player = partial(reflex_player_from_data, data=self.data)
             players_to_reflex = [self.all_players[i] for i in reflex_player_ids]
             
-            with multiprocessing.Pool(num_processes) as pool:
+            with Pool(num_processes) as pool:
                 successes = pool.map(reflex_player, players_to_reflex)
         else:
             successes = []
