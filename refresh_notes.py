@@ -18,7 +18,7 @@ backup_files = glob.glob("core/notes_v1/*/*_reflex_note_*_backup.txt")
 version = 1
 while any(
     os.path.exists(
-        os.path.join(backup_folder, f"{os.path.basename(destination_pattern.format(role, role, note_type))}_v{version}")
+        os.path.join(backup_folder, f"{os.path.splitext(os.path.basename(destination_pattern.format(role, role, note_type)))[0]}_v{version}.txt")
     )
     for file_path in backup_files
     if (match := re.match(source_pattern, file_path))
@@ -36,8 +36,8 @@ for file_path in backup_files:
         
         # If the non-backup file exists, move it to the backup folder with the determined version number
         if os.path.exists(destination_path):
-            base_name = os.path.basename(destination_path)
-            backup_name = f"{base_name}_v{version}"
+            base_name, ext = os.path.splitext(os.path.basename(destination_path))
+            backup_name = f"{base_name}_v{version}{ext}"
             backup_path = os.path.join(backup_folder, backup_name)
             
             shutil.move(destination_path, backup_path)
