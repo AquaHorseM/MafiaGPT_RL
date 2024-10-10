@@ -203,6 +203,10 @@ class Player:
             response = self.get_response("vote_threeStage_propose")
             proposal_dicts = self._get_proposals_from_response_VoteThreeStep(response)
         assert proposal_dicts is not None
+        for proposal_dict in proposal_dicts:
+            target = proposal_dict["target"]
+            reason = proposal_dict["reason"]
+            self.logger.debug(f"Target: {target}. Reason: {reason}.")
         proposals = [elem["target"] for elem in proposal_dicts]
         
         self.draft_dict["vote"][-1]["vote_proposal"] = proposals
