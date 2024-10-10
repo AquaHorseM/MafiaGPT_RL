@@ -1,0 +1,6 @@
+[0] [I am the only medic.] [9]
+[1] [If a player consistently casts suspicion on another player who is later verified as a villager, increase the suspicion on the accuser, as they may be attempting to eliminate non-werewolves.] [6]
+[2] [If someone is accused with minimal evidence such as behavioral patterns like silence, instead of automatically suspecting or dismissing them, analyze the context and frequency of similar accusations to determine if there is a pattern that could suggest a strategic play by werewolves.] [5]
+[3] [If there are peaceful nights where no villagers are killed, carefully consider the likelihood of successful medic protection versus werewolf strategic play, and observe subsequent accusations and defenses for possible connections.] [5]
+[4] [When a player is verified as not a werewolf, consider their accusations and defenses more credible, as they have no werewolf allegiance; however, remain vigilant for potential manipulation by other roles.] [5]
+[5] [If a player's defense of another is weak, unclear, or inconsistent with their previous behavior, increase scrutiny of both players for potential werewolf alliances.] [4]
