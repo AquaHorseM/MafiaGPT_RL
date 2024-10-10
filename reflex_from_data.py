@@ -32,7 +32,7 @@ def reflex_from_file_path(game_config, path, num_processes, skip_error = False):
         
 def reflex_from_path(game_config, path, num_processes, skip_error=False):
     if not os.path.isdir(path):
-        reflex_from_path(game_config, path, num_processes)
+        reflex_from_file_path(game_config, path, num_processes)
     else:
         print(f"The data path {path} is folder. Recursively reflexing from all data files inside.")
         success_num = 0

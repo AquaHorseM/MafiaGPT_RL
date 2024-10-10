@@ -5,6 +5,9 @@ checkpoints/
 message_history_backup.txt
 _message_history_backup.txt
 message_input_history_backup.txt
+debug.out
+data_v*/
 .history/
 temp_data/
 sjz*
+core/notes_v*/
