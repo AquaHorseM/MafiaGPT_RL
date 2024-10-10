@@ -596,6 +596,8 @@ class WerewolfGameEnv:
         if not self.data:
             self.logger.warning("No data to store! Skipped!")
             return
+        dir_path = os.path.dirname(path)
+        os.makedirs(dir_path, exist_ok=True)
         with open(path, "wb") as file:
             pickle.dump(self.data, file)
         self.logger.info(f"Data stored successfully to {path}")
