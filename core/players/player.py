@@ -147,6 +147,40 @@ class Player:
             return (action, target, reason)
         
     
+    def extract_proposals(response):
+        # Regular expression to match proposals and reasons more flexibly
+        pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)(?=\s*\.?\s*Proposal|$)"
+        matches = re.findall(pattern, response, re.DOTALL | re.IGNORECASE)
+        
+        result = []
+        for i, match in enumerate(matches):
+            try:
+                proposal_id = int(match[0])  # Ensure the proposal ID is an integer
+                proposal_text = match[1].strip()
+                reason_text = match[2].strip()
+                
+                if proposal_id != i+1:
+                    return None
+                
+                # Only add to result if both proposal and reason are non-empty
+                if proposal_text and reason_text:
+                    result.append({
+                        "target": proposal_text, 
+                        "reason": reason_text
+                    })
+            except ValueError:
+                # Ignore this match if the proposal ID is not an integer
+                return None
+        
+        return result
+    
+    def _convert_proposals_and_reasons_to_vote_prompt(self, proposal_dicts: List[Dict]):
+        s = f"Now, it's time for you to Choose from {len(proposal_dicts)} players to vote. Here is the number of these players and an analysis and imagination about what could happen after you vote for each of these players.\n"
+        for i, pd in enumerate(proposal_dicts):
+            target = pd["target"]
+            imagination = pd["imagination"]
+            s += f"Case {i}: Vote for Player {target}. What could happen is: {imagination}\n"
+        return s
     
     
     def _get_proposals_from_response_VoteThreeStep(self, response):
@@ -186,46 +220,41 @@ class Player:
     
     def _vote_multiagent(self):
         self.draft_dict["vote"].append(dict())
-        first_player, first_reason, second_player, second_reason = None, None, None, None
+        proposal_dicts = None
         count = 0
-        while ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None)) and (count < 3):
+        while (proposal_dicts is None) and (count < 3):
             count += 1
             response = self.get_response("vote_threeStage_propose")
-            first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_VoteThreeStep(response)
-        assert not ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None))
-        
-        proposals = [first_player, second_player]
-        
+            proposal_dicts = self._get_proposals_from_response_VoteThreeStep(response)
+        assert proposal_dicts is not None
+        proposals = [elem["target"] for elem in proposal_dicts]
         
         self.draft_dict["vote"][-1]["vote_proposal"] = proposals
-        self.draft_dict["vote"][-1]["proposal_and_imaginations"] = list()
-        result_list = list()
-        for propose in proposals:
+        self.draft_dict["vote"][-1]["proposal_and_imaginations"] = []
+        for proposal_id in range(len(proposals)):
             replacements = self.get_replacements()
-            replacements["{current_propose}"] = str(propose)
+            replacements["{current_propose}"] = str(proposals[proposal_id])
             response = self.get_response("vote_threeStage_imagine", replacements)
             
             results = self._get_imagination_from_response_VoteThreeStep(response)
-            result_list.append(results)
+            proposal_dicts[proposal_id]["imagination"] = results
             self.draft_dict["vote"][-1]["proposal_and_imaginations"].append(response)
         
         replacements = self.get_replacements()
-        replacements["{current_propose_0}"] = str(proposals[0])
-        replacements["{current_propose_1}"] = str(proposals[1])
-        replacements["{current_propose_0_imagination}"] = result_list[0]
-        replacements["{current_propose_1_imagination}"] = result_list[1]
-        
-        
+        replacements.update({
+            "{proposal_infos}": self._convert_proposals_and_reasons_to_vote_prompt(proposal_dicts)
+        })
         
         response_and_reason = self.get_response("vote_threeStage_choose", replacements)
         vote = self._get_final_choice_from_response_VoteThreeStep(response_and_reason)
         
         self.draft_dict["vote"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        if vote == proposals[0]:
-            self.draft_dict["vote"][-1]["final_proposal"] = 0
+        if vote in proposals:
+            self.draft_dict["vote"][-1]["final_proposal"] = proposals.index(vote)
         else:
-            self.draft_dict["vote"][-1]["final_proposal"] = 1
-        return vote, response
+            self.logger.warning("Final vote not in proposals!")
+            self.draft_dict["vote"][-1]["final_proposal"] = 0
+        return vote, response_and_reason
 
     def _vote_org(self):
         response = self.get_response("vote")
@@ -613,8 +642,6 @@ class Player:
     def _vote_with_other_proposal(self, draft: Dict):
         if len(draft["vote_proposal"]) <= 1:
             new_proposal_id = draft["final_proposal"]
-        elif len(draft["vote_proposal"]) == 2:
-            new_proposal_id = 1 - draft["final_proposal"] #! temporarily 0 & 1
         else:
             ids = list(range(len(draft["vote_proposal"])))
             ids.pop(draft["final_proposal"])
