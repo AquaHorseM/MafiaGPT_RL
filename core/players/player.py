@@ -147,7 +147,17 @@ class Player:
             return (action, target, reason)
         
     
-    def extract_proposals(response):
+    
+    def _convert_proposals_and_reasons_to_vote_prompt(self, proposal_dicts: List[Dict]):
+        s = f"Now, it's time for you to Choose from {len(proposal_dicts)} players to vote. Here is the number of these players and an analysis and imagination about what could happen after you vote for each of these players.\n"
+        for i, pd in enumerate(proposal_dicts):
+            target = pd["target"]
+            imagination = pd["imagination"]
+            s += f"Case {i}: Vote for Player {target}. What could happen is: {imagination}\n"
+        return s
+    
+    
+    def _get_proposals_from_response_VoteThreeStep(self, response):
         # Regular expression to match proposals and reasons more flexibly
         pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)(?=\s*\.?\s*Proposal|$)"
         matches = re.findall(pattern, response, re.DOTALL | re.IGNORECASE)
@@ -173,40 +183,6 @@ class Player:
                 return None
         
         return result
-    
-    def _convert_proposals_and_reasons_to_vote_prompt(self, proposal_dicts: List[Dict]):
-        s = f"Now, it's time for you to Choose from {len(proposal_dicts)} players to vote. Here is the number of these players and an analysis and imagination about what could happen after you vote for each of these players.\n"
-        for i, pd in enumerate(proposal_dicts):
-            target = pd["target"]
-            imagination = pd["imagination"]
-            s += f"Case {i}: Vote for Player {target}. What could happen is: {imagination}\n"
-        return s
-    
-    
-    def _get_proposals_from_response_VoteThreeStep(self, response):
-        # Regex to capture the first number after 'Firstly' and 'Secondly'
-        first_number_pattern = r'Firstly.*?(\d+)'
-        second_number_pattern = r'Secondly.*?(\d+)'
-        
-        # Regex to capture the reason after 'the reason is'
-        first_reason_pattern = r'Firstly.*?reason is:? (.*?)\n'
-        second_reason_pattern = r'Secondly.*?reason is:? (.*)'
-        
-        # Find the first player number and reason
-        first_player_match = re.search(first_number_pattern, response)
-        first_reason_match = re.search(first_reason_pattern, response, re.DOTALL)
-        
-        # Find the second player number and reason
-        second_player_match = re.search(second_number_pattern, response)
-        second_reason_match = re.search(second_reason_pattern, response, re.DOTALL)
-        
-        # Extract data or set to None if not found
-        first_player = int(first_player_match.group(1)) if first_player_match else None
-        first_reason = first_reason_match.group(1).strip() if first_reason_match else None
-        second_player = int(second_player_match.group(1)) if second_player_match else None
-        second_reason = second_reason_match.group(1).strip() if second_reason_match else None
-        
-        return first_player, first_reason, second_player, second_reason
     
     
     def _get_imagination_from_response_VoteThreeStep(self, response):
