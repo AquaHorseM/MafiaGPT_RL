@@ -1,7 +1,0 @@
-[0] [I am a seer.] [10]
-[1] [My inquiry results are always correct.] [10]
-[2] [If a player A other than me claims to be a seer, A should be a werewolf.] [10]
-[3] [If a player A claims that I am a werewolf, A is likely a werewolf.] [9]
-[4] [If a player A claims he/she is a medic, and no one else claims to be the same role, everyone's belief that A is medic should be high but not necessarily 100%, as werewolves may lie about their role to cause confusion.] [8]
-[5] [If a player shares suspicions without clear evidence, treat the claim with skepticism but also consider the possibility of a villager sharing genuine concerns.] [7]
-[6] [Account for the medic's death when updating beliefs; if the medic dies without revealing themselves, werewolves may have had knowledge of their identity.] [5]

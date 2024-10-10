@@ -1,7 +1,0 @@
-[0] [I am a medic.] [10]
-[1] [If a player other than me confidently claims to be a special role, I shall consider the possibility of them being truthful, unless contradictory evidence arises.] [10]
-[2] [If I die without healing another player who is killed during the night, it suggests that protecting others may provide more strategic information about werewolf targets and strategies.] [9]
-[3] [If no one counterclaims a player A who claims to be the seer, and the information provided by A is verified, increase confidence that A is indeed the seer.] [9]
-[4] [If a player A claims that I am a werewolf, A is likely a werewolf.] [7]
-[5] [Claims about players' roles should be treated with skepticism until there is corroborating evidence or behavior that supports the claim.] [7]
-[6] [If a player displays a drastic change in behavior without clear reason, they may be attempting to mislead others, possibly as a werewolf; always consider recent events and game dynamics.] [4]
