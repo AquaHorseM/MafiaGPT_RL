@@ -62,7 +62,10 @@ def run_game(args,ver):
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     try:
-        result = subprocess.run(['python', 'run_new.py', '--num_games', str(args.num_game_per_iter), '--num_processes', str(args.num_processes), '--config_path', os.path.join(config_dir,"game_config_v"+int_to_str(ver)+".json")], check=True)
+        result = subprocess.run(['python', 'run_new.py', 
+                                 '--num_games', str(args.num_game_per_iter), 
+                                 '--num_processes', str(args.num_processes), 
+                                 '--config_path', os.path.join(config_dir,"game_config_v"+int_to_str(ver)+".json")], check=True)
     except subprocess.CalledProcessError as e:
         print("Error occurred while running version "+int_to_str(ver)+": {e}")
 
