@@ -31,7 +31,6 @@ def main():
 
     folder_name = args.new_folder_name
     os.makedirs(folder_name, exist_ok=False)
-    os.makedirs(folder_name, exist_ok=False)
     org_dir_name_without_path = os.path.basename(args.org_notes_dir)
     # copy the org_notes_dir into new_folder_name/notes/org_notes_dir.
     copy_directory_with_prompt(args.org_notes_dir, os.path.join(folder_name, 'notes', org_dir_name_without_path))
