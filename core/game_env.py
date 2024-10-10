@@ -2,8 +2,7 @@ from copy import deepcopy
 from functools import partial
 import pickle
 import random, logging
-from core.api import send_message
-import json, re, os, datetime
+import json, re, os
 import numpy as np
 from core.players.player import Player
 from core.event import Event, EventBook
