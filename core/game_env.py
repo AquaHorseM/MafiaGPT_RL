@@ -2,8 +2,7 @@ from copy import deepcopy
 from functools import partial
 import pickle
 import random, logging
-from core.api import send_message
-import json, re, os, datetime
+import json, re, os
 import numpy as np
 from core.players.player import Player
 from core.event import Event, EventBook
@@ -596,6 +595,8 @@ class WerewolfGameEnv:
         if not self.data:
             self.logger.warning("No data to store! Skipped!")
             return
+        dir_path = os.path.dirname(path)
+        os.makedirs(dir_path, exist_ok=True)
         with open(path, "wb") as file:
             pickle.dump(self.data, file)
         self.logger.info(f"Data stored successfully to {path}")

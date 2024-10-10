@@ -25,7 +25,7 @@ def load_from_backup(role: str, note_type: str, from_init = False) -> None:
         print(f"Initial note does not exist at {init_note_path}. No changes made.")
     
 parser = ArgumentParser()
-parser.add_argument("-from-init", default=False, action="store_true")
+parser.add_argument("--from-init", default=False, action="store_true")
 
 roles = ["werewolf", "medic", "seer", "villager"]
 note_types = ["belief", "policy"]
