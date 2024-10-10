@@ -8,3 +8,8 @@ message_input_history_backup.txt
 .history/
 temp_data/
 sjz*
+.sjz*
+.shijz*
+data_v0/
+data_v1/
+records/
