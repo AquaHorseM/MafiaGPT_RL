@@ -27,6 +27,7 @@ def visualize_one_pickle(pickle_path, json_path):
         content = results[i][7:] if results[i].startswith("Event: ") else results[i]
         unimportance = unimportant_level(content)
         results[i] = (1+unimportance)*'    '  + content
+    results = ['    '  + 'Preliminaries.'] + results
     # json.dump(results, open(json_path, 'w'), indent=4)
     data = results
     output_lines = []
@@ -50,5 +51,5 @@ def visualize_one_pickle(pickle_path, json_path):
             file.write(indented_line + '\n')
         file.write(']')
 if __name__ == '__main__':
-    visualize_one_pickle(r'E:\wolfGPT\MafiaGPT_RL\shijz_test_02\data\data_v7\game_4_data.pkl', 'a.json')
+    visualize_one_pickle(r'E:\wolfGPT\MafiaGPT_RL\shijz07_iter02_game01.pkl', 'a.json')
             

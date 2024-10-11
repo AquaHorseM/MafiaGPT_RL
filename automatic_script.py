@@ -106,8 +106,8 @@ def run_reflex(args, ver):
         print("Error occurred while reflexing version "+int_to_str(ver)+": {e}")
 
 def one_iter(args, ver=0):
-    # if ver > 0:
-    run_game(args,ver)
+    if (not args.skip_zero) or (ver > 0):
+        run_game(args,ver)
     time.sleep(1)
     create_game_config(args,ver)
     copy_files(args,ver)
@@ -132,6 +132,7 @@ if __name__ == "__main__":
     parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_02/prompt_logging')
     parser.add_argument('--num_game_per_iter', type=int, default=5)
     parser.add_argument('--num_processes', type=int, default=5)
+    parser.add_argument('--skip_zero', action='store_true')
     
     args = parser.parse_args()
     
