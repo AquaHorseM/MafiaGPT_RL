@@ -106,6 +106,7 @@ def run_reflex(args, ver):
         print("Error occurred while reflexing version "+int_to_str(ver)+": {e}")
 
 def one_iter(args, ver=0):
+    # if ver > 0:
     run_game(args,ver)
     time.sleep(1)
     create_game_config(args,ver)
@@ -125,10 +126,10 @@ def main_loop(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--max_iter', type=int, default=10)
-    parser.add_argument('--data_dir', type=str, default='./shijz_test_06/data')
-    parser.add_argument('--config_dir', type=str, default='./shijz_test_06/configs')
-    parser.add_argument('--notes_dir', type=str, default='./shijz_test_06/notes')
-    parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_06/prompt_logging')
+    parser.add_argument('--data_dir', type=str, default='./shijz_test_02/data')
+    parser.add_argument('--config_dir', type=str, default='./shijz_test_02/configs')
+    parser.add_argument('--notes_dir', type=str, default='./shijz_test_02/notes')
+    parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_02/prompt_logging')
     parser.add_argument('--num_game_per_iter', type=int, default=5)
     parser.add_argument('--num_processes', type=int, default=5)
     
