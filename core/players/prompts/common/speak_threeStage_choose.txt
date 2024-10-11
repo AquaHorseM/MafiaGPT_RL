@@ -19,13 +19,11 @@ Now, it's your time to decide in which way you should speak. Here are some possi
 2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf, including yourself. 
 However, there are multiple ways to be deceptive (Which role you are pretending to be? Which information you are hiding? Which false information you are giving?) Try to be more accurate in your proposal.
 
-Now, you have two choices, as well as your imagination about what could happen after that:
+Now, you have {proposal_num} choices, as well as your imaginations about what could happen after them:
 
-Proposal1: {current_propose_0}. Your analysis and imagination about what may happen: {current_propose_0_imagination}.
+{proposal_infos}
 
-Proposal2: {current_propose_1}. Your analysis and imagination about what may happen: {current_propose_1_imagination}.
-
-Now, you have to choose between these two proposals according to your analysis and imagination about what could happen, and give a final speech. or 
+Now, you have to choose between these {proposal_num} proposals according to your analysis and imagination about what could happen, and give a final speech. or 
 Your final speech should be brief and precise. You should focus on facts and your own opinions to specific players or strategies. You SHOULD use as LESS descriptiveemotional words as possible. Statements should be made with evidence to support them: try to find your evidence in previous events or speeches instead of your own belief (as this is not convincing for other players).  You are encouraged to mention these events or speeches directly. 
 Speeches like 'we should stay cautious' or other common knowledge stuffs should NOT exist in your speech. Overall, make your speech AS SHORT AS POSSIBLE, but make sure that your speech is clear enough to express your opinion and evidences.
 You should NOT directly mention your rules (as they are not visible to other players) or cite their ids in your speech.
