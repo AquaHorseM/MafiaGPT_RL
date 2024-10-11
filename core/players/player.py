@@ -70,7 +70,7 @@ class Player:
 
                 
                         
-    def __init__(self, id, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir = None, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
+    def __init__(self, id, game_id, proposal_num, global_info, private_info, prompt_dir_path, common_prompt_dir = None, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
         self.is_alive = True
         self.id = id
         self.game_id = game_id
@@ -88,6 +88,7 @@ class Player:
         self.player_num = global_info["player_num"]
         self.hstate = self.HiddenState(global_info["player_num"], self.id)
         self.hstate.set_role(self.id, self.get_role())
+        self.proposal_num = proposal_num
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
         self.draft_dict["speak"] = list()
@@ -125,7 +126,7 @@ class Player:
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
             "{hstate}": str(self.hstate),
-            "{proposal_num}": str(2) #!
+            "{proposal_num}": str(self.proposal_num) #!
         }
             
 

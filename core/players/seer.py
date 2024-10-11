@@ -5,8 +5,8 @@ import os
 import re
 
 class SeerPlayer(Player):
-    def __init__(self, id, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir_path = None, openai_client = None, reflex_note_path_belief = None, reflex_note_path_policy = None):
-        super().__init__(id, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
+    def __init__(self, id, proposal_num, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir_path = None, openai_client = None, reflex_note_path_belief = None, reflex_note_path_policy = None):
+        super().__init__(id, game_id, proposal_num, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
         self.labels = ["all", "seer"]
         self.role = "seer"
         if "known_roles" not in self.private_info:

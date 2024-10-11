@@ -149,6 +149,7 @@ class WerewolfGameEnv:
         }
         for i, num in enumerate(shuffled_nums):
             role = player_configs[num]["role"].lower()
+            proposal_num = player_configs[num]["proposal_num"]
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
             if player_type == "reflex":
@@ -159,10 +160,10 @@ class WerewolfGameEnv:
                 reflex_note_belief_path = player_configs[num].get("reflex_note_belief_path")
                 reflex_note_policy_path = player_configs[num].get("reflex_note_policy_path")
                 if reflex_note_belief_path is None or reflex_note_policy_path is None:
-                    self.all_players.append(switcher_players[player_type][role](i, self.id, init_global_info, switcher_private_info[role], prompt_dir_path, \
+                    self.all_players.append(switcher_players[player_type][role](i, self.id, proposal_num, init_global_info, switcher_private_info[role], prompt_dir_path, \
                         common_prompt_dir_path, self.openai_client))
                 else:
-                    self.all_players.append(switcher_players[player_type][role](i, self.id, init_global_info, switcher_private_info[role], prompt_dir_path, \
+                    self.all_players.append(switcher_players[player_type][role](i, self.id, proposal_num, init_global_info, switcher_private_info[role], prompt_dir_path, \
                         common_prompt_dir_path, self.openai_client, reflex_note_belief_path, reflex_note_policy_path))
             else:
                 self.all_players.append(switcher_players[player_type][role](role=role, id=i))
@@ -625,15 +626,14 @@ class WerewolfGameEnv:
         except Exception as e:
             print("Failed to save game record.")
             print(f"Error: {e}")
-        if 1: # self.train:
-            #! temparirly random
-            for i in range(self.retry_num):
-                self.random_retry_one_node(retry_steps = 1)
-                self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
-            self.store_data(self.data_path)
-            if self.train:
-                self.logger.info("ALl players reflexing")
-                self.all_players_reflex()
+        #! temparirly random
+        for i in range(self.retry_num):
+            self.random_retry_one_node(retry_steps = 1)
+            self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
+        self.store_data(self.data_path)
+        if self.train:
+            self.logger.info("ALl players reflexing")
+            self.all_players_reflex()
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
         if self.game_status["cur_stage"] == "night":
