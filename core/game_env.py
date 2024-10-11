@@ -625,14 +625,15 @@ class WerewolfGameEnv:
         except Exception as e:
             print("Failed to save game record.")
             print(f"Error: {e}")
-        if self.train:
+        if 1: # self.train:
             #! temparirly random
             for i in range(self.retry_num):
                 self.random_retry_one_node(retry_steps = 1)
                 self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
             self.store_data(self.data_path)
-            self.logger.info("ALl players reflexing")
-            self.all_players_reflex()
+            if self.train:
+                self.logger.info("ALl players reflexing")
+                self.all_players_reflex()
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
         if self.game_status["cur_stage"] == "night":

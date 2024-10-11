@@ -12,11 +12,7 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 {reflex_note_policy}
 
 2.Todo&Requirements:
-Now, it's time for you to choose a player to kill. These are the previous advices from other werewolves:
-
-{previous_advices}
-
-Now, please analyze and imagine what could happen after you choose to kill player {current_propose}.
+Now, it's time for you to choose a player to kill. Please analyze and imagine what could happen after you choose to kill player {current_propose}.
 
 Your answer should be in the format of:
 
