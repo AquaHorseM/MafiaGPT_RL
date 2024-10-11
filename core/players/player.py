@@ -90,6 +90,7 @@ class Player:
         self.hstate = self.HiddenState(global_info["player_num"], self.id)
         self.hstate.set_role(self.id, self.get_role())
         self.proposal_num = player_config.get("proposal_num", 2)
+        self.sample_type = player_config.get("sample_type", "heuristic")
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
         self.draft_dict["speak"] = list()
@@ -458,7 +459,8 @@ class Player:
             return total_score
 
     
-    def reflex(self, data : DataTree, sample_num = 20, sample_type = "heuristic"):
+    def reflex(self, data : DataTree, sample_num = 20):
+        sample_type = self.sample_type
         reflex_data_belief = data.sample(self.id, sample_num = 1000)
         reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = 1000)
         self.logger.info(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")

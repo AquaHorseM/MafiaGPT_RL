@@ -13,7 +13,8 @@
             "reflex_note_policy_path": "core/notes_v1/werewolf/werewolf_reflex_note_policy.txt",
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/werewolf",
-            "proposal_num": 3
+            "proposal_num": 3,
+            "sample_type": "heuristic"
         },
         {
             "role": "werewolf",
@@ -22,7 +23,8 @@
             "reflex_note_policy_path": "core/notes_v1/werewolf/werewolf_reflex_note_policy.txt",
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/werewolf",
-            "proposal_num": 3
+            "proposal_num": 3,
+            "sample_type": "heuristic"
         },
         {
             "role": "villager",
@@ -31,7 +33,8 @@
             "reflex_note_policy_path": "core/notes_v1/villager/villager_reflex_note_policy.txt",
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/villager",
-            "proposal_num": 3
+            "proposal_num": 3,
+            "sample_type": "heuristic"
         },
         {
             "role": "villager",
@@ -40,7 +43,8 @@
             "reflex_note_policy_path": "core/notes_v1/villager/villager_reflex_note_policy.txt",
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/villager",
-            "proposal_num": 3
+            "proposal_num": 3,
+            "sample_type": "heuristic"
         },
         {
             "role": "villager",
@@ -49,7 +53,8 @@
             "reflex_note_policy_path": "core/notes_v1/villager/villager_reflex_note_policy.txt",
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/villager",
-            "proposal_num": 3
+            "proposal_num": 3,
+            "sample_type": "heuristic"
         },
         {
             "role": "medic",
@@ -58,7 +63,8 @@
             "reflex_note_policy_path": "core/notes_v1/medic/medic_reflex_note_policy.txt",
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/medic",
-            "proposal_num": 3
+            "proposal_num": 3,
+            "sample_type": "heuristic"
         },
         {
             "role": "seer",
@@ -67,7 +73,8 @@
             "reflex_note_policy_path": "core/notes_v1/seer/seer_reflex_note_policy.txt",
             "common_prompt_dir_path": "core/players/prompts/common",
             "prompt_dir_path": "core/players/prompts/seer",
-            "proposal_num": 3
+            "proposal_num": 3,
+            "sample_type": "heuristic"
         }
     ],
     "extra_sim_nodes": 5
