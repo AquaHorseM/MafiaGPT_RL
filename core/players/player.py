@@ -233,7 +233,7 @@ class Player:
         if vote in proposals:
             self.draft_dict["vote"][-1]["final_proposal"] = proposals.index(vote)
         else:
-            self.logger.warning("Final vote not in proposals!")
+            self.logger.warning(f"Final vote {vote} not in proposals {proposals}!")
             self.draft_dict["vote"][-1]["final_proposal"] = 0
         return vote, response_and_reason
 
@@ -638,7 +638,7 @@ class Player:
         }
 
         
-    def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
+    def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict, vis_prev_events = True) -> str:
         if len(reflex_info["trajs"]) > 1:
             weights = [self.get_traj_importance_for_policy(traj, reflex_info["hstate"], reflex_info["alive_players"]) for traj in reflex_info["trajs"]]
             traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]
@@ -648,10 +648,18 @@ class Player:
         s += "\nThese are the ACTUAL ROLES of the players.\n\n"
         for i in range(self.player_num):
             s += f"Player {i} is {reflex_info['roles'][i]}\n"
-        s += "\nThese are ALL events happened previously that you observed:\n\n"
-        for e in reflex_info["visible_prev_events"]:
-            s += e
-            s += '\n'
+        if vis_prev_events:
+            s += "\nThese are ALL events happened previously that you observed:\n\n"
+            for e in reflex_info["visible_prev_events"]:
+                s += e
+                s += '\n'
+        s += "\nThese are the beliefs of all other players.\n\n"
+        for i in range(self.player_num):
+            if i == self.id:
+                continue
+            s += f"Player {i} believes:\n"
+            for j in range(self.player_num):
+                s += f"Player {j} is {reflex_info["hstate"][i][j]["role"]} with {reflex_info["hstate"][i][j]["confidence"]} confidence.\n"
         action_type = traj["actions"][self.id]["action"]
         s += f"\n Your next action should be {action_type}.\n"
         s += self.convert_draft_to_prompt(traj["draft"])
