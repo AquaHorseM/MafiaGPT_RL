@@ -70,25 +70,26 @@ class Player:
 
                 
                         
-    def __init__(self, id, game_id, proposal_num, global_info, private_info, prompt_dir_path, common_prompt_dir = None, openai_client = None, reflex_note_path_belief=None, reflex_note_path_policy=None):
+    def __init__(self, id, game_id, player_config, global_info, private_info, openai_client = None):
         self.is_alive = True
         self.id = id
         self.game_id = game_id
         self.labels = ["all"]
         self.tick = 0
         self.event_book = EventBook()
-        self.reflex_tuple = (None, None, None)
-        self.prompt_dir_path = prompt_dir_path
-        self.common_prompt_dir = common_prompt_dir
+        self.prompt_dir_path = player_config.get("prompt_dir_path")
+        assert self.prompt_dir_path is not None and os.path.exists(self.prompt_dir_path), f"Prompt dir path {self.prompt_dir_path} invalid or does not exist!"
+        self.common_prompt_dir = player_config.get("common_prompt_dir_path")
+        assert self.common_prompt_dir_path is not None and os.path.exists(self.common_prompt_dir_path), f"Prompt dir path {self.common_prompt_dir_path} invalid or does not exist!"
         self.openai_client = openai_client
-        self.reflex_note_path_belief = reflex_note_path_belief if reflex_note_path_belief is not None else os.path.join(prompt_dir_path, "reflex_note_belief.txt")
-        self.reflex_note_path_policy = reflex_note_path_policy if reflex_note_path_policy is not None else os.path.join(prompt_dir_path, "reflex_note_policy.txt")
+        self.reflex_note_path_belief = player_config.get("reflex_note_belief_path", os.path.join(self.prompt_dir_path, "reflex_note_belief.txt"))
+        self.reflex_note_path_policy = player_config.get("reflex_note_policy_path", os.path.join(self.prompt_dir_path, "reflex_note_policy.txt"))
         self.global_info = deepcopy(global_info)
         self.private_info = deepcopy(private_info)
         self.player_num = global_info["player_num"]
         self.hstate = self.HiddenState(global_info["player_num"], self.id)
         self.hstate.set_role(self.id, self.get_role())
-        self.proposal_num = proposal_num
+        self.proposal_num = player_config.get("proposal_num", 2)
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
         self.draft_dict["speak"] = list()
@@ -441,19 +442,23 @@ class Player:
         total_score /= np.sqrt(len(reflex_info["trajs"]))
         return total_score
             
-    def get_node_importance_for_belief(self, state, prev_events, trajs):
+    def get_node_importance_for_belief(self, state, prev_events, trajs, sample_type: str = "heuristic"):
         if len(trajs) == 0:
             return 0.0001
-        reflex_info = self.extract_reflex_info(state, prev_events, trajs)
-        cur_score = self.get_hstate_score_for_belief(reflex_info["hstate"])
-        total_score = 0.5
-        for traj in reflex_info["trajs"]:
-            traj_score = self.get_hstate_score_for_belief(traj["outcome_hstate"])
-            total_score += (cur_score - traj_score) ** 2
-        total_score /= len(reflex_info["trajs"])
-        return total_score
+        if sample_type == "uniform":
+            return 1
+        elif sample_type == "heuristic":
+            reflex_info = self.extract_reflex_info(state, prev_events, trajs)
+            cur_score = self.get_hstate_score_for_belief(reflex_info["hstate"])
+            total_score = 0.5
+            for traj in reflex_info["trajs"]:
+                traj_score = self.get_hstate_score_for_belief(traj["outcome_hstate"])
+                total_score += (cur_score - traj_score) ** 2
+            total_score /= len(reflex_info["trajs"])
+            return total_score
+
     
-    def reflex(self, data : DataTree, sample_num = 5):
+    def reflex(self, data : DataTree, sample_num = 20, sample_type = "heuristic"):
         reflex_data_belief = data.sample(self.id, sample_num = 1000)
         reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = 1000)
         self.logger.info(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
@@ -467,12 +472,12 @@ class Player:
         reflex_data_belief = [get_elems(d) for d in reflex_data_belief]
         reflex_data_belief = [i for i in reflex_data_belief if i is not None]
         if len(reflex_data_belief) > sample_num:
-            weights_belief = [self.get_node_importance_for_belief(elem[0], elem[1], elem[2]) for elem in reflex_data_belief]
+            weights_belief = [self.get_node_importance_for_belief(elem[0], elem[1], elem[2], sample_type) for elem in reflex_data_belief]
             reflex_data_belief = random.choices(reflex_data_belief, weights_belief, k=sample_num)
         reflex_data_policy = [get_elems(d) for d in reflex_data_policy]
         reflex_data_policy = [i for i in reflex_data_policy if i is not None]
         if len(reflex_data_policy) > sample_num:
-            weights_policy = [self.get_node_importance_for_policy(elem[0], elem[1], elem[2]) for elem in reflex_data_policy]
+            weights_policy = [self.get_node_importance_for_policy(elem[0], elem[1], elem[2], sample_type) for elem in reflex_data_policy]
             reflex_data_policy = random.choices(reflex_data_policy, weights_policy, k=sample_num)
         self.logger.info(f"Data ready for reflex!")
         for state, prev_events, trajs in reflex_data_belief:

@@ -5,9 +5,8 @@ import os
 import re
 
 class WerewolfPlayer(Player):
-    def __init__(self, id, game_id, proposal_num, global_info, private_info, prompt_dir_path, common_prompt_dir_path = None, openai_client = None, reflex_note_path_belief = None, reflex_note_path_policy = None):
-        super().__init__(id, game_id, proposal_num, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
-        self.labels = ["all", "werewolf"]
+    def __init__(self, id, game_id, player_config, global_info, private_info, openai_client = None):
+        super().__init__(id, game_id, player_config, global_info, private_info, openai_client)
         self.role = "werewolf"
         for wid in self.private_info["werewolf_ids"]:
             if wid != self.id:

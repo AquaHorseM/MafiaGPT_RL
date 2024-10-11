@@ -173,18 +173,7 @@ class WerewolfGameEnv:
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
             if player_type == "reflex":
-                prompt_dir_path = player_configs[num].get("prompt_dir_path")
-                common_prompt_dir_path = player_configs[num].get("common_prompt_dir_path")
-                assert os.path.exists(prompt_dir_path), f"prompt directory {prompt_dir_path} not found"
-                assert os.path.exists(common_prompt_dir_path), f"common prompt directory {common_prompt_dir_path} not found"
-                reflex_note_belief_path = player_configs[num].get("reflex_note_belief_path")
-                reflex_note_policy_path = player_configs[num].get("reflex_note_policy_path")
-                if reflex_note_belief_path is None or reflex_note_policy_path is None:
-                    self.all_players.append(switcher_players[player_type][role](i, self.id, proposal_num, init_global_info, switcher_private_info[role], prompt_dir_path, \
-                        common_prompt_dir_path, self.openai_client))
-                else:
-                    self.all_players.append(switcher_players[player_type][role](i, self.id, proposal_num, init_global_info, switcher_private_info[role], prompt_dir_path, \
-                        common_prompt_dir_path, self.openai_client, reflex_note_belief_path, reflex_note_policy_path))
+                self.all_players.append(switcher_players[player_type][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))
             else:
                 self.all_players.append(switcher_players[player_type][role](role=role, id=i))
                 if role == "werewolf":
@@ -597,7 +586,7 @@ class WerewolfGameEnv:
         self.data.add_edge_and_node(
             events = self.temp_events,
             actions = self.latest_actions,
-            state = self.get_state(),
+            state = deepcopy(self.get_state()),
             drafts = deepcopy(self.latest_drafts),
             is_game_end = is_game_end
         )
