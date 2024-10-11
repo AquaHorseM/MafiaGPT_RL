@@ -167,15 +167,16 @@ class Player:
             try:
                 proposal_id = int(match[0])  # Ensure the proposal ID is an integer
                 proposal_text = match[1].strip()
+                proposal_target = get_target_from_response(proposal_text)
                 reason_text = match[2].strip()
                 
                 if proposal_id != i+1:
                     return None
                 
                 # Only add to result if both proposal and reason are non-empty
-                if proposal_text and reason_text:
+                if proposal_target and reason_text:
                     result.append({
-                        "target": proposal_text, 
+                        "target": proposal_target, 
                         "reason": reason_text
                     })
             except ValueError:
