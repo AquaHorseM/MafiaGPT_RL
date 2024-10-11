@@ -154,7 +154,15 @@ class Player:
         for i, pd in enumerate(proposal_dicts):
             target = pd["target"]
             imagination = pd["imagination"]
-            s += f"Case {i}: Vote for Player {target}. What could happen is: {imagination}\n"
+            s += f"Case {i+1}: Vote for Player {target}. What could happen is: {imagination}\n"
+        return s
+    
+    def _convert_proposals_to_speech_prompt(self, proposal_dicts: List[Dict]):
+        s = ""
+        for i, pd in enumerate(proposal_dicts):
+            speech = pd["speech"]
+            imagination = pd["imagination"]
+            s += f"Case {i+1}: {speech}. What could happen is: {imagination}\n"
         return s
     
     
@@ -263,15 +271,23 @@ class Player:
     
     
     def _get_proposals_from_response_SpeakThreeStep(self, response):
-        first_pattern = r"First Proposal:(.*)\n"
-        second_pattern = r"Second Proposal:(.*)"
-        first_match = re.search(first_pattern, response)
-        second_match = re.search(second_pattern, response)
+        # Regular expression to match proposals more flexibly
+        pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)(?=\s*\.?\s*Proposal|$)"
+        matches = re.findall(pattern, response, re.DOTALL | re.IGNORECASE)
         
-        first_proposal = first_match.group(1) if first_match else None
-        second_proposal = second_match.group(1) if second_match else None
+        result = []
+        for match in matches:
+            try:
+                proposal_id = int(match[0])  # Ensure the proposal ID is an integer
+                proposal_text = match[1].strip()
+                
+                # Only add to result if proposal text is non-empty
+                if proposal_text:
+                    result.append(proposal_text)
+            except ValueError:
+                return None
         
-        return first_proposal, second_proposal
+        return result
         
     def _get_imagination_from_response_SpeakThreeStep(self, response):
         #format unifying; no need to do anything here
@@ -287,19 +303,24 @@ class Player:
     
     def _speak_multiagent(self):
         self.draft_dict["speak"].append(dict())
-        first_speak, second_speak = None, None
+        proposals = None
         count = 0
-        while ((first_speak is None) or (second_speak is None)) and (count < 3):
+        
+        # Attempt to get proposals within the allowed attempts
+        while (proposals is None) and (count < 3):
             count += 1
             response = self.get_response("speak_threeStage_propose")
-            first_speak, second_speak = self._get_proposals_from_response_SpeakThreeStep(response)
-        assert not ((first_speak is None) or (second_speak is None))
+            proposals = self._get_proposals_from_response_SpeakThreeStep(response)
         
-        proposals = [first_speak, second_speak]
+        # Ensure proposals are retrieved
+        assert proposals is not None
         
         self.draft_dict["speak"][-1]["speak_proposal"] = proposals
-        self.draft_dict["speak"][-1]["proposal_and_imaginations"] = list()
-        result_list = list()
+        self.draft_dict["speak"][-1]["proposal_and_imaginations"] = []
+        result_list = []
+        proposal_dicts = []
+
+        # Get imaginations for each proposal
         for propose in proposals:
             replacements = self.get_replacements()
             replacements["{current_propose}"] = str(propose)
@@ -308,18 +329,22 @@ class Player:
             results = self._get_imagination_from_response_SpeakThreeStep(response)
             result_list.append(results)
             self.draft_dict["speak"][-1]["proposal_and_imaginations"].append(response)
-        
+            proposal_dicts.append({
+                "speech": propose,
+                "imagination": results
+            })
+
+        # Prepare replacements for choosing the final proposal
         replacements = self.get_replacements()
-        replacements["{current_propose_0}"] = str(proposals[0])
-        replacements["{current_propose_1}"] = str(proposals[1])
-        replacements["{current_propose_0_imagination}"] = result_list[0]
-        replacements["{current_propose_1_imagination}"] = result_list[1]
-        
+        replacements.update({
+            "{proposal_infos}": self._convert_proposals_to_speech_prompt(proposal_dicts)
+        })
+
         response_and_reason = self.get_response("speak_threeStage_choose", replacements)
         proposal_id, speak = self._get_final_choice_from_response_SpokeThreeStep(response_and_reason)
-        
+
         self.draft_dict["speak"][-1]["final_speech"] = speak
-        self.draft_dict["speak"][-1]["final_proposal"] = int(proposal_id)
+        self.draft_dict["speak"][-1]["final_proposal"] = int(proposal_id) - 1
         return speak
 
     def _speak(self, use_multiagent = True):
@@ -596,8 +621,6 @@ class Player:
         draft["final_proposal"] = int(draft["final_proposal"])
         if len(draft["speak_proposal"]) <= 1:
             return None
-        if len(draft["speak_proposal"]) == 2:
-            new_proposal_id = 2 - draft["final_proposal"] #! notice this 2-
         else:
             ids = list(range(len(draft["speak_proposal"])))
             ids.pop(draft["final_proposal"])
