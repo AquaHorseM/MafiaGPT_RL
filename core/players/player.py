@@ -125,6 +125,7 @@ class Player:
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
             "{hstate}": str(self.hstate),
+            "{proposal_num}": str(2) #!
         }
             
 
@@ -148,31 +149,42 @@ class Player:
         
     
     
+    def _convert_proposals_and_reasons_to_vote_prompt(self, proposal_dicts: List[Dict]):
+        s = ""
+        for i, pd in enumerate(proposal_dicts):
+            target = pd["target"]
+            imagination = pd["imagination"]
+            s += f"Case {i}: Vote for Player {target}. What could happen is: {imagination}\n"
+        return s
+    
     
     def _get_proposals_from_response_VoteThreeStep(self, response):
-        # Regex to capture the first number after 'Firstly' and 'Secondly'
-        first_number_pattern = r'Firstly.*?(\d+)'
-        second_number_pattern = r'Secondly.*?(\d+)'
+        # Regular expression to match proposals and reasons more flexibly
+        pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)(?=\s*\.?\s*Proposal|$)"
+        matches = re.findall(pattern, response, re.DOTALL | re.IGNORECASE)
         
-        # Regex to capture the reason after 'the reason is'
-        first_reason_pattern = r'Firstly.*?reason is:? (.*?)\n'
-        second_reason_pattern = r'Secondly.*?reason is:? (.*)'
+        result = []
+        for i, match in enumerate(matches):
+            try:
+                proposal_id = int(match[0])  # Ensure the proposal ID is an integer
+                proposal_text = match[1].strip()
+                proposal_target = get_target_from_response(proposal_text)
+                reason_text = match[2].strip()
+                
+                if proposal_id != i+1:
+                    return None
+                
+                # Only add to result if both proposal and reason are non-empty
+                if proposal_target and reason_text:
+                    result.append({
+                        "target": proposal_target, 
+                        "reason": reason_text
+                    })
+            except ValueError:
+                # Ignore this match if the proposal ID is not an integer
+                return None
         
-        # Find the first player number and reason
-        first_player_match = re.search(first_number_pattern, response)
-        first_reason_match = re.search(first_reason_pattern, response, re.DOTALL)
-        
-        # Find the second player number and reason
-        second_player_match = re.search(second_number_pattern, response)
-        second_reason_match = re.search(second_reason_pattern, response, re.DOTALL)
-        
-        # Extract data or set to None if not found
-        first_player = int(first_player_match.group(1)) if first_player_match else None
-        first_reason = first_reason_match.group(1).strip() if first_reason_match else None
-        second_player = int(second_player_match.group(1)) if second_player_match else None
-        second_reason = second_reason_match.group(1).strip() if second_reason_match else None
-        
-        return first_player, first_reason, second_player, second_reason
+        return result
     
     
     def _get_imagination_from_response_VoteThreeStep(self, response):
@@ -186,46 +198,45 @@ class Player:
     
     def _vote_multiagent(self):
         self.draft_dict["vote"].append(dict())
-        first_player, first_reason, second_player, second_reason = None, None, None, None
+        proposal_dicts = None
         count = 0
-        while ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None)) and (count < 3):
+        while (proposal_dicts is None) and (count < 3):
             count += 1
             response = self.get_response("vote_threeStage_propose")
-            first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_VoteThreeStep(response)
-        assert not ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None))
-        
-        proposals = [first_player, second_player]
-        
+            proposal_dicts = self._get_proposals_from_response_VoteThreeStep(response)
+        assert proposal_dicts is not None
+        for proposal_dict in proposal_dicts:
+            target = proposal_dict["target"]
+            reason = proposal_dict["reason"]
+            self.logger.debug(f"Target: {target}. Reason: {reason}.")
+        proposals = [elem["target"] for elem in proposal_dicts]
         
         self.draft_dict["vote"][-1]["vote_proposal"] = proposals
-        self.draft_dict["vote"][-1]["proposal_and_imaginations"] = list()
-        result_list = list()
-        for propose in proposals:
+        self.draft_dict["vote"][-1]["proposal_and_imaginations"] = []
+        for proposal_id in range(len(proposals)):
             replacements = self.get_replacements()
-            replacements["{current_propose}"] = str(propose)
+            replacements["{current_propose}"] = str(proposals[proposal_id])
             response = self.get_response("vote_threeStage_imagine", replacements)
             
             results = self._get_imagination_from_response_VoteThreeStep(response)
-            result_list.append(results)
+            proposal_dicts[proposal_id]["imagination"] = results
             self.draft_dict["vote"][-1]["proposal_and_imaginations"].append(response)
         
         replacements = self.get_replacements()
-        replacements["{current_propose_0}"] = str(proposals[0])
-        replacements["{current_propose_1}"] = str(proposals[1])
-        replacements["{current_propose_0_imagination}"] = result_list[0]
-        replacements["{current_propose_1_imagination}"] = result_list[1]
-        
-        
+        replacements.update({
+            "{proposal_infos}": self._convert_proposals_and_reasons_to_vote_prompt(proposal_dicts)
+        })
         
         response_and_reason = self.get_response("vote_threeStage_choose", replacements)
         vote = self._get_final_choice_from_response_VoteThreeStep(response_and_reason)
         
         self.draft_dict["vote"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        if vote == proposals[0]:
-            self.draft_dict["vote"][-1]["final_proposal"] = 0
+        if vote in proposals:
+            self.draft_dict["vote"][-1]["final_proposal"] = proposals.index(vote)
         else:
-            self.draft_dict["vote"][-1]["final_proposal"] = 1
-        return vote, response
+            self.logger.warning(f"Final vote {vote} not in proposals {proposals}!")
+            self.draft_dict["vote"][-1]["final_proposal"] = 0
+        return vote, response_and_reason
 
     def _vote_org(self):
         response = self.get_response("vote")
@@ -613,8 +624,6 @@ class Player:
     def _vote_with_other_proposal(self, draft: Dict):
         if len(draft["vote_proposal"]) <= 1:
             new_proposal_id = draft["final_proposal"]
-        elif len(draft["vote_proposal"]) == 2:
-            new_proposal_id = 1 - draft["final_proposal"] #! temporarily 0 & 1
         else:
             ids = list(range(len(draft["vote_proposal"])))
             ids.pop(draft["final_proposal"])
@@ -630,7 +639,18 @@ class Player:
         }
 
         
-    def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict) -> str:
+    def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict, vis_prev_events = True) -> str:
+        def show_all_other_beliefs():
+            s = ""
+            for i in range(self.player_num):
+                if i == self.id:
+                    continue
+                s += f"Player {i} believes:\n"
+                for j in range(self.player_num):
+                    if j == i:
+                        continue
+                    s += f"Player {j} is {reflex_info['hstate'][i][j]['role']} with {reflex_info['hstate'][i][j]['confidence']} confidence.\n"
+            return s
         if len(reflex_info["trajs"]) > 1:
             weights = [self.get_traj_importance_for_policy(traj, reflex_info["hstate"], reflex_info["alive_players"]) for traj in reflex_info["trajs"]]
             traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]
@@ -640,15 +660,22 @@ class Player:
         s += "\nThese are the ACTUAL ROLES of the players.\n\n"
         for i in range(self.player_num):
             s += f"Player {i} is {reflex_info['roles'][i]}\n"
-        s += "\nThese are ALL events happened previously that you observed:\n\n"
-        for e in reflex_info["visible_prev_events"]:
-            s += e
-            s += '\n'
+        if vis_prev_events:
+            s += "\nThese are ALL events happened previously that you observed:\n\n"
+            for e in reflex_info["visible_prev_events"]:
+                s += e
+                s += '\n'
+        s += "\nThese are the beliefs of all other players.\n\n"
+        s += show_all_other_beliefs()
         action_type = traj["actions"][self.id]["action"]
         s += f"\n Your next action should be {action_type}.\n"
         s += self.convert_draft_to_prompt(traj["draft"])
+        s += "\nThese are the beliefs of all other players after your action.\n\n"
+        s += show_all_other_beliefs()
+        '''
         s += "\n This is a summary of what happens after your final decided action:\n\n"
         s += self.summarize_events(traj["after_events"])
+        '''
         if len(reflex_info["trajs"]) > 1:
             other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
             other_draft = other_traj["draft"]
@@ -669,14 +696,11 @@ class Player:
                     #How can we compare them if we don't simulate the other traj to the end? 
                     #However is this really meaningful to simulate the other branch? When is it meaningful?
                 elif other_draft["cur_action"] == "vote":
-                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
-                        self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
-                        s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['final_proposal']}."
-                        s += f"\n\nYour vote, in this case, is: \"{other_draft['proposal_chosen_and_reasons']}\""
-                        s += "System automatically evaluates it as a potentially better speech than your previous speech."
-                    else:
-                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
-                        s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
+                    # if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
+                    #     self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
+                    s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['final_proposal']}.\n"
+                    s += "These are the beliefs of all other players after this action: \n\n"
+                    s += show_all_other_beliefs()                        
         return s
         
     

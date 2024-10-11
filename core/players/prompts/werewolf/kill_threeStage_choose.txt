@@ -11,17 +11,13 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 
 {reflex_note_policy}
 
-These are the previous advices from other werewolves:
-
-{previous_advices}
-
 Now, it's time for you to Choose from 2 players to kill. Here is the number of these two players and an analysis and imagination about what could happen after you vote for each of these players.
 
 Case A: Kill Player {current_propose_0}. What could happen is: {current_propose_0_imagination}
 
 Case B: Kill Player {current_propose_1}. What could happen is: {current_propose_1_imagination}
 
-Now, please choose to Kill one of these 2 players, and give yoru reason about why you would like to Kill this single player.
+Now, please choose to Kill one of these 2 players, and give your reason about why you would like to Kill this single player.
 
 Answer in the following format:
 
