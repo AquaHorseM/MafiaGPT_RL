@@ -106,8 +106,8 @@ def run_reflex(args, ver):
         print("Error occurred while reflexing version "+int_to_str(ver)+": {e}")
 
 def one_iter(args, ver=0):
-    if ver > 0:
-        run_game(args,ver)
+    # if ver > 0:
+    run_game(args,ver)
     time.sleep(1)
     create_game_config(args,ver)
     copy_files(args,ver)
