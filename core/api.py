@@ -77,6 +77,13 @@ def send_message(
     return response.choices[0].message.content
 
 def send_message_xsm(messages, agent_config = {}, client = None):
+    
+    if client is not None:
+        input_txt_path = client['input_txt_path']
+        output_txt_path = client['output_txt_path']
+    else:
+        input_txt_path = "message_input_history_backup.txt"
+        output_txt_path = "message_history_backup.txt"
     '''
     A flexible function to send messages to openai
     Messages should be a tuple or list of tuples
@@ -114,9 +121,9 @@ def send_message_xsm(messages, agent_config = {}, client = None):
     # returning the response as a string
     #! debug
     
-    with open("message_input_history_backup.txt", "a") as f:
+    with open(input_txt_path, "a") as f:
         f.write(f"{context}\n\n")
-    with open("message_history_backup.txt", "a") as f:
+    with open(output_txt_path, "a") as f:
         f.write(f"{response.choices[0].message.content}\n\n")
     return response.choices[0].message.content
 
