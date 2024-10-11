@@ -125,6 +125,7 @@ class Player:
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
             "{hstate}": str(self.hstate),
+            "{proposal_num}": 2 #!
         }
             
 
@@ -149,7 +150,7 @@ class Player:
     
     
     def _convert_proposals_and_reasons_to_vote_prompt(self, proposal_dicts: List[Dict]):
-        s = f"Now, it's time for you to Choose from {len(proposal_dicts)} players to vote. Here is the number of these players and an analysis and imagination about what could happen after you vote for each of these players.\n"
+        s = ""
         for i, pd in enumerate(proposal_dicts):
             target = pd["target"]
             imagination = pd["imagination"]
