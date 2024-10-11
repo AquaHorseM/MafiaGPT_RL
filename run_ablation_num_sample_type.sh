@@ -1,0 +1,2 @@
+python automatic_script.py --max_iter 5 --data_dir ./ablation_sample_type/data --config_dir ./ablation_sample_type/config/ --notes_dir ./ablation_sample_type/notes \
+--prompt_logging_dir ./ablation_sample_type
