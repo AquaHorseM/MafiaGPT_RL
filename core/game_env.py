@@ -11,7 +11,27 @@ from core.api import load_client
 # import multiprocessing
 from pathos.multiprocessing import ProcessingPool as Pool
 from core.data import DataTree
-
+def get_key_with_largest_value(d):
+    max_key = None
+    max_value = float('-inf')
+    multiple_max = False
+    
+    for key, value in d.items():
+        if value > max_value:
+            max_value = value
+            max_key = key
+            multiple_max = False
+        elif value == max_value:
+            multiple_max = True
+    
+    if multiple_max:
+        return -1
+    return max_key
+def get_input_output_txt_path(game_config):
+    return dict(
+        input_txt_path = game_config.get("input_txt_path", "message_input_history_backup.txt"),
+        output_txt_path = game_config.get("output_txt_path", "message_history_backup.txt")
+    )
 def reflex_player_from_data(player: Player, data):
     player.reflex(data)
     return True
@@ -36,7 +56,7 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        self.openai_client = load_client(game_config["openai_client_path"])
+        self.openai_client = get_input_output_txt_path(game_config)
         data_folder = game_config.get("data_folder", "data")
         self.data_path = os.path.join(data_folder, f"game_{self.id}_data.pkl")
         #clear the data file if it exists
@@ -398,10 +418,17 @@ class WerewolfGameEnv:
     def check_votes(self):
         # [TODO] : debugging here
         votes = self.votes[-1]
-        if max(votes) > 1:
-            votes_sorted = dict(sorted(votes.items(), key=lambda x: x[1]))
-            self.vote_out(list(votes_sorted.keys())[-1])
+        d = dict()
+        for i in votes.values():
+            if i not in d:
+                d[i] = 1
+            else:
+                d[i] += 1
+        max_voted = get_key_with_largest_value(d)
+        if max_voted != -1:
+            self.vote_out(max_voted)
         return
+            
     
     def check_death_info(self):
         '''

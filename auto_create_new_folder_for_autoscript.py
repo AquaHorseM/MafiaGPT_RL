@@ -23,11 +23,7 @@ def copy_directory_with_prompt(source_dir, destination_dir):
     except Exception as e:
         print(f"Error occurred: {e}")
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_01')
-    parser.add_argument('--org_notes_dir', type=str, default = './core/notes_v0')
-    args = parser.parse_args()
+def main(args):
 
     folder_name = args.new_folder_name
     os.makedirs(folder_name, exist_ok=False)
@@ -37,11 +33,14 @@ def main():
     
     os.makedirs(os.path.join(folder_name, 'data'), exist_ok=True)
     os.makedirs(os.path.join(folder_name, 'configs'), exist_ok=True)
+    os.makedirs(os.path.join(folder_name, 'prompt_logging'), exist_ok=True)
     current_config_dict = {
         "reflex_after_sim": False,
         "log_hstate_for_debug": False,
         "openai_client_path": "openai_config.yaml",
         "data_folder": os.path.join(folder_name, 'data', "data_v0"),
+        "input_txt_path": os.path.join(folder_name, 'prompt_logging', "message_input_history_backup_v0.txt"),
+        "output_txt_path": os.path.join(folder_name, 'prompt_logging', "message_output_history_backup_v0.txt"),
         "players": [
             {
                 "role": "werewolf",
@@ -108,4 +107,8 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser()
+    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_06')
+    parser.add_argument('--org_notes_dir', type=str, default = './core/notes_fixed_version/notes_v0')
+    args = parser.parse_args()
+    main(args)
