@@ -23,11 +23,7 @@ def copy_directory_with_prompt(source_dir, destination_dir):
     except Exception as e:
         print(f"Error occurred: {e}")
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_05')
-    parser.add_argument('--org_notes_dir', type=str, default = './core/notes_fixed_version/notes_v0')
-    args = parser.parse_args()
+def main(args):
 
     folder_name = args.new_folder_name
     os.makedirs(folder_name, exist_ok=False)
@@ -111,4 +107,8 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser()
+    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_06')
+    parser.add_argument('--org_notes_dir', type=str, default = './core/notes_fixed_version/notes_v0')
+    args = parser.parse_args()
+    main(args)
