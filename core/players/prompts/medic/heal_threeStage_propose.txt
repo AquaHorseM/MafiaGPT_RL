@@ -13,12 +13,8 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 
 2.Todo&Requirements:
 Now, it's time for you to choose a player to heal. You can not heal the one you tried to heal last night, which is player {last_heal} (ignore this if it's nobody). The one you try to heal will be immune to werewolves' attack this night. 
-Here's some advice that you can reference about who to heal:
-1. You can try to heal players that are probability good, and the seer and yourself should be the first choice.
 
-{previous_advices}
-
-Now, it's time for you to give a proposal of 2 players you want to Heal. You should make your own decision but consider your teammates' advices. Your answer should be in the format of:
+You should give a proposal of 2 players you want to Heal. Your answer should be in the format of:
 
 Firstly, I want to heal Player <NUMBER>. The reason is: <REASON>.
 

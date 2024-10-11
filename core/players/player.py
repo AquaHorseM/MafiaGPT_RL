@@ -125,7 +125,7 @@ class Player:
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
             "{hstate}": str(self.hstate),
-            "{proposal_num}": 2 #!
+            "{proposal_num}": str(2) #!
         }
             
 
