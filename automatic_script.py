@@ -125,10 +125,10 @@ def main_loop(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--max_iter', type=int, default=3)
-    parser.add_argument('--data_dir', type=str, default='./shijz_test_01/data')
-    parser.add_argument('--config_dir', type=str, default='./shijz_test_01/configs')
-    parser.add_argument('--notes_dir', type=str, default='./shijz_test_01/notes')
-    parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_04/prompt_logging')
+    parser.add_argument('--data_dir', type=str, default='./shijz_test_05/data')
+    parser.add_argument('--config_dir', type=str, default='./shijz_test_05/configs')
+    parser.add_argument('--notes_dir', type=str, default='./shijz_test_05/notes')
+    parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_05/prompt_logging')
     parser.add_argument('--num_game_per_iter', type=int, default=1)
     parser.add_argument('--num_processes', type=int, default=1)
     
