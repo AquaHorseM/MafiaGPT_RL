@@ -659,12 +659,21 @@ class Player:
                 continue
             s += f"Player {i} believes:\n"
             for j in range(self.player_num):
-                s += f"Player {j} is {reflex_info["hstate"][i][j]["role"]} with {reflex_info["hstate"][i][j]["confidence"]} confidence.\n"
+                s += f"Player {j} is {reflex_info['hstate'][i][j]['role']} with {reflex_info['hstate'][i][j]['confidence']} confidence.\n"
         action_type = traj["actions"][self.id]["action"]
         s += f"\n Your next action should be {action_type}.\n"
         s += self.convert_draft_to_prompt(traj["draft"])
+        s += "\nThese are the beliefs of all other players after your action.\n\n"
+        for i in range(self.player_num):
+            if i == self.id:
+                continue
+            s += f"Player {i} believes:\n"
+            for j in range(self.player_num):
+                s += f"Player {j} is {traj['outcome_hstate'][i][j]['role']} with {reflex_info['hstate'][i][j]['confidence']} confidence.\n"
+        '''
         s += "\n This is a summary of what happens after your final decided action:\n\n"
         s += self.summarize_events(traj["after_events"])
+        '''
         if len(reflex_info["trajs"]) > 1:
             other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
             other_draft = other_traj["draft"]
