@@ -80,8 +80,8 @@ def create_game_config(args, ver):
         org_dict = new_dict["players"][i]
         new_dict["players"][i]["reflex_note_belief_path"] = re.sub('v'+str(ver)+r'\b', 'v'+str(ver+1), org_dict["reflex_note_belief_path"])
         new_dict["players"][i]["reflex_note_policy_path"] = re.sub('v'+str(ver)+r'\b', 'v'+str(ver+1), org_dict["reflex_note_policy_path"])
-    into_config['input_txt_path'] = os.path.join(args.prompt_logging_dir, 'message_input_history_backup_v'+str(ver+1)+'.txt')
-    into_config['output_txt_path'] = os.path.join(args.prompt_logging_dir, 'message_output_history_backup_v'+str(ver+1)+'.txt')
+    new_dict['input_txt_path'] = os.path.join(args.prompt_logging_dir, 'message_input_history_backup_v'+str(ver+1)+'.txt')
+    new_dict['output_txt_path'] = os.path.join(args.prompt_logging_dir, 'message_output_history_backup_v'+str(ver+1)+'.txt')
     json.dump(new_dict, open(into_config,'w'), indent=4)
     
 def copy_files(args, ver):

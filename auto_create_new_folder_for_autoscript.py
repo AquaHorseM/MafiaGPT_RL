@@ -37,6 +37,7 @@ def main():
     
     os.makedirs(os.path.join(folder_name, 'data'), exist_ok=True)
     os.makedirs(os.path.join(folder_name, 'configs'), exist_ok=True)
+    os.makedirs(os.path.join(folder_name, 'prompt_logging'), exist_ok=True)
     current_config_dict = {
         "reflex_after_sim": False,
         "log_hstate_for_debug": False,
