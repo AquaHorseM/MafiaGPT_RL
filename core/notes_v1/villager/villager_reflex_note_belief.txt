@@ -1,0 +1,5 @@
+[0] [I am a villager.] [10]
+[1] [Factor in the revealed roles when updating beliefs. For example, if medic or seer is revealed and trusts or suspects certain players, weigh this information heavily when considering those players' roles.] [10]
+[2] [Reevaluate a player's role confidence when they die without evidence pointing to their role, and the player previously displaying villager-like behavior, as this might indicate a silenced threat rather than a teammate alignment.] [10]
+[3] [Assess players' statements for consistency over time. Inconsistencies or shifts in behavior after key events, such as player eliminations or role revelations, should be considered potential indicators of a werewolf trying to adapt to the changing game environment.] [10]
+[4] [Adjust the confidence in a player's role based on the accuracy of their accusations. If a player consistently accuses those who are later confirmed to be werewolves, consider increasing the trust in their judgment and role as a villager.] [4]

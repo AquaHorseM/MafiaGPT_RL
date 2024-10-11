@@ -11,7 +11,7 @@ def load_from_backup(role: str, note_type: str, version: int, from_prev = False)
     note_type (str): The type of the note.
     """
     if from_prev:
-        init_note_path = f"core/notes_v{version-1}/{role}/{role}_reflex_note_{note_type}.txt"
+        init_note_path = f"core/notes_fixed_version/notes_v{version-1}/{role}/{role}_reflex_note_{note_type}.txt"
     else:
         init_note_path = f"core/notes_fixed_version/notes_v{version}/{role}/{role}_reflex_note_{note_type}.txt"
     current_note_path = f"core/notes_v{version}/{role}/{role}_reflex_note_{note_type}.txt"
