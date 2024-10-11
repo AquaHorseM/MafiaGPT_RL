@@ -640,6 +640,17 @@ class Player:
 
         
     def convert_reflex_info_to_policy_prompt(self, reflex_info: Dict, vis_prev_events = True) -> str:
+        def show_all_other_beliefs():
+            s = ""
+            for i in range(self.player_num):
+                if i == self.id:
+                    continue
+                s += f"Player {i} believes:\n"
+                for j in range(self.player_num):
+                    if j == i:
+                        continue
+                    s += f"Player {j} is {reflex_info['hstate'][i][j]['role']} with {reflex_info['hstate'][i][j]['confidence']} confidence.\n"
+            return s
         if len(reflex_info["trajs"]) > 1:
             weights = [self.get_traj_importance_for_policy(traj, reflex_info["hstate"], reflex_info["alive_players"]) for traj in reflex_info["trajs"]]
             traj = random.choices(reflex_info["trajs"], weights=weights, k=1)[0]
@@ -655,22 +666,12 @@ class Player:
                 s += e
                 s += '\n'
         s += "\nThese are the beliefs of all other players.\n\n"
-        for i in range(self.player_num):
-            if i == self.id:
-                continue
-            s += f"Player {i} believes:\n"
-            for j in range(self.player_num):
-                s += f"Player {j} is {reflex_info['hstate'][i][j]['role']} with {reflex_info['hstate'][i][j]['confidence']} confidence.\n"
+        s += show_all_other_beliefs()
         action_type = traj["actions"][self.id]["action"]
         s += f"\n Your next action should be {action_type}.\n"
         s += self.convert_draft_to_prompt(traj["draft"])
         s += "\nThese are the beliefs of all other players after your action.\n\n"
-        for i in range(self.player_num):
-            if i == self.id:
-                continue
-            s += f"Player {i} believes:\n"
-            for j in range(self.player_num):
-                s += f"Player {j} is {traj['outcome_hstate'][i][j]['role']} with {reflex_info['hstate'][i][j]['confidence']} confidence.\n"
+        s += show_all_other_beliefs()
         '''
         s += "\n This is a summary of what happens after your final decided action:\n\n"
         s += self.summarize_events(traj["after_events"])
@@ -695,14 +696,11 @@ class Player:
                     #How can we compare them if we don't simulate the other traj to the end? 
                     #However is this really meaningful to simulate the other branch? When is it meaningful?
                 elif other_draft["cur_action"] == "vote":
-                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
-                        self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
-                        s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['final_proposal']}."
-                        s += f"\n\nYour vote, in this case, is: \"{other_draft['proposal_chosen_and_reasons']}\""
-                        s += "System automatically evaluates it as a potentially better speech than your previous speech."
-                    else:
-                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
-                        s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
+                    # if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
+                    #     self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
+                    s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['final_proposal']}.\n"
+                    s += "These are the beliefs of all other players after this action: \n\n"
+                    s += show_all_other_beliefs()                        
         return s
         
     
