@@ -2,7 +2,7 @@
     "reflex_after_sim": false,
     "log_hstate_for_debug": false,
     "openai_client_path": "openai_config.yaml",
-    "data_folder": "./shijz_test_02/data/data_v1",
+    "data_folder": "./shijz_test_02/data\\data_v1",
     "players": [
         {
             "role": "werewolf",
@@ -61,5 +61,7 @@
             "prompt_dir_path": "core/players/prompts/seer"
         }
     ],
-    "extra_sim_nodes": 5
+    "extra_sim_nodes": 5,
+    "input_txt_path": "./shijz_test_02/prompt_logging\\message_input_history_backup_v1.txt",
+    "output_txt_path": "./shijz_test_02/prompt_logging\\message_output_history_backup_v1.txt"
 }
