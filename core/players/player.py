@@ -692,9 +692,6 @@ class Player:
                     else:
                         s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
                         s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
-                    #xsm note: Why do we need two trajs at the same node? 
-                    #How can we compare them if we don't simulate the other traj to the end? 
-                    #However is this really meaningful to simulate the other branch? When is it meaningful?
                 elif other_draft["cur_action"] == "vote":
                     # if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
                     #     self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
