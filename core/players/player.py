@@ -80,7 +80,7 @@ class Player:
         self.prompt_dir_path = player_config.get("prompt_dir_path")
         assert self.prompt_dir_path is not None and os.path.exists(self.prompt_dir_path), f"Prompt dir path {self.prompt_dir_path} invalid or does not exist!"
         self.common_prompt_dir = player_config.get("common_prompt_dir_path")
-        assert self.common_prompt_dir_path is not None and os.path.exists(self.common_prompt_dir_path), f"Prompt dir path {self.common_prompt_dir_path} invalid or does not exist!"
+        assert self.common_prompt_dir is not None and os.path.exists(self.common_prompt_dir), f"Prompt dir path {self.common_prompt_dir} invalid or does not exist!"
         self.openai_client = openai_client
         self.reflex_note_path_belief = player_config.get("reflex_note_belief_path", os.path.join(self.prompt_dir_path, "reflex_note_belief.txt"))
         self.reflex_note_path_policy = player_config.get("reflex_note_policy_path", os.path.join(self.prompt_dir_path, "reflex_note_policy.txt"))
