@@ -3,6 +3,8 @@
     "log_hstate_for_debug": false,
     "openai_client_path": "openai_config.yaml",
     "data_folder": "data_v1",
+    "input_txt_path": "message_input_history_backup.txt",
+    "output_txt_path": "message_history_backup.txt",
     "players": [
         {
             "role": "werewolf",

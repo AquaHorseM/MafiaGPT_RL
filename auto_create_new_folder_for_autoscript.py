@@ -42,6 +42,8 @@ def main():
         "log_hstate_for_debug": False,
         "openai_client_path": "openai_config.yaml",
         "data_folder": os.path.join(folder_name, 'data', "data_v0"),
+        "input_txt_path": "message_input_history_backup.txt",
+        "output_txt_path": "message_history_backup.txt",
         "players": [
             {
                 "role": "werewolf",

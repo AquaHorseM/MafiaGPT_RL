@@ -11,7 +11,11 @@ from core.api import load_client
 # import multiprocessing
 from pathos.multiprocessing import ProcessingPool as Pool
 from core.data import DataTree
-
+def get_input_output_txt_path(game_config):
+    return dict(
+        input_txt_path = game_config.get("input_txt_path", "message_input_history_backup.txt"),
+        output_txt_path = game_config.get("output_txt_path", "message_history_backup.txt")
+    )
 def reflex_player_from_data(player: Player, data):
     player.reflex(data)
     return True
@@ -36,7 +40,7 @@ class WerewolfGameEnv:
             "healed": None,
             "known_roles": dict()
         }
-        self.openai_client = load_client(game_config["openai_client_path"])
+        self.openai_client = get_input_output_txt_path(game_config)
         data_folder = game_config.get("data_folder", "data")
         self.data_path = os.path.join(data_folder, f"game_{self.id}_data.pkl")
         #clear the data file if it exists
