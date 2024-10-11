@@ -1,2 +1,0 @@
-python automatic_script.py --max_iter 5 --data_dir ./ablation_num_proposals/data --config_dir ./ablation_num_proposals/config/ --notes_dir ./ablation_num_proposals/notes \
---prompt_logging_dir ./ablation_num_proposals
