@@ -90,7 +90,7 @@ class Player:
         self.hstate = self.HiddenState(global_info["player_num"], self.id)
         self.hstate.set_role(self.id, self.get_role())
         self.proposal_num = player_config.get("proposal_num", 2)
-        self.sample_num = player_config.get("sample_num", 2)
+        self.sample_num = player_config.get("sample_num", 10)
         self.sample_type = player_config.get("sample_type", "heuristic")
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
