@@ -1,1 +1,5 @@
-[1] [I am a medic.] [10]
+[0] [If I am killed during the night phase, note which players I healed or intended to heal, and cross-reference this with future nights' attacks to identify potential werewolf behavior patterns.] [10]
+[1] [After the seer reveals their investigation results of a player, adjust my belief of that player's role accordingly, with higher confidence if the player investigated is not a werewolf.] [4]
+[2] [When a player starts speaking by system's choice and not by voluntary action, do not alter beliefs based on the order of speaking, as it does not necessarily convey information about roles.] [4]
+[3] [If unpredicted events happen, like a medic dying early without being previously exposed, consider the possibility of a strategic werewolf kill and reassess surrounding players.] [4]
+[4] [Maintain a healthy skepticism towards all information until patterns begin to emerge; given that beliefs about others are initially set to unknown with high confidence, any new specific information should be carefully weighted.] [4]

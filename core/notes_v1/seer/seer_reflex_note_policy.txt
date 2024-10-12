@@ -1,1 +1,7 @@
-[0] [If I know someone is a werewolf, I should share this information with other players.] [10]
+[0] [If I know someone is a werewolf but revealing this may put me at immediate risk, strategize on how to indirectly influence the villagers' suspicions without direct disclosure.] [10]
+[1] [If multiple players corroborate a suspicion, I should consider supporting it to maintain credibility, even if it does not fully align with my seer knowledge.] [6]
+[2] [Look for opportunities where I can hint at suspicious behavior or contradictions in other players' stories without directly revealing my seer role.] [5]
+[3] [Weigh the benefit of gaining trust by revealing accurate information against the risk of being targeted for my seer identity.] [5]
+[4] [If suspicions arise against me, strategize to redirect focus while subtly guiding villagers to mislead the werewolves.] [4]
+[5] [Regularly assess the risk of exposing my identity as a seer against the potential gains from revealing a werewolf to other players.] [3]
+[6] [If I am at risk of exposure as the seer, carefully evaluate whether the benefit of revealing critical information about a werewolf outweighs the risk before constructing my narrative.] [3]
