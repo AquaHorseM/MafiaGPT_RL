@@ -50,14 +50,14 @@ def eval_from_path(data_path: str):
     weight_sum = 0
     for i in range(len(data.nodes)):
         if i <= 1:
-            return
+            continue
         node = data.nodes[i]
         jhstate = node.state["hstate"]
         alive_players = node.state["global_info"]["alive_players"]
-        belief_score += get_belief_score(jhstate, roles, alive_players) * (i ** 0.5)
-        weight_sum += (i ** 0.5)
+        belief_score += get_belief_score(jhstate, roles, alive_players) * (np.log2(i))
+        weight_sum += (np.log2(i))
     result["villager_belief_score"] = belief_score / weight_sum
-    print(result)
+    print("result: ", result)
     return result
     
         
@@ -78,7 +78,7 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
         return False
     
     # Assign score values based on confidence
-    confidence_scores = {"high": 1.5, "medium": 1, "low": 0.5}
+    confidence_scores = {"high": 2, "medium": 1.5, "low": 1}
     
     # Iterate over each player
     for i, player_role in enumerate(roles):
@@ -123,5 +123,5 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
     return total_score / good_players_count if good_players_count > 0 else 0
 
 if __name__ == "__main__":
-    data_path = "transport/game_5_data.pkl"
+    data_path = "transport/game_7_data.pkl"
     result = eval_from_path(data_path)

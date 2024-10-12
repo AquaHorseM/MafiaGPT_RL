@@ -51,5 +51,5 @@ def visualize_one_pickle(pickle_path, json_path):
             file.write(indented_line + '\n')
         file.write(']')
 if __name__ == '__main__':
-    visualize_one_pickle(r'data_bug.pkl', 'a.json')
+    visualize_one_pickle(r'transport/game_7_data.pkl', 'b.json')
             
