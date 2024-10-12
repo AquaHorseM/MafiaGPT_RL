@@ -73,7 +73,7 @@ class WerewolfGameEnv:
         }
         self.retry_num = game_config.get("extra_sim_nodes", 5)
         self.set_players(game_config["players"])
-        self.data = DataTree(self.get_state())
+        self.data = DataTree(self.get_state(), game_config)
         self.latest_actions = [None] * self.player_num
         self.latest_drafts = [{
             "cur_action": None,
@@ -808,34 +808,6 @@ class WerewolfGameEnv:
             except Exception as e:
                 self.logger.warning(f"Encountered error {e} while retrying; skipped.")
         print(f"Retry failed after {MAX_ATTEMPT} attempts")
-            
-        
-    def reset(self):
-        #reset hidden state
-        for player in self.all_players:
-            player.reset()
-        self.event_book = EventBook()
-        self.current_round = 0
-        self.game_status = {
-            "cur_stage": "night", #night, day, vote
-            "cur_round": 0,
-            "next_speaking_player": None, 
-            "start_speaking_player": None,
-            "winner": None
-        }
-        self.alive_players = list(range(self.player_num))
-        self.dead_players = []
-        self.votes = []
-        self.temp_events = []
-        self.night_info = {
-            "killed": None,
-            "healed": None,
-            "known_roles": dict()
-        }
-        self.data = DataTree(self.get_state())
-        self.logger.info("Game reset successfully")
-        #return obs, state, available_actions
-        return self._repeat(self.get_observation_single_player), self.get_state(), self.get_available_actions()
     
     def backtrace(self, targ_id = None, back_steps = 1):
         if targ_id is None:

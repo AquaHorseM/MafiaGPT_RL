@@ -42,12 +42,13 @@ class EventsEdge:
         return f"Edge({self.start_id} --> {self.end_id})"
 
 class DataTree:
-    def __init__(self, init_state = None):
+    def __init__(self, init_state = None, game_config = None):
         self.nodes: list[StateNode] = []
         self.edges: list[EventsEdge] = []
         root_node = StateNode(0, -1, init_state)
         self.nodes.append(root_node)
         self.cur_id = 0
+        self.game_config = game_config
     
     def _add_node(self, parent_id, state, is_game_end = False):
         node_id = len(self.nodes)
