@@ -460,10 +460,11 @@ class Player:
             return total_score
 
     
-    def reflex(self, data : DataTree, sample_num = 20):
+    def reflex(self, data : DataTree):
         sample_type = self.sample_type
         reflex_data_belief = data.sample(self.id, sample_num = 1000)
         reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = 1000)
+        sample_num = self.sample_num
         self.logger.info(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
         self.logger.info(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
         def get_elems(d):
