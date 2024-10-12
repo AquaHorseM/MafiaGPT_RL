@@ -245,7 +245,7 @@ class WerewolfGameEnv:
     def check_done(self, player_id):
         return 1 if self.game_status["winner"] or not self.all_players[player_id].is_alive else 0
         
-    def step(self, actions):
+    def step(self, actions, retrying = False):
         # print("xsm debug actions: " + str(actions))
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
@@ -334,7 +334,11 @@ class WerewolfGameEnv:
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
-            self.end()
+            if not retrying:
+                self.end()
+            else:
+                if len(self.temp_events) != 0:
+                    self.update_all_hstates(add_to_data=True)
         else:
             rewards = [0 for _ in range(self.player_num)]
         return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
@@ -646,7 +650,7 @@ class WerewolfGameEnv:
         for i in range(self.retry_num):
             self.random_retry_one_node(retry_steps = 1)
             self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
-        self.store_data(self.data_path)
+            self.store_data(self.data_path)
         if self.train:
             self.logger.info("ALl players reflexing")
             self.all_players_reflex()
@@ -775,7 +779,7 @@ class WerewolfGameEnv:
                 vote_action = self.all_players[player_id]._vote_with_other_proposal(draft)
                 actions[player_id] = vote_action
                 self.logger.debug(f"player: {player_id}'s vote action: {vote_action}")
-        obs, state, rewards, dones, info, avail_actions = self.step(actions)
+        obs, state, rewards, dones, info, avail_actions = self.step(actions, retrying = True)
         self.logger.debug("Stepped!")
         if self.postprocess_step(actions, dones, info):
             return True
