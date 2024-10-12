@@ -3,8 +3,8 @@
 
 import pickle
 from core.data import DataTree
+import numpy as np
 
-data_path = "data.pkl"
 def eval_from_path(data_path: str):
     result = {}
     with open(data_path, "rb") as f:
@@ -46,10 +46,21 @@ def eval_from_path(data_path: str):
     else:
         result["winner_player_type"] = villager_player_type
         result["loser_player_type"] = werewolf_player_type
-
+    belief_score = 0
+    weight_sum = 0
+    for i in range(len(data.nodes)):
+        if i <= 1:
+            return
+        node = data.nodes[i]
+        jhstate = node.state["hstate"]
+        alive_players = node.state["global_info"]["alive_players"]
+        belief_score += get_belief_score(jhstate, roles, alive_players) * (i ** 0.5)
+        weight_sum += (i ** 0.5)
+    result["villager_belief_score"] = belief_score / weight_sum
+    print(result)
+    return result
+    
         
-    
-    
 def get_belief_score(joint_hstate, roles, alive_players=None):
     # Initialize variables
     total_score = 0
@@ -87,7 +98,7 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
 
                 # If role is 'unknown', apply a small penalty
                 if belief_role == "unknown":
-                    player_score -= 0.1  # Small penalty for unknown belief
+                    player_score -= 0.01  # Small penalty for unknown belief
                     continue
 
                 # Determine if the belief was correct about the team
@@ -110,3 +121,7 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
     
     # Return the average score for all good players
     return total_score / good_players_count if good_players_count > 0 else 0
+
+if __name__ == "__main__":
+    data_path = "transport/game_5_data.pkl"
+    result = eval_from_path(data_path)

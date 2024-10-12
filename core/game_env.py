@@ -246,6 +246,7 @@ class WerewolfGameEnv:
         return 1 if self.game_status["winner"] or not self.all_players[player_id].is_alive else 0
         
     def step(self, actions, retrying = False):
+        dones = None
         # print("xsm debug actions: " + str(actions))
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
@@ -336,12 +337,13 @@ class WerewolfGameEnv:
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
             if not retrying:
                 self.end()
+                dones = [True] * self.player_num
             else:
                 if len(self.temp_events) != 0:
                     self.update_all_hstates(add_to_data=True)
         else:
             rewards = [0 for _ in range(self.player_num)]
-        return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
+        return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done) if dones is None else dones, self.game_status, self.get_available_actions()
 
         
     def seed(self, seed):
