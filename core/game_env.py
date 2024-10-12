@@ -656,6 +656,8 @@ class WerewolfGameEnv:
             self.all_players_reflex()
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
+        if player_id not in self.alive_players:
+            return []
         if self.game_status["cur_stage"] == "night":
             night_actions = {
                 "seer": ["see"],
