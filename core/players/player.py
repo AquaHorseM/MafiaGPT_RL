@@ -432,9 +432,11 @@ class Player:
                 return False
         return True
     
-    def get_node_importance_for_policy(self, state, prev_events, trajs):
+    def get_node_importance_for_policy(self, state, prev_events, trajs, sample_type: str = "heuristic"):
         if len(trajs) == 0:
             return 0.0001
+        if sample_type == "uniform":
+            return 1
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         cur_score = self.evaluate_joint_hstate(reflex_info["hstate"], reflex_info["alive_players"])
         total_score = 0.5

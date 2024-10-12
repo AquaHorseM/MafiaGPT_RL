@@ -98,7 +98,8 @@ class DataTree:
             avail_edges = [e for e in self.nodes[cur_node].edges if self.nodes[self.edges[e].end_id].connect_to_end]
             if len(avail_edges) == 0:
                 return []
-            edge_id = random.choice(avail_edges)
+            # edge_id = random.choice(avail_edges)
+            edge_id = avail_edges[0]
             events.extend(self.edges[edge_id].events)
             cur_node = self.edges[edge_id].end_id
         return events
