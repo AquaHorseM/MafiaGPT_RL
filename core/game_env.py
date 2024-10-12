@@ -73,6 +73,8 @@ class WerewolfGameEnv:
         }
         self.retry_num = game_config.get("extra_sim_nodes", 5)
         self.set_players(game_config["players"])
+        self.alive_players = list(range(self.player_num))
+        self.dead_players = []    
         self.data = DataTree(self.get_state(), game_config)
         self.latest_actions = [None] * self.player_num
         self.latest_drafts = [{
@@ -130,8 +132,7 @@ class WerewolfGameEnv:
                         raise ValueError(f"No available players for role: {role}")
                 return ids
             shuffled_nums = shuffle_roles(roles_order, player_configs)
-        self.alive_players = list(range(self.player_num))
-        self.dead_players = []        
+            
         werewolf_ids = [] 
         for num in range(len(shuffled_nums)):
             if player_configs[shuffled_nums[num]]["role"].lower() == "werewolf":
@@ -169,7 +170,6 @@ class WerewolfGameEnv:
         }
         for i, num in enumerate(shuffled_nums):
             role = player_configs[num]["role"].lower()
-            proposal_num = player_configs[num]["proposal_num"]
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
             if player_type == "reflex":
