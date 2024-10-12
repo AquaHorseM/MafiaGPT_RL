@@ -470,10 +470,10 @@ class WerewolfGameEnv:
     
     def parse_global_info(self, global_info: dict):
         self.current_round = global_info["game_status"]["cur_round"]
-        self.alive_players = global_info["alive_players"]
-        self.dead_players = global_info["dead_players"]
-        self.votes = global_info["previous_votes"]
-        self.game_status = global_info["game_status"]
+        self.alive_players = deepcopy(global_info["alive_players"])
+        self.dead_players = deepcopy(global_info["dead_players"])
+        self.votes = deepcopy(global_info["previous_votes"])
+        self.game_status = deepcopy(global_info["game_status"])
         self.player_num = global_info["player_num"]
     
     def load_state(self, state, events):
@@ -821,6 +821,7 @@ class WerewolfGameEnv:
         print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
         print(f"current game status: {self.game_status}")
+        print(f"Alive players: {self.alive_players}")
         self.temp_events = []
 
     
