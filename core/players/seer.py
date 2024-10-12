@@ -132,7 +132,7 @@ class SeerPlayer(Player):
         see = self._get_final_choice_from_response_SeeThreeStep(response_and_reason)
         
         self.draft_dict["see"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        return see, response
+        return see, response_and_reason
     def _see_org(self):
         response = self.get_response("see")
         see = get_target_from_response(response)

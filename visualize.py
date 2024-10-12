@@ -51,5 +51,5 @@ def visualize_one_pickle(pickle_path, json_path):
             file.write(indented_line + '\n')
         file.write(']')
 if __name__ == '__main__':
-    visualize_one_pickle(r'E:\wolfGPT\MafiaGPT_RL\shijz07_iter02_game01.pkl', 'a.json')
+    visualize_one_pickle(r'transport/game_3_data.pkl', 'a.json')
             

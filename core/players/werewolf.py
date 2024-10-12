@@ -133,7 +133,7 @@ class WerewolfPlayer(Player):
         kill = self._get_final_choice_from_response_KillThreeStep(response_and_reason)
         
         self.draft_dict["kill"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        return kill, response
+        return kill, response_and_reason
 
     def _kill_org(self):
         response = self.get_response("kill")
