@@ -510,7 +510,7 @@ class WerewolfGameEnv:
         villager_ids = []
         for i in range(self.player_num):
             if not self.all_players[i].reflexable:
-                self.logger.debug(f"Player {i} not reflexable. Skipping.")
+                self.logger.info(f"Player {i} not reflexable. Skipping.")
                 continue
             if self.all_players[i].get_role() in ["medic", "seer"]:
                 reflex_player_ids.append(i)
@@ -535,7 +535,7 @@ class WerewolfGameEnv:
             self.logger.warning("Only using 4 processes for reflex.")
             num_processes = 4
         
-        self.logger.debug(f"Reflex player ids: {reflex_player_ids}")
+        self.logger.info(f"Reflex player ids: {reflex_player_ids}")
         if num_processes > 1:
             reflex_player = partial(reflex_player_from_data, data=self.data)
             players_to_reflex = [self.all_players[i] for i in reflex_player_ids]
@@ -580,10 +580,10 @@ class WerewolfGameEnv:
             is_game_end = True
         else:
             is_game_end = False
-        self.logger.debug(f"actions: {self.latest_actions}")
+        # self.logger.debug(f"actions: {self.latest_actions}")
         cur_actions = [self.latest_drafts[i]['cur_action'] if self.latest_drafts[i] is not None else None for i in range(len(self.latest_drafts))]
-        self.logger.debug(f"cur_actions in drafts: {cur_actions}")
-        self.logger.debug(f"current game status: {self.game_status}")
+        # self.logger.debug(f"cur_actions in drafts: {cur_actions}")
+        # self.logger.debug(f"current game status: {self.game_status}")
         
         self.data.add_edge_and_node(
             events = self.temp_events,
@@ -759,14 +759,14 @@ class WerewolfGameEnv:
         print(self.data.nodes[node_id].state["global_info"]["game_status"])
         if drafts is None:
             return False
-        for i in range(self.player_num):
-            self.logger.debug(f"player: {i}, cur_action: {drafts[i]['cur_action']}")
+        # for i in range(self.player_num):
+        #     self.logger.debug(f"player: {i}, cur_action: {drafts[i]['cur_action']}")
         avail_drafts = []
         for draft in drafts:
             if draft["cur_action"] is None or draft["cur_action"] not in ["speak", "vote"]:
                 continue
             else:
-                self.logger.debug(f"next action is: {draft['cur_action']}")
+                # self.logger.debug(f"next action is: {draft['cur_action']}")
                 avail_drafts.append(draft)
         if len(avail_drafts) == 0:
             return False
@@ -819,11 +819,10 @@ class WerewolfGameEnv:
         info = recover_info["state"]
         prev_game_status = info["global_info"]["game_status"]
         events = recover_info["events"]
-        print(f"current game status: {self.game_status}")
-        print(f"game status to recover: {prev_game_status}")
+        # print(f"current game status: {self.game_status}")
+        # print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
-        print(f"current game status: {self.game_status}")
-        print(f"Alive players: {self.alive_players}")
+        self.logger.debug(f"Recovered to game status: {self.game_status}. Alive players: {self.alive_players}")
         self.temp_events = []
 
     
