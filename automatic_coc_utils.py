@@ -195,7 +195,8 @@ def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_n
     input_txt_path = os.path.join(prompt_logging_folder, 'message_input_history_backup_'+battle_tag+'.txt')
     output_txt_path = os.path.join(prompt_logging_folder, 'message_output_history_backup_'+battle_tag+'.txt')
     config_dict = obtain_config_dict(data_folder, input_txt_path, output_txt_path,
-                                     villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder)
+                                     villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder,
+                                     villager_tags, seer_tags, medic_tags, werewolf_tags,)
     config_path = os.path.join(current_clan_war_folder, 'game_config_'+battle_tag+'.json')
     json.dump(config_dict, open(config_path,'w'), indent=4)
     
