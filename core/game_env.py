@@ -509,7 +509,7 @@ class WerewolfGameEnv:
         werewolf_ids = []
         villager_ids = []
         for i in range(self.player_num):
-            if self.all_players[i].reflexable:
+            if not self.all_players[i].reflexable:
                 self.logger.debug(f"Player {i} not reflexable. Skipping.")
                 continue
             if self.all_players[i].get_role() in ["medic", "seer"]:
