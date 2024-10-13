@@ -165,7 +165,7 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
 
 
 
-def create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder):
+def create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,):
     if not os.path.exists(current_clan_war_folder):
         os.makedirs(current_clan_war_folder)
     data_folder = os.path.join(current_clan_war_folder, 'data_'+tag)
@@ -195,7 +195,7 @@ def create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_fo
     input_txt_path = os.path.join(prompt_logging_folder, 'message_input_history_backup_'+tag+'.txt')
     output_txt_path = os.path.join(prompt_logging_folder, 'message_output_history_backup_'+tag+'.txt')
     config_dict = obtain_config_dict(data_folder, input_txt_path, output_txt_path,
-                                     villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder)
+                                     villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,)
     config_path = os.path.join(current_clan_war_folder, 'game_config_'+tag+'.json')
     json.dump(config_dict, open(config_path,'w'), indent=4)
     
