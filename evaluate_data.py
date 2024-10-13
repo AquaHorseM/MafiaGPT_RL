@@ -28,25 +28,30 @@ def eval_from_path(data_path: str):
     private_infos = data.nodes[0].state["private_infos"]
     
     # Initialize roles to handle multiple roles for the same player tag
-    roles = {}
+    tag_roles = {}
+    player_roles = []
     for i in range(len(private_infos)):
-        player_tag = private_infos[i]["player_tag"]
-        if roles.get(player_tag) is None:
-            roles[player_tag] = [private_infos[i]["role"]]
+        player_roles.append(private_infos[i]["role"])
+        for k in range(len(config["players"])):
+            if config["players"][k]["role"] == private_infos[i]["role"]: # temp solution
+                player_tag = config["players"][k].get("player_tag", "NoTag")
+        if tag_roles.get(player_tag) is None:
+            tag_roles[player_tag] = [private_infos[i]["role"]]
         else:
-            roles[player_tag].append(private_infos[i]["role"])
+            if private_infos[i]["role"] not in tag_roles[player_tag]:
+                tag_roles[player_tag].append(private_infos[i]["role"])
     
     # Initialize result structure
     player_tags = [config["players"][i]["player_tag"] for i in range(len(config["players"]))]
-    result = {tag: {"roles": roles[tag], "winner": None, "belief_score": None, "speech_score": None, "heal_success_rate": None} for tag in player_tags}
+    result = {tag: {"roles": tag_roles[tag], "winner": None, "belief_score": None, "speech_score": None, "heal_success_rate": None} for tag in player_tags}
 
     # Determine winner and loser player tags
     if last_state["global_info"]["game_status"]["winner"] == "werewolf":
         for tag in player_tags:
-            result[tag]["winner"] = "win" if "werewolf" in roles[tag] else "lose"
+            result[tag]["winner"] = "win" if "werewolf" in tag_roles[tag] else "lose"
     else:
         for tag in player_tags:
-            result[tag]["winner"] = "win" if "werewolf" not in roles[tag] else "lose"
+            result[tag]["winner"] = "win" if "werewolf" not in tag_roles[tag] else "lose"
     
     # BELIEF
     belief_scores = {tag: 0 for tag in player_tags}
@@ -57,7 +62,8 @@ def eval_from_path(data_path: str):
         node = data.nodes[i]
         jhstate = node.state["hstate"]
         alive_players = node.state["global_info"]["alive_players"]
-        belief_eval = get_belief_score(jhstate, roles, alive_players)  # belief_eval should return scores per player
+        belief_eval = get_belief_score(jhstate, player_roles, alive_players)  # belief_eval should return scores per player
+        print("belief_eval: ", belief_eval)
         for j, tag in enumerate(player_tags):
             if belief_eval[j] is not None:  # Skip if belief score is None
                 belief_scores[tag] += belief_eval[j] * (np.log2(i))
@@ -80,7 +86,7 @@ def eval_from_path(data_path: str):
         end_state = data.nodes[end_node_id].state
         actions = data.edges[e].actions
         speech_eval = get_single_speech_score(start_state["hstate"], start_state["global_info"]["alive_players"], \
-            roles, actions, end_state["hstate"])
+            player_roles, actions, player_tags, end_state["hstate"])
         if not speech_eval:
             continue
         speaker_tag = speech_eval["speaker_tag"]  # Assuming this returns the correct player tag
@@ -96,13 +102,13 @@ def eval_from_path(data_path: str):
     heal_num = 0
     heal_success_tot = 0
     for e in range(len(data.edges)):
-        heal_success = medic_heal_success(roles, data.edges[e].actions)
+        heal_success = medic_heal_success(player_roles, data.edges[e].actions)
         if heal_success is not None:
             heal_num += 1
             heal_success_tot += heal_success
     
     for tag in player_tags:
-        if "medic" in roles[tag]:
+        if "medic" in tag_roles[tag]:
             result[tag]["heal_success_rate"] = heal_success_tot / heal_num if heal_num > 0 else 0
     
     print("result: ", result)
@@ -132,7 +138,7 @@ def medic_heal_success(roles, actions):
     assert total_kill > 0
     return heal_match/total_kill
 
-def get_single_speech_score(prev_jhstate, alive_players, roles, actions, new_jhstate):
+def get_single_speech_score(prev_jhstate, alive_players, roles, actions, player_tags, new_jhstate):
     speaker = None
     for i in range(len(roles)):
         if actions[i] is not None and actions[i]["action"] == "speak":
@@ -194,9 +200,11 @@ def get_single_speech_score(prev_jhstate, alive_players, roles, actions, new_jhs
     prev_villager_score = evaluate_joint_hstate_for_villager(roles, prev_jhstate, len(roles), alive_players)
     new_villager_score = evaluate_joint_hstate_for_villager(roles, new_jhstate, len(roles), alive_players)
     speaker_role = roles[speaker]
+    speaker_tag = player_tags[speaker]
     speech_score = new_villager_score - prev_villager_score
     return {
         "speaker_role": speaker_role,
+        "speaker_tag": speaker_tag,
         "speech_score": speech_score
     }
 
@@ -261,8 +269,6 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
         scores[i] = player_score
 
         # Add this player's score to the total score
-    
-    # Return the average score for all good players
     return scores
 
 
