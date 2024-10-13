@@ -299,7 +299,7 @@ class Player:
     
     def _get_final_choice_from_response_SpokeThreeStep(self, response):
         first_pattern = r"I choose Proposal (\d).*My final speech is:(.*)"
-        first_match = re.search(first_pattern, response)
+        first_match = re.search(first_pattern, response, re.DOTALL)
         
         proposal = first_match.group(1) if first_match else None
         speech = first_match.group(2).strip() if first_match else "Speech not recognized."
