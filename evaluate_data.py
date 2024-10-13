@@ -9,6 +9,7 @@ def eval_from_path(data_path: str):
     result = {}
     with open(data_path, "rb") as f:
         data: DataTree = pickle.load(f)
+    
     last_node = None
     last_state = None
     for node in reversed(data.nodes):
@@ -17,52 +18,61 @@ def eval_from_path(data_path: str):
         if winner is None:
             continue
         else:
-            result["winner"] = winner
             last_node = node
             break
     if last_node is None:
         print("Warning! This data does not have an ending node.")
         return None
-    config = data.game_config
-    werewolf_player_tag = None
-    villager_player_tag = None
-    private_infos = data.nodes[0].state["private_infos"]
-    roles = [private_infos[i]["role"] for i in range(len(private_infos))]
-    for i in range(len(config["players"])):
-        player_config = config["players"][i]
-        if player_config["role"] == "werewolf":
-            if werewolf_player_tag is None:
-                werewolf_player_tag = player_config["player_tag"]
-            else:
-                assert werewolf_player_tag == player_config["player_tag"], "werewolves have different player types"
-        else:
-            if villager_player_tag is None:
-                villager_player_tag = player_config["player_tag"]
-            else:
-                assert villager_player_tag == player_config["player_tag"], "villagers have different player types"
-    if result["winner"] == "werewolf":
-        result["winner_player_tag"] = werewolf_player_tag
-        result["loser_player_tag"] = villager_player_tag
-    else:
-        result["winner_player_tag"] = villager_player_tag
-        result["loser_player_tag"] = werewolf_player_tag
     
-    #BELIEF
-    belief_score = 0
-    weight_sum = 0
+    config = data.game_config
+    private_infos = data.nodes[0].state["private_infos"]
+    
+    # Initialize roles to handle multiple roles for the same player tag
+    roles = {}
+    for i in range(len(private_infos)):
+        player_tag = private_infos[i]["player_tag"]
+        if roles.get(player_tag) is None:
+            roles[player_tag] = [private_infos[i]["role"]]
+        else:
+            roles[player_tag].append(private_infos[i]["role"])
+    
+    # Initialize result structure
+    player_tags = [config["players"][i]["player_tag"] for i in range(len(config["players"]))]
+    result = {tag: {"roles": roles[tag], "winner": None, "belief_score": None, "speech_score": None, "heal_success_rate": None} for tag in player_tags}
+
+    # Determine winner and loser player tags
+    if last_state["global_info"]["game_status"]["winner"] == "werewolf":
+        for tag in player_tags:
+            result[tag]["winner"] = "win" if "werewolf" in roles[tag] else "lose"
+    else:
+        for tag in player_tags:
+            result[tag]["winner"] = "win" if "werewolf" not in roles[tag] else "lose"
+    
+    # BELIEF
+    belief_scores = {tag: 0 for tag in player_tags}
+    belief_weights = {tag: 0 for tag in player_tags}  # Track valid belief score counts
     for i in range(len(data.nodes)):
         if i <= 1:
             continue
         node = data.nodes[i]
         jhstate = node.state["hstate"]
         alive_players = node.state["global_info"]["alive_players"]
-        belief_score += get_belief_score(jhstate, roles, alive_players) * (np.log2(i))
-        weight_sum += (np.log2(i))
-    result["villager_belief_score"] = belief_score / weight_sum
+        belief_eval = get_belief_score(jhstate, roles, alive_players)  # belief_eval should return scores per player
+        for j, tag in enumerate(player_tags):
+            if belief_eval[j] is not None:  # Skip if belief score is None
+                belief_scores[tag] += belief_eval[j] * (np.log2(i))
+                belief_weights[tag] += np.log2(i)
     
-    #SPEECH
-    speech_score = {}
-    num_roles = {}
+    for tag in player_tags:
+        if belief_weights[tag] > 0:
+            result[tag]["belief_score"] = belief_scores[tag] / belief_weights[tag]
+        else:
+            result[tag]["belief_score"] = None  # No valid belief scores for this player
+    
+    # SPEECH
+    speech_scores = {tag: 0 for tag in player_tags}
+    num_speeches = {tag: 0 for tag in player_tags}
+    
     for e in range(len(data.edges)):
         start_node_id = data.edges[e].start_id
         end_node_id = data.edges[e].end_id
@@ -73,19 +83,16 @@ def eval_from_path(data_path: str):
             roles, actions, end_state["hstate"])
         if not speech_eval:
             continue
-        speaker_role = speech_eval["speaker_role"]
+        speaker_tag = speech_eval["speaker_tag"]  # Assuming this returns the correct player tag
         speech_score_single = speech_eval["speech_score"]
-        if speech_score.get(speaker_role) is not None:
-            speech_score[speaker_role] += speech_score_single
-            num_roles[speaker_role] += 1
-        else:
-            speech_score[speaker_role] = speech_score_single
-            num_roles[speaker_role] = 1
-    for speaker_role in speech_score.keys():
-        speech_score[speaker_role] /= num_roles[speaker_role]
-    result["speech_scores"] = speech_score
+        speech_scores[speaker_tag] += speech_score_single
+        num_speeches[speaker_tag] += 1
     
-    #HEAL
+    for tag in player_tags:
+        if num_speeches[tag] > 0:
+            result[tag]["speech_score"] = speech_scores[tag] / num_speeches[tag]
+    
+    # HEAL (applies only to medic role)
     heal_num = 0
     heal_success_tot = 0
     for e in range(len(data.edges)):
@@ -93,10 +100,14 @@ def eval_from_path(data_path: str):
         if heal_success is not None:
             heal_num += 1
             heal_success_tot += heal_success
-    result["heal_success_rate"] = heal_success_tot/heal_num
+    
+    for tag in player_tags:
+        if "medic" in roles[tag]:
+            result[tag]["heal_success_rate"] = heal_success_tot / heal_num if heal_num > 0 else 0
     
     print("result: ", result)
     return result
+
 
 def medic_heal_success(roles, actions):
     medic_id = None

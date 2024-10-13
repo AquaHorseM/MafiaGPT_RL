@@ -21,6 +21,7 @@ game process:
         - The death info last night will be first announced.
         - In this stage, all players should speak one by one in the order of ascending ids, however the player who is the first to speak is randomly determined by system.
         - After the alive player with the largest id speak, the smallest-id alive player continues.
+        - Everyone will be forced to speak, hence if you don't hear someone's speech this round, either he is already dead or he will give a speech in this round later. Silence is part of the game rule.
         - Each player will only have one chance to speak in each day stage, so make sure say all you want to say when you have the chance.
         - Player who has spoken this round will not be able to speak again, even if they are accused by other players.
     Vote Stage:
