@@ -335,6 +335,7 @@ class WerewolfGameEnv:
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
+            self.update_drafts(actions)
             if not retrying:
                 self.end()
                 dones = [True] * self.player_num
@@ -640,8 +641,7 @@ class WerewolfGameEnv:
         
     def end(self):
         self.logger.info("Game ended")
-        if len(self.temp_events) != 0:
-            self.update_all_hstates(add_to_data=True)
+        self.update_all_hstates(add_to_data=True)
         self.store_data(self.data_path)
         try:
             self.save_game_record()
@@ -691,8 +691,8 @@ class WerewolfGameEnv:
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
     
-    def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
-        self.latest_actions = deepcopy(actions)
+    
+    def update_drafts(self, actions):
         def get_latest_draft(draft_dict):
             for key in draft_dict.keys():
                 if len(draft_dict[key]) == 0:
@@ -716,6 +716,10 @@ class WerewolfGameEnv:
                     self.latest_drafts[player_id].update(current_player_latest_draft_dict["speak"])
                 else:
                     continue
+    
+    def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
+        self.latest_actions = deepcopy(actions)
+        self.update_drafts(actions)
                     
         if info is not None:
             self.logger.info(str(info))
@@ -784,11 +788,9 @@ class WerewolfGameEnv:
                 actions[player_id] = vote_action
                 self.logger.debug(f"player: {player_id}'s vote action: {vote_action}")
         obs, state, rewards, dones, info, avail_actions = self.step(actions, retrying = True)
-        self.logger.debug("Stepped!")
         if self.postprocess_step(actions, dones, info):
             return True
         if retry_steps == 1:
-            self.logger.debug("Yeahhh")
             return True
         for retry_step in range(retry_steps - 1):
             actions = self.get_actions_reflex(avail_actions)
