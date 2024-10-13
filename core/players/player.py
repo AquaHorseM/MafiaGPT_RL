@@ -175,9 +175,10 @@ class Player:
     
     def _get_proposals_from_response_VoteThreeStep(self, response):
         # Regular expression to match proposals and reasons more flexibly
-        # pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)(?=\s*\.?\s*Proposal|$)"
-        pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)"
+        pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)(?=\s*[.\n]?\s*Proposal|\Z)"
+        # pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)"
         matches = re.findall(pattern, response, re.DOTALL | re.IGNORECASE)
+        self.logger.debug(f"Altogether {len(matches)} matches!")
         
         result = []
         for i, match in enumerate(matches):

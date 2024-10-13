@@ -714,7 +714,7 @@ class WerewolfGameEnv:
     
     def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
         self.latest_actions = deepcopy(actions)
-        try;
+        try:
             self.update_drafts(actions)
         except:
             pass
