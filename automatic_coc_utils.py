@@ -212,8 +212,8 @@ def run_one_battle(data_folder, config_path, num_games, num_process):
     config_path = config_path
     try:
         result = subprocess.run(['python', 'run_new.py', 
-                                 '--num_games', num_games, 
-                                 '--num_processes', num_process, 
+                                 '--num_games', str(num_games), 
+                                 '--num_processes', str(num_process), 
                                  '--config_path', config_path], check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while running battle: {e}")
