@@ -26,10 +26,10 @@ def eval_from_path(data_path: str):
     config = data.game_config
     werewolf_player_type = None
     villager_player_type = None
-    roles = []
+    private_infos = data.nodes[0].state["private_infos"]
+    roles = [private_infos[i]["role"] for i in range(len(private_infos))]
     for i in range(len(config["players"])):
         player_config = config["players"][i]
-        roles.append(player_config["role"])
         if player_config["role"] == "werewolf":
             if werewolf_player_type is None:
                 werewolf_player_type = player_config["player_type"]
@@ -46,6 +46,8 @@ def eval_from_path(data_path: str):
     else:
         result["winner_player_type"] = villager_player_type
         result["loser_player_type"] = werewolf_player_type
+    
+    #BELIEF
     belief_score = 0
     weight_sum = 0
     for i in range(len(data.nodes)):
@@ -57,9 +59,138 @@ def eval_from_path(data_path: str):
         belief_score += get_belief_score(jhstate, roles, alive_players) * (np.log2(i))
         weight_sum += (np.log2(i))
     result["villager_belief_score"] = belief_score / weight_sum
+    
+    #SPEECH
+    speech_score = {}
+    num_roles = {}
+    for e in range(len(data.edges)):
+        start_node_id = data.edges[e].start_id
+        end_node_id = data.edges[e].end_id
+        start_state = data.nodes[start_node_id].state
+        end_state = data.nodes[end_node_id].state
+        actions = data.edges[e].actions
+        speech_eval = get_single_speech_score(start_state["hstate"], start_state["global_info"]["alive_players"], \
+            roles, actions, end_state["hstate"])
+        if not speech_eval:
+            continue
+        speaker_role = speech_eval["speaker_role"]
+        speech_score_single = speech_eval["speech_score"]
+        if speech_score.get(speaker_role) is not None:
+            speech_score[speaker_role] += speech_score_single
+            num_roles[speaker_role] += 1
+        else:
+            speech_score[speaker_role] = speech_score_single
+            num_roles[speaker_role] = 1
+    for speaker_role in speech_score.keys():
+        speech_score[speaker_role] /= num_roles[speaker_role]
+    result["speech_scores"] = speech_score
+    
+    #HEAL
+    heal_num = 0
+    heal_success_tot = 0
+    for e in range(len(data.edges)):
+        heal_success = medic_heal_success(roles, data.edges[e].actions)
+        if heal_success is not None:
+            heal_num += 1
+            heal_success_tot += heal_success
+    result["heal_success_rate"] = heal_success_tot/heal_num
+    
     print("result: ", result)
     return result
-    
+
+def medic_heal_success(roles, actions):
+    medic_id = None
+    werewolf_ids = []
+    for i in range(len(roles)):
+        if roles[i] == "medic":
+            medic_id = i
+        elif roles[i] == "werewolf":
+            werewolf_ids.append(i)
+    print(medic_id)
+    print(actions[medic_id])
+    if medic_id is None or actions[medic_id] is None or actions[medic_id]["action"] != "heal":
+        return None
+    heal_target = actions[medic_id]["target"]
+    heal_match = 0
+    total_kill = 0
+    for wid in werewolf_ids:
+        if actions[wid] is not None and actions[wid]["action"] == "kill":
+            total_kill += 1
+            if heal_target == actions[wid]["target"]:
+                heal_match += 1
+    assert total_kill > 0
+    return heal_match/total_kill
+
+def get_single_speech_score(prev_jhstate, alive_players, roles, actions, new_jhstate):
+    speaker = None
+    for i in range(len(roles)):
+        if actions[i] is not None and actions[i]["action"] == "speak":
+            speaker = i
+            break
+    if speaker is None:
+        return None
+    def evaluate_joint_hstate_for_villager(roles, joint_hstate, player_num = None, alive_players = None):
+        if player_num is None:
+            player_num = len(roles)
+        s = 0 #base weight
+        def confidence_to_weight(confidence):
+            if confidence == "high":
+                return 2
+            elif confidence == "medium":
+                return 1.5
+            elif confidence == "low":
+                return 1
+        for i in range(player_num):
+            if alive_players is not None and i not in alive_players:
+                continue
+            if roles[i] == "werewolf":
+                for j in range(player_num):
+                    if roles[j] == "werewolf" or (alive_players is not None and j not in alive_players):
+                        continue
+                    if roles[j] in ["seer", "medic"]:
+                        confidence = joint_hstate[i][j]["confidence"]
+                        if joint_hstate[i][j]["role"] == "unknown":
+                            w = 0.1
+                            sgn = 1
+                            s += (0.1 * sgn)
+                        elif joint_hstate[i][j]["role"] != roles[j]:
+                            w = confidence_to_weight(confidence)
+                            sgn = 1
+                            s += (w * sgn)
+                        else:
+                            w = confidence_to_weight(confidence)
+                            sgn = -1
+                            s += (w * sgn)
+                        
+            for j in range(player_num):
+                if alive_players is not None and j not in alive_players:
+                    continue
+                if joint_hstate[i][j]["role"] == "unknown":
+                    w = 0.1
+                    sgn = -1
+                    s += (w * sgn)
+                if joint_hstate[i][j]["role"] == "werewolf":
+                    confidence = joint_hstate[i][j]["confidence"]
+                    w = confidence_to_weight(confidence)
+                    sgn = 1 if (roles[j] == "werewolf") else -1
+                    s += (w * sgn)
+                else:
+                    confidence = joint_hstate[i][j]["confidence"]
+                    w = confidence_to_weight(confidence)
+                    sgn = -1 if (roles[j] == "werewolf") else 1
+                    s += (w * sgn)
+        return s
+    prev_villager_score = evaluate_joint_hstate_for_villager(roles, prev_jhstate, len(roles), alive_players)
+    new_villager_score = evaluate_joint_hstate_for_villager(roles, new_jhstate, len(roles), alive_players)
+    speaker_role = roles[speaker]
+    speech_score = new_villager_score - prev_villager_score
+    return {
+        "speaker_role": speaker_role,
+        "speech_score": speech_score
+    }
+
+
+
         
 def get_belief_score(joint_hstate, roles, alive_players=None):
     # Initialize variables
@@ -123,5 +254,5 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
     return total_score / good_players_count if good_players_count > 0 else 0
 
 if __name__ == "__main__":
-    data_path = "transport/game_7_data.pkl"
+    data_path = "transport/game_9_data.pkl"
     result = eval_from_path(data_path)
