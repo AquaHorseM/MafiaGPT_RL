@@ -27,7 +27,7 @@ def copy_directory_with_prompt(source_dir, destination_dir):
 
 def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                        villager_notes_folder, seer_notes_folder, medic_notes_folder,
-                       werewolf_notes_folder,proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 5):
+                       werewolf_notes_folder,proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
     
     current_config_dict = {
         "reflex_after_sim": False,
