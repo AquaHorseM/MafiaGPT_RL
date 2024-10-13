@@ -38,11 +38,19 @@ REPLACE [id] [rule]
 
 Based on these considerations, you should modify your notes by the above operations. This note is specifically for your own role (as a {role}).
 Make your note AS ACCURATE AS POSSIBLE, as vague rules will not help you in upcoming games.
+
+All rules MUST be in one format among the following, or it might not be recognized:
+a) I should (not) ...
+b) When ..., I should (not) ...
+c) If I ..., ... (something might happen)
+d) Next time I should try to ... when ...
+
 Warning again: this note is ONLY for your strategy, so don't include ANYTHING about how you should infer other players' roles from their speeches here.
 
 The id and rule should be wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
 
-Your modification should be GENERAL and does not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it, as it is not generalizable). You are allowed to do AT MOST 5 operations at a time. Use them on the most critical parts.
+Your modification should not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it, as it is not generalizable). However you are VERY encouraged to write down exact experiences in your note to remind you in your later games.
+You are allowed to do AT MOST 5 operations at a time. Use them on the most critical parts.
 
 Please answer your operations based on the above requirements.
 

@@ -254,5 +254,5 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
     return total_score / good_players_count if good_players_count > 0 else 0
 
 if __name__ == "__main__":
-    data_path = "transport/game_9_data.pkl"
+    data_path = "transport/v1vv9_game4.pkl"
     result = eval_from_path(data_path)

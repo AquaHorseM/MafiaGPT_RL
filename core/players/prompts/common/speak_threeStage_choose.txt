@@ -23,9 +23,15 @@ Now, you have {proposal_num} choices, as well as your imaginations about what co
 
 {proposal_infos}
 
-Now, you have to choose between these {proposal_num} proposals according to your analysis and imagination about what could happen, and give a final speech. or 
-Your final speech should be brief and precise. You should focus on facts and your own opinions to specific players or strategies. You SHOULD use as LESS descriptiveemotional words as possible. Statements should be made with evidence to support them: try to find your evidence in previous events or speeches instead of your own belief (as this is not convincing for other players).  You are encouraged to mention these events or speeches directly. 
-Speeches like 'we should stay cautious' or other common knowledge stuffs should NOT exist in your speech. Overall, make your speech AS SHORT AS POSSIBLE, but make sure that your speech is clear enough to express your opinion and evidences.
+Now, you have to choose between these {proposal_num} proposals according to your analysis and imagination about what could happen, and give a final speech. You are VERY encouraged to explore a risky proposal to collect experience for your later games, especially the proposals not included in your note.
+Your final speech should be brief and precise. You should focus on facts and your own opinions to specific players or strategies. You SHOULD use as LESS descriptive or emotional words as possible. 
+You should ground your speech on previous events, for example you should cite the exact speeches of the other players (or other previous events like seer's inquiry or voting behavior) to protect or accuse them. 
+Some example of a GOOD speech is:
+
+"Player i protected player j without any evidence. However player j has not spoken yet, so there is no evidence supporting the protection. Thus, player i must be a werewolf."
+"Player i accused me for being brief in my previous speech. However I was the first player to speak and I am a villager with no extra information at night, so I had nothing to say. I am not saying that player i is definitely a werewolf, but his accusation on me does not hold."
+
+These are just examples, showing how evidence could be found in previous speeches to strengthen your statement and protect yourself.
 You should NOT directly mention your rules (as they are not visible to other players) or cite their ids in your speech.
 
 3.Requirements:
