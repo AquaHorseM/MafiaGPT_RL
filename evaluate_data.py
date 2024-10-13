@@ -24,28 +24,28 @@ def eval_from_path(data_path: str):
         print("Warning! This data does not have an ending node.")
         return None
     config = data.game_config
-    werewolf_player_type = None
-    villager_player_type = None
+    werewolf_player_tag = None
+    villager_player_tag = None
     private_infos = data.nodes[0].state["private_infos"]
     roles = [private_infos[i]["role"] for i in range(len(private_infos))]
     for i in range(len(config["players"])):
         player_config = config["players"][i]
         if player_config["role"] == "werewolf":
-            if werewolf_player_type is None:
-                werewolf_player_type = player_config["player_type"]
+            if werewolf_player_tag is None:
+                werewolf_player_tag = player_config["player_tag"]
             else:
-                assert werewolf_player_type == player_config["player_type"], "werewolves have different player types"
+                assert werewolf_player_tag == player_config["player_tag"], "werewolves have different player types"
         else:
-            if villager_player_type is None:
-                villager_player_type = player_config["player_type"]
+            if villager_player_tag is None:
+                villager_player_tag = player_config["player_tag"]
             else:
-                assert villager_player_type == player_config["player_type"], "villagers have different player types"
+                assert villager_player_tag == player_config["player_tag"], "villagers have different player types"
     if result["winner"] == "werewolf":
-        result["winner_player_type"] = werewolf_player_type
-        result["loser_player_type"] = villager_player_type
+        result["winner_player_tag"] = werewolf_player_tag
+        result["loser_player_tag"] = villager_player_tag
     else:
-        result["winner_player_type"] = villager_player_type
-        result["loser_player_type"] = werewolf_player_type
+        result["winner_player_tag"] = villager_player_tag
+        result["loser_player_tag"] = werewolf_player_tag
     
     #BELIEF
     belief_score = 0
