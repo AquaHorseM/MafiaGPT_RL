@@ -27,7 +27,20 @@ def copy_directory_with_prompt(source_dir, destination_dir):
 
 def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                        villager_notes_folder, seer_notes_folder, medic_notes_folder,
-                       werewolf_notes_folder,proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
+                       werewolf_notes_folder,
+                       villager_tags, seer_tags, medic_tags, werewolf_tags,
+                       proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
+    if isinstance(villager_tags, str):
+        villager_tags = [villager_tags] * 3
+    if isinstance(seer_tags, str):
+        seer_tags = [seer_tags] * 1
+    if isinstance(medic_tags, str):
+        medic_tags = [medic_tags] * 1
+    if isinstance(werewolf_tags, str):
+        werewolf_tags = [werewolf_tags] * 2
+        
+    
+    
     if isinstance(villager_notes_folder, list):
         villager_notes_folder_0 = villager_notes_folder[0]
         villager_notes_folder_1 = villager_notes_folder[1]
@@ -69,7 +82,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "prompt_dir_path": "core/players/prompts/werewolf",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
-                "sample_type": sample_type
+                "sample_type": sample_type,
+                "player_tag": werewolf_tags[0],
             },
             {
                 "role": "werewolf",
@@ -80,7 +94,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "prompt_dir_path": "core/players/prompts/werewolf",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
-                "sample_type": sample_type
+                "sample_type": sample_type,
+                "player_tag": werewolf_tags[1],
             },
             {
                 "role": "villager",
@@ -91,7 +106,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
-                "sample_type": sample_type
+                "sample_type": sample_type,
+                "player_tag": villager_tags[0],
             },
             {
                 "role": "villager",
@@ -102,7 +118,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
-                "sample_type": sample_type
+                "sample_type": sample_type,
+                "player_tag": villager_tags[1],
             },
             {
                 "role": "villager",
@@ -113,7 +130,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
-                "sample_type": sample_type
+                "sample_type": sample_type,
+                "player_tag": villager_tags[2],
             },
             {
                 "role": "medic",
@@ -124,7 +142,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "prompt_dir_path": "core/players/prompts/medic",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
-                "sample_type": sample_type
+                "sample_type": sample_type,
+                "player_tag": medic_tags[0],
             },
             {
                 "role": "seer",
@@ -135,7 +154,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "prompt_dir_path": "core/players/prompts/seer",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
-                "sample_type": sample_type
+                "sample_type": sample_type,
+                "player_tag": seer_tags[0],
             }
         ],
         "extra_sim_nodes": extra_sim_nodes
@@ -199,6 +219,7 @@ def run_one_battle(data_folder, config_path, num_games, num_process):
 
 def make_battle_dir_and_run_one_battle(tag, current_clan_war_folder,
                                        villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder,
+                                       villager_tags, seer_tags, medic_tags, werewolf_tags,
                                        num_games, num_process):
     battle_config_dict = create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder)
     run_one_battle(battle_config_dict['data_folder'], battle_config_dict['config_path'], num_games, num_process)
