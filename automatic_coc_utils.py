@@ -165,7 +165,7 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
 
 
 
-def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder):
+def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,):
     if not os.path.exists(current_clan_war_folder):
         os.makedirs(current_clan_war_folder)
     data_folder = os.path.join(current_clan_war_folder, 'data_'+battle_tag)
@@ -241,6 +241,11 @@ def battle(battle_tag, current_clan_war_folder, config_1, config_2, num_games_ea
                                        config_2["seer_notes_folder"], config_2["medic_notes_folder"],
                                        config_1["werewolf_notes_folder"], config_2["player_tag"], config_2["player_tag"],
                                        config_2["player_tag"], config_1["player_tag"], num_games_each, num_process)
+    
+    make_battle_dir_and_run_one_battle(battle_tag, current_clan_war_folder, config_1["villager_notes_folder"],
+                                       config_1["seer_notes_folder"], config_1["medic_notes_folder"],
+                                       config_2["werewolf_notes_folder"], config_1["player_tag"], config_1["player_tag"],
+                                       config_1["player_tag"], config_2["player_tag"], num_games_each, num_process)
     
     
     
