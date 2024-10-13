@@ -165,11 +165,11 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
 
 
 
-def create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder):
+def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder):
     if not os.path.exists(current_clan_war_folder):
         os.makedirs(current_clan_war_folder)
-    data_folder = os.path.join(current_clan_war_folder, 'data_'+tag)
-    prompt_logging_folder = os.path.join(current_clan_war_folder, 'prompt_logging_'+tag)
+    data_folder = os.path.join(current_clan_war_folder, 'data_'+battle_tag)
+    prompt_logging_folder = os.path.join(current_clan_war_folder, 'prompt_logging_'+battle_tag)
     
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
@@ -192,11 +192,11 @@ def create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_fo
     
     
     
-    input_txt_path = os.path.join(prompt_logging_folder, 'message_input_history_backup_'+tag+'.txt')
-    output_txt_path = os.path.join(prompt_logging_folder, 'message_output_history_backup_'+tag+'.txt')
+    input_txt_path = os.path.join(prompt_logging_folder, 'message_input_history_backup_'+battle_tag+'.txt')
+    output_txt_path = os.path.join(prompt_logging_folder, 'message_output_history_backup_'+battle_tag+'.txt')
     config_dict = obtain_config_dict(data_folder, input_txt_path, output_txt_path,
                                      villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder)
-    config_path = os.path.join(current_clan_war_folder, 'game_config_'+tag+'.json')
+    config_path = os.path.join(current_clan_war_folder, 'game_config_'+battle_tag+'.json')
     json.dump(config_dict, open(config_path,'w'), indent=4)
     
     
@@ -217,11 +217,11 @@ def run_one_battle(data_folder, config_path, num_games, num_process):
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while running battle: {e}")
 
-def make_battle_dir_and_run_one_battle(tag, current_clan_war_folder,
+def make_battle_dir_and_run_one_battle(battle_tag, current_clan_war_folder,
                                        villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder,
                                        villager_tags, seer_tags, medic_tags, werewolf_tags,
                                        num_games, num_process):
-    battle_config_dict = create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,)
+    battle_config_dict = create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,)
     run_one_battle(battle_config_dict['data_folder'], battle_config_dict['config_path'], num_games, num_process)
     return battle_config_dict
 '''
@@ -232,3 +232,15 @@ def make_battle_dir_and_run_one_battle(tag, current_clan_war_folder,
         config = config_dict
     )
 '''
+
+def battle(battle_tag, current_clan_war_folder, config_1, config_2, num_games_each, num_process):
+    #config should have: {role}_notes_folder, player_tag
+    
+    #use config 1 for werewolves first
+    make_battle_dir_and_run_one_battle(battle_tag, current_clan_war_folder, config_2["villager_notes_folder"],
+                                       config_2["seer_notes_folder"], config_2["medic_notes_folder"],
+                                       config_1["werewolf_notes_folder"], config_2["player_tag"], config_2["player_tag"],
+                                       config_2["player_tag"], config_1["player_tag"], num_games_each, num_process)
+    
+    
+    

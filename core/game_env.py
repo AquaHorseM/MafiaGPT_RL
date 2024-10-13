@@ -172,8 +172,8 @@ class WerewolfGameEnv:
             role = player_configs[num]["role"].lower()
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
-            #!
-            self.all_players.append(switcher_players["reflex"][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))  
+            
+            self.all_players.append(switcher_players[player_type][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))  
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
         # self.update_all_hstates(add_to_data=True)
 
