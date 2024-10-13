@@ -174,7 +174,7 @@ def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_n
     if not os.path.exists(data_folder):
         os.makedirs(data_folder)
     else:
-        x = input("The data folder already exists. Do you want to delete it and create a new one? (yes/no): ")
+        x = 'yes' # input("The data folder already exists. Do you want to delete it and create a new one? (yes/no): ")
         if x.lower() == 'yes':
             shutil.rmtree(data_folder)
             os.makedirs(data_folder)
@@ -183,7 +183,7 @@ def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_n
     if not os.path.exists(prompt_logging_folder):
         os.makedirs(prompt_logging_folder)
     else:
-        x = input("The prompt logging folder already exists. Do you want to delete it and create a new one? (yes/no): ")
+        x = 'yes' # input("The prompt logging folder already exists. Do you want to delete it and create a new one? (yes/no): ")
         if x.lower() == 'yes':
             shutil.rmtree(prompt_logging_folder)
             os.makedirs(prompt_logging_folder)
