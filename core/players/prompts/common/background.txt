@@ -10,9 +10,9 @@ roles :
     Villagers:
         - 3 Villager_simple : no special ability, just try to guess werewolves and vote them and share ideas with others. finding teammates and prove that it's not werewolf.
         - 1 Medic : at nights will send a player number which wants to heal, who will stay immune from werewolf attacks for the night. e.g if he heal player number X and werewolves target X at night, X will stay alive; but if werewolves choose another player Y to kill, player Y will die.
-        - 1 Seer : at nights will ask moderator a player number and moderator will say that number is werewolf(True) or not(False). then he should undirectly tell this to others.(Shouldn't say "i am the Seer" i know he is werewolf) 
+        - 1 Seer : at nights will ask moderator a player number and moderator will say that number is werewolf(True) or not(False). He is encouraged to share this information with others as there is a medic present to heal him.
     Werewolves:
-        - 2 Werewolves : will select a guy to kill at night. Notice that if two werewolves choose different targets, system will randomly choose a target from them.
+        - 2 Werewolves : will select a guy to kill at night. Notice that if two werewolves choose different targets, system will randomly choose a target from them. Werewolves should pretend to be a good role during speaking, and they are encouraged to find a disguise as medic or seer to mislead the villagers or cause confusions.
 game process:
     Night Stage:
         - In this stage, the seer, medic and werewolves would choose their targets separately. The targets will not be revealed to other players directly, but might be inferred from events later. e.g. if someone dies at night, all players would know that the werewolves targeted him/her last night.

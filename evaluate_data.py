@@ -199,6 +199,7 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
     
     # Define teams
     good_roles = ["villager", "seer", "medic"]
+    scores = [None] * len(roles)
     
     # Helper function to determine if two roles are on the same team
     def same_team(role1, role2):
@@ -213,45 +214,48 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
     
     # Iterate over each player
     for i, player_role in enumerate(roles):
-        if player_role in good_roles and i in alive_players:
-            # This player is on the good team and is alive
-            good_players_count += 1
-            player_score = 0
-            
-            # Iterate over the beliefs of this player about other players
-            for j, belief in enumerate(joint_hstate[i]):
-                if j == i or j not in alive_players:
-                    continue  # Skip if it's the player's own belief or the target player is dead
+        if not (player_role in good_roles and i in alive_players):
+            continue
+        # This player is on the good team and is alive
+        player_score = 0
+        
+        # Iterate over the beliefs of this player about other players
+        for j, belief in enumerate(joint_hstate[i]):
+            if j == i or j not in alive_players:
+                continue  # Skip if it's the player's own belief or the target player is dead
 
-                # Extract belief information
-                belief_role = belief["role"]
-                belief_confidence = belief["confidence"]
+            # Extract belief information
+            belief_role = belief["role"]
+            belief_confidence = belief["confidence"]
 
-                # If role is 'unknown', apply a small penalty
-                if belief_role == "unknown":
-                    player_score -= 0.01  # Small penalty for unknown belief
-                    continue
+            # If role is 'unknown', apply a small penalty
+            if belief_role == "unknown":
+                player_score -= 0.01  # Small penalty for unknown belief
+                continue
 
-                # Determine if the belief was correct about the team
-                if same_team(belief_role, roles[j]):
-                    # Correct team guess, add score based on confidence
-                    player_score += confidence_scores[belief_confidence]
+            # Determine if the belief was correct about the team
+            if same_team(belief_role, roles[j]):
+                # Correct team guess, add score based on confidence
+                player_score += confidence_scores[belief_confidence]
 
-                    # Bonus for guessing the exact role
-                    if belief_role == roles[j]:
-                        if belief_role == "villager":
-                            player_score += 0.5  # Small bonus for guessing a villager
-                        elif belief_role in ["seer", "medic"]:
-                            player_score += 1  # Higher bonus for guessing seer or medic correctly
-                else:
-                    # Incorrect team guess, apply a negative score based on confidence
-                    player_score -= confidence_scores[belief_confidence]
+                # Bonus for guessing the exact role
+                if belief_role == roles[j]:
+                    if belief_role == "villager":
+                        player_score += 0.5  # Small bonus for guessing a villager
+                    elif belief_role in ["seer", "medic"]:
+                        player_score += 1  # Higher bonus for guessing seer or medic correctly
+            else:
+                # Incorrect team guess, apply a negative score based on confidence
+                player_score -= confidence_scores[belief_confidence]
+        scores[i] = player_score
 
-            # Add this player's score to the total score
-            total_score += player_score
+        # Add this player's score to the total score
     
     # Return the average score for all good players
-    return total_score / good_players_count if good_players_count > 0 else 0
+    return scores
+
+
+
 
 if __name__ == "__main__":
     data_path = "transport/v1vv9_game4.pkl"
