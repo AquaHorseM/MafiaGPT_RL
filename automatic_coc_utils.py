@@ -27,7 +27,30 @@ def copy_directory_with_prompt(source_dir, destination_dir):
 
 def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                        villager_notes_folder, seer_notes_folder, medic_notes_folder,
-                       werewolf_notes_folder,proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 5):
+                       werewolf_notes_folder,proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
+    if isinstance(villager_notes_folder, list):
+        villager_notes_folder_0 = villager_notes_folder[0]
+        villager_notes_folder_1 = villager_notes_folder[1]
+        villager_notes_folder_2 = villager_notes_folder[2]
+    elif isinstance(villager_notes_folder, str):
+        villager_notes_folder_0 = villager_notes_folder
+        villager_notes_folder_1 = villager_notes_folder
+        villager_notes_folder_2 = villager_notes_folder
+    else:
+        assert False
+    if isinstance(seer_notes_folder, list):
+        seer_notes_folder = seer_notes_folder[0]
+    if isinstance(medic_notes_folder, list):
+        medic_notes_folder = medic_notes_folder[0]
+        
+    if isinstance(werewolf_notes_folder, list):
+        werewolf_notes_folder_0 = werewolf_notes_folder[0]
+        werewolf_notes_folder_1 = werewolf_notes_folder[1]
+    elif isinstance(werewolf_notes_folder, str):
+        werewolf_notes_folder_0 = werewolf_notes_folder
+        werewolf_notes_folder_1 = werewolf_notes_folder
+    else:
+        assert False
     
     current_config_dict = {
         "reflex_after_sim": False,
@@ -40,8 +63,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             {
                 "role": "werewolf",
                 "player_type": "reflex",
-                "reflex_note_belief_path": os.path.join(werewolf_notes_folder,"werewolf_reflex_note_belief.txt"),
-                "reflex_note_policy_path": os.path.join(werewolf_notes_folder,"werewolf_reflex_note_policy.txt"),
+                "reflex_note_belief_path": os.path.join(werewolf_notes_folder_0,"werewolf_reflex_note_belief.txt"),
+                "reflex_note_policy_path": os.path.join(werewolf_notes_folder_0,"werewolf_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
                 "prompt_dir_path": "core/players/prompts/werewolf",
                 "proposal_num": proposal_num,
@@ -51,8 +74,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             {
                 "role": "werewolf",
                 "player_type": "reflex",
-                "reflex_note_belief_path": os.path.join(werewolf_notes_folder,"werewolf_reflex_note_belief.txt"),
-                "reflex_note_policy_path": os.path.join(werewolf_notes_folder,"werewolf_reflex_note_policy.txt"),
+                "reflex_note_belief_path": os.path.join(werewolf_notes_folder_1,"werewolf_reflex_note_belief.txt"),
+                "reflex_note_policy_path": os.path.join(werewolf_notes_folder_1,"werewolf_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
                 "prompt_dir_path": "core/players/prompts/werewolf",
                 "proposal_num": proposal_num,
@@ -62,8 +85,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             {
                 "role": "villager",
                 "player_type": "reflex",
-                "reflex_note_belief_path": os.path.join(villager_notes_folder, "villager_reflex_note_belief.txt"),
-                "reflex_note_policy_path": os.path.join(villager_notes_folder, "villager_reflex_note_policy.txt"),
+                "reflex_note_belief_path": os.path.join(villager_notes_folder_0, "villager_reflex_note_belief.txt"),
+                "reflex_note_policy_path": os.path.join(villager_notes_folder_0, "villager_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": proposal_num,
@@ -73,8 +96,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             {
                 "role": "villager",
                 "player_type": "reflex",
-                "reflex_note_belief_path": os.path.join(villager_notes_folder, "villager_reflex_note_belief.txt"),
-                "reflex_note_policy_path": os.path.join(villager_notes_folder, "villager_reflex_note_policy.txt"),
+                "reflex_note_belief_path": os.path.join(villager_notes_folder_1, "villager_reflex_note_belief.txt"),
+                "reflex_note_policy_path": os.path.join(villager_notes_folder_1, "villager_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": proposal_num,
@@ -84,8 +107,8 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             {
                 "role": "villager",
                 "player_type": "reflex",
-                "reflex_note_belief_path": os.path.join(villager_notes_folder, "villager_reflex_note_belief.txt"),
-                "reflex_note_policy_path": os.path.join(villager_notes_folder, "villager_reflex_note_policy.txt"),
+                "reflex_note_belief_path": os.path.join(villager_notes_folder_2, "villager_reflex_note_belief.txt"),
+                "reflex_note_policy_path": os.path.join(villager_notes_folder_2, "villager_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": proposal_num,
@@ -180,3 +203,11 @@ def make_battle_dir_and_run_one_battle(tag, current_clan_war_folder,
     battle_config_dict = create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder)
     run_one_battle(battle_config_dict['data_folder'], battle_config_dict['config_path'], num_games, num_process)
     return battle_config_dict
+'''
+    return dict(
+        data_folder = data_folder,
+        prompt_logging_folder = prompt_logging_folder,
+        config_path = config_path,
+        config = config_dict
+    )
+'''
