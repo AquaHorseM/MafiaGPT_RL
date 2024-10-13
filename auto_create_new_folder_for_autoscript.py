@@ -52,7 +52,7 @@ def main(args):
                 "proposal_num": 3,
                 "sample_num": 10,
                 "sample_type": "heuristic",
-                "player_tag": "werewolf_v0"
+                "player_tag": "v0"
             },
             {
                 "role": "werewolf",
@@ -64,7 +64,7 @@ def main(args):
                 "proposal_num": 3,
                 "sample_num": 10,
                 "sample_type": "heuristic",
-                "player_tag": "werewolf_v0"
+                "player_tag": "v0"
             },
             {
                 "role": "villager",
@@ -76,7 +76,7 @@ def main(args):
                 "proposal_num": 3,
                 "sample_num": 10,
                 "sample_type": "heuristic",
-                "player_tag": "villager_v0"
+                "player_tag": "v0"
             },
             {
                 "role": "villager",
@@ -88,7 +88,7 @@ def main(args):
                 "proposal_num": 3,
                 "sample_num": 10,
                 "sample_type": "heuristic",
-                "player_tag": "villager_v0"
+                "player_tag": "v0"
             },
             {
                 "role": "villager",
@@ -100,7 +100,7 @@ def main(args):
                 "proposal_num": 3,
                 "sample_num": 10,
                 "sample_type": "heuristic",
-                "player_tag": "villager_v0"
+                "player_tag": "v0"
             },
             {
                 "role": "medic",
@@ -112,7 +112,7 @@ def main(args):
                 "proposal_num": 3,
                 "sample_num": 10,
                 "sample_type": "heuristic",
-                "player_tag": "medic_v0"
+                "player_tag": "v0"
             },
             {
                 "role": "seer",
@@ -124,7 +124,7 @@ def main(args):
                 "proposal_num": 3,
                 "sample_num": 10,
                 "sample_type": "heuristic",
-                "player_tag": "seer_v0"
+                "player_tag": "v0"
             }
         ],
         "extra_sim_nodes": 5
