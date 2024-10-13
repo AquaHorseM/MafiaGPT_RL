@@ -51,7 +51,8 @@ def main(args):
                 "prompt_dir_path": "core/players/prompts/werewolf",
                 "proposal_num": 3,
                 "sample_num": 10,
-                "sample_type": "heuristic"
+                "sample_type": "heuristic",
+                "player_tag": "werewolf_v0"
             },
             {
                 "role": "werewolf",
@@ -62,7 +63,8 @@ def main(args):
                 "prompt_dir_path": "core/players/prompts/werewolf",
                 "proposal_num": 3,
                 "sample_num": 10,
-                "sample_type": "heuristic"
+                "sample_type": "heuristic",
+                "player_tag": "werewolf_v0"
             },
             {
                 "role": "villager",
@@ -73,7 +75,8 @@ def main(args):
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": 3,
                 "sample_num": 10,
-                "sample_type": "heuristic"
+                "sample_type": "heuristic",
+                "player_tag": "villager_v0"
             },
             {
                 "role": "villager",
@@ -84,7 +87,8 @@ def main(args):
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": 3,
                 "sample_num": 10,
-                "sample_type": "heuristic"
+                "sample_type": "heuristic",
+                "player_tag": "villager_v0"
             },
             {
                 "role": "villager",
@@ -95,7 +99,8 @@ def main(args):
                 "prompt_dir_path": "core/players/prompts/villager",
                 "proposal_num": 3,
                 "sample_num": 10,
-                "sample_type": "heuristic"
+                "sample_type": "heuristic",
+                "player_tag": "villager_v0"
             },
             {
                 "role": "medic",
@@ -106,7 +111,8 @@ def main(args):
                 "prompt_dir_path": "core/players/prompts/medic",
                 "proposal_num": 3,
                 "sample_num": 10,
-                "sample_type": "heuristic"
+                "sample_type": "heuristic",
+                "player_tag": "medic_v0"
             },
             {
                 "role": "seer",
@@ -117,7 +123,8 @@ def main(args):
                 "prompt_dir_path": "core/players/prompts/seer",
                 "proposal_num": 3,
                 "sample_num": 10,
-                "sample_type": "heuristic"
+                "sample_type": "heuristic",
+                "player_tag": "seer_v0"
             }
         ],
         "extra_sim_nodes": 5
@@ -129,7 +136,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_06')
+    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_12')
     parser.add_argument('--org_notes_dir', type=str, default = './core/notes_fixed_version/notes_v0')
     args = parser.parse_args()
     main(args)
