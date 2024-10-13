@@ -5,8 +5,8 @@ import os
 import re
 
 class MedicPlayer(Player):
-    def __init__(self, id, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir_path = None, openai_client = None, reflex_note_path_belief = None, reflex_note_path_policy = None):
-        super().__init__(id, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
+    def __init__(self, id, game_id, player_config, global_info, private_info, openai_client = None):
+        super().__init__(id, game_id, player_config, global_info, private_info, openai_client)
         self.labels = ["all", "medic"]
         self.role = "medic"
         self.private_info["last_heal"] = None
@@ -127,7 +127,7 @@ class MedicPlayer(Player):
         heal = self._get_final_choice_from_response_HealThreeStep(response_and_reason)
         
         self.draft_dict["heal"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        return heal, response
+        return heal, response_and_reason
         
     
     

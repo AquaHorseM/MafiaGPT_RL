@@ -48,7 +48,10 @@ def main(args):
                 "reflex_note_belief_path": os.path.join(folder_name, 'notes', org_dir_name_without_path,"werewolf/werewolf_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(folder_name, 'notes', org_dir_name_without_path,"werewolf/werewolf_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
-                "prompt_dir_path": "core/players/prompts/werewolf"
+                "prompt_dir_path": "core/players/prompts/werewolf",
+                "proposal_num": 3,
+                "sample_num": 10,
+                "sample_type": "heuristic"
             },
             {
                 "role": "werewolf",
@@ -56,7 +59,10 @@ def main(args):
                 "reflex_note_belief_path": os.path.join(folder_name, 'notes', org_dir_name_without_path,"werewolf/werewolf_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(folder_name, 'notes', org_dir_name_without_path,"werewolf/werewolf_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
-                "prompt_dir_path": "core/players/prompts/werewolf"
+                "prompt_dir_path": "core/players/prompts/werewolf",
+                "proposal_num": 3,
+                "sample_num": 10,
+                "sample_type": "heuristic"
             },
             {
                 "role": "villager",
@@ -64,7 +70,10 @@ def main(args):
                 "reflex_note_belief_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "villager/villager_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "villager/villager_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
-                "prompt_dir_path": "core/players/prompts/villager"
+                "prompt_dir_path": "core/players/prompts/villager",
+                "proposal_num": 3,
+                "sample_num": 10,
+                "sample_type": "heuristic"
             },
             {
                 "role": "villager",
@@ -72,7 +81,10 @@ def main(args):
                 "reflex_note_belief_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "villager/villager_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "villager/villager_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
-                "prompt_dir_path": "core/players/prompts/villager"
+                "prompt_dir_path": "core/players/prompts/villager",
+                "proposal_num": 3,
+                "sample_num": 10,
+                "sample_type": "heuristic"
             },
             {
                 "role": "villager",
@@ -80,7 +92,10 @@ def main(args):
                 "reflex_note_belief_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "villager/villager_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "villager/villager_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
-                "prompt_dir_path": "core/players/prompts/villager"
+                "prompt_dir_path": "core/players/prompts/villager",
+                "proposal_num": 3,
+                "sample_num": 10,
+                "sample_type": "heuristic"
             },
             {
                 "role": "medic",
@@ -88,7 +103,10 @@ def main(args):
                 "reflex_note_belief_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "medic/medic_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "medic/medic_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
-                "prompt_dir_path": "core/players/prompts/medic"
+                "prompt_dir_path": "core/players/prompts/medic",
+                "proposal_num": 3,
+                "sample_num": 10,
+                "sample_type": "heuristic"
             },
             {
                 "role": "seer",
@@ -96,7 +114,10 @@ def main(args):
                 "reflex_note_belief_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "seer/seer_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(folder_name, 'notes', org_dir_name_without_path, "seer/seer_reflex_note_policy.txt"),
                 "common_prompt_dir_path": "core/players/prompts/common",
-                "prompt_dir_path": "core/players/prompts/seer"
+                "prompt_dir_path": "core/players/prompts/seer",
+                "proposal_num": 3,
+                "sample_num": 10,
+                "sample_type": "heuristic"
             }
         ],
         "extra_sim_nodes": 5

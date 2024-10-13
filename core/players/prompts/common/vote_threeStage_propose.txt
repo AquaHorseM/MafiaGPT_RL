@@ -11,14 +11,12 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 
 {reflex_note_policy}
 
-Now, it's time for you to give a proposal of 2 players you want to vote out. Remember the player voted the most would DIE. Your answer should be in the format of:
+Now, it's time for you to give a proposal of {proposal_num} players you want to vote out. Remember the player voted the most would DIE. Your answer should be in the format of:
 
-Firstly, I vote for Player <NUMBER>. The reason is: <REASON>.
+Proposal 1: Vote for player <i>. Reason: <reason>.
+Proposal 2: Vote for player <j>. Reason: <reason>.
+...
 
-Secondly, I vote for Player <NUMBER>. The reason is: <REASON>.
-
-You should give a proposal of exactly 2 Players to be voted.
-
-Remember to follow the answer template or your action might not be recognized.
+You should give a proposal of exactly {proposal_num} Players to be voted. Remember to follow the answer template or your action might not be recognized.
 
 Please give your proposal based on the above requirements.

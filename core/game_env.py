@@ -73,7 +73,9 @@ class WerewolfGameEnv:
         }
         self.retry_num = game_config.get("extra_sim_nodes", 5)
         self.set_players(game_config["players"])
-        self.data = DataTree(self.get_state())
+        self.alive_players = list(range(self.player_num))
+        self.dead_players = []    
+        self.data = DataTree(self.get_state(), game_config)
         self.latest_actions = [None] * self.player_num
         self.latest_drafts = [{
             "cur_action": None,
@@ -130,8 +132,7 @@ class WerewolfGameEnv:
                         raise ValueError(f"No available players for role: {role}")
                 return ids
             shuffled_nums = shuffle_roles(roles_order, player_configs)
-        self.alive_players = list(range(self.player_num))
-        self.dead_players = []        
+            
         werewolf_ids = [] 
         for num in range(len(shuffled_nums)):
             if player_configs[shuffled_nums[num]]["role"].lower() == "werewolf":
@@ -172,18 +173,7 @@ class WerewolfGameEnv:
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
             if player_type == "reflex":
-                prompt_dir_path = player_configs[num].get("prompt_dir_path")
-                common_prompt_dir_path = player_configs[num].get("common_prompt_dir_path")
-                assert os.path.exists(prompt_dir_path), f"prompt directory {prompt_dir_path} not found"
-                assert os.path.exists(common_prompt_dir_path), f"common prompt directory {common_prompt_dir_path} not found"
-                reflex_note_belief_path = player_configs[num].get("reflex_note_belief_path")
-                reflex_note_policy_path = player_configs[num].get("reflex_note_policy_path")
-                if reflex_note_belief_path is None or reflex_note_policy_path is None:
-                    self.all_players.append(switcher_players[player_type][role](i, self.id, init_global_info, switcher_private_info[role], prompt_dir_path, \
-                        common_prompt_dir_path, self.openai_client))
-                else:
-                    self.all_players.append(switcher_players[player_type][role](i, self.id, init_global_info, switcher_private_info[role], prompt_dir_path, \
-                        common_prompt_dir_path, self.openai_client, reflex_note_belief_path, reflex_note_policy_path))
+                self.all_players.append(switcher_players[player_type][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))
             else:
                 self.all_players.append(switcher_players[player_type][role](role=role, id=i))
                 if role == "werewolf":
@@ -255,7 +245,8 @@ class WerewolfGameEnv:
     def check_done(self, player_id):
         return 1 if self.game_status["winner"] or not self.all_players[player_id].is_alive else 0
         
-    def step(self, actions):
+    def step(self, actions, retrying = False):
+        dones = None
         # print("xsm debug actions: " + str(actions))
         assert len(actions) == self.player_num, "Number of actions must be equal to the number of players"
         if self.game_status["cur_stage"] == "night":
@@ -344,10 +335,16 @@ class WerewolfGameEnv:
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
-            self.end()
+            self.update_drafts(actions)
+            if not retrying:
+                self.end()
+                dones = [True] * self.player_num
+            else:
+                if len(self.temp_events) != 0:
+                    self.update_all_hstates(add_to_data=True)
         else:
             rewards = [0 for _ in range(self.player_num)]
-        return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done), self.game_status, self.get_available_actions()
+        return self._repeat(self.get_observation_single_player), self.get_state(), rewards, self._repeat(self.check_done) if dones is None else dones, self.game_status, self.get_available_actions()
 
         
     def seed(self, seed):
@@ -476,10 +473,10 @@ class WerewolfGameEnv:
     
     def parse_global_info(self, global_info: dict):
         self.current_round = global_info["game_status"]["cur_round"]
-        self.alive_players = global_info["alive_players"]
-        self.dead_players = global_info["dead_players"]
-        self.votes = global_info["previous_votes"]
-        self.game_status = global_info["game_status"]
+        self.alive_players = deepcopy(global_info["alive_players"])
+        self.dead_players = deepcopy(global_info["dead_players"])
+        self.votes = deepcopy(global_info["previous_votes"])
+        self.game_status = deepcopy(global_info["game_status"])
         self.player_num = global_info["player_num"]
     
     def load_state(self, state, events):
@@ -596,7 +593,7 @@ class WerewolfGameEnv:
         self.data.add_edge_and_node(
             events = self.temp_events,
             actions = self.latest_actions,
-            state = self.get_state(),
+            state = deepcopy(self.get_state()),
             drafts = deepcopy(self.latest_drafts),
             is_game_end = is_game_end
         )
@@ -644,25 +641,25 @@ class WerewolfGameEnv:
         
     def end(self):
         self.logger.info("Game ended")
-        if len(self.temp_events) != 0:
-            self.update_all_hstates(add_to_data=True)
+        self.update_all_hstates(add_to_data=True)
         self.store_data(self.data_path)
         try:
             self.save_game_record()
         except Exception as e:
             print("Failed to save game record.")
             print(f"Error: {e}")
-        if 1: # self.train:
-            #! temparirly random
-            for i in range(self.retry_num):
-                self.random_retry_one_node(retry_steps = 1)
-                self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
+        #! temparirly random
+        for i in range(self.retry_num):
+            self.random_retry_one_node(retry_steps = 1)
+            self.logger.info(f"Randomly retried {i+1} nodes for 1 step")
             self.store_data(self.data_path)
-            if self.train:
-                self.logger.info("ALl players reflexing")
-                self.all_players_reflex()
+        if self.train:
+            self.logger.info("ALl players reflexing")
+            self.all_players_reflex()
             
     def get_available_actions_single_player(self, player_id): #return the raw actions; if need to apply to gym, use discretify after this
+        if player_id not in self.alive_players:
+            return []
         if self.game_status["cur_stage"] == "night":
             night_actions = {
                 "seer": ["see"],
@@ -694,8 +691,8 @@ class WerewolfGameEnv:
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
     
-    def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
-        self.latest_actions = deepcopy(actions)
+    
+    def update_drafts(self, actions):
         def get_latest_draft(draft_dict):
             for key in draft_dict.keys():
                 if len(draft_dict[key]) == 0:
@@ -719,6 +716,10 @@ class WerewolfGameEnv:
                     self.latest_drafts[player_id].update(current_player_latest_draft_dict["speak"])
                 else:
                     continue
+    
+    def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
+        self.latest_actions = deepcopy(actions)
+        self.update_drafts(actions)
                     
         if info is not None:
             self.logger.info(str(info))
@@ -786,12 +787,10 @@ class WerewolfGameEnv:
                 vote_action = self.all_players[player_id]._vote_with_other_proposal(draft)
                 actions[player_id] = vote_action
                 self.logger.debug(f"player: {player_id}'s vote action: {vote_action}")
-        obs, state, rewards, dones, info, avail_actions = self.step(actions)
-        self.logger.debug("Stepped!")
+        obs, state, rewards, dones, info, avail_actions = self.step(actions, retrying = True)
         if self.postprocess_step(actions, dones, info):
             return True
         if retry_steps == 1:
-            self.logger.debug("Yeahhh")
             return True
         for retry_step in range(retry_steps - 1):
             actions = self.get_actions_reflex(avail_actions)
@@ -813,34 +812,6 @@ class WerewolfGameEnv:
             except Exception as e:
                 self.logger.warning(f"Encountered error {e} while retrying; skipped.")
         print(f"Retry failed after {MAX_ATTEMPT} attempts")
-            
-        
-    def reset(self):
-        #reset hidden state
-        for player in self.all_players:
-            player.reset()
-        self.event_book = EventBook()
-        self.current_round = 0
-        self.game_status = {
-            "cur_stage": "night", #night, day, vote
-            "cur_round": 0,
-            "next_speaking_player": None, 
-            "start_speaking_player": None,
-            "winner": None
-        }
-        self.alive_players = list(range(self.player_num))
-        self.dead_players = []
-        self.votes = []
-        self.temp_events = []
-        self.night_info = {
-            "killed": None,
-            "healed": None,
-            "known_roles": dict()
-        }
-        self.data = DataTree(self.get_state())
-        self.logger.info("Game reset successfully")
-        #return obs, state, available_actions
-        return self._repeat(self.get_observation_single_player), self.get_state(), self.get_available_actions()
     
     def backtrace(self, targ_id = None, back_steps = 1):
         if targ_id is None:
@@ -854,6 +825,7 @@ class WerewolfGameEnv:
         print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
         print(f"current game status: {self.game_status}")
-        
+        print(f"Alive players: {self.alive_players}")
+        self.temp_events = []
 
     

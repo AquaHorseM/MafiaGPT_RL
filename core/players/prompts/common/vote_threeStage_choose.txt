@@ -11,13 +11,11 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 
 {reflex_note_policy}
 
-Now, it's time for you to Choose from 2 players to vote. Here is the number of these two players and an analysis and imagination about what could happen after you vote for each of these players.
+Now, it's time for you to Choose from {proposal_num} players to vote. Here is the number of these players and an analysis and imagination about what could happen after you vote for each of these players.
 
-Case A: Vote for Player {current_propose_0}. What could happen is: {current_propose_0_imagination}
+{proposal_infos}
 
-Case B: Vote for Player {current_propose_1}. What could happen is: {current_propose_1_imagination}
-
-Now, please choose to vote for one of these 2 players, and give yoru reason about why you would like to vote for this single player.
+Now, please choose to vote for one of these players, and give yoru reason about why you would like to vote for this single player.
 
 Answer in the following format:
 

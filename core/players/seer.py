@@ -5,8 +5,8 @@ import os
 import re
 
 class SeerPlayer(Player):
-    def __init__(self, id, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir_path = None, openai_client = None, reflex_note_path_belief = None, reflex_note_path_policy = None):
-        super().__init__(id, game_id, global_info, private_info, prompt_dir_path, common_prompt_dir_path, openai_client, reflex_note_path_belief, reflex_note_path_policy)
+    def __init__(self, id, game_id, player_config, global_info, private_info, openai_client = None):
+        super().__init__(id, game_id, player_config, global_info, private_info, openai_client)
         self.labels = ["all", "seer"]
         self.role = "seer"
         if "known_roles" not in self.private_info:
@@ -132,7 +132,7 @@ class SeerPlayer(Player):
         see = self._get_final_choice_from_response_SeeThreeStep(response_and_reason)
         
         self.draft_dict["see"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        return see, response
+        return see, response_and_reason
     def _see_org(self):
         response = self.get_response("see")
         see = get_target_from_response(response)
