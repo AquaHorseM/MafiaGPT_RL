@@ -27,7 +27,7 @@ def copy_directory_with_prompt(source_dir, destination_dir):
 
 def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                        villager_notes_folder, seer_notes_folder, medic_notes_folder,
-                       werewolf_notes_folder,proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
+                       werewolf_notes_folder,proposal_num = 3, sample_num = 10, sample_type = "heuristic"):
     
     current_config_dict = {
         "reflex_after_sim": False,
@@ -115,7 +115,7 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                 "sample_type": sample_type
             }
         ],
-        "extra_sim_nodes": extra_sim_nodes
+        "extra_sim_nodes": 0
     }
     
     return current_config_dict
@@ -180,3 +180,13 @@ def make_battle_dir_and_run_one_battle(tag, current_clan_war_folder,
     battle_config_dict = create_folder_for_one_battle(tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder)
     run_one_battle(battle_config_dict['data_folder'], battle_config_dict['config_path'], num_games, num_process)
     return battle_config_dict
+
+def battle(tag, current_clan_war_folder, version_1_config, version_2_config, num_games, num_processes):
+    #TODO
+   '''
+   each config should have:
+    player_type:  
+   
+   '''
+    
+    

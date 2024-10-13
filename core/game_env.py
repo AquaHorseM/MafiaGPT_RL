@@ -172,13 +172,8 @@ class WerewolfGameEnv:
             role = player_configs[num]["role"].lower()
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
-            if player_type == "reflex":
-                self.all_players.append(switcher_players[player_type][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))
-            else:
-                self.all_players.append(switcher_players[player_type][role](role=role, id=i))
-                if role == "werewolf":
-                    self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
-                
+            #!
+            self.all_players.append(switcher_players["reflex"][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))  
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
         # self.update_all_hstates(add_to_data=True)
 
@@ -504,7 +499,7 @@ class WerewolfGameEnv:
             self.reflex_for_player(player_id)
     
     def reflex_for_player(self, player_id):
-        if self.player_types[player_id] == "reflex":
+        if self.all_players[player_id].reflexable:
             self.all_players[player_id].reflex(self.data)
             return True
         return False
@@ -514,7 +509,7 @@ class WerewolfGameEnv:
         werewolf_ids = []
         villager_ids = []
         for i in range(self.player_num):
-            if not self.player_types[i]=="reflex":
+            if self.all_players[i].reflexable:
                 self.logger.debug(f"Player {i} not reflexable. Skipping.")
                 continue
             if self.all_players[i].get_role() in ["medic", "seer"]:
