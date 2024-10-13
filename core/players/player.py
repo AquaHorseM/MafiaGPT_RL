@@ -104,14 +104,15 @@ class Player:
         
     def _configure_logger(self):
         logger = logging.getLogger(f"Game-{self.game_id}-Player-{self.id}-{self.get_role()}")
-        logger.setLevel(logging.DEBUG)
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
+        if not logger.hasHandlers():
+            logger.setLevel(logging.DEBUG)
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging.DEBUG)
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
+            console_handler.setFormatter(formatter)
+            logger.addHandler(console_handler)
         return logger    
         
     def get_replacements(self):
