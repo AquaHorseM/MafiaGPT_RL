@@ -92,6 +92,8 @@ class Player:
         self.proposal_num = player_config.get("proposal_num", 2)
         self.sample_num = player_config.get("sample_num", 10)
         self.sample_type = player_config.get("sample_type", "heuristic")
+        self.reflexable = player_config.get("reflexable", True)
+        self.player_tag = player_config.get("player_tag", "NoTag")
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
         self.draft_dict["speak"] = list()
