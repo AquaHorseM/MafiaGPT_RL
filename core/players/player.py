@@ -132,7 +132,8 @@ class Player:
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
             "{hstate}": str(self.hstate),
-            "{proposal_num}": str(self.proposal_num) #!
+            "{proposal_num}": str(self.proposal_num), #!
+            "{vis_events}": str(self.event_book)
         }
             
 
