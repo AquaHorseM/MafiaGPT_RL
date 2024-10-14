@@ -616,7 +616,7 @@ class Player:
         }
     
     def convert_draft_to_prompt(self, draft: Dict):
-        if draft["cur_action"] not in ["vote", "speak"]:
+        if draft is not None and draft["cur_action"] not in ["vote", "speak"]:
             return ""
         else:
             s = "\nThe following is your proposals and your imagination of your action.\n\n"
@@ -717,8 +717,8 @@ class Player:
         s += self.summarize_events(traj["after_events"])
         s += "Think about the following questions: Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
         
-        if len(reflex_info["trajs"]) > 1:
-            other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
+        # if len(reflex_info["trajs"]) > 1:
+        #     other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
             # todo
             # other_draft = other_traj["draft"]
             # if other_draft["cur_action"] not in ["vote", "speak"]:
