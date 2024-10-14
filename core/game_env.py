@@ -693,6 +693,8 @@ class WerewolfGameEnv:
                     draft_dict[key] = None
                 else:
                     draft_dict[key] = draft_dict[key][-1]
+            if draft_dict is None or all([draft_dict[key] is None for key in draft_dict.keys()]):
+                return None
             return draft_dict
         for player_id in range(self.player_num):
             self.latest_drafts[player_id] = {
@@ -703,10 +705,12 @@ class WerewolfGameEnv:
                 continue
             else:
                 current_player_draft_dict = deepcopy(self.all_players[player_id].draft_dict)
+                if current_player_draft_dict is None:
+                    continue
                 current_player_latest_draft_dict = get_latest_draft(current_player_draft_dict)
-                if actions[player_id]["action"] == "vote":
+                if actions[player_id]["action"] == "vote" and current_player_draft_dict.get("vote") is not None:
                     self.latest_drafts[player_id].update(current_player_latest_draft_dict["vote"])
-                elif actions[player_id]["action"] == "speak":
+                elif actions[player_id]["action"] == "speak" and current_player_draft_dict.get("speak") is not None:
                     self.latest_drafts[player_id].update(current_player_latest_draft_dict["speak"])
                 else:
                     continue
