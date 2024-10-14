@@ -598,8 +598,7 @@ class Player:
     
     def summarize_events(self, events: List[Event]):
         replacements = self.get_replacements()
-        event_txt = '\n'.join([str(event) for event in events if event.event in \
-            ["vote_out", "die", "day_start", "night_start", "end", "no_death", "vote"]])
+        event_txt = '\n'.join([str(event) for event in events])
         replacements.update({
             "{all_events}": event_txt
         })
@@ -712,10 +711,11 @@ class Player:
         s += self.convert_draft_to_prompt(traj["draft"])
         s += "\nThese are the beliefs of all other players after your action.\n\n"
         s += show_all_other_beliefs()
-        '''
-        s += "\n This is a summary of what happens after your final decided action:\n\n"
+        
+        s += "\n This is a summary of what happens after your final decided action:\n\n" 
         s += self.summarize_events(traj["after_events"])
-        '''
+        s += "Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
+        
         if len(reflex_info["trajs"]) > 1:
             other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
             other_draft = other_traj["draft"]
