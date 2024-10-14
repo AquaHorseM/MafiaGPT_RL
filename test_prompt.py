@@ -1,4 +1,4 @@
-from core.players.villager import VillagerPlayer
+from core.players.reflex.villager import VillagerPlayer
 
 player_num = 7
 
@@ -20,7 +20,7 @@ init_villager_private_info = {
     "role": "villager",
 }
 
-villagerpromptpath = "core/players/prompts/villager"
+villagerpromptpath = "core/players/reflex/prompts/villager"
 
 villager = VillagerPlayer(0, init_global_info, init_villager_private_info, villagerpromptpath)
 print(villager.show_prompt("vote.txt"))

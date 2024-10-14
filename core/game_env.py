@@ -4,7 +4,6 @@ import pickle
 import random, logging
 import json, re, os
 import numpy as np
-from core.players.player import Player
 from core.event import Event, EventBook
 from core.utils import switcher_players, emph_print, count_adjustable_params
 from core.api import load_client
@@ -32,7 +31,7 @@ def get_input_output_txt_path(game_config):
         input_txt_path = game_config.get("input_txt_path", "message_input_history_backup.txt"),
         output_txt_path = game_config.get("output_txt_path", "message_history_backup.txt")
     )
-def reflex_player_from_data(player: Player, data):
+def reflex_player_from_data(player, data):
     player.reflex(data)
     return True
 
@@ -568,7 +567,7 @@ class WerewolfGameEnv:
                     dictionary for vote drafts. it has the following items:
                     vote_proposal: list[int], list of proposals of votes. Currently len = 2.
                     proposal_and_imaginations: list[str], list of imagination. See core/player.py/Player/_vote
-                    proposal_chosen_and_reasons: str, description of chosen proposal. See core/player.py/Player/_vote and core/players/prompts/common/vote_threeStage_choose.txt for format of it.
+                    proposal_chosen_and_reasons: str, description of chosen proposal. See core/player.py/Player/_vote and core/players/reflex/prompts/common/vote_threeStage_choose.txt for format of it.
                 "cur_action": "speak": 
                     dictionary for speak drafts. it has the following items:
                     speak_proposal: list[str], list of proposals of speak summary. Currently len = 2.

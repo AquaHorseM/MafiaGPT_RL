@@ -1,9 +1,9 @@
-from core.players.player import Player
+from core.players.reflex.player import Player
 from core.event import EventBook
-from core.players.werewolf import WerewolfPlayer
-from core.players.medic import MedicPlayer
-from core.players.seer import SeerPlayer
-from core.players.villager import VillagerPlayer
+from core.players.reflex.werewolf import WerewolfPlayer
+from core.players.reflex.medic import MedicPlayer
+from core.players.reflex.seer import SeerPlayer
+from core.players.reflex.villager import VillagerPlayer
 import pickle, os
 import inspect
 switcher_players = {
