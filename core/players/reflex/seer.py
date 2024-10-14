@@ -1,4 +1,4 @@
-from core.players.reflex.player import Player
+from .player import Player
 from core.players.utils import get_target_from_response
 from core.event import EventBook
 import os
