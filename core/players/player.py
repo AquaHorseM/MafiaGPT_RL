@@ -90,6 +90,7 @@ class Player:
         self.hstate = self.HiddenState(global_info["player_num"], self.id)
         self.hstate.set_role(self.id, self.get_role())
         self.proposal_num = player_config.get("proposal_num", 2)
+        self.sample_num = player_config.get("sample_num", 10)
         self.sample_type = player_config.get("sample_type", "heuristic")
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
@@ -219,7 +220,7 @@ class Player:
         for proposal_dict in proposal_dicts:
             target = proposal_dict["target"]
             reason = proposal_dict["reason"]
-            self.logger.debug(f"Target: {target}. Reason: {reason}.")
+            # self.logger.debug(f"Target: {target}. Reason: {reason}.")
         proposals = [elem["target"] for elem in proposal_dicts]
         
         self.draft_dict["vote"][-1]["vote_proposal"] = proposals
@@ -431,9 +432,11 @@ class Player:
                 return False
         return True
     
-    def get_node_importance_for_policy(self, state, prev_events, trajs):
+    def get_node_importance_for_policy(self, state, prev_events, trajs, sample_type: str = "heuristic"):
         if len(trajs) == 0:
             return 0.0001
+        if sample_type == "uniform":
+            return 1
         reflex_info = self.extract_reflex_info(state, prev_events, trajs)
         cur_score = self.evaluate_joint_hstate(reflex_info["hstate"], reflex_info["alive_players"])
         total_score = 0.5
@@ -459,10 +462,11 @@ class Player:
             return total_score
 
     
-    def reflex(self, data : DataTree, sample_num = 20):
+    def reflex(self, data : DataTree):
         sample_type = self.sample_type
         reflex_data_belief = data.sample(self.id, sample_num = 1000)
         reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = 1000)
+        sample_num = self.sample_num
         self.logger.info(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
         self.logger.info(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
         def get_elems(d):

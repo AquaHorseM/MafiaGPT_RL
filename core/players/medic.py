@@ -127,7 +127,7 @@ class MedicPlayer(Player):
         heal = self._get_final_choice_from_response_HealThreeStep(response_and_reason)
         
         self.draft_dict["heal"][-1]["proposal_chosen_and_reasons"] = response_and_reason
-        return heal, response
+        return heal, response_and_reason
         
     
     
