@@ -29,7 +29,7 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                        villager_notes_folder, seer_notes_folder, medic_notes_folder,
                        werewolf_notes_folder,
                        villager_tags, seer_tags, medic_tags, werewolf_tags,
-                       proposal_num = 3, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
+                       proposal_num = 2, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
     if isinstance(villager_tags, str):
         villager_tags = [villager_tags] * 3
     if isinstance(seer_tags, str):
