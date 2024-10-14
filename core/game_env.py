@@ -170,7 +170,6 @@ class WerewolfGameEnv:
         for i, num in enumerate(shuffled_nums):
             role = player_configs[num]["role"].lower()
             player_type = player_configs[num]["player_type"].lower()
-            print(player_type)
             self.player_types.append(player_type)
             
             self.all_players.append(get_player_class(player_type, role)(i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))  
