@@ -2,6 +2,10 @@
 You are player {player_id}, and in this game you are a werewolf. All werewolves including you are {werewolf_ids}.
 It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
 
+These are all previous events in the game:
+
+{vis_events}
+
 According to the history, this is your conclusion of other people's statuses and beliefs:
 
 {hstate}
@@ -12,9 +16,7 @@ You should ABSOLUTELY follow your strategy even if you think some of them are no
 {reflex_note_policy}
 
 2.Todo&Requirements:
-Now, it's time for you to choose a player to kill. These are the previous advices from other werewolves:
-
-{previous_advices}
+Now, it's time for you to choose a player to kill. 
 
 You should make your own decision but consider your teammates' advices. Your answer should be in the format of:
 

@@ -2,6 +2,10 @@ You are player {player_id}, and in this game you are a {role}.
 It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
 {private}
 
+These are all previous events in the game:
+
+{vis_events}
+
 According to the history, this is your conclusion of other people's statuses and beliefs:
 
 {hstate}
