@@ -22,8 +22,4 @@ I choose to kill Player <NUMBER>. My reason is: <REASON>.
 
 Remember to follow the answer template or your action might not be recognized.
 
-Here's some guidance about who to kill:
-1. Try to kill a player that is good(non-werewolf) in most players' believes. For example, if a player is believed to be a villager by almost everyone, then you should try to kill him first.
-2. Try to kill a player that has identity medic or seer with higher probability, since they have higher threaten to your team. Seer is more threatening of the two, so he has higher priority.
-
 Please provide your operation based on the above requirements.

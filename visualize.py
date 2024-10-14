@@ -21,6 +21,10 @@ def unimportant_level(input_str):
         return 3
 def visualize_one_pickle(pickle_path, json_path):
     pickle_data = pickle.load(open(pickle_path, 'rb'))
+    print(str(pickle_data))
+    
+    
+    
     events = pickle_data.get_events_after(0)
     results = [str(x) for x in events]
     for i in range(len(results)):
@@ -51,5 +55,6 @@ def visualize_one_pickle(pickle_path, json_path):
             file.write(indented_line + '\n')
         file.write(']')
 if __name__ == '__main__':
-    visualize_one_pickle(r'transport/game_7_data.pkl', 'b.json')
+    visualize_one_pickle(r'transport/game_39_data.pkl', 'a.json')
+
             

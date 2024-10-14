@@ -194,7 +194,7 @@
 #     plt.savefig('game_visualization.svg')
 
 
-def visualize_game(game_event_list):
+def visualize_game(game_event_list, to_path = 'werewolf_game_2.mp4'):
     import matplotlib.pyplot as plt
     import matplotlib.animation as animation
     import networkx as nx
@@ -291,7 +291,7 @@ def visualize_game(game_event_list):
         # Draw all edges in edges_in_phase
         for edge in edges_in_phase:
             source, target, edge_color = edge
-            if source in alive_players and target in alive_players:
+            if 1:
                 G.add_edge(source, target)
                 nx.draw_networkx_edges(G, positions, edgelist=[(source, target)], edge_color=edge_color, ax=ax,
                                        arrows=True, arrowstyle='-|>', arrowsize=20)
@@ -317,10 +317,14 @@ def visualize_game(game_event_list):
 
         # Voting actions
         vote_match = re.match(r"Player (\d+) votes for player (\d+)", current_event)
+        
         if vote_match:
+            
             voter = int(vote_match.group(1))
             votee = int(vote_match.group(2))
-            if voter in alive_players and votee in alive_players:
+            # print(f"Vote Match! {voter} votes for {votee}")
+            if voter in alive_players:
+                # print(f"        valid Vote Match! {voter} votes for {votee}")
                 edge_color = 'orange'
                 # Add edge to edges_in_phase
                 edges_in_phase.append((voter, votee, edge_color))
@@ -329,11 +333,12 @@ def visualize_game(game_event_list):
     ani = animation.FuncAnimation(fig, update, frames=len(game_event_list), interval=1000, repeat=False)
 
     # Save the animation to an MP4 file
-    ani.save('werewolf_game.mp4', writer='ffmpeg', fps=1, dpi=200)
+    ani.save(to_path, writer='ffmpeg', fps=1, dpi=100)
 
     # Optionally, display the animation
     # plt.show()
 
 import json
-x = json.load(open('a.json'))
-visualize_game(x)
+if __name__ == "__main__":
+    x = json.load(open('e.json'))
+    visualize_game(x)

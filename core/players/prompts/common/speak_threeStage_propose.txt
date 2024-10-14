@@ -18,7 +18,7 @@ Now, it's your time to decide in which way you should speak. Here are some possi
 1. Honest/Deceptive, i.e. if you are going to speak honestly or dishonestly
 2. Statement/Protect/Challenge. Statement means to make statements about your thoughts or facts (or tell lies about these if you choose 'deceptive'). Challenge means to challenge someone as a potential werewolf, i.e. say that someone is of high probability a werewolf. Protect means to say that you believe someone is probably not a werewolf, including yourself. 
 
-Now, you have to give exactly 2 proposals for what your speech may be like. For example, you may propose one is to "Deceptive statement and Honestly protect Player number <NUMBER> for ..., reasoning that Player number <NUMBER> is cheating ..." and other is to "Deceptive Challenge player number <NUMBER> for ..., cheating others into thinking ...". Even 'Deceptive statement' and 'Honest protect' might co-exist (although you should use it most carefully, or it will easily lead to confusion).
+Now, you have to give exactly {proposal_num} proposals for what your speech may be like. For example, you may propose one is to "Deceptive statement and Honestly protect Player number <NUMBER> for ..., reasoning that Player number <NUMBER> is cheating ..." and other is to "Deceptive Challenge player number <NUMBER> for ..., cheating others into thinking ...". Even 'Deceptive statement' and 'Honest protect' might co-exist (although you should use it most carefully, or it will easily lead to confusion).
 
 3.Requirements:
 You answer should be in a format of:

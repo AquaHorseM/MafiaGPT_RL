@@ -10,7 +10,7 @@ parser = ArgumentParser()
 parser.add_argument("--openai_config_path", type=str, default="openai_config.yaml")
 parser.add_argument("--config_path", type=str, default="configs/game_config_v01.json")
 parser.add_argument("--ckpt_path", type=str, default=None)
-parser.add_argument("--data-path", type=str, default="data_v0") #could be a file path or a dir path
+parser.add_argument("--data-path", type=str, default="transport") #could be a file path or a dir path
 parser.add_argument("--num_processes", type=int, default=4)
 parser.add_argument("--skip-error", default=False, action="store_true")
 

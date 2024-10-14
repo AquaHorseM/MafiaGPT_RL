@@ -38,11 +38,22 @@ REPLACE [id] [rule]
 
 Based on these considerations, you should modify your notes by the above operations. This note is specifically for your own role (as a {role}).
 Make your note AS ACCURATE AS POSSIBLE, as vague rules will not help you in upcoming games.
+
+All rules MUST be in one format among the following, or it might not be recognized:
+a) I should (not) ...
+b) If ..., I should (not) ...
+c) If I ..., ... (something might happen)
+d) Next time I should try to ... when ...
+
+Option (d) should be used when you want to try some new strategy. If a strategy is already tried, you might consider changing it into the 'I should (not) ...' format. (Still, you are encouraged to keep on attempting and keep the rule, but you should try to write down your current attempt in your note as a rule.)
+You should make your note as EXACT as possible, but try to restrict the case that the rule applies. For example, instead of 'I should balance X and Y ...', you should write 'If ..., I should X instead of Y' and 'If ..., I should Y instead of X'. This will make your note significantly more effective.
+
 Warning again: this note is ONLY for your strategy, so don't include ANYTHING about how you should infer other players' roles from their speeches here.
 
 The id and rule should be wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
 
-Your modification should be GENERAL and does not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it, as it is not generalizable). You are allowed to do AT MOST 5 operations at a time. Use them on the most critical parts.
+Your modification should not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it, as it is not generalizable). However you are VERY encouraged to write down exact experiences in your note to remind you in your later games.
+You are allowed to do AT MOST 5 operations at a time. Use them on the most critical parts.
 
 Please answer your operations based on the above requirements.
 

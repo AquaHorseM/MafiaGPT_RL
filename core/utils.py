@@ -4,7 +4,6 @@ from core.players.werewolf import WerewolfPlayer
 from core.players.medic import MedicPlayer
 from core.players.seer import SeerPlayer
 from core.players.villager import VillagerPlayer
-from core.baseline_players import Werewolf, Medic, Seer, Villager
 import pickle, os
 import inspect
 switcher_players = {
@@ -14,12 +13,6 @@ switcher_players = {
         "seer": SeerPlayer,
         "villager": VillagerPlayer
     },
-    "baseline": {
-        "werewolf": Werewolf,
-        "medic": Medic,
-        "seer": Seer,
-        "villager": Villager   
-    }
 }
 
 def count_adjustable_params(func):    

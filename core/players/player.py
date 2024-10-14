@@ -92,6 +92,8 @@ class Player:
         self.proposal_num = player_config.get("proposal_num", 2)
         self.sample_num = player_config.get("sample_num", 10)
         self.sample_type = player_config.get("sample_type", "heuristic")
+        self.reflexable = player_config.get("reflexable", True)
+        self.player_tag = player_config.get("player_tag", "NoTag")
         self.draft_dict = dict()
         self.draft_dict["vote"] = list()
         self.draft_dict["speak"] = list()
@@ -102,14 +104,15 @@ class Player:
         
     def _configure_logger(self):
         logger = logging.getLogger(f"Game-{self.game_id}-Player-{self.id}-{self.get_role()}")
-        logger.setLevel(logging.DEBUG)
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
+        if not logger.hasHandlers():
+            logger.setLevel(logging.DEBUG)
+            console_handler = logging.StreamHandler()
+            console_handler.setLevel(logging.DEBUG)
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
+            console_handler.setFormatter(formatter)
+            logger.addHandler(console_handler)
         return logger    
         
     def get_replacements(self):
@@ -172,8 +175,10 @@ class Player:
     
     def _get_proposals_from_response_VoteThreeStep(self, response):
         # Regular expression to match proposals and reasons more flexibly
-        pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)(?=\s*\.?\s*Proposal|$)"
+        pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)(?=\s*[.\n]?\s*Proposal|\Z)"
+        # pattern = r"Proposal\s*(\d+)\s*:\s*(.*?)\s*\.?\s*Reason\s*:\s*(.*?)"
         matches = re.findall(pattern, response, re.DOTALL | re.IGNORECASE)
+        self.logger.debug(f"Altogether {len(matches)} matches!")
         
         result = []
         for i, match in enumerate(matches):
@@ -299,7 +304,7 @@ class Player:
     
     def _get_final_choice_from_response_SpokeThreeStep(self, response):
         first_pattern = r"I choose Proposal (\d).*My final speech is:(.*)"
-        first_match = re.search(first_pattern, response)
+        first_match = re.search(first_pattern, response, re.DOTALL)
         
         proposal = first_match.group(1) if first_match else None
         speech = first_match.group(2).strip() if first_match else "Speech not recognized."
@@ -593,8 +598,7 @@ class Player:
     
     def summarize_events(self, events: List[Event]):
         replacements = self.get_replacements()
-        event_txt = '\n'.join([str(event) for event in events if event.event in \
-            ["vote_out", "die", "day_start", "night_start", "end", "no_death", "vote"]])
+        event_txt = '\n'.join([str(event) for event in events])
         replacements.update({
             "{all_events}": event_txt
         })
@@ -696,8 +700,8 @@ class Player:
         for i in range(self.player_num):
             s += f"Player {i} is {reflex_info['roles'][i]}\n"
         if vis_prev_events:
-            s += "\nThese are ALL events happened previously that you observed:\n\n"
-            for e in reflex_info["visible_prev_events"]:
+            s += "\nThese are ALL events happened previously that you observed (notice other players' night actions and system actions were not observable in your game, but only serve here as a reference):\n\n"
+            for e in reflex_info["all_prev_events"]:
                 s += e
                 s += '\n'
         s += "\nThese are the beliefs of all other players.\n\n"
@@ -707,10 +711,11 @@ class Player:
         s += self.convert_draft_to_prompt(traj["draft"])
         s += "\nThese are the beliefs of all other players after your action.\n\n"
         s += show_all_other_beliefs()
-        '''
-        s += "\n This is a summary of what happens after your final decided action:\n\n"
+        
+        s += "\n This is a summary of what happens after your final decided action:\n\n" 
         s += self.summarize_events(traj["after_events"])
-        '''
+        s += "Think about the following questions: Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
+        
         if len(reflex_info["trajs"]) > 1:
             other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
             other_draft = other_traj["draft"]

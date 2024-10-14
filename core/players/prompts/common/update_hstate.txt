@@ -3,7 +3,7 @@ You are player {player_id}, and in this game you are a {role}.
 It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
 {private}
 
-These are the events which happened BEFORE your last update:
+These are ALL events which happened BEFORE your last update:
 
 {prev_events}
 
@@ -11,9 +11,14 @@ Your previous beliefs AFTER your last update were:
 
 {hstate}
 
-These are the new events which happened after your last update:
+These are ALL new events which happened after your last update:
 
 {event_des}
+
+Based on these event, you should consider:
+1) If someone speaks, is his speech based on actual events that happened before? If not, why did he make it up?
+2) Is the speaker trying to hide some information? If yes, why did he do so?
+3) If a vote ended, according to the voting pattern, which two might be werewolf teammates?
 
 2.Todo:
 

@@ -172,13 +172,8 @@ class WerewolfGameEnv:
             role = player_configs[num]["role"].lower()
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
-            if player_type == "reflex":
-                self.all_players.append(switcher_players[player_type][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))
-            else:
-                self.all_players.append(switcher_players[player_type][role](role=role, id=i))
-                if role == "werewolf":
-                    self.all_players[-1].special_actions_log.append(f"you are werewolf and this is your team (they are all werewolf) : {werewolf_ids}")
-                
+            
+            self.all_players.append(switcher_players[player_type][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))  
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
         # self.update_all_hstates(add_to_data=True)
 
@@ -335,6 +330,7 @@ class WerewolfGameEnv:
         #return obs, state, rewards, dones, info, available_actions
         if self.is_game_end():
             rewards = [1 if self.all_players[i].get_role() == "werewolf" else 0 for i in range(self.player_num)]
+            self.update_drafts(actions)
             if not retrying:
                 self.end()
                 dones = [True] * self.player_num
@@ -503,7 +499,7 @@ class WerewolfGameEnv:
             self.reflex_for_player(player_id)
     
     def reflex_for_player(self, player_id):
-        if self.player_types[player_id] == "reflex":
+        if self.all_players[player_id].reflexable:
             self.all_players[player_id].reflex(self.data)
             return True
         return False
@@ -513,8 +509,8 @@ class WerewolfGameEnv:
         werewolf_ids = []
         villager_ids = []
         for i in range(self.player_num):
-            if not self.player_types[i]=="reflex":
-                self.logger.debug(f"Player {i} not reflexable. Skipping.")
+            if not self.all_players[i].reflexable:
+                self.logger.info(f"Player {i} not reflexable. Skipping.")
                 continue
             if self.all_players[i].get_role() in ["medic", "seer"]:
                 reflex_player_ids.append(i)
@@ -539,7 +535,7 @@ class WerewolfGameEnv:
             self.logger.warning("Only using 4 processes for reflex.")
             num_processes = 4
         
-        self.logger.debug(f"Reflex player ids: {reflex_player_ids}")
+        self.logger.info(f"Reflex player ids: {reflex_player_ids}")
         if num_processes > 1:
             reflex_player = partial(reflex_player_from_data, data=self.data)
             players_to_reflex = [self.all_players[i] for i in reflex_player_ids]
@@ -584,10 +580,10 @@ class WerewolfGameEnv:
             is_game_end = True
         else:
             is_game_end = False
-        self.logger.debug(f"actions: {self.latest_actions}")
+        # self.logger.debug(f"actions: {self.latest_actions}")
         cur_actions = [self.latest_drafts[i]['cur_action'] if self.latest_drafts[i] is not None else None for i in range(len(self.latest_drafts))]
-        self.logger.debug(f"cur_actions in drafts: {cur_actions}")
-        self.logger.debug(f"current game status: {self.game_status}")
+        # self.logger.debug(f"cur_actions in drafts: {cur_actions}")
+        # self.logger.debug(f"current game status: {self.game_status}")
         
         self.data.add_edge_and_node(
             events = self.temp_events,
@@ -640,8 +636,7 @@ class WerewolfGameEnv:
         
     def end(self):
         self.logger.info("Game ended")
-        if len(self.temp_events) != 0:
-            self.update_all_hstates(add_to_data=True)
+        self.update_all_hstates(add_to_data=True)
         self.store_data(self.data_path)
         try:
             self.save_game_record()
@@ -691,8 +686,8 @@ class WerewolfGameEnv:
     def get_actions_reflex(self, available_actions):
         return self._repeat(partial(self.get_actions_from_reflex_player, available_actions = available_actions))
     
-    def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
-        self.latest_actions = deepcopy(actions)
+    
+    def update_drafts(self, actions):
         def get_latest_draft(draft_dict):
             for key in draft_dict.keys():
                 if len(draft_dict[key]) == 0:
@@ -716,6 +711,13 @@ class WerewolfGameEnv:
                     self.latest_drafts[player_id].update(current_player_latest_draft_dict["speak"])
                 else:
                     continue
+    
+    def postprocess_step(self, actions, dones, info = None) -> bool: #return if the game ends
+        self.latest_actions = deepcopy(actions)
+        try:
+            self.update_drafts(actions)
+        except:
+            pass
                     
         if info is not None:
             self.logger.info(str(info))
@@ -757,14 +759,14 @@ class WerewolfGameEnv:
         print(self.data.nodes[node_id].state["global_info"]["game_status"])
         if drafts is None:
             return False
-        for i in range(self.player_num):
-            self.logger.debug(f"player: {i}, cur_action: {drafts[i]['cur_action']}")
+        # for i in range(self.player_num):
+        #     self.logger.debug(f"player: {i}, cur_action: {drafts[i]['cur_action']}")
         avail_drafts = []
         for draft in drafts:
             if draft["cur_action"] is None or draft["cur_action"] not in ["speak", "vote"]:
                 continue
             else:
-                self.logger.debug(f"next action is: {draft['cur_action']}")
+                # self.logger.debug(f"next action is: {draft['cur_action']}")
                 avail_drafts.append(draft)
         if len(avail_drafts) == 0:
             return False
@@ -784,11 +786,9 @@ class WerewolfGameEnv:
                 actions[player_id] = vote_action
                 self.logger.debug(f"player: {player_id}'s vote action: {vote_action}")
         obs, state, rewards, dones, info, avail_actions = self.step(actions, retrying = True)
-        self.logger.debug("Stepped!")
         if self.postprocess_step(actions, dones, info):
             return True
         if retry_steps == 1:
-            self.logger.debug("Yeahhh")
             return True
         for retry_step in range(retry_steps - 1):
             actions = self.get_actions_reflex(avail_actions)
@@ -819,11 +819,10 @@ class WerewolfGameEnv:
         info = recover_info["state"]
         prev_game_status = info["global_info"]["game_status"]
         events = recover_info["events"]
-        print(f"current game status: {self.game_status}")
-        print(f"game status to recover: {prev_game_status}")
+        # print(f"current game status: {self.game_status}")
+        # print(f"game status to recover: {prev_game_status}")
         self.load_state(info, events)
-        print(f"current game status: {self.game_status}")
-        print(f"Alive players: {self.alive_players}")
+        self.logger.debug(f"Recovered to game status: {self.game_status}. Alive players: {self.alive_players}")
         self.temp_events = []
 
     

@@ -80,6 +80,7 @@ def create_game_config(args, ver):
         org_dict = new_dict["players"][i]
         new_dict["players"][i]["reflex_note_belief_path"] = re.sub('v'+str(ver)+r'\b', 'v'+str(ver+1), org_dict["reflex_note_belief_path"])
         new_dict["players"][i]["reflex_note_policy_path"] = re.sub('v'+str(ver)+r'\b', 'v'+str(ver+1), org_dict["reflex_note_policy_path"])
+        new_dict["players"][i]['player_tag'] = re.sub('v'+str(ver)+r'\b', 'v'+str(ver+1), org_dict['player_tag'])
     new_dict['input_txt_path'] = os.path.join(args.prompt_logging_dir, 'message_input_history_backup_v'+str(ver+1)+'.txt')
     new_dict['output_txt_path'] = os.path.join(args.prompt_logging_dir, 'message_output_history_backup_v'+str(ver+1)+'.txt')
     json.dump(new_dict, open(into_config,'w'), indent=4)
@@ -126,10 +127,10 @@ def main_loop(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--max_iter', type=int, default=10)
-    parser.add_argument('--data_dir', type=str, default='./shijz_test_02/data')
-    parser.add_argument('--config_dir', type=str, default='./shijz_test_02/configs')
-    parser.add_argument('--notes_dir', type=str, default='./shijz_test_02/notes')
-    parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_02/prompt_logging')
+    parser.add_argument('--data_dir', type=str, default='./shijz_test_14/data')
+    parser.add_argument('--config_dir', type=str, default='./shijz_test_14/configs')
+    parser.add_argument('--notes_dir', type=str, default='./shijz_test_14/notes')
+    parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_14/prompt_logging')
     parser.add_argument('--num_game_per_iter', type=int, default=5)
     parser.add_argument('--num_processes', type=int, default=5)
     parser.add_argument('--skip_zero', action='store_true')
