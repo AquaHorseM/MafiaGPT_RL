@@ -90,10 +90,9 @@ class DataTree:
             events.extend(self.edges[edge_id].events)
         return events
     
-    def get_events_after(self, node_id: int):
-        edges: list[int] = []
-        events: list[Event] = []
-        cur_node = node_id
+    def get_events_after(self, edge_id: int):
+        events: list[Event] = self.edges[edge_id].events
+        cur_node = self.edges[edge_id].end_id
         while len(self.nodes[cur_node].edges) != 0:
             avail_edges = [e for e in self.nodes[cur_node].edges if self.nodes[self.edges[e].end_id].connect_to_end]
             if len(avail_edges) == 0:
@@ -161,7 +160,7 @@ class DataTree:
                     "drafts": self.edges[e].drafts,
                     "events": self.edges[e].events,
                     "outcome": self.nodes[self.edges[e].end_id].state,
-                    "after_events": self.get_events_after(self.edges[e].end_id),
+                    "after_events": self.get_events_after(e),
                     "connect_to_end": self.nodes[self.edges[e].end_id].connect_to_end
                 } for e in self.nodes[node_id].edges if not filter_action or (player_id and self.filter_action(e, player_id))
             ]
