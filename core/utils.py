@@ -6,14 +6,23 @@ from core.players.reflex.seer import SeerPlayer
 from core.players.reflex.villager import VillagerPlayer
 import pickle, os
 import inspect
-switcher_players = {
-    "reflex": {
-        "werewolf": WerewolfPlayer,
-        "medic": MedicPlayer,
-        "seer": SeerPlayer,
-        "villager": VillagerPlayer
-    },
-}
+
+import importlib
+
+def get_player_class(player_type, player_role):
+    # Construct the full module path as a string based on player_type and player_role
+    module_path = f"core.players.{player_type}.{player_role}"
+    
+    # Class names are typically capitalized; handle that here
+    class_name = f"{player_role.capitalize()}Player"
+    
+    # Dynamically import the module
+    module = importlib.import_module(module_path)
+    
+    # Get the class from the module
+    PlayerClass = getattr(module, class_name)
+    
+    return PlayerClass
 
 def count_adjustable_params(func):    
     # Get the signature of the function

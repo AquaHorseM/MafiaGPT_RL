@@ -5,7 +5,7 @@ import random, logging
 import json, re, os
 import numpy as np
 from core.event import Event, EventBook
-from core.utils import switcher_players, emph_print, count_adjustable_params
+from core.utils import emph_print, count_adjustable_params, get_player_class
 from core.api import load_client
 # import multiprocessing
 from pathos.multiprocessing import ProcessingPool as Pool
@@ -172,7 +172,7 @@ class WerewolfGameEnv:
             player_type = player_configs[num]["player_type"].lower()
             self.player_types.append(player_type)
             
-            self.all_players.append(switcher_players[player_type][role](i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))  
+            self.all_players.append(get_player_class(player_type, role)(i, self.id, player_configs[num], init_global_info, switcher_private_info[role], self.openai_client))  
             self.add_event({"event": "set_player", "content": {"id": i, "role": role, "player_type": player_type}, "visible": "system"})
         # self.update_all_hstates(add_to_data=True)
 
