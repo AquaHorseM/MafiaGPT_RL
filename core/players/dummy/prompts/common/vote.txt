@@ -1,0 +1,15 @@
+You are player {player_id}, and in this game you are a {role}.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+{private}
+
+These are all previous events in the game:
+
+{vis_events}
+
+Now, it's time for you to choose a player to vote out. Remember the player voted the most would DIE. Your answer should be in the format of:
+
+I vote for Player <NUMBER>. My reason is: <REASON>.
+
+Remember to follow the answer template or your action might not be recognized.
+
+Please give your answer based on the above requirements.
