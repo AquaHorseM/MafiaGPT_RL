@@ -1,1 +1,6 @@
-[1] [I am the only medic.] [10]
+[0] [I am the only medic.] [9]
+[1] [Always update beliefs based on the role revealed to me, prioritizing those revealed to be villagers or werewolves.] [4]
+[2] [Given a player's action aligns with their claimed role (e.g., Seer claiming to see), increase confidence in their role being true.] [4]
+[3] [If a player's action is unobservable by me (e.g., a Seer seeing), note the claim but maintain a neutral confidence level until more information is available.] [4]
+[4] [If I have been targeted and survived, increase the likelihood that the player defending or validating me is a villager.] [4]
+[5] [If a villager is confirmed by a Seer, prioritize protecting that player in subsequent rounds, assuming I am still alive.] [4]

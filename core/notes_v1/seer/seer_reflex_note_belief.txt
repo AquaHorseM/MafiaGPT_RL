@@ -1,2 +1,7 @@
 [0] [Always trust my seer abilities.] [10]
 [1] [I am the only seer.] [10]
+[2] [When a player is revealed not to be a werewolf by a seer's inquiry, increase scrutiny on players who continue to cast suspicion on them without new evidence.] [6]
+[3] [Adjust confidence levels in my beliefs about other players not only based on consistency but also factor in their voting patterns and the justification they provide. This comprehensive approach may reveal underlying strategies and alliances.] [5]
+[4] [Provide additional scrutiny on early speakers only if their statements lead to actions against village interests or seem strategically manipulative.] [4]
+[5] [Pay close attention to any drastic shifts in players' stances following an elimination; such changes may reveal a strategy or an attempt to adapt to new village dynamics, especially when the player's alignment is still uncertain.] [4]
+[6] [Monitor players who often bypass scrutiny and whose subtle actions contribute to village errors, applying more focus if they gain advantage from misdirections or wrongful accusations.] [4]
