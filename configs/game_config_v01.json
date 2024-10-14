@@ -8,7 +8,7 @@
     "players": [
         {
             "role": "werewolf",
-            "player_type": "reflex",
+            "player_type": "baseline",
             "player_tag": "v1",
             "reflex_note_belief_path": "core/notes_v1/werewolf/werewolf_reflex_note_belief.txt",
             "reflex_note_policy_path": "core/notes_v1/werewolf/werewolf_reflex_note_policy.txt",
@@ -18,7 +18,7 @@
         },
         {
             "role": "werewolf",
-            "player_type": "reflex",
+            "player_type": "baseline",
             "player_tag": "v1",
             "reflex_note_belief_path": "core/notes_v1/werewolf/werewolf_reflex_note_belief.txt",
             "reflex_note_policy_path": "core/notes_v1/werewolf/werewolf_reflex_note_policy.txt",
@@ -28,7 +28,7 @@
         },
         {
             "role": "villager",
-            "player_type": "reflex",
+            "player_type": "baseline",
             "player_tag": "v1",
             "reflex_note_belief_path": "core/notes_v1/villager/villager_reflex_note_belief.txt",
             "reflex_note_policy_path": "core/notes_v1/villager/villager_reflex_note_policy.txt",
@@ -38,7 +38,7 @@
         },
         {
             "role": "villager",
-            "player_type": "reflex",
+            "player_type": "baseline",
             "player_tag": "v1",
             "reflex_note_belief_path": "core/notes_v1/villager/villager_reflex_note_belief.txt",
             "reflex_note_policy_path": "core/notes_v1/villager/villager_reflex_note_policy.txt",
@@ -48,7 +48,7 @@
         },
         {
             "role": "villager",
-            "player_type": "reflex",
+            "player_type": "baseline",
             "player_tag": "v1",
             "reflex_note_belief_path": "core/notes_v1/villager/villager_reflex_note_belief.txt",
             "reflex_note_policy_path": "core/notes_v1/villager/villager_reflex_note_policy.txt",
@@ -58,7 +58,7 @@
         },
         {
             "role": "medic",
-            "player_type": "reflex",
+            "player_type": "baseline",
             "player_tag": "v1",
             "reflex_note_belief_path": "core/notes_v1/medic/medic_reflex_note_belief.txt",
             "reflex_note_policy_path": "core/notes_v1/medic/medic_reflex_note_policy.txt",
@@ -68,7 +68,7 @@
         },
         {
             "role": "seer",
-            "player_type": "reflex",
+            "player_type": "baseline",
             "player_tag": "v1",
             "reflex_note_belief_path": "core/notes_v1/seer/seer_reflex_note_belief.txt",
             "reflex_note_policy_path": "core/notes_v1/seer/seer_reflex_note_policy.txt",
