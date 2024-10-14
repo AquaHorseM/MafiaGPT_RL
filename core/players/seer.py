@@ -21,7 +21,7 @@ class SeerPlayer(Player):
             "{hstate}": str(self.hstate),
         })
         replacements.update({
-            "{private}": f"These are your previous inquiry results, which should be the key information for you and other good players to win: \n {self.get_known_roles()}"
+            "{private}": f"These are your previous inquiry results, which should be the key information for you and other citizens to win: \n {self.get_known_roles()} \n Share this with other citizens."
         })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})

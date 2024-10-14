@@ -700,8 +700,8 @@ class Player:
         for i in range(self.player_num):
             s += f"Player {i} is {reflex_info['roles'][i]}\n"
         if vis_prev_events:
-            s += "\nThese are ALL events happened previously that you observed:\n\n"
-            for e in reflex_info["visible_prev_events"]:
+            s += "\nThese are ALL events happened previously that you observed (notice other players' night actions and system actions were not observable in your game, but only serve here as a reference):\n\n"
+            for e in reflex_info["all_prev_events"]:
                 s += e
                 s += '\n'
         s += "\nThese are the beliefs of all other players.\n\n"
@@ -714,7 +714,7 @@ class Player:
         
         s += "\n This is a summary of what happens after your final decided action:\n\n" 
         s += self.summarize_events(traj["after_events"])
-        s += "Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
+        s += "Think about the following questions: Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
         
         if len(reflex_info["trajs"]) > 1:
             other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
