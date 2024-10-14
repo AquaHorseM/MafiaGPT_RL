@@ -132,7 +132,8 @@ class Player:
             "{reflex_note_belief}": str(reflex_note_belief),
             "{reflex_note_policy}": str(reflex_note_policy),
             "{hstate}": str(self.hstate),
-            "{proposal_num}": str(self.proposal_num) #!
+            "{proposal_num}": str(self.proposal_num), #!
+            "{vis_events}": str(self.event_book)
         }
             
 
@@ -183,13 +184,9 @@ class Player:
         result = []
         for i, match in enumerate(matches):
             try:
-                proposal_id = int(match[0])  # Ensure the proposal ID is an integer
                 proposal_text = match[1].strip()
                 proposal_target = get_target_from_response(proposal_text)
                 reason_text = match[2].strip()
-                
-                if proposal_id != i+1:
-                    return None
                 
                 # Only add to result if both proposal and reason are non-empty
                 if proposal_target and reason_text:
