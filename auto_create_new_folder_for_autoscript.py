@@ -136,7 +136,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_14')
+    parser.add_argument('--new_folder_name', type=str, default = './shijz_test_15')
     parser.add_argument('--org_notes_dir', type=str, default = './core/notes_fixed_version/notes_v0')
     args = parser.parse_args()
     main(args)
