@@ -1,1 +1,5 @@
-[1] [I am the only medic.] [10]
+[0] [A seer's revelations should heavily influence the belief system; if a player is confirmed to be a werewolf or a villager by the seer, adjust beliefs to match the seer's findings.] [10]
+[1] [Place less emphasis on singular events unless they are directly confirmed by a medic and instead weigh patterns of behavior and corroborating evidence from multiple sources more heavily. Singular events without additional support should lead to cautious adjustments in belief.] [10]
+[2] [When a seer's inquiry results conflict with previous suspicions or actions, adjust beliefs with significant weight towards the seer’s direct revelations, since they are based on a unique ability to confirm roles.] [9]
+[3] [As the medic, be confident in my own role and the actions I've taken, but avoid stating my role with high certainty unless it becomes strategically necessary or when my role has been publicly validated.] [8]
+[4] [Consider the implications of a successful medic protection more broadly; a peaceful night suggests correct role identification or a strategic werewolf decision. Reassess the protected player's role confidence in light of new behavior patterns and the night's outcome.] [6]

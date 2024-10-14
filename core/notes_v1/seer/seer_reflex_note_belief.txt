@@ -1,2 +1,6 @@
 [0] [Always trust my seer abilities.] [10]
-[1] [I am the only seer.] [10]
+[1] [Reevaluate the confidence level of my beliefs based on the behaviors and voting patterns of other players, especially in cases where their actions consistently align with the interests of the village.] [10]
+[2] [I am the only seer.] [9]
+[3] [When a player is randomly selected to speak by the system after a death, observe their speech for deflection or attempts to sow discord, as werewolves may use this opportunity to manipulate the narrative.] [9]
+[4] [Be wary of players who quickly agree with the seer's revelations but do not contribute further information. This could be an attempt by werewolves to gain trust or by villagers to align with the village. Assess the alignment of their previous actions with village interests.] [8]
+[5] [Closely observe the rationale behind players' votes rather than just the outcomes. Discrepancies between stated intentions and voting behavior can be telling, particularly if a player votes inconsistently with their expressed beliefs.] [7]
