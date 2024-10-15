@@ -73,6 +73,7 @@ if __name__ == "__main__":
     parser.add_argument('--num_process_per_battle', type=int, default = 1)
     parser.add_argument('--num_battle_parallel', type=int, default = 5)
     parser.add_argument('--num_battles_in_total', type=int, default = 40)
+    parser.add_argument('--start_from', type=int, default=8)
     
     args = parser.parse_args()
     if args.clans_tags == '':
@@ -86,11 +87,12 @@ if __name__ == "__main__":
     idx_to_version_list = list()
     
     for idx in range(args.num_battles_in_total):
-        version_tuple = idx_to_version_tuple(idx)
-        idx_to_version_list.append(version_tuple)
-        notes_folders = [os.path.join(args.clans_notes_folder, 'notes_v'+str(v)) for v in version_tuple]
-        tags = [args.clans_tags[v] for v in version_tuple]
-        args_list.append(('battle_'+str(idx), args.war_folder, *notes_folders, *tags, args.num_games_per_battle, args.num_process_per_battle))
+        if idx >= args.start_from:
+            version_tuple = idx_to_version_tuple(idx)
+            idx_to_version_list.append(version_tuple)
+            notes_folders = [os.path.join(args.clans_notes_folder, 'notes_v'+str(v)) for v in version_tuple]
+            tags = [args.clans_tags[v] for v in version_tuple]
+            args_list.append(('battle_'+str(idx), args.war_folder, *notes_folders, *tags, args.num_games_per_battle, args.num_process_per_battle))
     
     json.dump(idx_to_version_list, open(os.path.join(args.war_folder, 'idx_to_version_list.json'), 'w'), indent=4)
     # json.dump(idx_to_version_list, open('idx_to_version_list.json', 'w'), indent=4)
