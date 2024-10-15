@@ -310,7 +310,7 @@ def eval_from_dir(dir_path):
                     all_keys_dict[key][role_key]['speech_score'] = ((number - 1) * all_keys_dict[key][role_key].get('speech_score', 0) + current_key_dict['speech_score']) / number
                     if role_key == 'medic':
                         all_keys_dict[key][role_key]['heal_success_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('heal_success_rate', 0) + current_key_dict['heal_success_rate']) / number
-    
+                    all_keys_dict[key][role_key]['wins'] = 1 + all_keys_dict[key][role_key].get('wins', 0) if current_key_dict['winner'] == 'win' else all_keys_dict[key][role_key].get('wins', 0)
     return all_keys_dict
 import json
 if __name__ == "__main__":
