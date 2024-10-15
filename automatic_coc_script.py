@@ -4,14 +4,14 @@ from automatic_coc_utils import make_battle_dir_and_run_one_battle
 
 def two_battle_war(args):
     make_battle_dir_and_run_one_battle('right_wolf', args.war_folder,
-                                       os.path.join(args.left_clan_notes_dir,'villager'),os.path.join(args.left_clan_notes_dir,'seer'),os.path.join(args.left_clan_notes_dir,'medic'),
-                                       os.path.join(args.right_clan_notes_dir,'werewolf'),
+                                       args.left_clan_notes_dir,args.left_clan_notes_dir,args.left_clan_notes_dir,
+                                       args.right_clan_notes_dir,
                                        args.left_clan_tag, args.left_clan_tag, args.left_clan_tag,
                                        args.right_clan_tag,
                                         args.num_games_per_battle, args.num_process)
     make_battle_dir_and_run_one_battle('left_wolf', args.war_folder,
-                                        os.path.join(args.right_clan_notes_dir,'villager'),os.path.join(args.right_clan_notes_dir,'seer'),os.path.join(args.right_clan_notes_dir,'medic'),
-                                        os.path.join(args.left_clan_notes_dir,'werewolf'),
+                                        args.right_clan_notes_dir,args.right_clan_notes_dir,args.right_clan_notes_dir,
+                                        args.left_clan_notes_dir,
                                         args.right_clan_tag, args.right_clan_tag, args.right_clan_tag,
                                         args.left_clan_tag,
                                          args.num_games_per_battle, args.num_process)
