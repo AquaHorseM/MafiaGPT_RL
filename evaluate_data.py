@@ -316,8 +316,8 @@ def eval_from_dir(dir_path):
     return all_keys_dict
 import json
 if __name__ == "__main__":
-    result = eval_from_dir('clash_of_clanS_shijz_15')
-    json.dump(result, open('cocs_15.json','w'), indent=4)
+    result = eval_from_dir('clan_war_shijz_15_v2Vv5')
+    json.dump(result, open('clan_war_shijz_15_v2Vv5.json','w'), indent=4)
                     
                 
                 
