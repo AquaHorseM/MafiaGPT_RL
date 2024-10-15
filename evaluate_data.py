@@ -282,6 +282,7 @@ def eval_from_dir(dir_path):
     import os
     import glob
     data_files = glob.glob(os.path.join(dir_path, "**", "*.pkl"), recursive=True)
+    
     results = []
     for data_file in data_files:
         result = eval_from_path(data_file)
@@ -311,6 +312,7 @@ def eval_from_dir(dir_path):
                     if role_key == 'medic':
                         all_keys_dict[key][role_key]['heal_success_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('heal_success_rate', 0) + current_key_dict['heal_success_rate']) / number
                     all_keys_dict[key][role_key]['wins'] = 1 + all_keys_dict[key][role_key].get('wins', 0) if current_key_dict['winner'] == 'win' else all_keys_dict[key][role_key].get('wins', 0)
+    all_keys_dict['total_number_of_games'] = len(result)
     return all_keys_dict
 import json
 if __name__ == "__main__":
