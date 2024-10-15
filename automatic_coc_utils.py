@@ -222,7 +222,12 @@ def make_battle_dir_and_run_one_battle(battle_tag, current_clan_war_folder,
                                        villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder,
                                        villager_tags, seer_tags, medic_tags, werewolf_tags,
                                        num_games, num_process):
-    battle_config_dict = create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,)
+    battle_config_dict = create_folder_for_one_battle(battle_tag, current_clan_war_folder, 
+        os.path.join(villager_notes_folder, 'villager'), 
+        os.path.join(seer_notes_folder, 'seer'),
+        os.path.join(medic_notes_folder, 'medic'),
+        os.path.join(werewolf_notes_folder, 'werewolf'),
+        villager_tags, seer_tags, medic_tags, werewolf_tags,)
     run_one_battle(battle_config_dict['data_folder'], battle_config_dict['config_path'], num_games, num_process)
     return battle_config_dict
 '''
