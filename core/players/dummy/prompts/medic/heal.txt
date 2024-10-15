@@ -1,0 +1,23 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a medic.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+You tried to heal player {last_heal} last night. (ignore this if it's nobody)
+
+These are ALL previous event in the game:
+
+{vis_events}
+
+2.Todo&Requirements:
+Now, it's time for you to choose a player to heal. You can not heal the one you tried to heal last night, which is player {last_heal} (ignore this if it's nobody). The one you try to heal will be immune to werewolves' attack this night. 
+
+You answer should be in the format of:
+
+I heal Player <NUMBER>. My reason is: <REASON>.
+
+Or if you don't want to heal anybody, you should answer:
+
+I don't heal anybody. My reason is: <REASON>.
+
+Remember to follow the answer template or your action might not be recognized.
+
+Please provide your operation based on the above requirements.

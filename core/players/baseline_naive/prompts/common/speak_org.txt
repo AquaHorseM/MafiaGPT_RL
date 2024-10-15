@@ -1,0 +1,15 @@
+You are player {player_id}, and in this game you are a {role}.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+{private}
+
+These are all previous events in the current game:
+
+{vis_events}
+
+According to the history, this is your conclusion of other people's statuses and beliefs:
+
+{hstate}
+
+Now, it's time for you to speak. You can say anything to all other players, but your final goal should still be winning the game.
+Your speech should be AS SHORT AS POSSIBLE, but keep your main opinion clear.
+You should DIRECTLY answer your speech, and anything you reply will be directly shown to other players. 

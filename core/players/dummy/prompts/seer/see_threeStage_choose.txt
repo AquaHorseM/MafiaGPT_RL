@@ -1,0 +1,37 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a seer.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+These are the results of all previous inquiries:
+
+{known_roles}
+
+These are ALL events before:
+
+{vis_events}
+
+According to the history, this is your belief of other players' roles:
+
+{hstate}
+
+Now you are going to see your original strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+You should ABSOLUTELY follow your strategy even if you think some of them are not necessarily correct. You will have a chance to update your strategy later.
+
+{reflex_note_policy}
+
+2.Todo&Requirements:
+Now, it's time for you to Choose from 2 players to see. Here is the number of these two players and an analysis and imagination about what could happen after you make an inquiry on each of these players.
+
+Case A: See Player {current_propose_0}. What could happen is: {current_propose_0_imagination}
+
+Case B: See Player {current_propose_1}. What could happen is: {current_propose_1_imagination}
+
+Now, please choose to See one of these 2 players, and give yoru reason about why you would like to See this single player.
+
+Answer in the following format:
+
+I would choose to See Player <NUMBER>. My reason is <REASON>.
+
+Remember to follow the answer template or your action might not be recognized.
+
+Please provide your proposal based on the above requirements.
+

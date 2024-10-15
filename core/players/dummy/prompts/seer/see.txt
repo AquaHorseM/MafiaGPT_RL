@@ -1,0 +1,17 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a seer.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+These are the results of all previous inquiries:
+
+{known_roles}
+
+These are all previous events in the game:
+
+{vis_events}
+
+2.Todo&Requirements:
+Now, it's time for you to make an inquiry on another player's role, and you will know if he/she is a werewolf or not. You answer should be in the format of:
+
+I inquiry about Player <NUMBER>. My reason is: <REASON>.
+
+Remember to follow the answer template or your action might not be recognized.

@@ -1,0 +1,18 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a {role}.
+
+These are a small snippet of a previous game.
+
+{reflex_info}
+
+2.Todo:
+You are going to summarize what happend in the game given the following events. You should summarize how the game goes, especially focusing on how other players' opinions or attitude evolve throughout these events.
+
+Here are the events happening in the game:
+
+{all_events}
+
+3.Requirements:
+Your response should be accurate while not long. You may begin your summary, following the word "In summary".
+
+In summary, 
