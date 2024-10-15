@@ -39,7 +39,7 @@ def eval_from_path(data_path: str):
             if villager_player_tag is None:
                 villager_player_tag = player_config["player_tag"]
             else:
-                assert villager_player_tag == player_config["player_tag"], "villagers have different player types", data_path
+                assert villager_player_tag == player_config["player_tag"], "villagers have different player types for:" + str(data_path)
     if result["winner"] == "werewolf":
         result["winner_player_tag"] = werewolf_player_tag
         result["loser_player_tag"] = villager_player_tag
