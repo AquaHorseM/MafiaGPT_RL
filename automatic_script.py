@@ -127,16 +127,35 @@ def main_loop(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--max_iter', type=int, default=10)
-    parser.add_argument('--data_dir', type=str, default='./shijz_test_15/data')
-    parser.add_argument('--config_dir', type=str, default='./shijz_test_15/configs')
-    parser.add_argument('--notes_dir', type=str, default='./shijz_test_15/notes')
-    parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_15/prompt_logging')
+    parser.add_argument('--master_dir',type=str,default='./shijz_21_baseline')
+    # parser.add_argument('--data_dir', type=str, default='./shijz_test_15/data')
+    # parser.add_argument('--config_dir', type=str, default='./shijz_test_15/configs')
+    # parser.add_argument('--notes_dir', type=str, default='./shijz_test_15/notes')
+    # parser.add_argument('--prompt_logging_dir', type=str, default='./shijz_test_15/prompt_logging')
+    
+    
+    parser.add_argument('--data_dir', type=str, default='')
+    parser.add_argument('--config_dir', type=str, default='')
+    parser.add_argument('--notes_dir', type=str, default='')
+    parser.add_argument('--prompt_logging_dir', type=str, default='')
+    
+    
+    
+    
     parser.add_argument('--num_game_per_iter', type=int, default=5)
     parser.add_argument('--num_processes', type=int, default=5)
     parser.add_argument('--skip_zero', action='store_true')
     
     args = parser.parse_args()
     
+    if args.data_dir == '':
+        args.data_dir = os.path.join(args.master_dir,'data')
+    if args.config_dir == '':
+        args.config_dir = os.path.join(args.master_dir,'configs')
+    if args.notes_dir == '':
+        args.notes_dir = os.path.join(args.master_dir,'notes')
+    if args.prompt_logging_dir == '':
+        args.prompt_logging_dir = os.path.join(args.master_dir,'prompt_logging')
     
     
     main_loop(args)
