@@ -717,8 +717,9 @@ class Player:
         # s += show_all_other_beliefs()
         
         # todo
+        after_events = [event for event in traj["after_events"] if self.filter_reflex_event(event)]
         s += "\n This is a summary of what happens after your final decided action:\n\n" 
-        s += self.summarize_events(traj["after_events"])
+        s += self.summarize_events(after_events)
         s += "Think about the following questions: Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
         
         # if len(reflex_info["trajs"]) > 1:
