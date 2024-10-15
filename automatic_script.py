@@ -112,8 +112,9 @@ def one_iter(args, ver=0):
     time.sleep(1)
     create_game_config(args,ver)
     copy_files(args,ver)
-    time.sleep(1)
-    run_reflex(args,ver)
+    for _ in range(args.reflex_per_data):
+        time.sleep(1)
+        run_reflex(args,ver)
 
 def main_loop(args):
     MAX_ITER = args.max_iter
@@ -144,6 +145,8 @@ if __name__ == "__main__":
     
     parser.add_argument('--num_game_per_iter', type=int, default=5)
     parser.add_argument('--num_processes', type=int, default=5)
+
+    parser.add_argument('--reflex_per_data',type=int,default=1)
     parser.add_argument('--skip_zero', action='store_true')
     
     args = parser.parse_args()
