@@ -300,7 +300,7 @@ def eval_from_dir(dir_path):
                 )
     
     for result in results:
-        for key, current_key_dict in all_keys_dict.items():
+        for key, current_key_dict in result.items():
             current_role_key_list = current_key_dict['roles']
             for role_key in current_role_key_list:
                 all_keys_dict[key][role_key]['number'] = 1 + all_keys_dict[key][role_key].get('number', 0)
