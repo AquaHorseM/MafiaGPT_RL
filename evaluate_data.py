@@ -303,12 +303,13 @@ def eval_from_dir(dir_path):
         for key, current_key_dict in result.items():
             current_role_key_list = current_key_dict['roles']
             for role_key in current_role_key_list:
-                all_keys_dict[key][role_key]['number'] = 1 + all_keys_dict[key][role_key].get('number', 0)
-                number = all_keys_dict[key][role_key]['number']
-                all_keys_dict[key][role_key]['belief_score'] = ((number - 1) * all_keys_dict[key][role_key].get('belief_score', 0) + current_key_dict['belief_score']) / number
-                all_keys_dict[key][role_key]['speech_score'] = ((number - 1) * all_keys_dict[key][role_key].get('speech_score', 0) + current_key_dict['speech_score']) / number
-                if role_key == 'medic':
-                    all_keys_dict[key][role_key]['heal_success_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('heal_success_rate', 0) + current_key_dict['heal_success_rate']) / number
+                if current_key_dict['belief_score'] is not None:
+                    all_keys_dict[key][role_key]['number'] = 1 + all_keys_dict[key][role_key].get('number', 0)
+                    number = all_keys_dict[key][role_key]['number']
+                    all_keys_dict[key][role_key]['belief_score'] = ((number - 1) * all_keys_dict[key][role_key].get('belief_score', 0) + current_key_dict['belief_score']) / number
+                    all_keys_dict[key][role_key]['speech_score'] = ((number - 1) * all_keys_dict[key][role_key].get('speech_score', 0) + current_key_dict['speech_score']) / number
+                    if role_key == 'medic':
+                        all_keys_dict[key][role_key]['heal_success_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('heal_success_rate', 0) + current_key_dict['heal_success_rate']) / number
     
     return all_keys_dict
 import json
