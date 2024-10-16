@@ -26,6 +26,7 @@ def eval_from_path(data_path: str):
     
     config = data.game_config
     private_infos = data.nodes[0].state["private_infos"]
+    player_num = len(private_infos)
     
     # Initialize roles to handle multiple roles for the same player tag
     tag_roles = {}
@@ -118,8 +119,6 @@ def eval_from_path(data_path: str):
         
         new_hstate_list = [node.state["hstate"] for node in next_nodes]
 
-            
-
 
         actions = data.edges[e].actions
         speech_eval = get_single_speech_score(start_state["hstate"], start_state["global_info"]["alive_players"], \
@@ -149,6 +148,44 @@ def eval_from_path(data_path: str):
     for tag in player_tags:
         if "medic" in tag_roles[tag]:
             result[tag]["heal_success_rate"] = heal_success_tot / heal_num if heal_num > 0 else 0
+            
+    # KILL SEER/MEDIC
+    kill_num = 0
+    kill_critical = 0
+    
+    f = 0
+    second_night_node = None
+    for n in data.nodes:
+        if n.state["global_info"]["game_status"]["cur_stage"] == "night":
+            if f==0:
+                f=1
+            else:
+                second_night_node = n
+                break
+    if second_night_node is not None:
+        alive_players = second_night_node.state["global_info"]["game_status"]["alive_players"]
+        medic_id = [i for i in range(player_num) if player_roles[i]=="medic" and i in alive_players]
+        seer_id = [i for i in range(player_num) if player_roles[i]=="seer" and i in alive_players]
+        if medic_id or seer_id:
+            medic_id = medic_id[0] if medic_id else None
+            seer_id = seer_id[0] if seer_id else None
+            werewolf_ids = [i for i in range(player_num) if player_roles[i] == "werewolf" and i in alive_players]
+            if werewolf_ids:
+                actions = data.edges[second_night_node.edges[0]].actions
+                save_target = None
+                if medic_id:
+                    save_target = actions[medic_id].get("target")
+                for wid in werewolf_ids:
+                    target = actions[wid].get("target") 
+                    if target is not None:
+                        kill_num += 1
+                        if ((seer_id and target == seer_id) or (medic_id and target == medic_id)) and (save_target and save_target != target):
+                            kill_critical += 1
+    
+    for tag in player_tags:
+        if "werewolf" in tag_roles[tag]:
+            result[tag]["kill_critical_rate"] = heal_success_tot / heal_num if heal_num > 0 else 0
+            break
     
     print("result: ", result)
     return result
@@ -263,8 +300,6 @@ def get_single_speech_score(prev_jhstate, alive_players, roles, actions, player_
         "speech_score": speech_score if speaker_role != 'werewolf' else - speech_score,
         "long_speech_score": long_speech_score if speaker_role != 'werewolf' else - long_speech_score,
     }
-
-
 
         
 def get_belief_score(joint_hstate, roles, alive_players=None):
