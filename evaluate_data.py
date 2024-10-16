@@ -1,6 +1,7 @@
 #load the data and extract the necessary metrics
 #assert that no retry exists in the data, hence the last node is the ending node
 
+
 import pickle
 from core.data import DataTree
 import numpy as np
@@ -362,9 +363,54 @@ def get_belief_score(joint_hstate, roles, alive_players=None):
         # Add this player's score to the total score
     return scores
 
-
-
-
+# if __name__ == "__main__":
+#     data_path = "transport/game_9_data.pkl"
+#     result = eval_from_path(data_path)
+    
+    
+def eval_from_dir(dir_path):
+    # obtain all file that ends with .pkl in the directory, including subdirectories.
+    import os
+    import glob
+    data_files = glob.glob(os.path.join(dir_path, "**", "*.pkl"), recursive=True)
+    
+    results = []
+    for data_file in data_files:
+        result = eval_from_path(data_file)
+        results.append(result)
+    all_keys_dict = dict()
+    for result in results:
+        if result is None:
+            continue
+        for key in result.keys():
+            if key not in all_keys_dict.keys():
+                all_keys_dict[key] = dict(
+                    werewolf = dict(),
+                    villager = dict(),
+                    medic = dict(),
+                    seer = dict(),
+                )
+    
+    for result in results:
+        for key, current_key_dict in result.items():
+            current_role_key_list = current_key_dict['roles']
+            for role_key in current_role_key_list:
+                if current_key_dict['belief_score'] is not None:
+                    all_keys_dict[key][role_key]['number'] = 1 + all_keys_dict[key][role_key].get('number', 0)
+                    number = all_keys_dict[key][role_key]['number']
+                    all_keys_dict[key][role_key]['belief_score'] = ((number - 1) * all_keys_dict[key][role_key].get('belief_score', 0) + current_key_dict['belief_score']) / number
+                    all_keys_dict[key][role_key]['speech_score'] = ((number - 1) * all_keys_dict[key][role_key].get('speech_score', 0) + current_key_dict['speech_score']) / number
+                    if role_key == 'medic':
+                        all_keys_dict[key][role_key]['heal_success_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('heal_success_rate', 0) + current_key_dict['heal_success_rate']) / number
+                    all_keys_dict[key][role_key]['wins'] = 1 + all_keys_dict[key][role_key].get('wins', 0) if current_key_dict['winner'] == 'win' else all_keys_dict[key][role_key].get('wins', 0)
+    all_keys_dict['total_number_of_games'] = len(results)
+    return all_keys_dict
+import json
 if __name__ == "__main__":
-    data_path = "transport/v1vv9_game4.pkl"
-    result = eval_from_path(data_path)
+    result = eval_from_dir('clan_war_shijz_15_v2Vv5')
+    json.dump(result, open('clan_war_shijz_15_v2Vv5.json','w'), indent=4)
+                    
+                
+                
+    
+    

@@ -118,7 +118,7 @@ def one_iter(args, ver=0):
 
 def main_loop(args):
     MAX_ITER = args.max_iter
-    for ver in range(0,MAX_ITER):
+    for ver in range(args.start_from,MAX_ITER):
         one_iter(args,ver)
         
 
@@ -148,6 +148,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--reflex_per_data',type=int,default=1)
     parser.add_argument('--skip_zero', action='store_true')
+    parser.add_argument('--start_from', type=int, default=0)
     
     args = parser.parse_args()
     
