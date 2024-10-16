@@ -75,7 +75,7 @@ if __name__ == "__main__":
     parser.add_argument('--war_folder', type=str, default = './cocs_ablation_1')
     parser.add_argument('--num_games_per_battle', type=int, default = 1)
     parser.add_argument('--num_process_per_battle', type=int, default = 1)
-    parser.add_argument('--num_battle_parallel', type=int, default = 5)
+    parser.add_argument('--num_battle_parallel', type=int, default = 8)
     parser.add_argument('--num_battles_in_total', type=int, default = 30)
     
     # parse in a list of strings. not directly str type.
