@@ -106,6 +106,8 @@ if __name__ == "__main__":
         version_tuple = idx_to_version_tuple(idx)
         idx_to_version_list.append(version_tuple)
         notes_folders = [args.notes_dir_list[v] for v in version_tuple]
+        player_id = ['villager', 'seer', 'medic', 'werewolf']
+        notes_folders = [os.path.join(a,b) for (a,b) in zip(notes_folders, player_id)]
         tags = [args.clans_tags[v] for v in version_tuple]
         player_types = [args.clan_types[v] for v in version_tuple]
         args_list.append(('battle_'+str(idx), args.war_folder, *notes_folders, *tags, args.num_games_per_battle, args.num_process_per_battle,
