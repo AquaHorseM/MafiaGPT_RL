@@ -224,7 +224,7 @@ def evaluate_joint_hstate_for_villager(roles, joint_hstate, player_num = None, a
         elif confidence == "low":
             return 1
         else:
-            raise f"Confidence not supported: {confidence}"
+            raise ValueError(f"Confidence not supported: {confidence}")
     for i in range(player_num):
         if alive_players is not None and i not in alive_players:
             continue
