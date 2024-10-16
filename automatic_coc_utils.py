@@ -29,6 +29,7 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
                        villager_notes_folder, seer_notes_folder, medic_notes_folder,
                        werewolf_notes_folder,
                        villager_tags, seer_tags, medic_tags, werewolf_tags,
+                       villager_player_type = 'reflex', seer_player_type='reflex', medic_player_type='reflex', werewolf_player_type='reflex',
                        proposal_num = 2, sample_num = 10, sample_type = "heuristic", extra_sim_nodes = 0):
     if isinstance(villager_tags, str):
         villager_tags = [villager_tags] * 3
@@ -75,11 +76,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
         "players": [
             {
                 "role": "werewolf",
-                "player_type": "reflex",
+                "player_type": werewolf_player_type,
                 "reflex_note_belief_path": os.path.join(werewolf_notes_folder_0,"werewolf_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(werewolf_notes_folder_0,"werewolf_reflex_note_policy.txt"),
-                "common_prompt_dir_path": "core/players/reflex/prompts/common",
-                "prompt_dir_path": "core/players/reflex/prompts/werewolf",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
                 "sample_type": sample_type,
@@ -87,11 +86,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             },
             {
                 "role": "werewolf",
-                "player_type": "reflex",
+                "player_type": werewolf_player_type,
                 "reflex_note_belief_path": os.path.join(werewolf_notes_folder_1,"werewolf_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(werewolf_notes_folder_1,"werewolf_reflex_note_policy.txt"),
-                "common_prompt_dir_path": "core/players/reflex/prompts/common",
-                "prompt_dir_path": "core/players/reflex/prompts/werewolf",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
                 "sample_type": sample_type,
@@ -99,11 +96,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             },
             {
                 "role": "villager",
-                "player_type": "reflex",
+                "player_type": villager_player_type,
                 "reflex_note_belief_path": os.path.join(villager_notes_folder_0, "villager_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(villager_notes_folder_0, "villager_reflex_note_policy.txt"),
-                "common_prompt_dir_path": "core/players/reflex/prompts/common",
-                "prompt_dir_path": "core/players/reflex/prompts/villager",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
                 "sample_type": sample_type,
@@ -111,11 +106,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             },
             {
                 "role": "villager",
-                "player_type": "reflex",
+                "player_type": villager_player_type,
                 "reflex_note_belief_path": os.path.join(villager_notes_folder_1, "villager_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(villager_notes_folder_1, "villager_reflex_note_policy.txt"),
-                "common_prompt_dir_path": "core/players/reflex/prompts/common",
-                "prompt_dir_path": "core/players/reflex/prompts/villager",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
                 "sample_type": sample_type,
@@ -123,11 +116,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             },
             {
                 "role": "villager",
-                "player_type": "reflex",
+                "player_type": villager_player_type,
                 "reflex_note_belief_path": os.path.join(villager_notes_folder_2, "villager_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(villager_notes_folder_2, "villager_reflex_note_policy.txt"),
-                "common_prompt_dir_path": "core/players/reflex/prompts/common",
-                "prompt_dir_path": "core/players/reflex/prompts/villager",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
                 "sample_type": sample_type,
@@ -135,11 +126,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             },
             {
                 "role": "medic",
-                "player_type": "reflex",
+                "player_type": medic_player_type,
                 "reflex_note_belief_path": os.path.join(medic_notes_folder, "medic_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(medic_notes_folder, "medic_reflex_note_policy.txt"),
-                "common_prompt_dir_path": "core/players/reflex/prompts/common",
-                "prompt_dir_path": "core/players/reflex/prompts/medic",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
                 "sample_type": sample_type,
@@ -147,11 +136,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
             },
             {
                 "role": "seer",
-                "player_type": "reflex",
+                "player_type": seer_player_type,
                 "reflex_note_belief_path": os.path.join(seer_notes_folder, "seer_reflex_note_belief.txt"),
                 "reflex_note_policy_path": os.path.join(seer_notes_folder, "seer_reflex_note_policy.txt"),
-                "common_prompt_dir_path": "core/players/reflex/prompts/common",
-                "prompt_dir_path": "core/players/reflex/prompts/seer",
                 "proposal_num": proposal_num,
                 "sample_num": sample_num,
                 "sample_type": sample_type,
@@ -165,7 +152,9 @@ def obtain_config_dict(to_data_folder, input_txt_path, output_txt_path,
 
 
 
-def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,):
+def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,
+    villager_player_type, seer_player_type, medic_player_type, werewolf_player_type,
+):
     if not os.path.exists(current_clan_war_folder):
         os.makedirs(current_clan_war_folder)
     data_folder = os.path.join(current_clan_war_folder, 'data_'+battle_tag)
@@ -196,7 +185,9 @@ def create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_n
     output_txt_path = os.path.join(prompt_logging_folder, 'message_output_history_backup_'+battle_tag+'.txt')
     config_dict = obtain_config_dict(data_folder, input_txt_path, output_txt_path,
                                      villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder,
-                                     villager_tags, seer_tags, medic_tags, werewolf_tags,)
+                                     villager_tags, seer_tags, medic_tags, werewolf_tags,
+                                     villager_player_type = villager_player_type, seer_player_type=seer_player_type, medic_player_type=medic_player_type, werewolf_player_type=werewolf_player_type,
+                                     )
     config_path = os.path.join(current_clan_war_folder, 'game_config_'+battle_tag+'.json')
     json.dump(config_dict, open(config_path,'w'), indent=4)
     
@@ -221,8 +212,12 @@ def run_one_battle(data_folder, config_path, num_games, num_process):
 def make_battle_dir_and_run_one_battle(battle_tag, current_clan_war_folder,
                                        villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder,
                                        villager_tags, seer_tags, medic_tags, werewolf_tags,
-                                       num_games, num_process):
-    battle_config_dict = create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,)
+                                       num_games, num_process,
+                                       villager_player_type, seer_player_type, medic_player_type, werewolf_player_type,
+                                       ):
+    battle_config_dict = create_folder_for_one_battle(battle_tag, current_clan_war_folder, villager_notes_folder, seer_notes_folder, medic_notes_folder, werewolf_notes_folder, villager_tags, seer_tags, medic_tags, werewolf_tags,
+        villager_player_type = villager_player_type, seer_player_type=seer_player_type, medic_player_type=medic_player_type, werewolf_player_type=werewolf_player_type,
+    )
     run_one_battle(battle_config_dict['data_folder'], battle_config_dict['config_path'], num_games, num_process)
     return battle_config_dict
 '''
