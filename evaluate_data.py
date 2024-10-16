@@ -164,7 +164,7 @@ def eval_from_path(data_path: str):
                 second_night_node = n
                 break
     if second_night_node is not None:
-        alive_players = second_night_node.state["global_info"]["game_status"]["alive_players"]
+        alive_players = second_night_node.state["global_info"]["alive_players"]
         medic_id = [i for i in range(player_num) if player_roles[i]=="medic" and i in alive_players]
         seer_id = [i for i in range(player_num) if player_roles[i]=="seer" and i in alive_players]
         if medic_id or seer_id:
