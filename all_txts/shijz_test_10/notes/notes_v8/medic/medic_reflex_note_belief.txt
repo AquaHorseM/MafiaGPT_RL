@@ -1,0 +1,5 @@
+[0] [Adjust confidence in a player's role based on reliable evidence, such as a seer's inquiry result, observable behavioral contradictions and whether such behavior aligns with a villager or werewolf based on past events and patterns.] [10]
+[1] [Reduce confidence in players who either strongly defend or accuse others without a logical basis or when such behavior seems strategically inconsistent with their previous actions or known villager behavior.] [10]
+[2] [Critically evaluate the rationale behind players’ defense or accusation of others, especially when such actions contradict known facts or established patterns without reasonable explanation.] [10]
+[3] [Adjust the trustworthiness of players who exhibit behavior shifts that lack congruence with their earlier actions or the typical behavior of their claimed role, especially after critical game events.] [10]
+[4] [Give appropriate weight to claims and evidence from roles with information-gathering abilities, while remaining vigilant about the accuracy of this information and the potential for manipulation by werewolves, especially when the information conflicts with observed behaviors.] [4]

@@ -1,0 +1,6 @@
+[0] [I am the only medic.] [10]
+[1] [Consider the claims of the seer more strongly when they make a definitive statement about a player's role, particularly when the statement directly impacts current round decisions.] [10]
+[2] [Increase the importance of the seer's claims only when they remain consistent throughout rounds and corroborated with other evidence in the game.] [5]
+[3] [Evaluate the validity of the seer's claims by cross-referencing with known player roles, past events, and how others react to those claims.] [5]
+[4] [Increase confidence in a player's role if the seer's inquiry aligns with their behavior in the game, such as voting patterns or defense strategies.] [5]
+[5] [Consider players' voting patterns and their in-game reasoning, especially when they align with the known villagers and seer, to help validate their roles. Downgrade the confidence if their reasoning does not align with village strategy or evidence presented.] [4]
