@@ -416,6 +416,8 @@ if __name__ == "__main__":
     parser.add_argument('--file', type=str, default = 'clan_war_shijz_15_v2Vv5')
     args = parser.parse_args()
     result = eval_from_dir(args.dir)
+    if not args.file.endswith("json"):
+        args.file += ".json"
     json.dump(result, open(args.file,'w'), indent=4)
                     
                 
