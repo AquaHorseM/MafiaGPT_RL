@@ -1,0 +1,175 @@
+{
+    "reflex": {
+        "werewolf": {
+            "number": 2,
+            "belief_score": -0.6090324918070498,
+            "speech_score": -0.7357142857142848,
+            "long_speech_score": -4.306049784958503,
+            "kill_critical_rate": 0.3333333333333333,
+            "wins": 1
+        },
+        "villager": {
+            "number": 2,
+            "belief_score": -6.92067768301636,
+            "speech_score": -2.595833333333333,
+            "long_speech_score": -0.2609156194005471,
+            "wins": 1
+        },
+        "medic": {
+            "number": 2,
+            "belief_score": -0.0010251504772702813,
+            "speech_score": 1.462500000000001,
+            "long_speech_score": -10.443765994555477,
+            "heal_success_rate": 0.29166666666666663,
+            "wins": 2
+        },
+        "seer": {
+            "number": 4,
+            "belief_score": 0.493493748007859,
+            "speech_score": -0.7916666666666643,
+            "long_speech_score": -9.844378410092375,
+            "wins": 2
+        }
+    },
+    "baseline": {
+        "werewolf": {
+            "number": 6,
+            "belief_score": -1.9988398055656897,
+            "speech_score": -3.4347222222222213,
+            "long_speech_score": -3.9766108052798095,
+            "kill_critical_rate": 0.125,
+            "wins": 5
+        },
+        "villager": {
+            "number": 6,
+            "belief_score": -6.692717337950659,
+            "speech_score": -0.9057407407407404,
+            "long_speech_score": -2.9490721138513383,
+            "wins": 2
+        },
+        "medic": {
+            "number": 3,
+            "belief_score": 0.7960329341295415,
+            "speech_score": 0.4833333333333331,
+            "long_speech_score": -7.2119554773538725,
+            "heal_success_rate": 0.08333333333333333,
+            "wins": 1
+        },
+        "seer": {
+            "number": 3,
+            "belief_score": -0.1084565398476786,
+            "speech_score": 3.56666666666667,
+            "long_speech_score": -3.017170399253793,
+            "wins": 3
+        }
+    },
+    "uniform": {
+        "werewolf": {
+            "number": 10,
+            "belief_score": -2.236501136014049,
+            "speech_score": -0.7179999999999986,
+            "long_speech_score": -4.626685580923711,
+            "kill_critical_rate": 0.14166666666666666,
+            "wins": 7
+        },
+        "villager": {
+            "number": 8,
+            "belief_score": -11.801995866561871,
+            "speech_score": -0.8782440476190463,
+            "long_speech_score": -1.2573262778625143,
+            "wins": 2
+        },
+        "medic": {
+            "number": 1,
+            "belief_score": -0.4634819453872273,
+            "speech_score": -0.7399999999999982,
+            "long_speech_score": -4.4077773645875515,
+            "heal_success_rate": 0.375,
+            "wins": 0
+        },
+        "seer": {
+            "number": 2,
+            "belief_score": 0.7935886760591948,
+            "speech_score": 1.4500000000000013,
+            "long_speech_score": -11.475239850497854,
+            "wins": 2
+        }
+    },
+    "dummy": {
+        "werewolf": {
+            "number": 6,
+            "belief_score": -2.9440641535842063,
+            "speech_score": 0.4711111111111115,
+            "long_speech_score": -3.968296045212023,
+            "kill_critical_rate": 0.2222222222222222,
+            "wins": 1
+        },
+        "villager": {
+            "number": 4,
+            "belief_score": -0.2669236707118598,
+            "speech_score": -1.1708333333333312,
+            "long_speech_score": -5.910961761532459,
+            "wins": 2
+        },
+        "medic": {
+            "number": 5,
+            "belief_score": -0.4711577461473313,
+            "speech_score": -2.8599999999999985,
+            "long_speech_score": -9.01845493250509,
+            "heal_success_rate": 0.15,
+            "wins": 2
+        },
+        "seer": {
+            "number": 4,
+            "belief_score": 0.8029743464276333,
+            "speech_score": -1.3374999999999957,
+            "long_speech_score": -10.251519033191634,
+            "wins": 0
+        }
+    },
+    "reflex_v0": {
+        "werewolf": {},
+        "villager": {
+            "number": 6,
+            "belief_score": -2.5734954923704216,
+            "speech_score": -0.9074074074074067,
+            "long_speech_score": -2.4956216132771796,
+            "wins": 2
+        },
+        "medic": {
+            "number": 2,
+            "belief_score": -0.03734792185223295,
+            "speech_score": -0.5249999999999986,
+            "long_speech_score": -4.230228686051935,
+            "heal_success_rate": 0.0,
+            "wins": 1
+        },
+        "seer": {
+            "number": 4,
+            "belief_score": 0.5018460045638227,
+            "speech_score": 0.4083333333333319,
+            "long_speech_score": -4.079629538427399,
+            "wins": 2
+        }
+    },
+    "naive": {
+        "werewolf": {
+            "number": 6,
+            "belief_score": -0.7243482028540424,
+            "speech_score": 0.15638888888888916,
+            "long_speech_score": -0.42997664735094093,
+            "kill_critical_rate": 0.09027777777777778,
+            "wins": 4
+        },
+        "villager": {
+            "number": 4,
+            "belief_score": -3.4765645338169415,
+            "speech_score": -1.6028787878787867,
+            "long_speech_score": -2.2428342308782705,
+            "wins": 3
+        },
+        "medic": {},
+        "seer": {}
+    },
+    "total_number_of_games": 30
+}

@@ -1,0 +1,324 @@
+Player 1's role is unknown with high confidence. My reason is: No new information.
+Player 2's role is unknown with high confidence. My reason is: No new information.
+Player 3's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with high confidence. My reason is: No new information.
+
+Since there are no new events to update my beliefs on, my response will reflect the status quo from my previous update:
+
+Player 0's role is unknown with high confidence. My reason is: No information yet.
+Player 2's role is unknown with high confidence. My reason is: No information yet.
+Player 3's role is unknown with high confidence. My reason is: No information yet.
+Player 4's role is unknown with high confidence. My reason is: No information yet.
+Player 5's role is unknown with high confidence. My reason is: No information yet.
+Player 6's role is unknown with high confidence. My reason is: No information yet.
+
+Player 0's role is unknown with high confidence. My reason is: Game just started.
+Player 1's role is unknown with high confidence. My reason is: Game just started.
+Player 3's role is unknown with high confidence. My reason is: Game just started.
+Player 4's role is unknown with high confidence. My reason is: Game just started.
+Player 5's role is unknown with high confidence. My reason is: Game just started.
+Player 6's role is unknown with high confidence. My reason is: Game just started.
+
+Player 0's role is unknown with high confidence. My reason is: There is no information yet.
+Player 1's role is unknown with high confidence. My reason is: There is no information yet.
+Player 2's role is unknown with high confidence. My reason is: There is no information yet.
+Player 4's role is unknown with high confidence. My reason is: There is no information yet.
+Player 5's role is unknown with high confidence. My reason is: There is no information yet.
+Player 6's role is unknown with high confidence. My reason is: There is no information yet.
+
+Player 0's role is unknown with high confidence. My reason is: No new information.
+Player 1's role is unknown with high confidence. My reason is: No new information.
+Player 2's role is unknown with high confidence. My reason is: No new information.
+Player 3's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with high confidence. My reason is: No new information.
+
+Firstly, I want to see Player 1. The reason is: Player 1 is right after me in the player sequence, and checking the role of neighboring players can provide immediate strategic value for the upcoming rounds.
+
+Secondly, I want to see Player 4. The reason is: Choosing a player further away in the sequence can help me gain insight into the roles of players who I will interact with later in the game, offering a broader perspective on the potential distribution of roles.
+
+After I see Player 1, I think these things would happen:
+
+1. If Player 1 is a werewolf:
+   - I would have to share this information with other players as per my strategy rule [0] because it is rated with the highest importance (10). This rule indicates that the discovery of a werewolf is a critical piece of information that must be communicated to the group.
+   - By revealing Player 1 as a werewolf, I would influence the group's decision on who to vote out. Given that this is the first round, my revelation could lead to a quick consensus to eliminate a threat early in the game.
+   - My action of identifying Player 1 as a werewolf would likely cause the werewolves to see me as a threat, potentially making me a target in the subsequent night phase.
+   - If Player 1 is a werewolf, the other players may trust me more since I have proven my ability as a seer, but this may also increase scrutiny on me since no one has been verified yet, and they may doubt the authenticity of my claim.
+
+2. If Player 1 is not a werewolf (is a Villager, a special role, or neutral):
+   - I would keep this information to myself for now, as revealing someone as innocent so early in the game could potentially expose me to danger without providing a significant strategic advantage.
+   - I need to consider the best timing to reveal Player 1's innocence in a way that would benefit the village without compromising my safety as the seer. However, if there is an immediate threat or accusation against Player 1, I may need to intervene to prevent the elimination of an innocent player.
+   - Keeping track of Player 1's behavior and interactions with other players would be important moving forward. If Player 1 is accused or suspected in the future, I would then have the necessary information to defend or condemn their actions based on their role.
+
+After I see Player 4, I think these things would happen. If Player 4 is discovered to be a werewolf, following my original strategy, I would immediately share this information with other players as stated in rule [0] with a vote importance of 10, indicating I should fully rely on this rule. This action could potentially lead to my becoming a target for the werewolves in the following rounds, as revealing this information would establish me as a threat to them. However, it would also help the villagers identify one of the werewolves early in the game, which could significantly tilt the balance in favor of the village.
+
+On the flip side, if Player 4 is not a werewolf but instead a villager or another non-werewolf role, I must consider the potential impact of revealing this information. Sharing that Player 4 is not a werewolf could either build trust with Player 4 and any others who are convinced by my revelation, or it could raise suspicions about me if people question the validity of my claim. Additionally, keeping the information to myself could be a strategy to avoid attracting the werewolves' attention, allowing me to make further inquiries in later rounds.
+
+In any case, knowing Player 4's identity will guide my choices in subsequent rounds and will inform my discussions and strategies with the other players. If Player 4 is a villager, I may subtly try to protect them without revealing my role. If Player 4 has a significant non-werewolf role, such as the doctor or another protective role, I would be even more cautious in my approach to ensure they can continue to help the village covertly. If there are no special roles, I would continue to gather information and weigh my options carefully, considering the potential for deceit and misdirection from the werewolves.
+
+I would choose to See Player 1. My reason is that since it's the first round and no one has been eliminated yet, making a discovery about Player 1 could be crucial in setting the tone for the rest of the game. As a seer, establishing trust is important, and by possibly identifying a werewolf early on, I would gain credibility with the other players. Furthermore, if Player 1 turns out not to be a werewolf, having that knowledge could be strategically valuable in future rounds to help protect innocent players and to inform my future inquiries.
+
+
+I don't heal anybody. My reason is: Since there is no new information about any players' roles or any previous events indicating who might be at risk, there is no strategic basis for choosing someone to heal this round. Additionally, as it's only round 1 and nobody has died yet, it's difficult to predict werewolf behavior or identify any player as a high-priority target for healing. My strategy emphasizes evidence-driven decision-making, and there is no evidence to act upon at this time.
+
+I choose to kill Player 3. My reason is: as the game has just started and there are no past actions or discussions to analyze for suspicious behavior, the decision must be somewhat arbitrary. Player 3 is neither too early in the player list, which could be considered a safe initial target by some strategies, nor too late, which might make them a less likely target for early suspicion. The choice is intended to avoid patterns that could be easily predicted in subsequent rounds.
+
+I choose to kill Player <NUMBER>. My reason is: it is the first round and there is limited information on who may be a threat to the werewolves. My choice will have to be somewhat random, so I will pick someone who hasn't been very vocal or seems less likely to be protected by the bodyguard, if there is one. Since the list of players currently alive wasn't provided, I'll pick a placeholder number.
+
+(Note: In an actual game, you would replace <NUMBER> with a valid player number, excluding 5 and 6.)
+
+Player 1's role is unknown with high confidence. My reason is: No new information.
+Player 2's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with high confidence. My reason is: Randomly chosen to speak first.
+
+Player 0's role is unknown with high confidence. My reason is: No new information.
+Player 2's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with high confidence. My reason is: Random speak start, no content yet.
+
+Player 0's role is unknown with high confidence. My reason is: No new information.
+Player 1's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with high confidence. My reason is: Chosen to speak first; no further data.
+
+Player 1's role is villager with high confidence. My reason is: Verified not a werewolf by seer ability.
+
+Since you have mentioned that no other players' roles are changed based on the events, no additional beliefs need to be updated.
+
+Player 1's role is unknown with medium confidence. My reason is: Received a heal from the medic, which might be an early strategic decision or a random choice, considering the absence of information.
+Player 3's role is unknown with medium confidence. My reason is: Died unexpectedly, possibly targeted for an unknown reason, but without information cannot determine role.
+Player 6's role is unknown with medium confidence. My reason is: Chosen to speak first, random system choice may not indicate role.
+
+"Firstly, I'm saddened by the loss of player 3. We need to work together to find the werewolves among us. I didn't see anything suspicious last night, but let's discuss and see if anyone else noticed odd behavior that might point to the werewolves."
+
+Player 1's role is unknown with high confidence. My reason is: No new information.
+Player 2's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with medium confidence. My reason is: Expressed concern, initiated discussion.
+
+Player 0's role is unknown with high confidence. My reason is: No change in information.
+Player 2's role is unknown with high confidence. My reason is: No change in information.
+Player 4's role is unknown with high confidence. My reason is: No change in information.
+Player 5's role is unknown with high confidence. My reason is: No change in information.
+Player 6's role is unknown with medium confidence. My reason is: Initiated discussion, no conclusive evidence.
+
+Player 2's role is villager with high confidence. My reason is: I am player 2 and aware of my own role.
+
+Player 6's role is unknown with medium confidence. My reason is: Statement lacks specifics but initiates discussion, typical villager behavior but could be calculated werewolf strategy.
+
+Player 0's role is unknown with high confidence. My reason is: No new information.
+Player 1's role is villager with high confidence. My reason is: Verified not a werewolf by seer ability.
+Player 2's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with high confidence. My reason is: No new information.
+
+Player 1's role is unknown with medium confidence. My reason is: Received healing but no new information.
+Player 6's role is unknown with medium confidence. My reason is: No new information beyond speech.
+
+"Agreed, player 6, and condolences for player 3. I didn't notice anything strange either. Does anyone have suspicions or information?"
+
+Player 1's role is unknown with high confidence. My reason is: No new information.
+Player 2's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with medium confidence. My reason is: Initiated discussion, still no concrete evidence.
+
+Player 0's role is unknown with high confidence. My reason is: No change in information.
+Player 2's role is unknown with high confidence. My reason is: No change in information.
+Player 4's role is unknown with high confidence. My reason is: No change in information.
+Player 5's role is unknown with high confidence. My reason is: No change in information.
+Player 6's role is unknown with medium confidence. My reason is: No new evidence provided.
+
+Player 0's role is unknown with high confidence. My reason is: Followed player 6 in expressing condolences without providing new information.
+Player 1's role is unknown with high confidence. My reason is: No new information.
+Player 4's role is unknown with high confidence. My reason is: No new information.
+Player 5's role is unknown with high confidence. My reason is: No new information.
+Player 6's role is unknown with medium confidence. My reason is: Opened discussion; typical villager behavior but could be strategic if werewolf.
+
+Player 0's role is unknown with high confidence. My reason is: No new evidence.
+Player 1's role is villager with high confidence. My reason is: Verified not a werewolf by seer ability.
+Player 2's role is unknown with high confidence. My reason is: No new evidence.
+Player 4's role is unknown with high confidence. My reason is: No new evidence.
+Player 5's role is unknown with high confidence. My reason is: No new evidence.
+Player 6's role is unknown with high confidence. My reason is: No new evidence.
+
+Player 1's role is villager with medium confidence. My reason is: Received healing and no contradictory evidence.
+Player 3's role is villager with high confidence. My reason is: Targeted and killed, likely for villager insights.
+Player 6's role is unknown with low confidence. My reason is: Initiates discussion but lacks substantial evidence.
+
+"I'm also unsure who the werewolf could be since no one has shared any concrete evidence yet. Let's keep our eyes open tonight and be observant."
+
+Player 1's role is unknown with medium confidence. My reason is: Neutral statement, no concrete information shared, aligns with strategy-to-remain-under-the-radar ([1] rule, vote 7).
+
+Player 0's role is unknown with high confidence. My reason is: Maintained neutrality.
+Player 2's role is unknown with high confidence. My reason is: No change in information.
+Player 4's role is unknown with high confidence. My reason is: No change in information.
+Player 5's role is unknown with high confidence. My reason is: No change in information.
+Player 6's role is unknown with high confidence. My reason is: Expressed concern, no evidence.
+
+Player 1's role is unknown with medium confidence. My reason is: Lack of suspicion or insight; neutral statement without contribution.
+
+Player 0's role is unknown with high confidence. My reason is: No new evidence.
+Player 1's role is villager with high confidence. My reason is: Verified not a werewolf by seer ability.
+Player 2's role is unknown with high confidence. My reason is: No new evidence.
+Player 4's role is unknown with high confidence. My reason is: No new evidence.
+Player 5's role is unknown with high confidence. My reason is: No new evidence.
+Player 6's role is unknown with high confidence. My reason is: No new evidence.
+
+Player 1's role is villager with medium confidence. My reason is: Continues to align with previous healing justification, no suspicious behavior.
+
+"As a fellow villager, I share the grief for player 3. No suspicious activity noted on my end either. Let's stay vigilant and share any clues that come up tonight."
+
+Player 2's role is villager with medium confidence. My reason is: Affirmed villager status, no concrete information but aligns with group sentiment.
+
+Player 2's role is villager with medium confidence. My reason is: Mirrored sentiments without suspicion.
+
+Player 0's role is unknown with high confidence. My reason is: No new information provided.
+Player 1's role is unknown with medium confidence. My reason is: Neutral stance continues.
+Player 4's role is unknown with high confidence. My reason is: No participation yet.
+Player 5's role is unknown with high confidence. My reason is: No participation yet.
+Player 6's role is unknown with medium confidence. My reason is: Initiated discussion; no further insights.
+
+Player 2's role is unknown with medium confidence. My reason is: Claimed villager but provided no evidence.
+
+Player 2's role is villager with medium confidence. My reason is: Aligns with consensus, expresses grief for villager.
+
+"My condolences for player 3. As medic, I chose not to heal last night due to lack of info. Everyone seems genuine in their grief, but let's remain alert. We cannot afford to be complacent. If anyone has even the slightest suspicion tonight, share it. Let's catch these werewolves."
+
+Player 4's role is medic with medium confidence. My reason is: Claimed medic, no contradiction yet, early to fake claim.
+Player 6's role is unknown with low confidence. My reason is: Initiated discussion, no concrete evidence, medic claim by another player.
+
+Player 4's role is medic with medium confidence. My reason is: Claimed medic after player death with no cross-verification yet.
+
+Player 0's role is unknown with high confidence. My reason is: No new information provided.
+Player 1's role is unknown with medium confidence. My reason is: Neutral stance continues.
+Player 4's role is medic with medium confidence. My reason is: Claimed medic role; not yet verified.
+Player 5's role is unknown with high confidence. My reason is: No participation yet.
+Player 6's role is unknown with medium confidence. My reason is: No substantial evidence against or for being a werewolf.
+
+Player 0's role is unknown with high confidence. My reason is: No new evidence or suspicious activity.
+Player 2's role is unknown with high confidence. My reason is: Claimed villager but no evidence.
+Player 4's role is medic with medium confidence. My reason is: Claimed medic but could be deception.
+Player 5's role is unknown with high confidence. My reason is: No new evidence or suspicious activity.
+Player 6's role is unknown with high confidence. My reason is: Expressed concern but no solid evidence.
+
+Player 0's role is unknown with high confidence. My reason is: Lack of evidence.
+Player 1's role is villager with medium confidence. My reason is: No change in behavior.
+Player 2's role is villager with medium confidence. My reason is: Consistent with previous behavior.
+Player 5's role is unknown with high confidence. My reason is: No contribution observed.
+Player 6's role is unknown with low confidence. My reason is: Initiated dialogue; no evidence.
+
+"My condolences as well for player 3. We should definitely keep an eye out tonight. I'll be on the lookout for any unusual activity and report back."
+
+Player 1's role is unknown with medium confidence. My reason is: Continues to avoid concrete contribution ([1] rule, vote 7).
+Player 2's role is villager with medium confidence. My reason is: Consistent in reactions, no shift after voting ([3] rule, vote 6).
+Player 4's role is medic with medium confidence. My reason is: No contradictions to claim, early for fake ([5] rule, vote 5).
+Player 5's role is unknown with medium confidence. My reason is: Generic statement, no new information ([1] rule, vote 7).
+Player 6's role is unknown with low confidence. My reason is: Initiated discussion but followed pattern ([1] rule, vote 7).
+
+Player 0's role is unknown with high confidence. My reason is: Maintained neutrality.
+Player 2's role is villager with medium confidence. My reason is: Mirrored sentiments without suspicion.
+Player 4's role is medic with medium confidence. My reason is: Claimed medic after player death with no cross-verification.
+Player 5's role is unknown with high confidence. My reason is: Neutral condolence, no new information.
+Player 6's role is unknown with high confidence. My reason is: Initial speaker, no concrete evidence presented.
+
+Player 0's role is unknown with high confidence. My reason is: Still no new information provided.
+Player 1's role is unknown with medium confidence. My reason is: Neutral stance continues, no decisive contribution.
+Player 4's role is medic with medium confidence. My reason is: Claimed medic and no contradictions so far.
+Player 5's role is unknown with high confidence. My reason is: Standard non-informative condolence, no unique input.
+Player 6's role is unknown with medium confidence. My reason is: Opened discussion, but no insightful information given.
+
+Player 0's role is unknown with high confidence. My reason is: No new evidence.
+Player 1's role is villager with high confidence. My reason is: Verified not a werewolf by seer ability.
+Player 2's role is unknown with high confidence. My reason is: Claimed villager but no evidence.
+Player 4's role is medic with medium confidence. My reason is: Claimed medic but could be deception.
+Player 5's role is unknown with high confidence. My reason is: No suspicious activity reported.
+Player 6's role is unknown with high confidence. My reason is: Concern expressed but no concrete evidence.
+
+Player 5's role is unknown with medium confidence. My reason is: Spoke generically after others, contributed minimally.
+
+I vote for Player 1. My reason is: they have provided generic statements and avoided concrete contributions, which aligns with my original strategy about being suspicious of players that predominantly echo others or avoid taking a clear stance ([0] rule, vote 9). This behavior can be indicative of werewolf strategies to blend in without drawing attention. Additionally, promoting roles that could verify claims is part of my early game strategy ([1] rule, vote 8), and Player 1 has not provided any verifiable information that contributes to confirming their role.
+
+I vote for Player 6. My reason is: Given the current lack of evidence and the importance of encouraging transparent discussion as per rule [0] with a priority of 9, Player 6, as the initial speaker, has not provided concrete evidence or raised any suspicions. On this basis, coupled with a collective lack of concrete information, promoting further scrutiny on players who have not been transparent or provided substantive input aligns with my original strategy.
+
+I vote for Player 1. My reason is: Based on my strategy, I must promote transparent discussion and scrutiny as indicated by rule [0]. Player 1 has not provided any insightful contribution and continues with a neutral stance, which echoes the sentiments of others and avoids taking a clear stance. Although evidence is limited this early in the game, their behavior fits the profile described in rule [0], and therefore, they have garnered more suspicion compared to other players.
+
+I vote for Player 5. My reason is: Player 5 contributed the least amount of information and spoke generically, indicating a possible strategy to remain under the radar. According to my conclusion, the level of confidence in their role as a villager is medium, mainly due to their minimal contribution after others had spoken. This behavior might indicate a werewolf attempting to blend in without drawing attention to themselves. Since there is no confirmed seer or clear evidence pointing towards any other player being a werewolf, my decision is to target the player whose behavior stands out the least, as an absence of substantial contribution can be a tactic used by werewolves.
+
+I vote for Player 0. My reason is: at this early stage, no one has any concrete evidence, and a random vote is as good as any other. Player 0 was quick to agree with player 6 and didn't contribute anything of substance, which could be a tactic to seem involved without actually providing information. It's an attempt to deflect suspicion by appearing cooperative.
+
+I vote for Player 1. My reason is: as there's currently no concrete evidence or suspicious behavior from anyone, we must make a strategic vote that does not draw attention to us werewolves. Since player 1 has expressed uncertainty like the rest, they are as good of a choice as any for this round, allowing us to blend in with the rest of the villagers.
+
+Player 2's role is villager with medium confidence. My reason is: No shift in behavior despite voting outcomes.
+
+Player 4's role is medic with medium confidence. My reason is: No contradictions to claim, early for fake.
+
+Player 5's role is unknown with medium confidence. My reason is: Generic statements.
+
+Player 6's role is werewolf with low confidence. My reason is: Avoided substantial contribution post-voting.
+
+Player 0's role is unknown with high confidence. My reason is: Neutral stance maintained.
+Player 2's role is werewolf with medium confidence. My reason is: No votes against potential werewolf.
+Player 4's role is medic with medium confidence. My reason is: Claim unchallenged, no contrary evidence.
+Player 5's role is werewolf with medium confidence. My reason is: Possible werewolf voting pattern.
+Player 6's role is villager with medium confidence. My reason is: Targeted for transparency push.
+
+Player 0's role is unknown with high confidence. My reason is: No new information provided.
+
+Player 4's role is medic with high confidence. My reason is: Consistent with medic claim and no contradictions yet.
+
+Player 5's role is unknown with high confidence. My reason is: Still no unique input to assess.
+
+Player 6's role is unknown with medium confidence. My reason is: No deceptive behavior identified but also no clear villager behavior displayed.
+
+Player 0's role is unknown with high confidence. My reason is: No new evidence or suspicion raised.
+Player 2's role is unknown with high confidence. My reason is: Still claimed villager, no new evidence.
+Player 4's role is medic with medium confidence. My reason is: Player 4's consistence in role claim, but no new verification.
+Player 5's role is unknown with high confidence. My reason is: Lack of evidence or suspicious behavior.
+Player 6's role is unknown with high confidence. My reason is: No concrete evidence to change previous assessment.
+
+Player 0's role is werewolf with medium confidence. My reason is: No direct accusation, possible deflection.
+Player 2's role is werewolf with medium confidence. My reason is: Maintained low profile, non-confrontational.
+Player 5's role is villager with high confidence. My reason is: Voted out; werewolves had interest in removal.
+Player 6's role is unknown with low confidence. My reason is: Initiated dialogue, could be tactic.
+
+I heal Player 0. My reason is: Although my previous conclusion suggests that Player 0’s role is a werewolf with medium confidence due to their no direct accusation and possible deflection, there has been no public confirmation of roles nor has there been any information from a seer. Since no clear village-aligned actions have occurred to firmly establish someone as a village priority for healing, and my role as medic is not publicly confirmed and thus at high risk of being targeted, my strategy must consider the preservation of my role to maintain my ability to protect others in future rounds. Based on rule [4], it is a priority for me to self-heal, however, since I cannot heal the same player twice in consecutive nights according to the game's mechanics, and there is no decisive evidence pointing to a specific player to heal, I opt to heal Player 0 following rule [8], which suggests I should use my ability on players who contribute significantly. Despite my suspicions, Player 0 has engaged in discussions which could be seen as contributing to consensus-building, making them a strategic target either by werewolves who want to eliminate active villagers or by other villagers if they are indeed a werewolf trying to blend in. This move can also help gauge reactions and gather more information for future rounds.
+
+I choose to kill Player 4. My reason is: Player 4 claimed to be the medic. By eliminating the medic, we reduce the villagers' ability to save themselves from werewolf attacks, thus improving the chances for us werewolves to win the game. Additionally, removing a confirmed role adds to the confusion and paranoia within the village, which can be leveraged in future rounds.
+
+I choose to kill Player 2. My reason is: Player 4 has claimed to be the medic, and it is common strategy to not kill the medic early on to cast doubt among villagers when no one is healed. Player 0 has not provided any substantial information and may not be seen as a threat at this stage. Player 2, having not claimed a special role, is a safe target that avoids killing the medic too soon and prevents us from prematurely confirming the medic's role to the village.
+
+Player 4's role is werewolf with high confidence. My reason is: Unverified medic claim with no subsequent villager protection.
+Player 5's role is werewolf with high confidence. My reason is: Generic statements and survivor despite werewolf win.
+Player 6's role is werewolf with high confidence. My reason is: Consistent avoidance and werewolf win alignment.
+
+Player 0's role is werewolf with high confidence. My reason is: Game won by werewolves; player survived without suspicion.
+Player 4's role is werewolf with high confidence. My reason is: Game won by werewolves; player survived with fake medic claim.
+Player 5's role is werewolf with high confidence. My reason is: Game won by werewolves; initiated discussion as per event sequence.
+Player 6's role is villager with high confidence. My reason is: Voted out early; targeted for promoting transparency.
+
+Player 0's role is werewolf with medium confidence. My reason is: Survived to game end, with werewolves winning; no concrete suspicious behavior noted.
+Player 4's role is werewolf with medium confidence. My reason is: Claimed medic but werewolves won; possible fake claim.
+Player 5's role is werewolf with medium confidence. My reason is: Survived without scrutiny; lack of contribution led to werewolf victory.
+Player 6's role is werewolf with medium confidence. My reason is: No decisive villager behavior; werewolves won, implicating surviving players.
+
+Player 0's role is werewolf with high confidence. My reason is: Player 1 verified not werewolf but voted out.
+Player 2's role is unknown with high confidence. My reason is: Died, no new evidence.
+Player 4's role is werewolf with high confidence. My reason is: Claimed medic but no verification and possible werewolf win.
+Player 5's role is unknown with high confidence. My reason is: No new evidence, but game ended with werewolf win.
+Player 6's role is werewolf with high confidence. My reason is: No concrete evidence but werewolves won shortly after.
+
+Player 0's role is werewolf with high confidence. My reason is: Voted for a player that turned out to be a villager; werewolves won, implicating involvement.
+
+Player 5's role is werewolf with high confidence. My reason is: Survival till end and werewolf victory suggests werewolf role; lack of contradiction to Player 0 hints at alliance.
+
+Player 6's role is werewolf with high confidence. My reason is: All villagers are dead except self; werewolf victory confirms non-villager role.
+

@@ -1,0 +1,81 @@
+{
+    "reflex_after_sim": false,
+    "log_hstate_for_debug": false,
+    "openai_client_path": "openai_config.yaml",
+    "data_folder": "./cocs_ablation_1/data_battle_21",
+    "input_txt_path": "./cocs_ablation_1/prompt_logging_battle_21/message_input_history_backup_battle_21.txt",
+    "output_txt_path": "./cocs_ablation_1/prompt_logging_battle_21/message_output_history_backup_battle_21.txt",
+    "players": [
+        {
+            "role": "werewolf",
+            "player_type": "baseline",
+            "reflex_note_belief_path": "./shijz_21_baseline/notes/notes_v3/werewolf/werewolf_reflex_note_belief.txt",
+            "reflex_note_policy_path": "./shijz_21_baseline/notes/notes_v3/werewolf/werewolf_reflex_note_policy.txt",
+            "proposal_num": 2,
+            "sample_num": 10,
+            "sample_type": "heuristic",
+            "player_tag": "baseline"
+        },
+        {
+            "role": "werewolf",
+            "player_type": "baseline",
+            "reflex_note_belief_path": "./shijz_21_baseline/notes/notes_v3/werewolf/werewolf_reflex_note_belief.txt",
+            "reflex_note_policy_path": "./shijz_21_baseline/notes/notes_v3/werewolf/werewolf_reflex_note_policy.txt",
+            "proposal_num": 2,
+            "sample_num": 10,
+            "sample_type": "heuristic",
+            "player_tag": "baseline"
+        },
+        {
+            "role": "villager",
+            "player_type": "naive",
+            "reflex_note_belief_path": "./shijz_22_naive/notes/notes_v3/villager/villager_reflex_note_belief.txt",
+            "reflex_note_policy_path": "./shijz_22_naive/notes/notes_v3/villager/villager_reflex_note_policy.txt",
+            "proposal_num": 2,
+            "sample_num": 10,
+            "sample_type": "heuristic",
+            "player_tag": "naive"
+        },
+        {
+            "role": "villager",
+            "player_type": "naive",
+            "reflex_note_belief_path": "./shijz_22_naive/notes/notes_v3/villager/villager_reflex_note_belief.txt",
+            "reflex_note_policy_path": "./shijz_22_naive/notes/notes_v3/villager/villager_reflex_note_policy.txt",
+            "proposal_num": 2,
+            "sample_num": 10,
+            "sample_type": "heuristic",
+            "player_tag": "naive"
+        },
+        {
+            "role": "villager",
+            "player_type": "naive",
+            "reflex_note_belief_path": "./shijz_22_naive/notes/notes_v3/villager/villager_reflex_note_belief.txt",
+            "reflex_note_policy_path": "./shijz_22_naive/notes/notes_v3/villager/villager_reflex_note_policy.txt",
+            "proposal_num": 2,
+            "sample_num": 10,
+            "sample_type": "heuristic",
+            "player_tag": "naive"
+        },
+        {
+            "role": "medic",
+            "player_type": "dummy",
+            "reflex_note_belief_path": "./shijz_24_reflex/notes/notes_v0/medic/medic_reflex_note_belief.txt",
+            "reflex_note_policy_path": "./shijz_24_reflex/notes/notes_v0/medic/medic_reflex_note_policy.txt",
+            "proposal_num": 2,
+            "sample_num": 10,
+            "sample_type": "heuristic",
+            "player_tag": "dummy"
+        },
+        {
+            "role": "seer",
+            "player_type": "reflex",
+            "reflex_note_belief_path": "./shijz_24_reflex/notes/notes_v3/seer/seer_reflex_note_belief.txt",
+            "reflex_note_policy_path": "./shijz_24_reflex/notes/notes_v3/seer/seer_reflex_note_policy.txt",
+            "proposal_num": 2,
+            "sample_num": 10,
+            "sample_type": "heuristic",
+            "player_tag": "reflex"
+        }
+    ],
+    "extra_sim_nodes": 0
+}
