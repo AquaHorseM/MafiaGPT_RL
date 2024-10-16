@@ -91,7 +91,7 @@ def eval_from_path(data_path: str):
     var = square_avg_ - avg_**2
     std = np.sqrt(var)
     for tag in player_tags:
-        result[tag]["belief_score"] = (result[tag]["belief_score"]-avg_) / (std+1e-8)
+        result[tag]["belief_score"] = (result[tag]["belief_score"]-avg_) / (std+1e-8)if result[tag]["belief_score"] is not None else None
     
 
     # SPEECH
