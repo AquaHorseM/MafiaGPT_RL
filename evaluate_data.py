@@ -111,7 +111,7 @@ def eval_from_path(data_path: str):
         valid = True
         current_prev_node_id = start_node_id
         while valid:
-            next_node_id = data.nodes[current_prev_node_id].edges[0].end_id
+            next_node_id = data.edges[data.nodes[current_prev_node_id].edges[0]].end_id
             next_nodes.append(data.nodes[next_node_id])
             alive_players.append(data.nodes[next_node_id].state["global_info"]["alive_players"])
             current_prev_node_id = next_node_id
