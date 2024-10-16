@@ -56,7 +56,7 @@ class Player:
             else:
                 self.beliefs[int(result["id"])] = {
                     "role": result["role"],
-                    "confidence": result["confidence"] if result["confidence"] is not None else self.beliefs[int(result["id"])],
+                    "confidence": result["confidence"] if result["confidence"] is not None else self.beliefs[int(result["id"])]["confidence"],
                     "reason": result["reason"]
                 }
                 return

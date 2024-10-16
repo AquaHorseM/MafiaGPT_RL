@@ -224,7 +224,7 @@ def evaluate_joint_hstate_for_villager(roles, joint_hstate, player_num = None, a
         elif confidence == "low":
             return 1
         else:
-            raise ValueError(f"Confidence not supported: {confidence}")
+            return 0 #bug temp
     for i in range(player_num):
         if alive_players is not None and i not in alive_players:
             continue
@@ -233,24 +233,19 @@ def evaluate_joint_hstate_for_villager(roles, joint_hstate, player_num = None, a
                 if roles[j] == "werewolf" or (alive_players is not None and j not in alive_players):
                     continue
                 if roles[j] in ["seer", "medic"]:
-                    try:
-                        confidence = joint_hstate[i][j]["confidence"]
-                        if joint_hstate[i][j]["role"] == "unknown":
-                            w = 0.1
-                            sgn = 1
-                            s += (0.1 * sgn)
-                        elif joint_hstate[i][j]["role"] != roles[j]:
-                            w = confidence_to_weight(confidence)
-                            sgn = 1
-                            s += (w * sgn)
-                        else:
-                            w = confidence_to_weight(confidence)
-                            sgn = -1
-                            s += (w * sgn)
-                    except:
-                        print("Joint hstate[i][j] is")
-                        print(joint_hstate[i][j])
-                        assert False
+                    confidence = joint_hstate[i][j]["confidence"]
+                    if joint_hstate[i][j]["role"] == "unknown":
+                        w = 0.1
+                        sgn = 1
+                        s += (0.1 * sgn)
+                    elif joint_hstate[i][j]["role"] != roles[j]:
+                        w = confidence_to_weight(confidence)
+                        sgn = 1
+                        s += (w * sgn)
+                    else:
+                        w = confidence_to_weight(confidence)
+                        sgn = -1
+                        s += (w * sgn)
                     
         for j in range(player_num):
             if alive_players is not None and j not in alive_players:
@@ -265,15 +260,11 @@ def evaluate_joint_hstate_for_villager(roles, joint_hstate, player_num = None, a
                 sgn = 1 if (roles[j] == "werewolf") else -1
                 s += (w * sgn)
             else:
-                try:
-                    confidence = joint_hstate[i][j]["confidence"]
-                    w = confidence_to_weight(confidence)
-                    sgn = -1 if (roles[j] == "werewolf") else 1
-                    s += (w * sgn)
-                except:
-                    print("Joint hstate[i][j] is")
-                    print(joint_hstate[i][j])
-                    assert False
+                confidence = joint_hstate[i][j]["confidence"]
+                w = confidence_to_weight(confidence)
+                sgn = -1 if (roles[j] == "werewolf") else 1
+                s += (w * sgn)
+                    
     return s
 
 def get_single_speech_score(prev_jhstate, alive_players, roles, actions, player_tags, new_jhstate_list, new_alive_player_list, gamma=0.9):
