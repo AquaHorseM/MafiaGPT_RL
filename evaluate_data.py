@@ -402,6 +402,8 @@ def eval_from_dir(dir_path):
                     all_keys_dict[key][role_key]['speech_score'] = ((number - 1) * all_keys_dict[key][role_key].get('speech_score', 0) + current_key_dict['speech_score']) / number
                     if role_key == 'medic':
                         all_keys_dict[key][role_key]['heal_success_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('heal_success_rate', 0) + current_key_dict['heal_success_rate']) / number
+                    if role_key == 'werewolf' and current_key_dict.get('kill_critical_rate') is not None:
+                        all_keys_dict[key][role_key]['kill_critical_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('kill_critical_rate', 0) + current_key_dict['kill_critical_rate']) / number
                     all_keys_dict[key][role_key]['wins'] = 1 + all_keys_dict[key][role_key].get('wins', 0) if current_key_dict['winner'] == 'win' else all_keys_dict[key][role_key].get('wins', 0)
     all_keys_dict['total_number_of_games'] = len(results)
     return all_keys_dict
