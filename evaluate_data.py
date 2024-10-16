@@ -65,7 +65,6 @@ def eval_from_path(data_path: str):
         jhstate = node.state["hstate"]
         alive_players = node.state["global_info"]["alive_players"]
         belief_eval = get_belief_score(jhstate, player_roles, alive_players)  # belief_eval should return scores per player
-        print("belief_eval: ", belief_eval)
         for j, tag in enumerate(player_tags):
             if belief_eval[j] is not None:  # Skip if belief score is None
                 belief_scores[tag] += belief_eval[j] * (np.log2(i))
@@ -200,8 +199,6 @@ def medic_heal_success(roles, actions):
             medic_id = i
         elif roles[i] == "werewolf":
             werewolf_ids.append(i)
-    print(medic_id)
-    print(actions[medic_id])
     if medic_id is None or actions[medic_id] is None or actions[medic_id]["action"] != "heal":
         return None
     heal_target = actions[medic_id]["target"]
@@ -226,6 +223,8 @@ def evaluate_joint_hstate_for_villager(roles, joint_hstate, player_num = None, a
             return 1.5
         elif confidence == "low":
             return 1
+        else:
+            raise f"Confidence not supported: {confidence}"
     for i in range(player_num):
         if alive_players is not None and i not in alive_players:
             continue
