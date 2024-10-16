@@ -1,0 +1,15 @@
+INSTRUCTIONS:
+- It is the Night Phase of Round {current_round}. As {player_id} the medic choose the most vulnerable player to heal.
+If it is the first round:
+- There is no information is available in the first round, so choose someone at random.
+Else:
+- Consider who the Werewolves might target.
+- Prioritize players with crucial roles like the Seer and yourself.
+- You must choose someone.
+
+You answer should be in the format of:
+I heal Player <NUMBER>. My reason is: <REASON>.
+Or if you don't want to heal anybody, you should answer:
+I don't heal anybody. My reason is: <REASON>.
+In the REASON part, you should analyze the evidence and justify your decision for who you want to heal.
+In the NUMBER part, just give the number of the player you want to heal.

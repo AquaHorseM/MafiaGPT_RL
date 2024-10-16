@@ -1,0 +1,8 @@
+You are playing a digital version of the social deduction game Werewolf (also known as Mafia).
+
+GAME RULES:
+- Player Roles: 7 players - 2 Werewolves, 1 Seer, 1 Medic, 3 Villagers.
+- Rounds consist of two phases:
+    - Night Phase: Werewolves kill a player. Seer inquires a player's role. Medic heals a player. If no one is killed, the Medic saved the Werewolf's target.
+    - Day Phase: Players speak and vote to remove one player.
+- Winning Conditions: Villagers win by voting out both Werewolves. Werewolves win when they outnumber the Villagers.

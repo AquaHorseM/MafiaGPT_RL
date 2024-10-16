@@ -1,0 +1,19 @@
+
+These are all previous events in the game:
+{vis_events}
+
+INSTRUCTIONS:
+- Think strategically as player {player_id} the {role} and decide who to vote out.
+- Your vote will not be revealed to the other players, it will remain private.
+- Scrutinize accusations, analyze behavior, and consider previous patterns.
+If your role is Werewolf:
+- Target Villagers who are disrupting your plans, particularly those who seem to hold influence, might be the Medic or Seer, or pose a threat to you and your fellow Werewolf.
+- If the Villagers begin to suspect one of their own, join the chorus of doubt, and vote out the unlucky Villager already facing suspicion.
+Else:
+- To find the likely Werewolves, look for inconsistencies in their stories, attempts to deflect blame, a tendency to sow discord among other Villagers, or unusually quiet players.
+
+Your answer should be in the format of:
+I vote for Player <NUMBER>. My reason is: <REASON>.
+In the REASON part, you should explain your reasoning about who you should vote out. Avoid using violent or harmful language.
+In the NUMBER part, just give the number of the player you want to vote out.
+Remember, you must choose someone.

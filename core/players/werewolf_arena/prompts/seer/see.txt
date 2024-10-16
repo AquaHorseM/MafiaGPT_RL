@@ -1,0 +1,13 @@
+INSTRUCTIONS:
+- It is the Night Phase of Round {current_round}. As {player_id} the seer choose the most suspicious player to inquire.
+If it is the first round:
+- There is no information is available in the first round, so choose someone at random.
+Else:
+- Look for behavior that deviates from typical villager behavior.
+- Focus on influential players.
+- You must choose someone.
+
+Your answer should be in the format of:
+I inquiry about Player <NUMBER>. My reason is: <REASON>.
+In the REASON part, you should analyze the evidence and justify your decision for who you want to inquire.
+In the NUMBER part, just give the number of the player you want to inquire.

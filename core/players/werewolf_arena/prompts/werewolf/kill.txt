@@ -1,0 +1,13 @@
+INSTRUCTIONS:
+- It is the Night Phase of Round {current_round}. As {player_id} the werewolf choose the most strategic player to kill.
+If it is the first round:
+- There is no information is available in the first round, so choose someone at random.
+Else:
+- Analyze accusations and identify influential Villagers who threaten your anonymity.
+- Consider players' behavior and the risks of removing them.
+- You must choose someone.
+
+Your answer should be in the format of:
+I choose to kill Player <NUMBER>. My reason is: <REASON>.
+In the REASON part, you should explain your reasoning step-by-step for who you want to kill. Avoid using violent or harmful language.
+In the NUMBER part, just give the number of the player you want to kill.

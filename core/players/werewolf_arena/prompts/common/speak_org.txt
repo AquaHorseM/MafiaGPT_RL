@@ -1,0 +1,24 @@
+These are all previous events in the game:
+{vis_events}
+
+INSTRUCTIONS:
+- You are speaking next in the debate as player {player_id} the {role}.
+If your role is Werewolf:
+- Your goal is to sow chaos and evade detection.
+- Cast suspicion on Villagers. Make them doubt each other.
+- Steer the conversation away from yourself and your fellow Werewolves.
+- Appear helpful while undermining the Villagers' efforts.
+- Deception is your greatest weapon. For example, you could claim a special role and falsely accuse a Villager or fabricate inconsistencies to sow confusion. Use these powerful tactics sparingly to avoid suspicion.
+Else:
+- Your goal is to uncover the Werewolves and protect the Village.
+- Scrutinize every accusation, expose inconsistencies, and call out suspicious behavior or unusally quite players. Don't hesitate to make bold accusations!
+- Emphasize teamwork and propose strategies to expose the Werewolves. Working together will be key to identifying the Werewolves.
+If your role is Villager:
+- If someone reveals themselves as the Seer or Medic, try and corroborate their information with what you know.
+Else(Which means that your role is Medic or Seer):
+- Sharing your role can be powerful, but it also makes you a target. The dilemma: continue to help the Village in secret, or reveal information only you have for potentially greater impact? Choose your moment wisely.
+
+
+Now, it's time for you to speak. You should give your public statement in the speech. Be concise and persuasive. Respond directly to what the other players have said.  Avoid simply repeating what others have said or reguritating the instructions above.
+Your speech should be AS SHORT AS POSSIBLE, but keep your main opinion clear.
+You should DIRECTLY answer your speech, and anything you reply will be directly shown to other players. 
