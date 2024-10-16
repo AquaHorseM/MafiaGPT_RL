@@ -15,7 +15,7 @@ def generate_version_tuples():
     count = 0
     while True:
         # All possible 4-element combinations of numbers 0-5 without repetition
-        all_tuples = list(itertools.permutations(range(6), 4))
+        all_tuples = list(itertools.permutations(range(7), 4))
         
         # We need exactly 40 unique tuples
         selected_tuples = []
@@ -30,7 +30,7 @@ def generate_version_tuples():
         for h in sorted_hashes:
             tuple_candidate = hash_to_index[h]
             # Check if this tuple can be used without exceeding the position count limits
-            if len(selected_tuples) < 30:
+            if len(selected_tuples) < 35:
                 valid = True
                 for i in range(4):
                     if count_by_position[i][tuple_candidate[i]] >= 5:
@@ -40,7 +40,7 @@ def generate_version_tuples():
                     selected_tuples.append(tuple_candidate)
                     for i in range(4):
                         count_by_position[i][tuple_candidate[i]] += 1
-        if len(selected_tuples) == 30:
+        if len(selected_tuples) == 35:
             return selected_tuples
         else:
             count += 1
@@ -66,11 +66,11 @@ def idx_to_version_tuple(idx):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument('--war_folder', type=str, default = './cocs_ablation_1')
+    parser.add_argument('--war_folder', type=str, default = './cocs_ablation_2')
     parser.add_argument('--num_games_per_battle', type=int, default = 1)
     parser.add_argument('--num_process_per_battle', type=int, default = 1)
     parser.add_argument('--num_battle_parallel', type=int, default = 8)
-    parser.add_argument('--num_battles_in_total', type=int, default = 30)
+    parser.add_argument('--num_battles_in_total', type=int, default = 35)
     
     # parse in a list of strings. not directly str type.
     parser.add_argument('--notes_dir_list', type = str, default = './shijz_test_14/notes/notes_v0,./shijz_test_14/notes/notes_v1,./shijz_test_14/notes/notes_v2,./shijz_test_14/notes/notes_v3,./shijz_test_14/notes/notes_v4,./shijz_test_14/notes/notes_v5,./shijz_test_14/notes/notes_v6,./shijz_test_14/notes/notes_v7,./shijz_test_14/notes/notes_v8,./shijz_test_14/notes/notes_v9')
@@ -88,9 +88,9 @@ if __name__ == "__main__":
     
     
     
-    assert len(args.clans_tags) == 6
+    assert len(args.clans_tags) == 7
     
-    assert args.num_battles_in_total == 30
+    assert args.num_battles_in_total == 35
     
     args_list = []
     
