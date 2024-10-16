@@ -83,9 +83,9 @@ def eval_from_path(data_path: str):
     square_sum_ = 0
     for tag in player_tags:
         result[tag]["before_normalized_belief_score"] = result[tag]["belief_score"]
-        count += 1
-        sum_ += result[tag]["belief_score"]
-        square_sum_ += result[tag]["belief_score"] ** 2
+        count += 1 if result[tag]["belief_score"] is not None else 0
+        sum_ += result[tag]["belief_score"] if result[tag]["belief_score"] is not None else 0
+        square_sum_ += result[tag]["belief_score"] ** 2 if result[tag]["belief_score"] is not None else 0
     square_avg_ = square_sum_ / count
     avg_ = sum_ / count
     var = square_avg_ - avg_**2
