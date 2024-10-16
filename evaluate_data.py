@@ -233,6 +233,7 @@ def evaluate_joint_hstate_for_villager(roles, joint_hstate, player_num = None, a
                 if roles[j] == "werewolf" or (alive_players is not None and j not in alive_players):
                     continue
                 if roles[j] in ["seer", "medic"]:
+                    print(joint_hstate[i][j])
                     confidence = joint_hstate[i][j]["confidence"]
                     if joint_hstate[i][j]["role"] == "unknown":
                         w = 0.1
