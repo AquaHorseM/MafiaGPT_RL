@@ -188,7 +188,7 @@ def eval_from_path(data_path: str):
             result[tag]["kill_critical_rate"] = heal_success_tot / heal_num if heal_num > 0 else 0
             break
     
-    print("result: ", result)
+    # print("result: ", result)
     return result
 
 
@@ -400,6 +400,7 @@ def eval_from_dir(dir_path):
                     number = all_keys_dict[key][role_key]['number']
                     all_keys_dict[key][role_key]['belief_score'] = ((number - 1) * all_keys_dict[key][role_key].get('belief_score', 0) + current_key_dict['belief_score']) / number
                     all_keys_dict[key][role_key]['speech_score'] = ((number - 1) * all_keys_dict[key][role_key].get('speech_score', 0) + current_key_dict['speech_score']) / number
+                    all_keys_dict[key][role_key]['long_speech_score'] = ((number - 1) * all_keys_dict[key][role_key].get('long_speech_score', 0) + current_key_dict['long_speech_score']) / number
                     if role_key == 'medic':
                         all_keys_dict[key][role_key]['heal_success_rate'] = ((number - 1) * all_keys_dict[key][role_key].get('heal_success_rate', 0) + current_key_dict['heal_success_rate']) / number
                     if role_key == 'werewolf' and current_key_dict.get('kill_critical_rate') is not None:
@@ -408,9 +409,14 @@ def eval_from_dir(dir_path):
     all_keys_dict['total_number_of_games'] = len(results)
     return all_keys_dict
 import json
+from argparse import ArgumentParser
 if __name__ == "__main__":
-    result = eval_from_dir('clan_war_shijz_15_v2Vv5')
-    json.dump(result, open('clan_war_shijz_15_v2Vv5.json','w'), indent=4)
+    parser = ArgumentParser()
+    parser.add_argument('--dir', type=str, default = 'clan_war_shijz_15_v2Vv5')
+    parser.add_argument('--file', type=str, default = 'clan_war_shijz_15_v2Vv5')
+    args = parser.parse_args()
+    result = eval_from_dir(args.dir)
+    json.dump(result, open(args.file,'w'), indent=4)
                     
                 
                 
