@@ -18,7 +18,7 @@ def count_integer_appearances(data):
 
 json_path = "/home/yifeizuo/sjz/ablation/MafiaGPT_RL/cocs_ablation_1/idx_to_version_list.json"
 with open(json_path, "rb") as f:
-    data = json.load(json_path)
+    data = json.load(f)
 
 total_counts, position_counts = count_integer_appearances(data)
 
