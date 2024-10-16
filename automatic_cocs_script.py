@@ -13,29 +13,25 @@ from collections import defaultdict
 
 def generate_version_tuples():
     # All possible 4-element combinations of numbers 0-5 without repetition
-    all_tuples = list(itertools.permutations(range(6), 4))
-    
-    # We need exactly 50 unique tuples
-    selected_tuples = []
-    count_by_position = [defaultdict(int) for _ in range(4)]
-    
-    # Hash to index mapping to ensure reproducibility
-    hash_to_index = {hash(tup): tup for tup in all_tuples}
+    count = 0
+    while True:
+        all_tuples = list(itertools.permutations(range(6), 4))
+        
+        # We need exactly 50 unique tuples
+        selected_tuples = []
+        count_by_position = [defaultdict(int) for _ in range(4)]
+        
+        # Hash to index mapping to ensure reproducibility
+        hash_to_index = {hash(tup+(count,)): tup for tup in all_tuples}
 
-        # Sorting hashes to keep the selection order consistent
-    sorted_hashes = sorted(hash_to_index.keys())
+            # Sorting hashes to keep the selection order consistent
+        sorted_hashes = sorted(hash_to_index.keys())
 
-    for h in sorted_hashes:
-        tuple_candidate = hash_to_index[h]
-        # Check if this tuple can be used without exceeding the position count limits
-        if len(selected_tuples) < 30:
-            valid = True
-            for i in range(4):
-                if count_by_position[i][tuple_candidate[i]] >= 5:
-                    valid = False
-                    break
-            if valid:
-                selected_tuples.append(tuple_candidate)
+        for h in sorted_hashes:
+            tuple_candidate = hash_to_index[h]
+            # Check if this tuple can be used without exceeding the position count limits
+            if len(selected_tuples) < 30:
+                valid = True
                 for i in range(4):
                     if count_by_position[i][tuple_candidate[i]] >= 5:
                         valid = False
@@ -43,12 +39,18 @@ def generate_version_tuples():
                 if valid:
                     selected_tuples.append(tuple_candidate)
                     for i in range(4):
-                        count_by_position[i][tuple_candidate[i]] += 1
-        if len(selected_tuples) == 40:
-            return selected_tuples
-        else:
-            count += 1
-            print("Failed to generate 40 unique tuples. Retrying...")
+                        if count_by_position[i][tuple_candidate[i]] >= 5:
+                            valid = False
+                            break
+                    if valid:
+                        selected_tuples.append(tuple_candidate)
+                        for i in range(4):
+                            count_by_position[i][tuple_candidate[i]] += 1
+            if len(selected_tuples) == 30:
+                return selected_tuples
+            else:
+                count += 1
+                print("Failed to generate 40 unique tuples. Retrying...")
 
 
 # Precomputed tuples based on the hash approach
