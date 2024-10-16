@@ -11,6 +11,7 @@ def visualize_all_pickles(source_folder, target_folder):
                     full_source_path = os.path.join(dirpath, filename)
                     # Replace the source folder path with the target folder path
                     relative_path = os.path.relpath(full_source_path, source_folder)
+                    relative_path = relative_path.replace('.pkl', '.json')
                     full_target_path = os.path.join(target_folder, relative_path)
                     # Ensure the target directory exists
                     os.makedirs(os.path.dirname(full_target_path), exist_ok=True)
