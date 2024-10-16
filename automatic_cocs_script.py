@@ -23,7 +23,7 @@ def generate_version_tuples():
     hash_to_index = {hash(tup): tup for tup in all_tuples}
 
         # Sorting hashes to keep the selection order consistent
-        sorted_hashes = sorted(hash_to_index.keys())
+    sorted_hashes = sorted(hash_to_index.keys())
 
     for h in sorted_hashes:
         tuple_candidate = hash_to_index[h]
