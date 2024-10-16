@@ -52,10 +52,7 @@ precomputed_tuples = generate_version_tuples()
 print(precomputed_tuples)
 def idx_to_version_tuple(idx):
     # Return the tuple corresponding to the given index
-    if 0 <= idx < 30:
-        return precomputed_tuples[idx]
-    else:
-        raise ValueError("Index out of allowed range (0-29).")
+    return precomputed_tuples[idx]
 
 
 
