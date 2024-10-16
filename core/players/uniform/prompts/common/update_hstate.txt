@@ -1,0 +1,55 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a {role}.
+It is round {current_round}. All players currently alive are: {alive_players}, which indicates that {dead_players} are dead.
+{private}
+
+These are ALL events which happened BEFORE your last update:
+
+{prev_events}
+
+Your previous beliefs AFTER your last update were:
+
+{hstate}
+
+These are ALL new events which happened after your last update:
+
+{event_des}
+
+Based on these event, you should consider:
+1) If someone speaks, is his speech based on actual events that happened before? If not, why did he make it up?
+2) Is the speaker trying to hide some information? If yes, why did he do so?
+3) If a vote ended, according to the voting pattern, which two might be werewolf teammates?
+
+2.Todo:
+
+Now you are going to see your belief-updating strategy, which should consist of multiple lines. Each line should be in the format of: "[id]: [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+You should ABSOLUTELY follow your strategy even if you think some of them are not necessarily correct. You will have a chance to update your strategy later.
+
+{reflex_note_belief}
+
+Now, based on the above instructions, you should answer your updated belief.
+
+3.Requirements:
+All lines in this part should be in the format of:
+"Player [i]'s role is (werewolf/medic/seer/villager) with (high/medium/low) confidence. My reason is: [reason]."
+Any line not satisfying this format will not be recognized, including any unrecognized role or confidence. You may skip some players if your belief to him/her maintain unchanged.
+The reason should be AS SHORT AS POSSIBLE. 
+A negative example is: 'Player A did not give enough evidence while challenging that player B is not the seer, and as most players agree with player B's seer identity, there is high possibility that he is the true seer. Hence player A might be a werewolf.'
+We may convert it into: 'Challenged the well-acknowlegded seer (player B) without enough evidence.'
+This is merely an example, but it may guide you on how to make your reason briefer.
+
+4.Example response:
+An example of your response could be:
+
+'''
+BELIEF
+Player 0's role is werewolf with high confidence. My reason is: ...
+Player 4's role is medic with medium confidence. My reason is: ...
+...
+NOTE
+Player 3 accused me to be a werewolf without evidence.
+Player 5 protected me.
+
+'''
+
+This is only an example of the response format. All numbers and roles in it are unrelated to your current game. 

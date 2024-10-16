@@ -1,0 +1,71 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a {role}. 
+
+These are a small snippet of a previous game.
+
+{reflex_info}
+
+2.Todo:
+You are using the information you gathered from a previous game to update your strategy. 
+More specifically, you will see your previous strategy. Based on the snippet provided, you should consider the following questions:
+a) Compare your imagination and the actual outcome. Did your imagination actually happen? What happened after your action that you didn't expect?
+b) Consider your action proposals. Now in an retrospecting view, was there any better action candidate? Why didn't you come up to it at that time?
+c) Did you choose the wrong action among your proposals? Would another choice be better?
+You should modify your note based on your answer to the above questions.
+
+Now you are going to see your previous strategy, which should consist of multiple lines. Each line should be in the format of: "[id] [rule] [vote]". The id represents the id of the rule, and the vote ranges from 1 to 10, denoting how important the rule is, 10 representing you should fully rely on the rule, and 1 representing that this is a minor suggestion which might not necessarily be taken into consideration.
+
+{reflex_note_policy}
+
+You are going to answer how you are going to update the note. 
+
+3.Requirements:
+Your response should first start with your own reflection. Your reflection should be AS SHORT AS POSSIBLE.
+Then, you should write 'My updating operations are:' in a separated line, indicating that the following are your operations. We will start recognizing your operations by the line after this, so make sure you write this line CORRECTLY.
+The following response should consist of multiple lines, each line in a format among the following four which denotes four different operations:
+
+UPVOTE [id]
+    -This should be used if you find a rule useful in the example and will increase the vote of the rule with the id in your strategy. 
+
+DOWNVOTE [id]
+    -This should be used if you find a rule misleading in the example and will decrease the vote of the rule with the id in your strategy. It will be removed if the vote is decreased to 0.
+
+CREATE [rule]
+    -This should be used if you wish to create a new rule in your strategy. Notice that you should only do this when necessary, and please be EXTREMELY cautious when you have many (~5) high-vote rules in your strategy. Try to remove or downvote some rules first.
+
+REPLACE [id] [rule]
+    -This should be used if you wish to replace a rule with a new one. This is encouraged as you may often find some rules not exact enough, and this operation does not increase the amount of rules in your strategy. You may combine it with upvote or downvote.
+
+Based on these considerations, you should modify your notes by the above operations. This note is specifically for your own role (as a {role}).
+Make your note AS ACCURATE AS POSSIBLE, as vague rules will not help you in upcoming games.
+
+All rules MUST be in one format among the following, or it might not be recognized:
+a) I should (not) ...
+b) If ..., I should (not) ...
+c) If I ..., ... (something might happen)
+d) Next time I should try to ... when ...
+
+Option (d) should be used when you want to try some new strategy. If a strategy is already tried, you might consider changing it into the 'I should (not) ...' format. (Still, you are encouraged to keep on attempting and keep the rule, but you should try to write down your current attempt in your note as a rule.)
+You should make your note as EXACT as possible, but try to restrict the case that the rule applies. For example, instead of 'I should balance X and Y ...', you should write 'If ..., I should X instead of Y' and 'If ..., I should Y instead of X'. This will make your note significantly more effective.
+
+Warning again: this note is ONLY for your strategy, so don't include ANYTHING about how you should infer other players' roles from their speeches here.
+
+The id and rule should be wrapped within "[]" to be recognized. Please make sure all your operations follow the given format, and each operation lies in a new line, or your operations might not be recognized and you might receive punishment.
+
+Your modification should not relate with any specific player (e.g. a rule should not consist of 'player xxx' in it, as it is not generalizable). However you are VERY encouraged to write down exact experiences in your note to remind you in your later games.
+You are allowed to do AT MOST 5 operations at a time. Use them on the most critical parts.
+
+Please answer your operations based on the above requirements.
+
+4:Example response:
+An example response is:
+
+... (Indicating your reflection)
+My updating operations are:
+UPVOTE [3]
+DOWNVOTE [6]
+CREATE [This is an example rule.]
+REPLACE [2] [The new rule I want to replace this one with.]
+
+This is only an example of the response format. All numbers in it are unrelated to your current game. 
+

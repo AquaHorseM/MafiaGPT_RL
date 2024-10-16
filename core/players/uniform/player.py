@@ -207,7 +207,7 @@ class Player:
     def _get_final_choice_from_response_VoteThreeStep(self, response):
         return get_target_from_response(response)
     
-    def _vote(self, use_multiagent = False):
+    def _vote(self, use_multiagent = True):
         vote, response = self._vote_org() if not use_multiagent else self._vote_multiagent()
         return vote, response
     
@@ -354,15 +354,13 @@ class Player:
         self.draft_dict["speak"][-1]["final_proposal"] = int(proposal_id) - 1
         return speak
 
-    def _speak(self, use_multiagent = False):
+    def _speak(self, use_multiagent = True):
         returned = self._speak_org() if not use_multiagent else self._speak_multiagent()
         return returned
 
     def _speak_org(self):
-        replacements = self.get_replacements()
-        response = self.get_response("speak_org", replacements)
-        # s_type = self._get_speak_type()
-        # response = self.speak_with_type(s_type)
+        s_type = self._get_speak_type()
+        response = self.speak_with_type(s_type)
         return response
     
     def previous_votes(self):
@@ -380,18 +378,18 @@ class Player:
     def _update_hstate(self, events):
         for _ in range(3):
             try:
-                # event_des = ""
-                # for event in events:
-                #     event_des += str(event)
-                #     event_des += "\n"
-                # replacements = self.get_replacements()
-                # replacements.update({
-                #     "{event_des}": event_des,
-                #     "{prev_events}": str(self.event_book)
-                # })
-                # response = self.get_response("update_hstate", replacements=replacements)
-                # for line in response.split("\n"):
-                #     self.hstate.update(line)
+                event_des = ""
+                for event in events:
+                    event_des += str(event)
+                    event_des += "\n"
+                replacements = self.get_replacements()
+                replacements.update({
+                    "{event_des}": event_des,
+                    "{prev_events}": str(self.event_book)
+                })
+                response = self.get_response("update_hstate", replacements=replacements)
+                for line in response.split("\n"):
+                    self.hstate.update(line)
                 self.event_book.add_event(events)
                 return
             except Exception as e:
@@ -468,43 +466,42 @@ class Player:
 
     
     def reflex(self, data : DataTree):
+        sample_type = self.sample_type
+        reflex_data_belief = data.sample(self.id, sample_num = 1000)
+        reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = 1000)
+        sample_num = self.sample_num
+        self.logger.info(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
+        self.logger.info(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
+        def get_elems(d):
+            dat = data.parse(d)
+            state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
+            if state is None:
+                return None
+            return (state, prev_events, trajs)
+        reflex_data_belief = [get_elems(d) for d in reflex_data_belief]
+        reflex_data_belief = [i for i in reflex_data_belief if i is not None]
+        if len(reflex_data_belief) > sample_num:
+            weights_belief = [self.get_node_importance_for_belief(elem[0], elem[1], elem[2], sample_type) for elem in reflex_data_belief]
+            reflex_data_belief = random.choices(reflex_data_belief, weights_belief, k=sample_num)
+        reflex_data_policy = [get_elems(d) for d in reflex_data_policy]
+        reflex_data_policy = [i for i in reflex_data_policy if i is not None]
+        if len(reflex_data_policy) > sample_num:
+            weights_policy = [self.get_node_importance_for_policy(elem[0], elem[1], elem[2], sample_type) for elem in reflex_data_policy]
+            reflex_data_policy = random.choices(reflex_data_policy, weights_policy, k=sample_num)
+        self.logger.info(f"Data ready for reflex!")
+        for state, prev_events, trajs in reflex_data_belief:
+            try:
+                self.reflex_belief(state, prev_events, trajs)
+            except Exception as e:
+                self.logger.warning(f"Error encountered while reflexing belief: {e}")
+        for state, prev_events, trajs in reflex_data_policy:
+            try:
+                self.reflex_policy(state, prev_events, trajs)
+            except Exception as e:
+                self.logger.warning(f"Error encountered while reflexing policy: {e}")
+        self.logger.info("Finished reflex; now polish reflex notes.")
+        self.polish_reflex_notes()
         return
-        # sample_type = self.sample_type
-        # reflex_data_belief = data.sample(self.id, sample_num = 1000)
-        # reflex_data_policy = data.sample(self.id, filter_events = True, sample_num = 1000)
-        # sample_num = self.sample_num
-        # self.logger.info(f"reflex note path for belief is: {str(os.path.abspath(self.reflex_note_path_belief))}")
-        # self.logger.info(f"reflex note path for policy is: {str(os.path.abspath(self.reflex_note_path_policy))}")
-        # def get_elems(d):
-        #     dat = data.parse(d)
-        #     state, prev_events, trajs = dat["state"], dat["prev_events"], dat["trajs"]
-        #     if state is None:
-        #         return None
-        #     return (state, prev_events, trajs)
-        # reflex_data_belief = [get_elems(d) for d in reflex_data_belief]
-        # reflex_data_belief = [i for i in reflex_data_belief if i is not None]
-        # if len(reflex_data_belief) > sample_num:
-        #     weights_belief = [self.get_node_importance_for_belief(elem[0], elem[1], elem[2], sample_type) for elem in reflex_data_belief]
-        #     reflex_data_belief = random.choices(reflex_data_belief, weights_belief, k=sample_num)
-        # reflex_data_policy = [get_elems(d) for d in reflex_data_policy]
-        # reflex_data_policy = [i for i in reflex_data_policy if i is not None]
-        # if len(reflex_data_policy) > sample_num:
-        #     weights_policy = [self.get_node_importance_for_policy(elem[0], elem[1], elem[2], sample_type) for elem in reflex_data_policy]
-        #     reflex_data_policy = random.choices(reflex_data_policy, weights_policy, k=sample_num)
-        # self.logger.info(f"Data ready for reflex!")
-        # for state, prev_events, trajs in reflex_data_belief:
-        #     try:
-        #         self.reflex_belief(state, prev_events, trajs)
-        #     except Exception as e:
-        #         self.logger.warning(f"Error encountered while reflexing belief: {e}")
-        # for state, prev_events, trajs in reflex_data_policy:
-        #     try:
-        #         self.reflex_policy(state, prev_events, trajs)
-        #     except Exception as e:
-        #         self.logger.warning(f"Error encountered while reflexing policy: {e}")
-        # self.logger.info("Finished reflex; now polish reflex notes.")
-        # self.polish_reflex_notes()
-        # return
 
     def extract_traj(self, traj):
         return {
@@ -617,7 +614,7 @@ class Player:
         }
     
     def convert_draft_to_prompt(self, draft: Dict):
-        if draft is not None and draft["cur_action"] not in ["vote", "speak"]:
+        if draft["cur_action"] not in ["vote", "speak"]:
             return ""
         else:
             s = "\nThe following is your proposals and your imagination of your action.\n\n"
@@ -697,54 +694,48 @@ class Player:
         else:
             traj = reflex_info["trajs"][0]
         s = ""
-        # s += "\nThese are the ACTUAL ROLES of the players.\n\n"
-        # for i in range(self.player_num):
-        #     s += f"Player {i} is {reflex_info['roles'][i]}\n"
-        
-        # todo
+        s += "\nThese are the ACTUAL ROLES of the players.\n\n"
+        for i in range(self.player_num):
+            s += f"Player {i} is {reflex_info['roles'][i]}\n"
         if vis_prev_events:
-            s += "\nThese are ALL events happened previously that you observed:\n\n"
-            for e in reflex_info["visible_prev_events"]:
+            s += "\nThese are ALL events happened previously that you observed (notice other players' night actions and system actions were not observable in your game, but only serve here as a reference):\n\n"
+            for e in reflex_info["all_prev_events"]:
                 s += e
                 s += '\n'
-        # s += "\nThese are the beliefs of all other players.\n\n"
-        # s += show_all_other_beliefs()
+        s += "\nThese are the beliefs of all other players.\n\n"
+        s += show_all_other_beliefs()
         action_type = traj["actions"][self.id]["action"]
-        # todo
-        # s += f"\n Your next action should be {action_type}.\n"
-        # s += self.convert_draft_to_prompt(traj["draft"])
-        # s += "\nThese are the beliefs of all other players after your action.\n\n"
-        # s += show_all_other_beliefs()
+        s += f"\n Your next action should be {action_type}.\n"
+        s += self.convert_draft_to_prompt(traj["draft"])
+        s += "\nThese are the beliefs of all other players after your action.\n\n"
+        s += show_all_other_beliefs()
         
-        # todo
-        after_events = [event for event in traj["after_events"] if self.filter_reflex_event(event)]
         s += "\n This is a summary of what happens after your final decided action:\n\n" 
-        s += self.summarize_events(after_events)
+        s += self.summarize_events(traj["after_events"])
         s += "Think about the following questions: Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
         
-        # if len(reflex_info["trajs"]) > 1:
-        #     other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
-            # todo
-            # other_draft = other_traj["draft"]
-            # if other_draft["cur_action"] not in ["vote", "speak"]:
-            #     pass
-            # else:
-            #     #TODO how to combine the other traj?
-            #     if other_draft["cur_action"] == "speak":
-            #         if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
-            #             self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
-            #             s += f"\n\nThe system also simulated the game for your other proposal, which is proposal {other_draft['final_proposal']}."
-            #             s += f"\n\nYour speech, in this case, is: \"{other_draft['final_speech']}\""
-            #             s += "System automatically evaluates it as a potentially better speech than your previous speech."
-            #         else:
-            #             s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
-            #             s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
-            #     elif other_draft["cur_action"] == "vote":
-            #         # if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
-            #         #     self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
-            #         s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['final_proposal']}.\n"
-            #         s += "These are the beliefs of all other players after this action: \n\n"
-            #         s += show_all_other_beliefs()                        
+        if len(reflex_info["trajs"]) > 1:
+            other_traj = random.choice([traj_cand for traj_cand in reflex_info["trajs"] if traj_cand != traj])
+            other_draft = other_traj["draft"]
+            if other_draft["cur_action"] not in ["vote", "speak"]:
+                pass
+            else:
+                #TODO how to combine the other traj?
+                if other_draft["cur_action"] == "speak":
+                    if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
+                        self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
+                        s += f"\n\nThe system also simulated the game for your other proposal, which is proposal {other_draft['final_proposal']}."
+                        s += f"\n\nYour speech, in this case, is: \"{other_draft['final_speech']}\""
+                        s += "System automatically evaluates it as a potentially better speech than your previous speech."
+                    else:
+                        s += f"\n\nThe system also made an automatic evaluation for your other proposal, which is proposal {other_draft['final_proposal']}."
+                        s += f"\n\nHowever, it might be less potential compared to your final chosen proposal. You've potentially made a correct choice."
+                elif other_draft["cur_action"] == "vote":
+                    # if self.evaluate_joint_hstate(other_traj["outcome_hstate"], other_traj["outcome_alive_players"]) >= \
+                    #     self.evaluate_joint_hstate(traj["outcome_hstate"], traj["outcome_alive_players"]):
+                    s += f"\n\nThe system also simulated the game for your other vote, which is to vote for {other_draft['final_proposal']}.\n"
+                    s += "These are the beliefs of all other players after this action: \n\n"
+                    s += show_all_other_beliefs()                        
         return s
         
     
@@ -755,10 +746,9 @@ class Player:
         else:
             traj = reflex_info["trajs"][0]
         s = ""
-        # s += "\nThese are the ACTUAL ROLES of the players.\n\n"
-        # for i in range(self.player_num):
-        #     s += f"Player {i} is {reflex_info['roles'][i]}\n"
-        
+        s += "\nThese are the ACTUAL ROLES of the players.\n\n"
+        for i in range(self.player_num):
+            s += f"Player {i} is {reflex_info['roles'][i]}\n"
         s += "\nThese are ALL events happened previously that you observed:\n\n"
         for e in reflex_info["visible_prev_events"]:
             s += e

@@ -696,23 +696,26 @@ class Player:
         else:
             traj = reflex_info["trajs"][0]
         s = ""
-        s += "\nThese are the ACTUAL ROLES of the players.\n\n"
-        for i in range(self.player_num):
-            s += f"Player {i} is {reflex_info['roles'][i]}\n"
+        # s += "\nThese are the ACTUAL ROLES of the players.\n\n"
+        # for i in range(self.player_num):
+        #     s += f"Player {i} is {reflex_info['roles'][i]}\n"
+        
+        # todo
         if vis_prev_events:
-            s += "\nThese are ALL events happened previously that you observed (notice other players' night actions and system actions were not observable in your game, but only serve here as a reference):\n\n"
-            for e in reflex_info["all_prev_events"]:
+            s += "\nThese are ALL events happened previously that you observed:\n\n"
+            for e in reflex_info["visible_prev_events"]:
                 s += e
                 s += '\n'
-        s += "\nThese are the beliefs of all other players.\n\n"
-        s += show_all_other_beliefs()
+        # s += "\nThese are the beliefs of all other players.\n\n"
+        # s += show_all_other_beliefs()
         action_type = traj["actions"][self.id]["action"]
         # todo
         # s += f"\n Your next action should be {action_type}.\n"
         # s += self.convert_draft_to_prompt(traj["draft"])
-        s += "\nThese are the beliefs of all other players after your action.\n\n"
-        s += show_all_other_beliefs()
+        # s += "\nThese are the beliefs of all other players after your action.\n\n"
+        # s += show_all_other_beliefs()
         
+        # todo
         s += "\n This is a summary of what happens after your final decided action:\n\n" 
         s += self.summarize_events(traj["after_events"])
         s += "Think about the following questions: Among these events, what are the direct consequences of your action? Perhaps you would have reached a better outome with a different action?"
@@ -750,9 +753,10 @@ class Player:
         else:
             traj = reflex_info["trajs"][0]
         s = ""
-        s += "\nThese are the ACTUAL ROLES of the players.\n\n"
-        for i in range(self.player_num):
-            s += f"Player {i} is {reflex_info['roles'][i]}\n"
+        # s += "\nThese are the ACTUAL ROLES of the players.\n\n"
+        # for i in range(self.player_num):
+        #     s += f"Player {i} is {reflex_info['roles'][i]}\n"
+        
         s += "\nThese are ALL events happened previously that you observed:\n\n"
         for e in reflex_info["visible_prev_events"]:
             s += e

@@ -1,0 +1,13 @@
+1.Current situation:
+You are player {player_id}, and in this game you are a {role}.
+
+
+2.Todo:
+You are going to summarize a speech of a certain player. Stand on this player's side and use first person view. The player speech was like:
+
+{org_speech}
+
+3.Requirements:
+Your response should be accurate while not long. You may begin your summary, following the word "In summary".
+
+In summary, 
