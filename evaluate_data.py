@@ -94,6 +94,7 @@ def eval_from_path(data_path: str):
 
     # SPEECH
     speech_scores = {tag: 0 for tag in player_tags}
+    long_speech_scores = {tag: 0 for tag in player_tags}
     num_speeches = {tag: 0 for tag in player_tags}
     nodes = data.nodes
     
@@ -128,11 +129,13 @@ def eval_from_path(data_path: str):
         speaker_tag = speech_eval["speaker_tag"]  # Assuming this returns the correct player tag
         speech_score_single = speech_eval["speech_score"]
         speech_scores[speaker_tag] += speech_score_single
+        long_speech_scores[speaker_tag] += speech_eval["long_speech_score"]
         num_speeches[speaker_tag] += 1
     
     for tag in player_tags:
         if num_speeches[tag] > 0:
             result[tag]["speech_score"] = speech_scores[tag] / num_speeches[tag]
+            result[tag]["long_speech_score"] = long_speech_scores[tag] / num_speeches[tag]
     
     # HEAL (applies only to medic role)
     heal_num = 0
