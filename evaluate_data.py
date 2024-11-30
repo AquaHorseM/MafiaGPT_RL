@@ -287,8 +287,12 @@ def eval_from_dir(dir_path):
     
     results = []
     for data_file in data_files:
-        result = eval_from_path(data_file)
-        results.append(result)
+        try:
+            result = eval_from_path(data_file)
+            results.append(result)
+        except Exception as e:
+            print(f"Error eval from {data_file}")
+            continue
     all_keys_dict = dict()
     for result in results:
         if result is None:
