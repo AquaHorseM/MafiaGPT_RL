@@ -9,34 +9,33 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("--num_games", type=int, default=1)
 parser.add_argument("--num_processes", type=int, default=1)
-parser.add_argument("--openai_config_path", type=str, default="openai_config.yaml")
-parser.add_argument("--config_path", type=str, default="configs/player_configs_v01.json")
+parser.add_argument("--config_path", type=str, default="configs/game_config_v01.json")
 parser.add_argument("--start_idx", type=int, default=0)
-parser.add_argument("--ckpt_path", type=str, default=None)
 parser.add_argument("--reflex-only",default=False, action="store_true")
-parser.add_argument("--data-path", type=str, default=None)
-parser.add_argument("--train",default=False, action="store_true")
+parser.add_argument("--skip-error",default=False, action="store_true")
 
-def run_game_with_client(ipt, client):
-    idx, player_configs, train = ipt
-    new = Game(idx, train = train, openai_client=client)
-    new.set_players(player_configs)
-    new.init_env()
-    new.sim_game_for_reflex_players()
+
+def run_game_with_config(id, config, skip_error = False):
+    new = Game(id, game_config=config)
+    if skip_error:
+        try:
+            new.sim_game_for_reflex_players()
+        except Exception as e:
+            print(f"WARNING!!!!!! Error encountered in simulating game {id}: {e}.")
+            print("Skipped it.")
+    else:
+        new.sim_game_for_reflex_players()
     
 if __name__ == "__main__":
     args = parser.parse_args()
-    # client = load_client(args.openai_config_path)
-    client = args.openai_config_path
-    
-    run_game = partial(run_game_with_client, client=client)
     with open(args.config_path, "r") as f:
-        player_configs = json.load(f)["players"]
+        game_config = json.load(f)
+    run_game = partial(run_game_with_config, config=game_config)
     if args.num_processes == 1:
         for i in range(args.num_games):
-            run_game((args.start_idx, player_configs, args.train))
+            run_game(args.start_idx + i)
     else:
-        ipt = [(args.start_idx + i, player_configs, args.train) for i in range(args.num_games)]
+        ipt = [args.start_idx + i for i in range(args.num_games)]
         if __name__ == "__main__":
             with multiprocessing.Pool(args.num_processes) as pool:
                 pool.map(run_game, ipt)

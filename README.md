@@ -1,5 +1,7 @@
 # MafiaGPT
 
+sjz draft ver!
+
 <img src="https://github.com/MEgooneh/MafiaGPT/blob/master/assets/robotic%20werewol%200.jpg" style="width:40%">
 
 a program that moderate a [Mafia(Werewolf)](https://en.wikipedia.org/wiki/Mafia_(party_game)) game with 7 players between GPT models.

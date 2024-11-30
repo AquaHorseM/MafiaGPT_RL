@@ -1,11 +1,9 @@
 import pickle
 from core.event import Event
+from core.data import DataTree
 # Load data from file
-data_path = "records/game_2_data.pkl"
+
+data_path = "data_bug.pkl"
 with open(data_path, "rb") as f:
-    data = pickle.load(f)
-for i in range(len(data)):
-    if isinstance(data[i], Event):
-        print(str(data[i]))
-    else:
-        print(data[i])
+    data: DataTree = pickle.load(f)
+print(data)

@@ -1,8 +1,0 @@
-As a medic, you normally do not have much information about other players, so you should try to guess or deduce their roles based on their speeches; also you should infer their beliefs on other players from their speeches. Here are some basic instructions, but this only includes some very basic scenarios:
-
-According to speeches of other players, if a player A says player B has a specific identity, then you can simply assume that the belief of A to B is 100%.
-For some player who says that he inquiries someone, he is claiming himself the seer.
-And if nobody else claims the same role, you can belief him as that role with high confidence, unless he claims that you are a werewolf, in which situation you should assume him as werewolf with extremely high probability. 
-For some player who says that he heals someone, he is claiming himself the medic, which is the role of yours, so you should assume him as werewolf with high probability.
-And for those players with no special speech, you can temporarily assume them as villagers.
-An important note is, if no one dies in the night, the one you healed last night is a good player with a very high probability (unless he tries to kill himself last night, which is normally impossible).

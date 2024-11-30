@@ -1,103 +1,150 @@
 from core.players.player import Player
-from core.players.utils import get_prompt, get_target_from_response
+from core.players.utils import get_target_from_response
 from core.event import EventBook
 import os
 import re
 
 class WerewolfPlayer(Player):
-    def __init__(self, id, global_info, private_info, prompt_dir_path, openai_client = None, reflex_note_path = None):
-        super().__init__(id, global_info, private_info, prompt_dir_path, openai_client, reflex_note_path)
-        self.labels = ["all", "werewolf"]
+    def __init__(self, id, game_id, player_config, global_info, private_info, openai_client = None):
+        super().__init__(id, game_id, player_config, global_info, private_info, openai_client)
         self.role = "werewolf"
+        for wid in self.private_info["werewolf_ids"]:
+            if wid != self.id:
+                self.hstate.set_role(wid, "werewolf")
         
     def get_replacements(self):
         replacements = super().get_replacements()
+        werewolf_ids = str(self.private_info["werewolf_ids"])
         replacements.update({
-            "{werewolf_ids}": str(self.private_info["werewolf_ids"])
+            "{werewolf_ids}": werewolf_ids,
         })
         replacements.update({
-            "{hidden_state}": str(self.hidden_state),
+            "{hstate}": str(self.hstate),
+        })
+        replacements.update({
+            "{private}": f"All werewolves including you are {werewolf_ids}. Remember that you should work together to hide from other players and eliminate them."
         })
         #! TEMPORARY
         replacements.update({"{events}": str(self.event_book)})
         replacements.update({"{previous_advices}": self.show_previous_advices()})
         return replacements
-    
-    def init_game(self, global_info, private_info):
-        super().init_game(global_info, private_info)
-        for wid in self.private_info["werewolf_ids"]:
-            self.hidden_state.set_role(wid, self.global_info["roles_mapping"]["werewolf"])
         
-    def _act(self, event_book: EventBook, available_actions = None, update_hstate = True):
+    def _act(self, available_actions = None): #return (action, target, reason, imagination)
         if "vote" in available_actions:
             res = self._vote()
-            return ("vote", res[0], res[1])
+            return {
+                "action": "vote",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "kill" in available_actions or "night" in available_actions:
             res = self._kill()
-            return ("kill", res[0], res[1])
+            return {
+                "action": "kill",
+                "target": res[0],
+                "reason": res[1],
+                "imagination": None
+            }
         elif "speak" in available_actions:
-            res = self._speak(event_book, update_hstate)
-            return ("speak", None, res)
+            res = self._speak()
+            return {
+                "action": "speak",
+                "target": res,
+                "reason": None,
+                "imagination": None
+            }
         elif "speak_type" in available_actions:
-            res = self._get_speak_type(event_book, update_hstate)
+            res = self._get_speak_type()
             return ("speak_type", res, None)
     
-    def _vote(self):
-        #TODO
-        prompt_path = os.path.join(self.prompt_dir_path, "vote.txt")
-        prompt = get_prompt(prompt_path, self.get_replacements())
-        response = self.send_message_xsm(prompt)
-        vote = get_target_from_response(response)
-        return vote, response
+    def _kill(self, use_multiagent = False):
+        if not use_multiagent:
+            return self._kill_org()
+        else:
+            return self._kill_multiagent()
+        
+        
+    def _get_proposals_from_response_KillThreeStep(self, response):
+        # Regex to capture the first number after 'Firstly' and 'Secondly'
+        first_number_pattern = r'Firstly.*?(\d+)'
+        second_number_pattern = r'.*?Secondly.*?(\d+)'
+        
+        # Regex to capture the reason after 'the reason is'
+        first_reason_pattern = r'Firstly.*?reason is:? (.*?)(?:\.|Secondly)'
+        second_reason_pattern = r'.*?Secondly.*?reason is:? (.*)'
+        
+        # Find the first player number and reason
+        first_player_match = re.search(first_number_pattern, response)
+        first_reason_match = re.search(first_reason_pattern, response, re.DOTALL)
+        
+        # Find the second player number and reason
+        second_player_match = re.search(second_number_pattern, response)
+        second_reason_match = re.search(second_reason_pattern, response, re.DOTALL)
+        
+        # Extract data or set to None if not found
+        first_player = int(first_player_match.group(1)) if first_player_match else None
+        first_reason = first_reason_match.group(1).strip() if first_reason_match else None
+        second_player = int(second_player_match.group(1)) if second_player_match else None
+        second_reason = second_reason_match.group(1).strip() if second_reason_match else None
+        self.logger.debug(str(first_player) + ' ' + first_reason + ' ' + str(second_player) + ' ' + second_reason)
+        return first_player, first_reason, second_player, second_reason
     
-    def _kill(self):
-        prompt_path = os.path.join(self.prompt_dir_path, "kill.txt")
-        prompt = get_prompt(prompt_path, self.get_replacements())
-        response = self.send_message_xsm(prompt)
+    
+    def _get_imagination_from_response_KillThreeStep(self, response):
+        return response
+    def _get_final_choice_from_response_KillThreeStep(self, response):
+        return get_target_from_response(response)
+
+    def _kill_multiagent(self):
+        self.draft_dict["kill"].append(dict())
+        first_player, first_reason, second_player, second_reason = None, None, None, None
+        count = 0
+        while ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None)) and (count < 3):
+            count += 1
+            response = self.get_response("kill_threeStage_propose")
+            first_player, first_reason, second_player, second_reason = self._get_proposals_from_response_KillThreeStep(response)
+        assert not ((first_player is None) or (second_player is None) or (first_reason is None) or (second_reason is None))
+        
+        proposals = [first_player, second_player]
+        
+        
+        self.draft_dict["kill"][-1]["kill_proposal"] = proposals
+        self.draft_dict["kill"][-1]["proposal_and_imaginations"] = list()
+        result_list = list()
+        for propose in proposals:
+            replacements = self.get_replacements()
+            replacements["{current_propose}"] = str(propose)
+            response = self.get_response("kill_threeStage_imagine", replacements)
+            
+            results = self._get_imagination_from_response_KillThreeStep(response)
+            result_list.append(results)
+            self.draft_dict["kill"][-1]["proposal_and_imaginations"].append(response)
+        
+        replacements = self.get_replacements()
+        replacements["{current_propose_0}"] = str(proposals[0])
+        replacements["{current_propose_1}"] = str(proposals[1])
+        replacements["{current_propose_0_imagination}"] = result_list[0]
+        replacements["{current_propose_1_imagination}"] = result_list[1]
+        
+        
+        
+        response_and_reason = self.get_response("kill_threeStage_choose", replacements)
+        kill = self._get_final_choice_from_response_KillThreeStep(response_and_reason)
+        
+        self.draft_dict["kill"][-1]["proposal_chosen_and_reasons"] = response_and_reason
+        return kill, response_and_reason
+
+    def _kill_org(self):
+        response = self.get_response("kill")
         kill = get_target_from_response(response)
         return kill, response
-    
-    def _get_speak_type(self, event_book: EventBook, update_hstate = True):
-        if update_hstate:
-            self.update_hidden_state(event_book)
-        prompt_path = os.path.join(self.prompt_dir_path, "speak_type.txt")
-        replacements = self.get_replacements()
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
-        #Find the [type] in the response
-        s_type = re.search(r"\[(.*?)\]", response).group(1).lower()
-        s_type = s_type.strip().split(",") #split the types
-        s_type = [s.strip() for s in s_type]
-        return s_type
-    
-    def speak_with_type(self, s_type):
-        prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
-        replacements = self.get_replacements()
-        replacements.update({
-            "{speech_type}": str(s_type)
-        })
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
-        return response
-        
-    
-    def _speak(self, event_book: EventBook, update_hstate = True):
-        s_type = self._get_speak_type(event_book, update_hstate)
-        replacements = self.get_replacements()
-        replacements.update({
-            "{speech_type}": str(s_type)
-        })
-        print(f"I am player {self.id}, I choose to speak {s_type}")
-        prompt_path = os.path.join(self.prompt_dir_path, f"speak.txt")
-        prompt = get_prompt(prompt_path, replacements)
-        response = self.send_message_xsm(prompt)
-        return response
-    
+
     def get_alive_werewolf_ids(self):
         return [wid for wid in self.private_info["werewolf_ids"] if wid in self.global_info["alive_players"]]
     
     def show_previous_advices(self):
-        #TODO
+        #! Aborted
         if self.private_info["previous_advices"] == []:
             s = "No previous advices."
         else:

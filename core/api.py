@@ -1,24 +1,27 @@
 # CONFIG YOUR API HERE :
 RATE_LIMIT = 20  # sleeping time for openai per minute limitation
-TOKEN_LIMIT = 250  # token limit per message
+SLEEP_EVERYTIME = 2 # sleep for 1s every time, for what? I don't know!
+TOKEN_LIMIT = 500  # token limit per message
 TEMPERATURE = 1
 MAX_RETRIES = 1
 # MODEL = "gpt-4-turbo"
+# MODEL = "gpt-4-turbo" #for debugging, use the cheaper api
 MODEL = "gpt-4-turbo" #for debugging, use the cheaper api
-
+from openai import OpenAI
 import openai, os, time, yaml
+import re
 
 # this is for printing messages in terminal
 DEBUG = False
 
-def load_client(key_path="openai_config_backup.yaml"):
+def load_client(key_path="openai_config.yaml"):
     openai._reset_client()
     key = yaml.safe_load(open(key_path))
     for k, v in key.items():
         setattr(openai, k, v)
     return openai._load_client()
 
-# make content in openai wanted format
+# make content in openai wanted formaty
 def create_message(role, content):
     return {"role": role, "content": content}
 
@@ -48,7 +51,7 @@ def send_message(
     ]
     context = get_context(messages)
 
-    time.sleep(time_limit_rate)
+    time.sleep(SLEEP_EVERYTIME)
 
     # connecting to Openai
     response = openai.chat.completions.create(
@@ -74,6 +77,13 @@ def send_message(
     return response.choices[0].message.content
 
 def send_message_xsm(messages, agent_config = {}, client = None):
+    
+    if client is not None:
+        input_txt_path = client['input_txt_path']
+        output_txt_path = client['output_txt_path']
+    else:
+        input_txt_path = "message_input_history_backup.txt"
+        output_txt_path = "message_history_backup.txt"
     '''
     A flexible function to send messages to openai
     Messages should be a tuple or list of tuples
@@ -84,19 +94,24 @@ def send_message_xsm(messages, agent_config = {}, client = None):
     model_name = agent_config.get("model", MODEL)
     temperature = agent_config.get("temperature", TEMPERATURE)
     max_retries = agent_config.get("max_retries", MAX_RETRIES)
+    sleep_everytime = agent_config.get("sleep_everytime", SLEEP_EVERYTIME)
     context = get_context(messages)
     
-    time.sleep(rate_limit)
+    time.sleep(sleep_everytime)
         
     # connecting to Openai
     for i in range(max_retries):
         try:
+            client = load_client()
             response = client.chat.completions.create(
                 model=model_name, messages=context, temperature=temperature,
                 max_tokens=token_limit, top_p=1
             )
+            if response.choices[0].message.content is None:
+                raise ValueError("Response is None!")
             break
         except Exception as e:
+            print("bpioiawrngiaweufhawliuefu")
             print(f"Error: {e}")
             if i == max_retries - 1:
                 raise e
@@ -105,6 +120,12 @@ def send_message_xsm(messages, agent_config = {}, client = None):
             continue
     # returning the response as a string
     #! debug
-    with open("message_history_backup.txt", "a") as f:
+    
+    with open(input_txt_path, "a") as f:
+        f.write(f"{context}\n\n")
+    with open(output_txt_path, "a") as f:
         f.write(f"{response.choices[0].message.content}\n\n")
     return response.choices[0].message.content
+
+
+

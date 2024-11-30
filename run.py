@@ -1,5 +1,5 @@
 from functools import partial
-from core.game import Game
+from core.game_backup import Game
 import json, sys, os
 #run the game with multiple processes
 import multiprocessing
@@ -16,12 +16,19 @@ parser.add_argument("--ckpt_path", type=str, default=None)
 parser.add_argument("--reflex-only",default=False, action="store_true")
 parser.add_argument("--data-path", type=str, default=None)
 parser.add_argument("--train",default=False, action="store_true")
+parser.add_argument("--skip-error",default=False, action="store_true")
 
-def run_game_with_client(ipt, client):
+def run_game_with_client(ipt, client, skip_error=False):
     idx, player_configs, train = ipt
     new = Game(idx, train = train, openai_client=client)
     new.set_players(player_configs)
-    new.run_game()
+    if skip_error:
+        try:
+            new.run_game()
+        except Exception as e:
+            print(f"Error: Game {idx} failed with error: {e}")
+    else:
+        new.run_game()
     
 if __name__ == "__main__":
     args = parser.parse_args()
@@ -45,11 +52,11 @@ if __name__ == "__main__":
         
     
     if args.ckpt_path is not None:
-        game = Game(args.start_idx, args.train, openai_client=client)
-        game.load_checkpoint(args.ckpt_path)
+        game = Game(args.start_idx, args.train, openai_client=client, skip_error=args.skip_error)
+        game.load_checkpoint_from_path(args.ckpt_path)
         game.run_game()
     else:
-        run_game = partial(run_game_with_client, client=client)
+        run_game = partial(run_game_with_client, client=client, skip_error=args.skip_error)
         with open(args.config_path, "r") as f:
             player_configs = json.load(f)["players"]
         if args.num_processes == 1:
