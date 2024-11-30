@@ -10,9 +10,7 @@ def eval_from_path(data_path: str):
     result = {}
     with open(data_path, "rb") as f:
         data: DataTree = pickle.load(f)
-    
-    print(data)
-    
+        
     last_node = None
     last_state = None
     for node in reversed(data.nodes):
